@@ -33,6 +33,8 @@ class _BookCommunityState extends State<BookCommunity> {
 
   @override
   Widget build(BuildContext context) {
+    print("Book Community build 실행");
+
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -163,7 +165,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                     children: [
                                       // 이름
                                       const Text(
-                                        "김영우님이 리뷰하였습니다.",
+                                        "김영우님이 리뷰하였습니다.\n\n아이디 : ladkfsf243",
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
@@ -215,9 +217,297 @@ class _BookCommunityState extends State<BookCommunity> {
                                           // 신고하기 버튼
                                           IconButton(
                                             onPressed: () {
-                                              // 신고하기 다이어로그를 띄운다.
+                                              // 영리목적/홍보성
+                                              bool forProfit = false;
+                                              // 욕설/인신공격
+                                              bool abuse = false;
+                                              // 불법정보
+                                              bool illegalInfo = false;
+                                              // 개인정보노출
+                                              bool infoExposure = false;
+                                              // 음란성, 선전성
+                                              bool obscenity = false;
+                                              // 같은 내용 도배
+                                              bool papering = false;
 
-                                              // 서버에 신고받은 사용자 목록에 업데이트한다.
+                                              // 신고 내용을 적는 textControleller
+                                              final reportController =
+                                                  TextEditingController();
+
+                                              // 신고하기 다이어로그를 띄운다.
+                                              Get.dialog(
+                                                StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                    return AlertDialog(
+                                                      title: const Text('신고하기'),
+                                                      content: SizedBox(
+                                                        width: 100,
+                                                        height: 200,
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            children: [
+                                                              // Text
+                                                              const Text(
+                                                                  "위 리뷰글을 신고하는 사유를\n체크하시오"),
+
+                                                              // 중간 공백
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+
+                                                              // 영리목적/홍보성
+                                                              Row(
+                                                                children: [
+                                                                  // 체크박스
+                                                                  Checkbox(
+                                                                    value:
+                                                                        forProfit,
+                                                                    onChanged:
+                                                                        (bool?
+                                                                            newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        forProfit =
+                                                                            newValue!;
+                                                                      });
+                                                                    },
+                                                                  ),
+
+                                                                  const Text(
+                                                                    "영리목적/홍보성",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              // 욕설/인신공격
+                                                              Row(
+                                                                children: [
+                                                                  // 체크박스
+                                                                  Checkbox(
+                                                                    value:
+                                                                        abuse,
+                                                                    onChanged:
+                                                                        (bool?
+                                                                            newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        abuse =
+                                                                            newValue!;
+                                                                      });
+                                                                    },
+                                                                  ),
+
+                                                                  const Text(
+                                                                    "욕설/인신공격",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              // 불법정보
+                                                              Row(
+                                                                children: [
+                                                                  // 체크박스
+                                                                  Checkbox(
+                                                                    value:
+                                                                        illegalInfo,
+                                                                    onChanged:
+                                                                        (bool?
+                                                                            newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        illegalInfo =
+                                                                            newValue!;
+                                                                      });
+                                                                    },
+                                                                  ),
+
+                                                                  const Text(
+                                                                    "불법정보",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              // 개인정보 노출
+                                                              Row(
+                                                                children: [
+                                                                  // 체크박스
+                                                                  Checkbox(
+                                                                    value:
+                                                                        infoExposure,
+                                                                    onChanged:
+                                                                        (bool?
+                                                                            newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        infoExposure =
+                                                                            newValue!;
+                                                                      });
+                                                                    },
+                                                                  ),
+
+                                                                  const Text(
+                                                                    "개인정보노출",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              // 음란성/선전성
+                                                              Row(
+                                                                children: [
+                                                                  // 체크박스
+                                                                  Checkbox(
+                                                                    value:
+                                                                        obscenity,
+                                                                    onChanged:
+                                                                        (bool?
+                                                                            newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        obscenity =
+                                                                            newValue!;
+                                                                      });
+                                                                    },
+                                                                  ),
+
+                                                                  const Text(
+                                                                    "음란성/선전성",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              // 같은 내용 도배
+                                                              Row(
+                                                                children: [
+                                                                  // 체크박스
+                                                                  Checkbox(
+                                                                    value:
+                                                                        papering,
+                                                                    onChanged:
+                                                                        (bool?
+                                                                            newValue) {
+                                                                      setState(
+                                                                          () {
+                                                                        papering =
+                                                                            newValue!;
+                                                                      });
+                                                                    },
+                                                                  ),
+
+                                                                  const Text(
+                                                                    "같은 내용 도배",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          12.5,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+
+                                                              // 내용 적기
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child:
+                                                                    TextField(
+                                                                  controller:
+                                                                      reportController,
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .multiline,
+                                                                  minLines: 2,
+                                                                  maxLines: 10,
+                                                                  decoration:
+                                                                      const InputDecoration(
+                                                                    enabledBorder:
+                                                                        OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color:
+                                                                              Colors.purple),
+                                                                    ),
+                                                                    focusedBorder:
+                                                                        OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color:
+                                                                              Colors.purple),
+                                                                    ),
+                                                                    labelText:
+                                                                        '신고내용',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          child: const Text(
+                                                              "신고 제출"),
+                                                          onPressed: () {
+                                                            // 검증
+
+                                                            // 서버와 통신
+                                                            // 서버에 신고받은 사용자 목록에 업데이트한다.
+
+                                                            Get.back();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
+                                              );
                                             },
                                             icon: const Icon(
                                               Icons.priority_high_outlined,
@@ -288,12 +578,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                       // 중간 공백
                                       const SizedBox(height: 10),
 
-                                      // 리뷰 감상평
+                                      // 리뷰 내용
                                       const Text(
-                                        "감상평입니다.\n감상평입니다.\n감상평입니다.\n감상평입니다.\n감상평입니다.\n",
+                                        "리뷰 내용입니다.\n리뷰 내용입니다.\n리뷰 내용입니다.\n리뷰 내용입니다.\n리뷰 내용입니다.\n",
                                       ),
-
-                                      // 리뷰평
                                     ],
                                   ),
                                 ),
