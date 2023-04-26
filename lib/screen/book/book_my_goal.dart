@@ -1,5 +1,5 @@
 // 도서 나만의 목표 페이지
-import 'package:book_project/screen/book/book_my_goal_edit.dart';
+import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
@@ -55,7 +55,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                 alignment: Alignment.topRight,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.off(() => BookMyGoalEdit());
+                    Get.off(() => BookMyGoalEdit1());
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -77,32 +77,92 @@ class _BookMyGoalState extends State<BookMyGoal> {
               // 중간 공백
               const SizedBox(height: 25),
 
-              // 목표 기간
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  elevation: 10.0,
-                  color: const Color.fromARGB(255, 228, 201, 232),
-                  shadowColor: Colors.grey.withOpacity(0.5),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: const SizedBox(
-                    width: 300,
-                    height: 40,
-                    child: Center(
-                      child: Text(
-                        "목표 기간 : 2023-04-21 ~ 2023-05-21(1달)",
-                        // "목표를 설정해주세요!!",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
+              // 목표 1, 목표 2, 목표 3에 대한 목표와 설정 기간을 보여준다.
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    // 목표 1
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 10.0,
+                        color: const Color.fromARGB(255, 228, 201, 232),
+                        shadowColor: Colors.grey.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: const SizedBox(
+                          width: 300,
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              "목표 1 : 2023-04-21 ~ 2023-05-21",
+                              // "목표를 설정해주세요!!",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+
+                    // 목표 2
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 10.0,
+                        color: const Color.fromARGB(255, 228, 201, 232),
+                        shadowColor: Colors.grey.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: const SizedBox(
+                          width: 300,
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              "목표 2 : 2023-05-21 ~ 2023-06-21",
+                              // "목표를 설정해주세요!!",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // 목표 3
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 10.0,
+                        color: const Color.fromARGB(255, 228, 201, 232),
+                        shadowColor: Colors.grey.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: const SizedBox(
+                          width: 300,
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              "목표 3 : 2023-07-21 ~ 2023-08-21",
+                              // "목표를 설정해주세요!!",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
+              
               // 중간 공백
               const SizedBox(height: 25),
 
