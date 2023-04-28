@@ -1,42 +1,33 @@
-import 'package:book_project/screen/auth/login.dart';
+// 관리자에 한해서 도서 상세 정보를 수정할 수 있는 페이지
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
-class MyPage extends StatefulWidget {
-  const MyPage({super.key});
+class BookShowPreviewEdit extends StatefulWidget {
+  BookShowPreviewEdit({super.key});
 
   @override
-  State<MyPage> createState() => _MyPageState();
+  State<BookShowPreviewEdit> createState() => _BookShowPreviewEditState();
 }
 
-class _MyPageState extends State<MyPage> {
+class _BookShowPreviewEditState extends State<BookShowPreviewEdit> {
   final _formKey = GlobalKey<FormState>();
 
-  // id
-  String id = "사용자 원래 ID";
-  bool isIdState = false;
+  // 변경할 도서 제목
+  String editBookTtitle = "원래 도서 제목";
+  bool isEditBookTitle = true;
 
-  // password
-  String password = "사용자 원래 Password";
-  bool isPasswordState = false;
+  // 변경할 도서 작가
+  String editBookAuthor = "원래 도서 작가 이름";
+  bool isEditBookAuthor = true;
 
-  // verifyPassword
-  String verifyPassword = "사용자 원래 Password";
-  bool isVerifyPasswordState = false;
+  // 변경할 출판사
+  String editBookPublisher = "원래 도서 출판사";
+  bool isEditBookPublisher = true;
 
-  // name
-  String name = "사용자 원래 이름";
-  bool isNameState = false;
-
-  // age
-  String age = "사용자 원래 나이";
-  bool isAgeState = false;
-
-
-  // category
+  // 변경할 category
   List<String> category = [
     "국내도서>소설",
     "국내도서>시/에세이",
@@ -65,17 +56,33 @@ class _MyPageState extends State<MyPage> {
     "국내도서/여행",
     "국내도서>중등학습서",
   ];
-  String selectedCategory = "국내도서>소설";
+  String selectedCategory = "국내도서>소설"; // 원래 도서 분야여야 한다.
+
+  // 변경할 도서 평점
+  String editBookGrade = "원래 도서 평점";
+  bool isEditBookGrade = true;
+
+  // 변경할 도서 가격
+  String editBookPrice = "원래 도서 가격";
+  bool isEditBookPrice = true;
+
+  // 변경할 도서 구입 URL
+  String editBookPurchaseURL = "원래 도서 구입 URL";
+  bool isEditBookPurchaseURL = true;
+
+  // 변경할 도서 목차
+  String editBookContent = "원래 도서 목차";
+  bool isEditBookContent = true;
 
   @override
   void initState() {
     super.initState();
-    print("MyPage initState 시작");
+    print("Book Show Preview Edit initState 시작");
   }
 
   @override
   void dispose() {
-    print("MyPage state 종료");
+    print("Book Show Preview Edit state 종료");
     super.dispose();
   }
 
@@ -120,7 +127,7 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 20),
 
-                    // 마이 페이지 Text
+                    // 도서 상세 정보 변경 Text
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
@@ -136,7 +143,7 @@ class _MyPageState extends State<MyPage> {
                             height: 40,
                             child: Center(
                               child: Text(
-                                "마이페이지",
+                                "도서 상세 정보 변경",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
@@ -151,7 +158,7 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 30),
 
-                    // 변경할 ID
+                    // 변경할 도서 제목
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -160,29 +167,24 @@ class _MyPageState extends State<MyPage> {
                         top: 20,
                       ),
                       child: TextFormField(
-                        initialValue: id,
+                        initialValue: editBookTtitle,
                         autovalidateMode: AutovalidateMode.always,
                         onChanged: (val) {
                           setState(() {
-                            id = val;
+                            editBookTtitle = val;
                           });
                         },
                         onSaved: (val) {
                           setState(() {
-                            id = val!;
+                            editBookTtitle = val!;
                           });
                         },
                         validator: (value) {
-                          // 아이디 정규식: ^[0-9a-z]+$; (숫자 또는 영문 또는 숫자와 영문 조합 아이디 생성 가능)
-                          // 아이디 길이는 8자리 이상 12자리 이하
-                          if (!RegExp(r"^[0-9a-z]+$").hasMatch(value!)) {
-                            isIdState = false;
-                            return "숫자, 영문만 입력해주세요";
-                          } else if (value.length < 8 || value.length > 13) {
-                            isIdState = false;
-                            return "8자리 이상 12자리 이하를 입력해주세요";
+                          if (value!.isEmpty) {
+                            isEditBookTitle = false;
+                            return "글자를 입력해주세요";
                           } else {
-                            isIdState = true;
+                            isEditBookTitle = true;
                             return null;
                           }
                         },
@@ -205,8 +207,8 @@ class _MyPageState extends State<MyPage> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: "ID",
-                          hintText: 'ex) abcdefg1',
+                          labelText: "도서 제목",
+                          hintText: 'ex) 홍길동을 찾아서',
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
                       ),
@@ -215,7 +217,7 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 10),
 
-                    // 변경할 Password
+                    // 변경할 도서 작가
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -224,33 +226,27 @@ class _MyPageState extends State<MyPage> {
                         top: 20,
                       ),
                       child: TextFormField(
-                        initialValue: password,
+                        initialValue: editBookAuthor,
                         autovalidateMode: AutovalidateMode.always,
                         onChanged: (val) {
                           setState(() {
-                            password = val;
+                            editBookAuthor = val;
                           });
                         },
                         onSaved: (val) {
                           setState(() {
-                            password = val!;
+                            editBookAuthor = val!;
                           });
                         },
-                        // 비밀번호 정규식: ^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$ (숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여 8자리 이상 입력)
-                        validator: (String? value) {
-                          if (!RegExp(
-                                  r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
-                              .hasMatch(value!)) {
-                            isPasswordState = false;
-                            return "숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여\n8자리 입력해주세요";
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            isEditBookAuthor = false;
+                            return "글자를 입력해주세요";
                           } else {
-                            isPasswordState = true;
+                            isEditBookAuthor = true;
                             return null;
                           }
                         },
-
-                        obscuringCharacter: '*',
-                        obscureText: true,
                         decoration: const InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide.none,
@@ -270,8 +266,8 @@ class _MyPageState extends State<MyPage> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: "Password",
-                          hintText: 'ex) ********',
+                          labelText: "도서 작가",
+                          hintText: 'ex) 홍길동',
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
                       ),
@@ -280,7 +276,7 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 10),
 
-                    // Verify Password
+                    // 변경할 도서 출판사
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -289,159 +285,24 @@ class _MyPageState extends State<MyPage> {
                         top: 20,
                       ),
                       child: TextFormField(
-                        initialValue: verifyPassword,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          verifyPassword = val;
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            verifyPassword = val!;
-                          });
-                        },
-                        validator: (String? value) {
-                          if (isPasswordState == false) {
-                            isVerifyPasswordState = false;
-                            return "적합한 Password를 먼저 입력해주세요";
-                          }
-
-                          if (isPasswordState == true && value!.isEmpty) {
-                            isVerifyPasswordState = false;
-                            return "사전에 입력한 Password를 다시 입력해주세요";
-                          }
-
-                          if (isPasswordState == true && value != password) {
-                            isVerifyPasswordState = false;
-                            return "사전에 입력한 Password와 맞지 않습니다.";
-                          }
-
-                          if (isPasswordState == true && value == password) {
-                            isVerifyPasswordState = true;
-                            return null;
-                          }
-                        },
-                        obscuringCharacter: '*',
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "Verify Password",
-                          hintText: 'ex) ********',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 이름
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: name,
+                        initialValue: editBookAuthor,
                         autovalidateMode: AutovalidateMode.always,
                         onChanged: (val) {
                           setState(() {
-                            name = val;
+                            editBookPublisher = val;
                           });
                         },
                         onSaved: (val) {
                           setState(() {
-                            name = val!;
+                            editBookPublisher = val!;
                           });
                         },
-                        // 이름 정규표현식 : ^[가-힣]{2,4}$ (한글 이름 최소 2자 최대 4자)
-                        validator: (String? value) {
-                          if (!RegExp(r"^[가-힣]{2,4}$").hasMatch(value!)) {
-                            isNameState = false;
-                            return "한글 이름 2-4자를 입력해주세요";
-                          }
-                          isNameState = true;
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "이름",
-                          hintText: "ex) 홍길동",
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 나이
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: age,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            age = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            age = val!;
-                          });
-                        },
-                        // 나이 정규표현식 ^[0-9]+$
-                        // 나이는 최소 1자 최대 2자
-                        validator: (String? value) {
-                          if (!RegExp(r"^[0-9]+$").hasMatch(value!)) {
-                            isAgeState = false;
-                            return "숫자를 입력해주세요";
-                          } else if (value.length >= 3) {
-                            isAgeState = false;
-                            return "숫자로 최소 1자, 최대 2자를 입력해주세요";
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            isEditBookAuthor = false;
+                            return "글자를 입력해주세요";
                           } else {
-                            isAgeState = true;
+                            isEditBookAuthor = true;
                             return null;
                           }
                         },
@@ -464,8 +325,8 @@ class _MyPageState extends State<MyPage> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: "나이",
-                          hintText: "ex) 25",
+                          labelText: "도서 출판사",
+                          hintText: 'ex) 이한출판사',
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
                       ),
@@ -474,7 +335,7 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 10),
 
-                    // 변경할 선호하는 도서 장르
+                    // 변경할 도서 분야
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -503,7 +364,7 @@ class _MyPageState extends State<MyPage> {
                           filled: true,
                           fillColor: Colors.white,
                           labelText: "선호하는 도서 장르",
-                          hintText: "인문",
+                          hintText: "ex) 인문",
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
                         value: selectedCategory,
@@ -520,9 +381,235 @@ class _MyPageState extends State<MyPage> {
                     ),
 
                     // 중간 공백
+                    const SizedBox(height: 10),
+
+                    // 변경할 도서 평점
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                        right: 40,
+                        bottom: 20,
+                        top: 20,
+                      ),
+                      child: TextFormField(
+                        initialValue: editBookGrade,
+                        autovalidateMode: AutovalidateMode.always,
+                        onChanged: (val) {
+                          setState(() {
+                            editBookGrade = val;
+                          });
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            editBookGrade = val!;
+                          });
+                        },
+                        validator: (value) {
+                          // 검증
+                          // 0.0, 6.5, 10.0 이렇게 되어야 한다.
+                        },
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Colors.purple,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: "도서 평점",
+                          hintText: 'ex) 6.5',
+                          labelStyle: TextStyle(color: Colors.purple),
+                        ),
+                      ),
+                    ),
+
+                    // 중간 공백
+                    const SizedBox(height: 10),
+
+                    // 변경할 도서 가격
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                        right: 40,
+                        bottom: 20,
+                        top: 20,
+                      ),
+                      child: TextFormField(
+                        initialValue: editBookPrice,
+                        autovalidateMode: AutovalidateMode.always,
+                        onChanged: (val) {
+                          setState(() {
+                            editBookPrice = val;
+                          });
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            editBookPrice = val!;
+                          });
+                        },
+                        validator: (value) {
+                          // 검증
+                          // 숫자만 있어야 한다.
+                        },
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Colors.purple,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: "도서 가격",
+                          hintText: 'ex) 20000',
+                          labelStyle: TextStyle(color: Colors.purple),
+                        ),
+                      ),
+                    ),
+
+                    // 중간 공백
+                    const SizedBox(height: 10),
+
+                    // 변경할 도서 구입 URL
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                        right: 40,
+                        bottom: 20,
+                        top: 20,
+                      ),
+                      child: TextFormField(
+                        initialValue: editBookPurchaseURL,
+                        autovalidateMode: AutovalidateMode.always,
+                        onChanged: (val) {
+                          setState(() {
+                            editBookPurchaseURL = val;
+                          });
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            editBookPurchaseURL = val!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            isEditBookPurchaseURL = false;
+                            return "구입 URL를 작성하세요";
+                          } else {
+                            isEditBookPurchaseURL = true;
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Colors.purple,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: "도서 구입 URL",
+                          hintText: 'ex) https://book.com',
+                          labelStyle: TextStyle(color: Colors.purple),
+                        ),
+                      ),
+                    ),
+
+                    // 중간 공백
+                    const SizedBox(height: 10),
+
+                    // 변경할 도서 목차
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 40,
+                        right: 40,
+                        bottom: 20,
+                        top: 20,
+                      ),
+                      child: TextFormField(
+                        initialValue: editBookContent,
+                        autovalidateMode: AutovalidateMode.always,
+                        onChanged: (val) {
+                          setState(() {
+                            editBookContent = val;
+                          });
+                        },
+                        onSaved: (val) {
+                          setState(() {
+                            editBookContent = val!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            isEditBookContent = false;
+                            return "구입 URL를 작성하세요";
+                          } else {
+                            isEditBookContent = true;
+                            return null;
+                          }
+                        },
+                        decoration: const InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Colors.purple,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: "도서 목차",
+                          hintText: 'ex) 1. 첫 시작 2. 두 번째 줄거리 3. 세 번째 줄거리',
+                          labelStyle: TextStyle(color: Colors.purple),
+                        ),
+                      ),
+                    ),
+
+                    // 중간 공백
                     const SizedBox(height: 50),
 
-                    // 개인 정보 변경하기
+                    // 도서 정보 변경하기
                     Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -530,10 +617,23 @@ class _MyPageState extends State<MyPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 검증
+                            if (isEditBookTitle == true &&
+                                isEditBookAuthor == true &&
+                                isEditBookPublisher == true &&
+                                isEditBookGrade == true &&
+                                isEditBookPrice == true &&
+                                isEditBookPurchaseURL == true &&
+                                isEditBookContent == true) {
+                              print("서버와 통신");
+                              // 서버와 통신
 
-                            // 서버와 통신
-
-                            // 사용자의 개인 정보를 변경한다.
+                              // 사용자의 개인 정보를 변경한다.
+                            } else {
+                              Get.snackbar(
+                                  "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -553,7 +653,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               SizedBox(width: 30),
                               Text(
-                                "개인 정보 변경하기",
+                                "도서 정보 변경하기",
                                 style: TextStyle(fontSize: 15),
                               ),
                             ],

@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'package:book_project/controller/user_info.dart';
 import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/book_show_preview_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -286,6 +287,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 도서 정보를 수정할 수 있도록 제공한다.
+                            Get.off(() => BookShowPreviewEdit());
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

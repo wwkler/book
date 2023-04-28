@@ -239,7 +239,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // 서버와 통신
                         // ID, Password가 존재하는지 확인
-
                         Get.off(() => BookFluidNavBar());
                         
                       } else {

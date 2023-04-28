@@ -73,6 +73,9 @@ dependencies:
   # rating_bar 라이브러리
   flutter_rating_bar: ^4.0.1
 
+  # 서버와 통신하기 위한 라이브러리
+  dio: ^5.1.1
+
 
 
   # The following adds the Cupertino Icons font to your application.

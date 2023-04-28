@@ -1,21 +1,34 @@
-// 사용자 관리하는 페이지
+// 신고 내역 페이지
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/report_history_show_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
-class UserManagement extends StatefulWidget {
-  UserManagement({Key? key}) : super(key: key);
+class ReportHistory extends StatefulWidget {
+  const ReportHistory({super.key});
 
   @override
-  State<UserManagement> createState() => UserManagementState();
+  State<ReportHistory> createState() => _ReportHistoryState();
 }
 
-class UserManagementState extends State<UserManagement> {
+class _ReportHistoryState extends State<ReportHistory> {
   // 검색어를 받기 위한 변수
   TextEditingController searchTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    print("Report History initState 시작");
+  }
+
+  @override
+  void dispose() {
+    print("Report History state 종료");
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +45,6 @@ class UserManagementState extends State<UserManagement> {
                 opacity: 0.3,
               ),
             ),
-
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -53,7 +65,7 @@ class UserManagementState extends State<UserManagement> {
                   // 중간 공백
                   const SizedBox(height: 20),
 
-                  // 사용자 관리 Text
+                  // 신고 내역 Text
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
@@ -69,7 +81,7 @@ class UserManagementState extends State<UserManagement> {
                           height: 40,
                           child: Center(
                             child: Text(
-                              "사용자 관리",
+                              "신고 내역",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -121,7 +133,7 @@ class UserManagementState extends State<UserManagement> {
                           height: 600,
                           child: Column(
                             children: [
-                              // 번호, 사용자 이름, 아이디, 관리
+                              // 번호, 사용자 이름, 아이디, 날짜
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
@@ -197,7 +209,10 @@ class UserManagementState extends State<UserManagement> {
                                   itemCount: 20,
                                   itemBuilder: (context, index) =>
                                       GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      // 신고 내역 자세히 보여주기 페이지로 라우팅
+                                      Get.off(() => ReportHistoryShowPreview());
+                                    },
                                     child: Container(
                                       color: Colors.yellow[50],
                                       width: 200,
@@ -234,76 +249,8 @@ class UserManagementState extends State<UserManagement> {
                                             // 중간 공백
                                             const SizedBox(width: 20),
 
-                                            // 관리
-                                            SizedBox(
-                                              width: 200,
-                                              height: 100,
-                                              child: Row(
-                                                children: [
-                                                  // 정지 버튼
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      // 서버와 통신
-                                                      // 사용자 계정을 정지한다.
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.purple,
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      "정지",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 중간 공백
-                                                  const SizedBox(width: 10),
-
-                                                  // 탈퇴 버튼
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      // 서버와 통신
-                                                      // 사용자 계정을 탈퇴한다.
-                                                    },
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                      ),
-                                                      backgroundColor:
-                                                          Colors.purple,
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 15,
-                                                      ),
-                                                    ),
-                                                    child: const Text(
-                                                      "탈퇴",
-                                                      style: TextStyle(
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            // 날짜
+                                            const Text("2023-4-29"),
                                           ],
                                         ),
                                       ),

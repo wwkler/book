@@ -2,6 +2,7 @@
 import 'package:book_project/controller/user_info.dart';
 import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/my_page.dart';
+import 'package:book_project/screen/book/report_history.dart';
 import 'package:book_project/screen/book/user_management.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -398,6 +399,7 @@ class _ConfigurationState extends State<Configuration> {
                 ? GestureDetector(
                     onTap: () {
                       // 사용자 관리 페이지로 라우팅
+                      Get.off(() => ReportHistory());
                     },
                     child: Card(
                       elevation: 10.0,
