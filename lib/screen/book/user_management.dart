@@ -1,42 +1,29 @@
-// 도서 일지 리스트를 보여주는 페이지
+// 사용자 관리하는 페이지
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
-import 'package:book_project/screen/book/book_my_diary_show_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
-class BookMyDiaryList extends StatefulWidget {
-  const BookMyDiaryList({super.key});
+class UserManagement extends StatefulWidget {
+  UserManagement({Key? key}) : super(key: key);
 
   @override
-  State<BookMyDiaryList> createState() => _BookMyDiaryListState();
+  State<UserManagement> createState() => UserManagementState();
 }
 
-class _BookMyDiaryListState extends State<BookMyDiaryList> {
+class UserManagementState extends State<UserManagement> {
   // 검색어를 받기 위한 변수
   TextEditingController searchTextController = TextEditingController();
 
   @override
-  void initState() {
-    print("Book My Diary List initState 시작");
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    print("Book My Diary List state 종료");
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("Book My Diary List build 실행");
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width,
-
             // 배경 이미지
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -66,7 +53,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                   // 중간 공백
                   const SizedBox(height: 20),
 
-                  // 일지 목록 보기 Text
+                  // 사용자 관리 Text
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
@@ -82,7 +69,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                           height: 40,
                           child: Center(
                             child: Text(
-                              "일지 목록 보기",
+                              "사용자 관리",
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
@@ -97,28 +84,28 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                   // 중간 공백
                   const SizedBox(height: 10),
 
-                  // 제목으로 도서 검색
+                  // 사용자 이름 혹은 아이디로 검색
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: AnimSearchBar(
                       width: 300,
                       textController: searchTextController,
-                      helpText: "도서 제목 검색",
+                      helpText: "사용자 이름 또는 아이디 검색",
                       suffixIcon: const Icon(Icons.arrow_back),
                       onSuffixTap: () {
-                        // 도서 제목 비어있는 상태로 검색
+                        // 값이 비어있는 상태로 검색
                         setState(() {
                           searchTextController.clear();
                         });
                       },
                       onSubmitted: (String value) {
-                        // 도서 제목 검색
+                        // 사용자 이름 또는 아이디로 검색헸으면?
                         setState(() {});
                       },
                     ),
                   ),
 
-                  // 작성한 일지 목록
+                  // 사용자 계정 목록
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
@@ -134,7 +121,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                           height: 600,
                           child: Column(
                             children: [
-                              // 번호, 제목, 날짜
+                              // 번호, 사용자 이름, 아이디, 관리
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Row(
@@ -151,7 +138,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                     // 중간 공백
                                     SizedBox(width: 60),
 
-                                    // 제목
+                                    // 사용자 이름
                                     Text(
                                       "제목",
                                       style: TextStyle(
@@ -163,7 +150,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                     // 중간 공백
                                     SizedBox(width: 120),
 
-                                    // 날짜
+                                    // 아이디
                                     Text(
                                       "날짜",
                                       style: TextStyle(
@@ -171,6 +158,10 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
+
+                                    // 관리
+
+
                                   ],
                                 ),
                               ),
@@ -185,10 +176,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                   itemCount: 20,
                                   itemBuilder: (context, index) =>
                                       GestureDetector(
-                                    onTap: () {
-                                      // 도서 일지 상세 정보 페이지로 라우팅
-                                      Get.off(() => BookMyDiaryShowPreview());
-                                    },
+                                    onTap: () {},
                                     child: Container(
                                       color: Colors.yellow[50],
                                       width: 350,

@@ -1,5 +1,7 @@
 // 도서 커뮤니티 페이지
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:book_project/controller/user_info.dart';
+import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/book_review_write.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +153,7 @@ class _BookCommunityState extends State<BookCommunity> {
                         itemBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: SizedBox(
-                            height: 400,
+                            height: 300,
                             child: SingleChildScrollView(
                               child: Card(
                                 shape: RoundedRectangleBorder(
@@ -582,6 +584,49 @@ class _BookCommunityState extends State<BookCommunity> {
                                       const Text(
                                         "리뷰 내용입니다.\n리뷰 내용입니다.\n리뷰 내용입니다.\n리뷰 내용입니다.\n리뷰 내용입니다.\n",
                                       ),
+
+                                      // 리뷰글 삭제하기 (관리자 권한)
+                                      UserInfo.identity ==
+                                              UserManagerCheck.manager
+                                          ? Padding(
+                                              padding:
+                                                  const EdgeInsets.all(64.0),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  // 서버와 통신
+                                                  // 리뷰 글을 삭제한다.
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.purple,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 40,
+                                                    vertical: 15,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: const [
+                                                    Icon(Icons.delete),
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                      "리뷰 삭제하기",
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          : const Visibility(
+                                              visible: false,
+                                              child: Text("버튼은 보이지 않습니다."),
+                                            ),
                                     ],
                                   ),
                                 ),

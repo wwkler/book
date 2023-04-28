@@ -1,5 +1,7 @@
 // 도서 상세 정보 페이지
 import 'dart:ui' as ui;
+import 'package:book_project/controller/user_info.dart';
+import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -146,12 +148,12 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                             child: Row(
                               children: <Widget>[
                                 Expanded(
+                                  flex: 2,
                                   child: Image.asset(
                                     'assets/imgs/icon.png',
                                     height: 64,
                                     width: 64,
                                   ),
-                                  flex: 2,
                                 ),
                                 Expanded(
                                   flex: 4,
@@ -277,6 +279,34 @@ class _BookShowPreviewState extends State<BookShowPreview> {
 
                 // 중간 공백
                 const SizedBox(height: 40),
+
+                // 도서 상세 정보 수정(관리자 권한)
+                UserInfo.identity == UserManagerCheck.manager
+                    ? Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // 도서 정보를 수정할 수 있도록 제공한다.
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            backgroundColor: Colors.purple,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: MediaQuery.of(context).size.width / 3,
+                              vertical: 20,
+                            ),
+                          ),
+                          child: const Text(
+                            "정보 수정하기",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      )
+                    : const Visibility(
+                        visible: false,
+                        child: Text("버튼이 보이지 않습니다."),
+                      ),
               ],
             ),
           ),

@@ -64,11 +64,6 @@ class _BookFluidNavBarState extends State<BookFluidNavBar> {
               backgroundColor: Colors.purple[400],
               extras: {"label": "Configuration"},
             ),
-            FluidNavBarIcon(
-              icon: Icons.settings,
-              backgroundColor: Colors.purple[400],
-              extras: {"label": "BookShowPreview"},
-            ),
           ],
           onChange: _handleNavigationChange,
           style: const FluidNavBarStyle(
@@ -103,9 +98,6 @@ class _BookFluidNavBarState extends State<BookFluidNavBar> {
           break;
         case 4:
           _child = Configuration();
-          break;
-        case 5:
-          _child = BookShowPreview();
           break;
       }
       _child = AnimatedSwitcher(

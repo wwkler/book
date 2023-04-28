@@ -1,5 +1,8 @@
 // 환경 설정 페이지
+import 'package:book_project/controller/user_info.dart';
+import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/my_page.dart';
+import 'package:book_project/screen/book/user_management.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -205,125 +208,224 @@ class _ConfigurationState extends State<Configuration> {
             // 중간 공백
             const SizedBox(height: 50),
 
-            // 회원 탈퇴
-            GestureDetector(
-              onTap: () {
-                // 서버와 통신
-
-                // 사용자 정보를 삭제한다.
-              },
-              child: Card(
-                elevation: 10.0,
-                color: const Color.fromARGB(255, 233, 227, 234),
-                shadowColor: Colors.grey.withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      "회원 탈퇴",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
+            // 회원 탈퇴 (사용자만 볼 수 있고, 관리자는 볼 수 없다)
+            UserInfo.identity == UserManagerCheck.user
+                ? GestureDetector(
+                    onTap: () {
+                      // 서버와 통신
+                      // 사용자 정보를 삭제한다.
+                    },
+                    child: Card(
+                      elevation: 10.0,
+                      color: const Color.fromARGB(255, 233, 227, 234),
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "회원 탈퇴",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                  )
+                : const Visibility(
+                    visible: false,
+                    child: Text("버튼은 보이지 않습니다."),
                   ),
-                ),
-              ),
-            ),
 
             // 중간 공백
-            const SizedBox(height: 50),
+            UserInfo.identity == UserManagerCheck.user
+                ? const SizedBox(height: 50)
+                : const SizedBox(height: 0),
 
-            // 문의하기
-            GestureDetector(
-              onTap: () {
-                // 내 정보 변경하기 페이지로 라우팅
-              },
-              child: Card(
-                elevation: 10.0,
-                color: const Color.fromARGB(255, 233, 227, 234),
-                shadowColor: Colors.grey.withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      "문의하기",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
+            // 문의하기 (사용자만 볼 수 있고, 관리자는 볼 수 없다)
+            UserInfo.identity == UserManagerCheck.user
+                ? GestureDetector(
+                    onTap: () {
+                      // 내 정보 변경하기 페이지로 라우팅
+                    },
+                    child: Card(
+                      elevation: 10.0,
+                      color: const Color.fromARGB(255, 233, 227, 234),
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "문의하기",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                  )
+                : const Visibility(
+                    visible: false,
+                    child: Text("버튼은 보이지 않습니다"),
                   ),
-                ),
-              ),
-            ),
 
             // 중간 공백
-            const SizedBox(height: 50),
+            UserInfo.identity == UserManagerCheck.user
+                ? const SizedBox(height: 50)
+                : const SizedBox(height: 0),
 
-            // 개인정보 보호 정책
-            GestureDetector(
-              onTap: () {},
-              child: Card(
-                elevation: 10.0,
-                color: const Color.fromARGB(255, 233, 227, 234),
-                shadowColor: Colors.grey.withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      "개인정보 보호 정책",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
+            // 개인정보 보호 정책 (사용자만 볼 수 있고, 관리자는 볼 수 없다.)
+            UserInfo.identity == UserManagerCheck.user
+                ? GestureDetector(
+                    onTap: () {},
+                    child: Card(
+                      elevation: 10.0,
+                      color: const Color.fromARGB(255, 233, 227, 234),
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "개인정보 보호 정책",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                  )
+                : const Visibility(
+                    visible: false,
+                    child: Text("버튼은 보이지 않습니다"),
                   ),
-                ),
-              ),
-            ),
 
             // 중간 공백
-            const SizedBox(height: 50),
+            UserInfo.identity == UserManagerCheck.user
+                ? const SizedBox(height: 50)
+                : const SizedBox(height: 0),
 
-            // 오픈소스 라이선스
-            GestureDetector(
-              onTap: () {},
-              child: Card(
-                elevation: 10.0,
-                color: const Color.fromARGB(255, 233, 227, 234),
-                shadowColor: Colors.grey.withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      "오픈소스 라이선스",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
+            // 오픈소스 라이선스 (사용자만 볼 수 있고, 관리자는 볼 수 없다.)
+            UserInfo.identity == UserManagerCheck.user
+                ? GestureDetector(
+                    onTap: () {},
+                    child: Card(
+                      elevation: 10.0,
+                      color: const Color.fromARGB(255, 233, 227, 234),
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "오픈소스 라이선스",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                  )
+                : const Visibility(
+                    visible: false,
+                    child: Text("버튼은 보이지 않습니다"),
                   ),
-                ),
-              ),
-            ),
+
+            // 사용자 관리 (관리자만 볼 수 있고, 사용자는 볼 수 없다.)
+            UserInfo.identity == UserManagerCheck.manager
+                ? GestureDetector(
+                    onTap: () {
+                      // 사용자 관리 페이지로 라우팅
+                      Get.off(() => UserManagement());
+                    },
+                    child: Card(
+                      elevation: 10.0,
+                      color: const Color.fromARGB(255, 233, 227, 234),
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "사용자 관리",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : const Visibility(
+                    visible: false,
+                    child: Text("버튼은 보이지 않습니다"),
+                  ),
+
+            // 중간 공백
+            UserInfo.identity == UserManagerCheck.manager
+                ? const SizedBox(height: 50)
+                : const SizedBox(height: 0),
+
+            // 신고 내역 (관리자만 볼 수 있고, 사용자는 볼 수 없다.)
+            UserInfo.identity == UserManagerCheck.manager
+                ? GestureDetector(
+                    onTap: () {
+                      // 사용자 관리 페이지로 라우팅
+                    },
+                    child: Card(
+                      elevation: 10.0,
+                      color: const Color.fromARGB(255, 233, 227, 234),
+                      shadowColor: Colors.grey.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: const SizedBox(
+                        width: 250,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "신고 내역",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : const Visibility(
+                    visible: false,
+                    child: Text("버튼은 보이지 않습니다"),
+                  ),
 
             // 중간 공백
             const SizedBox(height: 100),

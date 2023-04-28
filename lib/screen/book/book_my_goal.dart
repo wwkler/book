@@ -162,7 +162,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                   ],
                 ),
               ),
-              
+
               // 중간 공백
               const SizedBox(height: 25),
 
@@ -230,7 +230,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                             child: Column(
                               children: [
                                 Text(
-                                  "영우님 10권 중에 2권\n을 읽었습니다",
+                                  "목표와 관련된 분석 내용",
                                   //"목표를 설정해주세요",
                                   style: TextStyle(
                                     fontSize: 15,
