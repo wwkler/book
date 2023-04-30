@@ -1,13 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.book_project">
+
    <!-- twilio_flutter를 사용하기 위한 준비 작업-->
-   <uses-permission android:name="android.permission.SEND_SMS" />
-   <queries>
-      <intent>
-         <action android:name="android.intent.action.SENDTO"/>
-         <data android:scheme="smsto"/>
-      </intent>
-   </queries>
+   <uses-permission android:name="android.permission.SEND_SMS"/>
+
 
    <!-- ImagePicker 카메라에 접근하기 위한 작업-->
    <uses-permission android:name="android.permission.CAMERA" />

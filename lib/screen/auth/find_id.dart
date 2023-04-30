@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:book_project/screen/auth/login.dart';
+import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -18,24 +19,25 @@ class FindIdScreen extends StatefulWidget {
 class _FindIdScreenState extends State<FindIdScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // phoneNNumber
-  String phoneNumber = "";
-  bool isPhoneNumberState = false;
+  // 이메일
+  String email = "";
+  bool isEmailState = false;
 
   // 앱에서 사용자에게 제공하는 인증번호
-  late TwilioFlutter twilioFlutter;
-  String session = "";
+  // late TwilioFlutter twilioFlutter;
+  // String session = "";
+  EmailOTP myauth = EmailOTP();
 
   // 사용자가 입력해야 하는 인증번호
-  String phoneSessionValue = "";
-  bool isPhoneSessionValue = false;
+  String emailVerificationValue = "";
+  bool isEmailVerificationValue = false;
 
   @override
   void initState() {
-    twilioFlutter = TwilioFlutter(
-        accountSid: 'ACe85bf95b8c67f941ffdff01de2fdae7b',
-        authToken: 'dc5637ccfa2cce5809ee5d46d801e1b0',
-        twilioNumber: '+16073604847');
+    // twilioFlutter = TwilioFlutter(
+    //     accountSid: 'ACe85bf95b8c67f941ffdff01de2fdae7b',
+    //     authToken: 'dc5637ccfa2cce5809ee5d46d801e1b0',
+    //     twilioNumber: '+16073604847');
     print("Find_id initState 시작");
 
     super.initState();
@@ -124,7 +126,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                       height: 30,
                     ),
 
-                    // -를 제외한 핸드폰번호
+                    // 이메일
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -136,22 +138,24 @@ class _FindIdScreenState extends State<FindIdScreen> {
                         autovalidateMode: AutovalidateMode.always,
                         onChanged: (val) {
                           setState(() {
-                            phoneNumber = val;
+                            email = val;
                           });
                         },
                         onSaved: (val) {
                           setState(() {
-                            phoneNumber = val!;
+                            email = val!;
                           });
                         },
                         // 핸드폰 번호 정규표현식 : ^010-?([0-9]{4})-?([0-9]{4})$
+                        // 이메일 정규 표현식 ^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+
                         validator: (value) {
-                          if (!RegExp(r"^010-?([0-9]{4})-?([0-9]{4})$")
+                          if (!RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                               .hasMatch(value!)) {
-                            isPhoneNumberState = false;
-                            return "핸드폰 번호를 입력해주세요";
+                            isEmailState = false;
+                            return "이메일을 입력해주세요";
                           } else {
-                            isPhoneNumberState = true;
+                            isEmailState = true;
                             return null;
                           }
                         },
@@ -174,23 +178,42 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           ),
                           suffixIcon: GestureDetector(
                             onTap: () async {
-                              if (isPhoneNumberState == true) {
+                              if (isEmailState == true) {
                                 // 앱에서 인증번호를 만들어서 사용자 핸드폰 번호에 전달함
-                                session = Random().nextInt(99999).toString();
-                                await twilioFlutter.sendSMS(
-                                  toNumber: "+82$phoneNumber",
-                                  messageBody: '인증번호는 $session 입니다.',
+                                // session = Random().nextInt(99999).toString();
+
+                                // await twilioFlutter.sendSMS(
+                                //   toNumber: "+82$phoneNumber",
+                                //   messageBody: '인증번호는 $session 입니다.',
+                                // );
+
+                                myauth.setConfig(
+                                  appEmail: "me@rohitchouhan.com",
+                                  appName: "Email OTP",
+                                  userEmail: email,
+                                  otpLength: 6,
+                                  otpType: OTPType.digitsOnly,
                                 );
-                                Get.snackbar(
-                                  "문자 전송 메시지",
-                                  "해당 전화번호로 인증번호가 전송됐습니다",
-                                  duration: const Duration(seconds: 5),
-                                  snackPosition: SnackPosition.TOP,
-                                );
+
+                                if (await myauth.sendOTP() == true) {
+                                  Get.snackbar(
+                                    "확인 메시지",
+                                    "이메일로 인증 번호를 전송했습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                } else {
+                                  Get.snackbar(
+                                    "이상 메시지",
+                                    "FAIL",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
                               } else {
                                 Get.snackbar(
                                   "이상 메시지",
-                                  "핸드폰 번호를 올바르게 입력해주세요",
+                                  "이메일을 올바르게 입력해주세요",
                                   duration: const Duration(seconds: 5),
                                   snackPosition: SnackPosition.TOP,
                                 );
@@ -200,14 +223,14 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: "-를 제외한 전화번호",
-                          hintText: 'ex) 01011112222',
+                          labelText: "이메일 주소",
+                          hintText: 'ex) abcdef@naver.com',
                           labelStyle: const TextStyle(color: Colors.purple),
                         ),
                       ),
                     ),
 
-                    // 핸드폰번호 인증값
+                    // 인증값
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -219,12 +242,12 @@ class _FindIdScreenState extends State<FindIdScreen> {
                         autovalidateMode: AutovalidateMode.always,
                         onChanged: (val) {
                           setState(() {
-                            phoneSessionValue = val;
+                            emailVerificationValue = val;
                           });
                         },
                         onSaved: (val) {
                           setState(() {
-                            phoneSessionValue = val!;
+                            emailVerificationValue = val!;
                           });
                         },
                         validator: (value) {
@@ -252,21 +275,22 @@ class _FindIdScreenState extends State<FindIdScreen> {
                             color: Colors.purple,
                           ),
                           suffixIcon: GestureDetector(
-                            onTap: () {
-                              if (phoneSessionValue != "" &&
-                                  phoneSessionValue == session) {
-                                isPhoneSessionValue = true;
+                            onTap: () async {
+                              if (await myauth.verifyOTP(
+                                      otp: emailVerificationValue) ==
+                                  true) {
+                                isEmailVerificationValue = true;
                                 Get.snackbar(
-                                  "확인 증명 메시지",
-                                  "인증번호가 올바릅니다",
+                                  "확인 메시지",
+                                  "인증 완료 되었습니다",
                                   duration: const Duration(seconds: 5),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               } else {
-                                isPhoneSessionValue = false;
+                                isEmailVerificationValue = false;
                                 Get.snackbar(
                                   "이상 메시지",
-                                  "인증번호가 올바르지 않습니다",
+                                  "FAIL",
                                   duration: const Duration(seconds: 5),
                                   snackPosition: SnackPosition.TOP,
                                 );
@@ -291,8 +315,8 @@ class _FindIdScreenState extends State<FindIdScreen> {
                     // 아이디 찾기 버튼
                     ElevatedButton(
                       onPressed: () {
-                        if (isPhoneNumberState == true &&
-                            isPhoneSessionValue == true) {
+                        if (isEmailState == true &&
+                            isEmailVerificationValue == true) {
                           print("서버와 통신");
 
                           // 서버와 통신

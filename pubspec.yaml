@@ -43,6 +43,9 @@ dependencies:
   # 특정 핸드폰 전화번호로 sms를 보낼 수 있는 라이브러리
   twilio_flutter: ^0.0.9
 
+  # 이메일로 OTP을 전송하는 라이브러리
+  email_otp: ^2.0.1
+
   # 유동적인 애니메이션이 포함된 아름다운 Bottom Navigation Bar 라이브러리
   fluid_bottom_nav_bar: ^1.4.0
 
@@ -75,6 +78,8 @@ dependencies:
 
   # 서버와 통신하기 위한 라이브러리
   dio: ^5.1.1
+
+
 
 
 
