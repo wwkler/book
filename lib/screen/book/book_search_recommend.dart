@@ -1,12 +1,16 @@
 // 도서 검색/추천 페이지
+import 'dart:async';
+import 'dart:math';
+
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/screen/book/book_search_result.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
+import 'package:book_project/screen/book/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 class BookSearchRecommend extends StatefulWidget {
-  BookSearchRecommend({Key? key}) : super(key: key);
+  BookSearchRecommend({Key? key, int? randomNum}) : super(key: key);
 
   @override
   State<BookSearchRecommend> createState() => _BookSearchRecommendState();
@@ -20,6 +24,16 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   void initState() {
     print("Book Search Recommend InitState 시작");
     super.initState();
+
+    // 서버로부터 추천과 관련된 분석 내용을 가져온다.
+
+    // 서버로부터 추천 도서를 가져온다.
+  }
+
+  @override
+  void didUpdateWidget(covariant BookSearchRecommend oldWidget) {
+    print("Book Search Recommend didUpdateWidget 시작");
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -78,6 +92,14 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
               // 중간 공백
               const SizedBox(height: 10),
 
+              // StatefulWidget - didUpdageWidget()를 실험하기 위해 임시적으로 쓴 것
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(() => Test());
+                },
+                child: Text("이동"),
+              ),
+
               // 검색어
               AnimSearchBar(
                 width: 300,
@@ -90,7 +112,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                   });
                 },
                 onSubmitted: (String value) {
-                  Get.off(() => BookSearchResult());
+                  Get.off(() => const BookSearchResult());
                 },
               ),
 
@@ -180,7 +202,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
               // 추천 책을 보여주는 공간 1
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Container(
                   color: Colors.purple,
                   width: 400,
@@ -226,7 +248,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
               // 추천 책을 보여주는 공간 2
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Container(
                   color: Colors.purple,
                   width: 400,
@@ -272,7 +294,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
               // 추천 책을 보여주는 공간 3
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(24.0),
                 child: Container(
                   color: Colors.purple,
                   width: 400,

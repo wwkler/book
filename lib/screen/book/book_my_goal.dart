@@ -18,6 +18,16 @@ class _BookMyGoalState extends State<BookMyGoal> {
   @override
   void initState() {
     print("Book My Goal InitState 시작");
+
+    // 서버와 통신
+    // 목표와 관련된 분석 내용을 서버를 통해 가져온다.
+
+    // 읽고 싶은 책을 서버를 통해 가져온다.
+
+    // 읽고 있는 책을 서버를 통해 가져온다.
+
+    // 읽은 책을 서버를 통해 가져온다.
+
     super.initState();
   }
 
@@ -83,24 +93,79 @@ class _BookMyGoalState extends State<BookMyGoal> {
                 child: Row(
                   children: [
                     // 목표 1
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 10.0,
-                        color: const Color.fromARGB(255, 228, 201, 232),
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: const SizedBox(
-                          width: 300,
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              "목표 1 : 2023-04-21 ~ 2023-05-21",
-                              // "목표를 설정해주세요!!",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
+                    GestureDetector(
+                      onTap: () {
+                        // 목표 1과 관련된 dialog를 요약적으로 보여준다.
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text("목표 1"),
+                            content: SizedBox(
+                              width: 100,
+                              height: 150,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 진행 기간
+                                    Text("진행 기간 : 2023-04-21 ~ 2023-05-21"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 진행 도서 분야
+                                    Text("도서 분야 : 국내도서/여행"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 목표 권수
+                                    Text("목표 권수 : 10권"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 진행 권수
+                                    Text("진행 권수 : 5권"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 로고인 페이지로 이동하는 버튼
+                                    Center(
+                                      child: TextButton(
+                                        child: const Text("나가기"),
+                                        onPressed: () {
+                                          // 다이어로그를 삭제한다.
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 10.0,
+                          color: const Color.fromARGB(255, 228, 201, 232),
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: const SizedBox(
+                            width: 300,
+                            height: 40,
+                            child: Center(
+                              child: Text(
+                                "목표 1 : 2023-04-21 ~ 2023-05-21",
+                                // "목표를 설정해주세요!!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
@@ -109,24 +174,79 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     ),
 
                     // 목표 2
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 10.0,
-                        color: const Color.fromARGB(255, 228, 201, 232),
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: const SizedBox(
-                          width: 300,
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              "목표 2 : 2023-05-21 ~ 2023-06-21",
-                              // "목표를 설정해주세요!!",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
+                    GestureDetector(
+                      onTap: () {
+                        // 목표 2와 관련된 dialog를 요약적으로 보여준다.
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text("목표 2"),
+                            content: SizedBox(
+                              width: 100,
+                              height: 150,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 진행 기간
+                                    Text("진행 기간 : 2023-04-21 ~ 2023-05-21"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 진행 도서 분야
+                                    Text("도서 분야 : 국내도서/여행"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 목표 권수
+                                    Text("목표 권수 : 10권"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 진행 권수
+                                    Text("진행 권수 : 5권"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 로고인 페이지로 이동하는 버튼
+                                    Center(
+                                      child: TextButton(
+                                        child: const Text("나가기"),
+                                        onPressed: () {
+                                          // 다이어로그를 삭제한다.
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 10.0,
+                          color: const Color.fromARGB(255, 228, 201, 232),
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: const SizedBox(
+                            width: 300,
+                            height: 40,
+                            child: Center(
+                              child: Text(
+                                "목표 2 : 2023-05-21 ~ 2023-06-21",
+                                // "목표를 설정해주세요!!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
@@ -135,24 +255,79 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     ),
 
                     // 목표 3
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 10.0,
-                        color: const Color.fromARGB(255, 228, 201, 232),
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: const SizedBox(
-                          width: 300,
-                          height: 40,
-                          child: Center(
-                            child: Text(
-                              "목표 3 : 2023-07-21 ~ 2023-08-21",
-                              // "목표를 설정해주세요!!",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
+                    GestureDetector(
+                      onTap: () {
+                        // 목표 3와 관련된 dialog를 요약적으로 보여준다.
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text("목표 3"),
+                            content: SizedBox(
+                              width: 100,
+                              height: 150,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 진행 기간
+                                    Text("진행 기간 : 2023-04-21 ~ 2023-05-21"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 진행 도서 분야
+                                    Text("도서 분야 : 국내도서/여행"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 목표 권수
+                                    Text("목표 권수 : 10권"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 진행 권수
+                                    Text("진행 권수 : 5권"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 20),
+
+                                    // 로고인 페이지로 이동하는 버튼
+                                    Center(
+                                      child: TextButton(
+                                        child: const Text("나가기"),
+                                        onPressed: () {
+                                          // 다이어로그를 삭제한다.
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 10.0,
+                          color: const Color.fromARGB(255, 228, 201, 232),
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: const SizedBox(
+                            width: 300,
+                            height: 40,
+                            child: Center(
+                              child: Text(
+                                "목표 3 : 2023-07-21 ~ 2023-08-21",
+                                // "목표를 설정해주세요!!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
@@ -296,7 +471,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                       vertical: 10,
                                     ),
                                   ),
-                                  child: Text("삭제하기"),
+                                  child: const Text("삭제하기"),
                                 ),
 
                                 // 중간 공백

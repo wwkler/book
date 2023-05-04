@@ -1,7 +1,9 @@
 // 회원가입 하는 페이지 화면
+import 'dart:convert';
 import 'dart:math';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/auth/twillo_api_key.dart';
+import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +11,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:twilio_flutter/twilio_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -38,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isNameState = false;
 
   // age
-  String age = "";
+  int age = -1;
   bool isAgeState = false;
 
   // gender
@@ -46,43 +48,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isGenderState = false;
 
   // category
-  List<String> category = [
-    "국내도서>소설",
-    "국내도서>시/에세이",
-    "국내도서>예술/대중문화",
-    "국내도서>사회과학",
-    "국내도서>역사와 문화",
-    "국내도서>잡지",
-    "국내도서>만화",
-    "국내도서>유아",
-    "국내도서>아동",
-    "국내도서>가정과 생활",
-    "국내도서>청소년",
-    "국내도서>초등학습서",
-    "국내도서>고등학습서",
-    "국내도서>국어/외국어/사전",
-    "국내도서>자연과 과학",
-    "국내도서>경제경영",
-    "국내도서>자기계발",
-    "국내도서>인문",
-    "국내도서>종교/역학",
-    "국내도서>컴퓨터/인터넷",
-    "국내도서>자격서/수험서",
-    "국내도서>취미/레저",
-    "국내도서>전공도서/대학교재",
-    "국내도서>건강/뷰티",
-    "국내도서/여행",
-    "국내도서>중등학습서",
-  ];
+  Map<String, int> category = {
+    "국내도서>소설": 101,
+    "국내도서>시/에세이": 102,
+    "국내도서>예술/대중문화": 103,
+    "국내도서>사회과학": 104,
+    "국내도서>역사와 문화": 105,
+    "국내도서>잡지": 107,
+    "국내도서>만화": 108,
+    "국내도서>유아": 109,
+    "국내도서>아동": 110,
+    "국내도서>가정과 생활": 111,
+    "국내도서>청소년": 112,
+    "국내도서>초등학습서": 113,
+    "국내도서>고등학습서": 114,
+    "국내도서>국어/외국어/사전": 115,
+    "국내도서>자연과 과학": 116,
+    "국내도서>경제경영": 117,
+    "국내도서>자기계발": 118,
+    "국내도서>인문": 119,
+    "국내도서>종교/역학": 120,
+    "국내도서>컴퓨터/인터넷": 122,
+    "국내도서>자격서/수험서": 123,
+    "국내도서>취미/레저": 124,
+    "국내도서>전공도서/대학교재": 125,
+    "국내도서>건강/뷰티": 126,
+    "국내도서/여행": 128,
+    "국내도서>중등학습서": 129,
+  };
   String selectedCategory = "국내도서>소설";
+  int selectedCode = 101;
 
   // 이메일
   String email = "";
   bool isEmailState = false;
 
   // 앱에서 사용자에게 제공하는 인증번호
-  // late TwilioFlutter twilioFlutter;
-  // String session = "";
   EmailOTP myauth = EmailOTP();
 
   // 사용자가 입력해야 하는 인증번호
@@ -92,6 +93,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // isServiceCheck, isPersonInformationCheck
   bool isServiceCheck = false;
   bool isPersonInformationCheck = false;
+
+  // 서버와 통신
+  var dio = Dio();
 
   @override
   void initState() {
@@ -441,14 +445,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       child: TextFormField(
                         autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
+                        onChanged: (String val) {
                           setState(() {
-                            age = val;
+                            age = int.parse(val);
                           });
                         },
-                        onSaved: (val) {
+                        onSaved: (String? val) {
                           setState(() {
-                            age = val!;
+                            age = int.parse(val!);
                           });
                         },
                         // 나이 정규표현식 ^[0-9]+$
@@ -460,6 +464,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           } else if (value.length >= 3) {
                             isAgeState = false;
                             return "숫자로 최소 1자, 최대 2자를 입력해주세요";
+                          } else if (int.parse(value) <= 0) {
+                            return "1 이상 99 이하의 정수를 입력해주세요";
                           } else {
                             isAgeState = true;
                             return null;
@@ -581,14 +587,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
                         value: selectedCategory,
-                        onChanged: (String? value) {
+                        onChanged: (String? key) {
                           setState(() {
-                            selectedCategory = value!;
+                            selectedCategory = key!;
+                            selectedCode = category[key]!;
+                            print(selectedCode);
                           });
                         },
-                        items: category
-                            .map((e) =>
-                                DropdownMenuItem(value: e, child: Text(e)))
+                        items: category.keys
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(
+                                  e.toString(),
+                                ),
+                              ),
+                            )
                             .toList(),
                       ),
                     ),
@@ -845,7 +859,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     // Sign Up 버튼
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isIdState == true &&
                             isPasswordState == true &&
                             isVerifyPasswordState == true &&
@@ -856,15 +870,71 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isEmailVerificationValue == true &&
                             isServiceCheck == true &&
                             isPersonInformationCheck == true) {
-                          print("서버와 통신");
-
                           // 서버와 통신
-                          // 사용자 정보를 서버를 통해 데이터베이스에 저장
+                          // 회원 정보를 데이터베이스에 등록한다.
+                          final response = await dio.post(
+                            'http://192.168.20.55:8080/register',
+                            data: {
+                              // 사용자 고유값(string)
+                              'id': const Uuid().v1(),
+
+                              // 사용자 아이디(string)
+                              'account': id,
+
+                              // 사용자 비밀번호(string)
+                              'password': password,
+
+                              // 이름(String)
+                              // 한글로 저장할 수 없어서 encode한 값으로 서버에 데이터를 전송한다.
+                              'name': base64.encode(utf8.encode(name)),
+
+                              // 나이(int)
+                              'age': age,
+
+                              // 성별(String)
+                              // 한글로 저장할 수 없어서 encode한 값으로 서버에 데이터를 전송한다.
+                              'gender': base64.encode(utf8.encode(gender)),
+
+                               // 선호 도서 장르(int)
+                              'prefer': 100,
+
+                              // 이메일(String)
+                              'email': 'winner23456@naver.com',
+                            },
+                            options: Options(
+                              validateStatus: (_) => true,
+                              contentType: Headers.jsonContentType,
+                              responseType: ResponseType.json,
+                            ),
+                          );
+
+                          // 서버와 통신 성공
+                          if (response.statusCode == 200) {
+                            print("서버와 통신 성공");
+                            print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                            // 회원 가입 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                            Get.off(() => const LoginScreen());
+                          }
+                          // 서버와 통신 실패
+                          else {
+                            print("서버와 통신 실패");
+                            print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                            Get.snackbar(
+                              "서버 통신 실패",
+                              "서버 통신 에러 코드 : ${response.statusCode}",
+                              duration: const Duration(seconds: 5),
+                              snackPosition: SnackPosition.TOP,
+                            );
+                          }
                         } else {
                           Get.snackbar(
-                              "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                              duration: const Duration(seconds: 5),
-                              snackPosition: SnackPosition.TOP);
+                            "이상 메시지",
+                            "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
+                            duration: const Duration(seconds: 5),
+                            snackPosition: SnackPosition.TOP,
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(

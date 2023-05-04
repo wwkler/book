@@ -3,6 +3,7 @@ import 'package:book_project/screen/auth/change_password.dart';
 import 'package:book_project/screen/auth/find_id.dart';
 import 'package:book_project/screen/auth/sign_up.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -16,11 +17,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // id
   String id = "";
   bool isIdState = false;
 
+  // password
   String password = "";
   bool isPasswordState = false;
+
+  // 서버와 통신
+  var dio = Dio();
 
   @override
   void initState() {
@@ -233,18 +239,57 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // 로고인 버튼
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (isIdState == true && isPasswordState == true) {
-                        print("서버와 통신");
-
                         // 서버와 통신
-                        // ID, Password가 존재하는지 확인
+                        // ID, Password가 존재하는지 확인한다.
+                        // final response = await dio.post(
+                        //   'http://(서버를 운영하는 컴퓨터 ip주소):8080/login',
+                        //   data: {
+                        //     // 사용자 아이디(string)
+                        //     'account': id,
+
+                        //     // 사용자 비밀번호(string)
+                        //     'password': password,
+                        //   },
+                        //   options: Options(
+                        //     validateStatus: (_) => true,
+                        //     contentType: Headers.jsonContentType,
+                        //     responseType: ResponseType.json,
+                        //   ),
+                        // );
+
+                        // // 서버와 통신 성공
+                        // if (response.statusCode == 200) {
+                        //   print("서버와 통신 성공");
+                        //   print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                        //   // 회원 정보를 가져와서 user_info.dart에 저장한다.
+
+                        //   // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
+                        //   Get.off(() => BookFluidNavBar());
+                        // }
+                        // // 서버와 통신 실패
+                        // else {
+                        //   print("서버와 통신 실패");
+                        //   print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                        //   Get.snackbar(
+                        //     "서버 통신 실패",
+                        //     "서버 통신 에러 코드 : ${response.statusCode}",
+                        //     duration: const Duration(seconds: 5),
+                        //     snackPosition: SnackPosition.TOP,
+                        //   );
+                        // }
+
                         Get.off(() => BookFluidNavBar());
-                        
                       } else {
-                        Get.snackbar("이상 메시지", "아이디/비밀번호 정규표현식이 적합하지 않음",
-                            duration: const Duration(seconds: 5),
-                            snackPosition: SnackPosition.TOP);
+                        Get.snackbar(
+                          "이상 메시지",
+                          "아이디/비밀번호 정규표현식이 적합하지 않음",
+                          duration: const Duration(seconds: 5),
+                          snackPosition: SnackPosition.TOP,
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(

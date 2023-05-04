@@ -51,8 +51,9 @@ class _BookMyDiaryState extends State<BookMyDiary> {
               child: Text("기다려주세요"),
             ),
           );
-        } else {
-          // 도서 일지 메인 화면
+        }
+        // 도서 일지 메인 화면
+        else {
           return SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,

@@ -1,13 +1,12 @@
 // 아이디를 찾기 위한 화면
 import 'dart:math';
-
 import 'package:book_project/screen/auth/login.dart';
+import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:twilio_flutter/twilio_flutter.dart';
 
 class FindIdScreen extends StatefulWidget {
   const FindIdScreen({Key? key}) : super(key: key);
@@ -24,13 +23,14 @@ class _FindIdScreenState extends State<FindIdScreen> {
   bool isEmailState = false;
 
   // 앱에서 사용자에게 제공하는 인증번호
-  // late TwilioFlutter twilioFlutter;
-  // String session = "";
   EmailOTP myauth = EmailOTP();
 
   // 사용자가 입력해야 하는 인증번호
   String emailVerificationValue = "";
   bool isEmailVerificationValue = false;
+
+  // 서버와 통신
+  var dio = Dio();
 
   @override
   void initState() {
@@ -179,14 +179,6 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           suffixIcon: GestureDetector(
                             onTap: () async {
                               if (isEmailState == true) {
-                                // 앱에서 인증번호를 만들어서 사용자 핸드폰 번호에 전달함
-                                // session = Random().nextInt(99999).toString();
-
-                                // await twilioFlutter.sendSMS(
-                                //   toNumber: "+82$phoneNumber",
-                                //   messageBody: '인증번호는 $session 입니다.',
-                                // );
-
                                 myauth.setConfig(
                                   appEmail: "me@rohitchouhan.com",
                                   appName: "Email OTP",
@@ -314,15 +306,73 @@ class _FindIdScreenState extends State<FindIdScreen> {
 
                     // 아이디 찾기 버튼
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isEmailState == true &&
                             isEmailVerificationValue == true) {
-                          print("서버와 통신");
-
                           // 서버와 통신
-                          // 핸드폰 번호를 통해 사용자의 아이디를 찾는다.
+                          // 이메일을 통해 사용자의 아이디를 찾는다.
+                          final response = await dio.post(
+                            'http://192.168.20.55:8080/register',
+                            data: {
+                              // 이메일(String)
+                              'email': email,
+                            },
+                            options: Options(
+                              validateStatus: (_) => true,
+                              contentType: Headers.jsonContentType,
+                              responseType: ResponseType.json,
+                            ),
+                          );
 
-                          // 서버로부터 아이디를 받으면 다시 LoginScreen으로 이동한다.
+                          // 서버와 통신 성공
+                          if (response.statusCode == 200) {
+                            print("서버와 통신 성공");
+                            print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                            // 아이디를 보여주는 다이어로그
+                            Get.dialog(
+                              AlertDialog(
+                                title: const Text("아이디 찾기"),
+                                content: SizedBox(
+                                  width: 100,
+                                  height: 150,
+                                  child: Column(
+                                    children: [
+                                      // 아이디를 보여주는 문구
+                                      Text("회원님 아이디는\n(서버에서 받아온 id)입니다."),
+
+                                      // 중간 공백
+                                      const SizedBox(height: 50),
+
+                                      // 로고인 페이지로 이동하는 버튼
+                                      TextButton(
+                                        child: const Text("로고인 페이지로 이동"),
+                                        onPressed: () {
+                                          // 아이디를 보여주는 다이어로그를 삭제한다.
+                                          Get.back();
+
+                                          // 로고인 페이지로 라우팅
+                                          Get.off(() => const LoginScreen());
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          // 서버와 통신 실패
+                          else {
+                            print("서버와 통신 실패");
+                            print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                            Get.snackbar(
+                              "서버 통신 실패",
+                              "서버 통신 에러 코드 : ${response.statusCode}",
+                              duration: const Duration(seconds: 5),
+                              snackPosition: SnackPosition.TOP,
+                            );
+                          }
                         } else {
                           Get.snackbar(
                               "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",

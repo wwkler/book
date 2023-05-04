@@ -1,6 +1,7 @@
 // 회원가입 하는 페이지 화면
 import 'dart:math';
 import 'package:book_project/screen/auth/login.dart';
+import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,8 +30,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool isEmailState = false;
 
   // 앱에서 사용자에게 제공하는 인증번호
-  // late TwilioFlutter twilioFlutter;
-  // String session = "";
   EmailOTP myauth = EmailOTP();
 
   // 사용자가 입력해야 하는 인증번호
@@ -44,6 +43,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   // 새로운 password 확인
   String verifyPassword = "";
   bool isVerifyPasswordState = false;
+
+  // 서버와 통신
+  var dio = Dio();
 
   @override
   void initState() {
@@ -515,16 +517,41 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
                     // 비밀번호 변경 버튼
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isIdState == true &&
                             isEmailState == true &&
                             isEmailVerificationValue == true &&
                             isPasswordState == true &&
                             isVerifyPasswordState == true) {
-                          print("서버와 통신");
-
                           // 서버와 통신
-                          // 비밀번호 변경해서 데이터베이스에 업데이트한다.
+                          // 사용자의 비밀번호를 변경한다.
+                          final response = await dio.post(
+                            'http://192.168.20.55:8080/register',
+                            data: {
+                              // 사용자 아이디(string)
+                              'account': id,
+
+                              // 이메일(String)
+                              'email': email,
+
+                              // 새로운 비밀번호(string)
+                              'password': password,
+                            },
+                            options: Options(
+                              validateStatus: (_) => true,
+                              contentType: Headers.jsonContentType,
+                              responseType: ResponseType.json,
+                            ),
+                          );
+
+                          // 서버와 통신 성공
+                          if (response.statusCode == 200) {
+                            print("서버와 통신 성공");
+                            print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                            // 비밀번호 변경 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                            Get.off(() => const LoginScreen());
+                          }
                         } else {
                           Get.snackbar(
                               "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",

@@ -2,11 +2,12 @@
 import 'dart:ui' as ui;
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BookSearchResult extends StatefulWidget {
-  BookSearchResult({Key? key}) : super(key: key);
+  const BookSearchResult({Key? key}) : super(key: key);
 
   @override
   State<BookSearchResult> createState() => _BookSearchResultState();
@@ -17,7 +18,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
   TextEditingController searchTextController = TextEditingController();
 
   // 검색어를 요청해서 서버로부터 받은 데이터가 존재하는지 안하는지 판별하는 변수
-  bool isBookData = false;
+  bool isBookData = true;
 
   // 검색어를 통한 결과값이 존재하면, UI으로 보여주기 위한 변수, 배열
   final double _borderRadius = 24;
@@ -39,7 +40,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
     print("Book Search Result InitState 시작");
 
     // 서버와 통신
-    // 검색어를 통한 결과가 있는지 확인한다.
+    // 도서 검색어를 통한 결과가 있는지 확인한다.
+
     super.initState();
   }
 
@@ -150,125 +152,139 @@ class _BookSearchResultState extends State<BookSearchResult> {
                             return Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            _borderRadius),
-                                        gradient: LinearGradient(
-                                            colors: [
-                                              items[index].startColor,
-                                              items[index].endColor
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: items[index].endColor,
-                                            blurRadius: 12,
-                                            offset: const Offset(0, 6),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      bottom: 0,
-                                      top: 0,
-                                      child: CustomPaint(
-                                        size: const Size(100, 150),
-                                        painter: CustomCardShapePainter(
-                                            _borderRadius,
-                                            items[index].startColor,
-                                            items[index].endColor),
-                                      ),
-                                    ),
-                                    Positioned.fill(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Image.asset(
-                                              'assets/imgs/icon.png',
-                                              height: 64,
-                                              width: 64,
+                                child: GestureDetector(
+                                  onTap: (){
+                                    // 도서 상세 페이지로 라우팅
+                                    Get.off(() => BookShowPreview());
+
+                                  },
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              _borderRadius),
+                                          gradient: LinearGradient(
+                                              colors: [
+                                                items[index].startColor,
+                                                items[index].endColor
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: items[index].endColor,
+                                              blurRadius: 12,
+                                              offset: const Offset(0, 6),
                                             ),
-                                            flex: 2,
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  items[index].name,
-                                                  style: const TextStyle(
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        bottom: 0,
+                                        top: 0,
+                                        child: CustomPaint(
+                                          size: const Size(100, 150),
+                                          painter: CustomCardShapePainter(
+                                              _borderRadius,
+                                              items[index].startColor,
+                                              items[index].endColor),
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: Row(
+                                          children: <Widget>[
+                                            // 도서 이미지
+                                            Expanded(
+                                              child: Image.asset(
+                                                'assets/imgs/icon.png',
+                                                height: 64,
+                                                width: 64,
+                                              ),
+                                              flex: 2,
+                                            ),
+                                            // 도서 정보들
+                                            Expanded(
+                                              flex: 4,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  // 도서 정보
+                                                  Text(
+                                                    items[index].name,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Avenir',
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  // 도서 정보
+                                                  Text(
+                                                    items[index].category,
+                                                    style: const TextStyle(
                                                       color: Colors.white,
                                                       fontFamily: 'Avenir',
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                                Text(
-                                                  items[index].category,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Avenir',
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 16),
-                                                Row(
-                                                  children: <Widget>[
-                                                    const Icon(
-                                                      Icons.location_on,
-                                                      color: Colors.white,
-                                                      size: 16,
-                                                    ),
-                                                    const SizedBox(
-                                                      width: 8,
-                                                    ),
-                                                    Flexible(
-                                                      child: Text(
-                                                        items[index].location,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontFamily: 'Avenir',
+                                                  const SizedBox(height: 16),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      // 아이콘
+                                                      const Icon(
+                                                        Icons.location_on,
+                                                        color: Colors.white,
+                                                        size: 16,
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 8,
+                                                      ),
+                                                      // 도서 정보
+                                                      Flexible(
+                                                        child: Text(
+                                                          items[index].location,
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: 'Avenir',
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                Text(
-                                                  items[index]
-                                                      .rating
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontFamily: 'Avenir',
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ),
-                                                RatingBar(
-                                                    rating:
-                                                        items[index].rating),
-                                              ],
+                                            // 별점
+                                            Expanded(
+                                              flex: 2,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Text(
+                                                    items[index]
+                                                        .rating
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Avenir',
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                  ),
+                                                  RatingBar(
+                                                      rating:
+                                                          items[index].rating),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -277,12 +293,12 @@ class _BookSearchResultState extends State<BookSearchResult> {
                       )
                     : SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        height: 300,
+                        height: 400,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             // 중간 공백
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 100),
 
                             // 데이터가 존재하지 않는 아이콘
                             Image.asset(
