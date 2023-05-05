@@ -45,4 +45,3 @@ app.*.map.json
 
 
 # 특정 파일 업로드 제외
-lib/screen/auth/twillo_api_key.dart

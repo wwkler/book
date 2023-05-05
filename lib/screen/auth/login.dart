@@ -134,14 +134,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             validator: (value) {
                               // 아이디 정규식: ^[0-9a-z]+$; (숫자 또는 영문 또는 숫자와 영문 조합 아이디 생성 가능)
-                              // 아이디 길이는 8자리 이상 12자리 이하
+                              // 아이디 길이는 6자리 이상 12자리 이하
                               if (!RegExp(r"^[0-9a-z]+$").hasMatch(value!)) {
                                 isIdState = false;
                                 return "숫자, 영문만 입력해주세요";
-                              } else if (value.length < 8 ||
+                              } else if (value.length < 6 ||
                                   value.length > 13) {
                                 isIdState = false;
-                                return "8자리 이상 12자리 이하를 입력해주세요";
+                                return "6자리 이상 12자리 이하를 입력해주세요";
                               } else {
                                 isIdState = true;
                                 return null;
@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
                                   .hasMatch(value!)) {
                                 isPasswordState = false;
-                                return "숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여\n8자리 입력해주세요";
+                                return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
                               } else {
                                 isPasswordState = true;
                                 return null;
@@ -240,57 +240,58 @@ class _LoginScreenState extends State<LoginScreen> {
                   // 로고인 버튼
                   ElevatedButton(
                     onPressed: () async {
-                      if (isIdState == true && isPasswordState == true) {
-                        // 서버와 통신
-                        // ID, Password가 존재하는지 확인한다.
-                        // final response = await dio.post(
-                        //   'http://(서버를 운영하는 컴퓨터 ip주소):8080/login',
-                        //   data: {
-                        //     // 사용자 아이디(string)
-                        //     'account': id,
+                      Get.off(() => BookFluidNavBar());
 
-                        //     // 사용자 비밀번호(string)
-                        //     'password': password,
-                        //   },
-                        //   options: Options(
-                        //     validateStatus: (_) => true,
-                        //     contentType: Headers.jsonContentType,
-                        //     responseType: ResponseType.json,
-                        //   ),
-                        // );
+                      // if (isIdState == true && isPasswordState == true) {
+                      //   // 서버와 통신
+                      //   // ID, Password가 존재하는지 확인한다.
+                      //   final response = await dio.post(
+                      //     'http://49.161.110.41:8080/login',
+                      //     data: {
+                      //       // 사용자 아이디(string)
+                      //       'account': id,
 
-                        // // 서버와 통신 성공
-                        // if (response.statusCode == 200) {
-                        //   print("서버와 통신 성공");
-                        //   print("서버에서 제공해주는 데이터 : ${response.data}");
+                      //       // 사용자 비밀번호(string)
+                      //       'password': password,
+                      //     },
+                      //     options: Options(
+                      //       validateStatus: (_) => true,
+                      //       contentType: Headers.jsonContentType,
+                      //       responseType: ResponseType.json,
+                      //     ),
+                      //   );
 
-                        //   // 회원 정보를 가져와서 user_info.dart에 저장한다.
+                      //   // 서버와 통신 성공
+                      //   if (response.statusCode == 200) {
+                      //     print("서버와 통신 성공");
+                      //     print("서버에서 제공해주는 데이터 : ${response.data}");
 
-                        //   // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
-                        //   Get.off(() => BookFluidNavBar());
-                        // }
-                        // // 서버와 통신 실패
-                        // else {
-                        //   print("서버와 통신 실패");
-                        //   print("서버 통신 에러 코드 : ${response.statusCode}");
+                      //     // 회원 정보를 가져와서 user_info.dart에 저장한다.
 
-                        //   Get.snackbar(
-                        //     "서버 통신 실패",
-                        //     "서버 통신 에러 코드 : ${response.statusCode}",
-                        //     duration: const Duration(seconds: 5),
-                        //     snackPosition: SnackPosition.TOP,
-                        //   );
-                        // }
+                      //     // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
+                      //     Get.off(() => BookFluidNavBar());
+                      //   }
+                      //   // 서버와 통신 실패
+                      //   else {
+                      //     print("서버와 통신 실패");
+                      //     print("서버 통신 에러 코드 : ${response.statusCode}");
 
-                        Get.off(() => BookFluidNavBar());
-                      } else {
-                        Get.snackbar(
-                          "이상 메시지",
-                          "아이디/비밀번호 정규표현식이 적합하지 않음",
-                          duration: const Duration(seconds: 5),
-                          snackPosition: SnackPosition.TOP,
-                        );
-                      }
+                      //     Get.snackbar(
+                      //       "서버 통신 실패",
+                      //       "서버 통신 에러 코드 : ${response.statusCode}",
+                      //       duration: const Duration(seconds: 5),
+                      //       snackPosition: SnackPosition.TOP,
+                      //     );
+                      //   }
+
+                      // } else {
+                      //   Get.snackbar(
+                      //     "이상 메시지",
+                      //     "아이디/비밀번호 정규표현식이 적합하지 않음",
+                      //     duration: const Duration(seconds: 5),
+                      //     snackPosition: SnackPosition.TOP,
+                      //   );
+                      // }
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

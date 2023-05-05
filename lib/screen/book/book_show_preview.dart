@@ -9,6 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BookShowPreview extends StatefulWidget {
+  // 하단에 버튼을 유동적으로 배치해야 한다.
+
+  // case 1. 사용자가 읽고 싶은 도서 목록에 있는 도서를 클릭해서 온 경우 -> 읽고 싶은 도서에서 삭제하기, 도서 읽기 버튼을 제공해야 한다.
+
+  // case 2. 사용자가 읽고 있는 도서 목록에 있는 도서를 클릭해서 온 경우 -> 읽고 있는 도서임을 알리고 진행도만 알려준다.
+
+  // case 3. 사용자가 읽은 도서 목록에 있는 도서를 클릭해서 온 경우 -> 읽은 도서였음을 알린다.
+
+  // case 4. 사용자가 검색을 통해 도서를 클릭해서 온 경우, 추천 도서를 클릭해서 온 경우, 리뷰에 대한 도서를 클릭해서 온 경우
+  //  -> 도서가 읽고 싶은 책에 있는 경우 -> case 1 처럼 읽고 싶은 도서에서 삭제하기, 도서 읽기 버튼을 제공해야 한다.
+  // -> 해당 도서가 읽고 있는 책에 있는 경우 -> case 2 처럼 읽고 있는 도서임을 알리고 진행도만 알려준다.
+  // -> 해당 도서가 읽은 책에 있는 경우 -> case 3 처럼 읽은 도서이었음을 알린다.
+  // -> 아무 것도 아닌 경우 -> 찜하기, 도서 읽기 버튼을 제공한다.
+
   BookShowPreview({Key? key}) : super(key: key);
 
   @override
@@ -232,17 +246,17 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                 // 중간 공백
                 const SizedBox(height: 40),
 
-                // 목표 도서 설정, 찜하기 버튼
+                // 찜하기, 도서 읽기 버튼
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // 목표 도서 설정 버튼
+                    // 찜하기 버튼
                     ElevatedButton(
                       onPressed: () {
                         // 다이어로그
                         Get.dialog(
                           AlertDialog(
-                            title: const Text("읽고 싶은 책 추가"),
+                            title: const Text("읽고 싶은 도서 추가"),
                             content: SizedBox(
                               width: 100,
                               height: 150,
@@ -302,7 +316,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         ),
                       ),
                       child: const Text(
-                        "목표 도서 설정",
+                        "찜하기",
                         style: TextStyle(fontSize: 12),
                       ),
                     ),
@@ -310,11 +324,60 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                     // 중간 공백
                     const SizedBox(width: 20),
 
-                    // 찜하기 버튼
+                    // 도서 읽기 버튼
                     ElevatedButton(
                       onPressed: () {
-                        // 서버와 통신
-                        // 사용자의 읽고 싶은 책에 도서 추가
+                        // 다이어로그
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text("읽고 있는 도서 추가"),
+                            content: SizedBox(
+                              width: 100,
+                              height: 150,
+                              child: Column(
+                                children: [
+                                  const Text("읽고 있는 도서로 추가하시겠습니까?"),
+
+                                  // 중간 공백
+                                  const SizedBox(height: 50),
+
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      // 예
+                                      TextButton(
+                                        child: const Text("추가"),
+                                        onPressed: () async {
+                                          // 서버와 통신
+                                          // 사용자의 읽고 있는 책에 도서 추가
+
+                                          //  다이어로그를 삭제한다.
+                                          Get.back();
+
+                                          // 도서 검색, 추천 페이지로 이동
+                                          Get.off(() => BookFluidNavBar());
+                                        },
+                                      ),
+
+                                      // 아니오
+                                      TextButton(
+                                        child: const Text("추가하지 않음"),
+                                        onPressed: () {
+                                          // 서버와 통신
+                                          // 읽고 싶은 책 추가
+
+                                          // 다이어로그를 삭제한다.
+                                          Get.back();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -327,7 +390,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         ),
                       ),
                       child: const Text(
-                        "찜하기",
+                        "도서 읽기",
                         style: TextStyle(fontSize: 12),
                       ),
                     ),
@@ -350,13 +413,13 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             backgroundColor: Colors.purple,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 100,
                               vertical: 20,
                             ),
                           ),
                           child: const Text(
-                            "정보 수정하기",
+                            "정보 수정하기 (관리자 권한)",
                             style: TextStyle(fontSize: 12),
                           ),
                         ),

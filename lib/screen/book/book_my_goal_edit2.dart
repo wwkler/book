@@ -15,35 +15,36 @@ class BookMyGoalEdit2 extends StatefulWidget {
 
 class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
   // 목표 선택할 도서 분야에 대한 변수
-  List<String> category = [
-    "국내도서>소설",
-    "국내도서>시/에세이",
-    "국내도서>예술/대중문화",
-    "국내도서>사회과학",
-    "국내도서>역사와 문화",
-    "국내도서>잡지",
-    "국내도서>만화",
-    "국내도서>유아",
-    "국내도서>아동",
-    "국내도서>가정과 생활",
-    "국내도서>청소년",
-    "국내도서>초등학습서",
-    "국내도서>고등학습서",
-    "국내도서>국어/외국어/사전",
-    "국내도서>자연과 과학",
-    "국내도서>경제경영",
-    "국내도서>자기계발",
-    "국내도서>인문",
-    "국내도서>종교/역학",
-    "국내도서>컴퓨터/인터넷",
-    "국내도서>자격서/수험서",
-    "국내도서>취미/레저",
-    "국내도서>전공도서/대학교재",
-    "국내도서>건강/뷰티",
-    "국내도서/여행",
-    "국내도서>중등학습서",
-  ];
+  Map<String, int> category = {
+    "국내도서>소설": 101,
+    "국내도서>시/에세이": 102,
+    "국내도서>예술/대중문화": 103,
+    "국내도서>사회과학": 104,
+    "국내도서>역사와 문화": 105,
+    "국내도서>잡지": 107,
+    "국내도서>만화": 108,
+    "국내도서>유아": 109,
+    "국내도서>아동": 110,
+    "국내도서>가정과 생활": 111,
+    "국내도서>청소년": 112,
+    "국내도서>초등학습서": 113,
+    "국내도서>고등학습서": 114,
+    "국내도서>국어/외국어/사전": 115,
+    "국내도서>자연과 과학": 116,
+    "국내도서>경제경영": 117,
+    "국내도서>자기계발": 118,
+    "국내도서>인문": 119,
+    "국내도서>종교/역학": 120,
+    "국내도서>컴퓨터/인터넷": 122,
+    "국내도서>자격서/수험서": 123,
+    "국내도서>취미/레저": 124,
+    "국내도서>전공도서/대학교재": 125,
+    "국내도서>건강/뷰티": 126,
+    "국내도서/여행": 128,
+    "국내도서>중등학습서": 129,
+  };
   String selectedCategory = "국내도서>소설";
+  int selectedCode = 101;
 
   // 목표 도서 권수에 대한 변수
   final readBooksCountController = TextEditingController();
@@ -249,14 +250,20 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                         labelStyle: TextStyle(color: Colors.purple),
                       ),
                       value: selectedCategory,
-                      onChanged: (String? value) {
+                      onChanged: (String? key) {
                         setState(() {
-                          selectedCategory = value!;
+                          selectedCategory = key!;
+                          selectedCode = category[key]!;
+                          print(selectedCode);
                         });
                       },
-                      items: category
+                      items: category.keys
                           .map(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)))
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e),
+                            ),
+                          )
                           .toList(),
                     ),
                   ),

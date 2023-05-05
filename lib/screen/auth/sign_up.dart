@@ -2,7 +2,6 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:book_project/screen/auth/login.dart';
-import 'package:book_project/screen/auth/twillo_api_key.dart';
 import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
@@ -214,13 +213,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         validator: (value) {
                           // 아이디 정규식: ^[0-9a-z]+$; (숫자 또는 영문 또는 숫자와 영문 조합 아이디 생성 가능)
-                          // 아이디 길이는 8자리 이상 12자리 이하
+                          // 아이디 길이는 6자리 이상 12자리 이하
                           if (!RegExp(r"^[0-9a-z]+$").hasMatch(value!)) {
                             isIdState = false;
                             return "숫자, 영문만 입력해주세요";
-                          } else if (value.length < 8 || value.length > 13) {
+                          } else if (value.length < 6 || value.length > 13) {
                             isIdState = false;
-                            return "8자리 이상 12자리 이하를 입력해주세요";
+                            return "6자리 이상 12자리 이하를 입력해주세요";
                           } else {
                             isIdState = true;
                             return null;
@@ -278,7 +277,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
                               .hasMatch(value!)) {
                             isPasswordState = false;
-                            return "숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여\n8자리 입력해주세요";
+                            return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
                           } else {
                             isPasswordState = true;
                             return null;
@@ -598,9 +597,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             .map(
                               (e) => DropdownMenuItem(
                                 value: e,
-                                child: Text(
-                                  e.toString(),
-                                ),
+                                child: Text(e),
                               ),
                             )
                             .toList(),
@@ -873,11 +870,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           // 서버와 통신
                           // 회원 정보를 데이터베이스에 등록한다.
                           final response = await dio.post(
-                            'http://192.168.20.55:8080/register',
+                            'http://49.161.110.41:8080/register',
                             data: {
-                              // 사용자 고유값(string)
-                              'id': const Uuid().v1(),
-
                               // 사용자 아이디(string)
                               'account': id,
 
@@ -885,21 +879,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               'password': password,
 
                               // 이름(String)
-                              // 한글로 저장할 수 없어서 encode한 값으로 서버에 데이터를 전송한다.
-                              'name': base64.encode(utf8.encode(name)),
+                              'name': name,
 
                               // 나이(int)
                               'age': age,
 
                               // 성별(String)
-                              // 한글로 저장할 수 없어서 encode한 값으로 서버에 데이터를 전송한다.
-                              'gender': base64.encode(utf8.encode(gender)),
+                              'gender': gender,
 
-                               // 선호 도서 장르(int)
-                              'prefer': 100,
+                              // 선호 도서 장르(int)
+                              'prefer': selectedCode,
 
                               // 이메일(String)
-                              'email': 'winner23456@naver.com',
+                              'email': email,
                             },
                             options: Options(
                               validateStatus: (_) => true,

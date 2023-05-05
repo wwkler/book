@@ -1,5 +1,6 @@
 // 도서 나만의 목표 페이지
 import 'package:book_project/screen/book/book_my_goal_edit1.dart';
+import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
@@ -14,6 +15,12 @@ class BookMyGoal extends StatefulWidget {
 class _BookMyGoalState extends State<BookMyGoal> {
   // 읽고 있는 책의 진행도를 설정하기 위한 변수
   final editPageController = TextEditingController();
+
+  // 읽고 싶은 도서 (배열)
+
+  // 읽고 있는 도서 (배열)
+
+  // 읽은 도서 (배열)
 
   @override
   void initState() {
@@ -57,6 +64,37 @@ class _BookMyGoalState extends State<BookMyGoal> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 중간 공백
+              const SizedBox(height: 30),
+
+              // 목표 확인, 사용사 서재 Text
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Card(
+                    elevation: 10.0,
+                    color: const Color.fromARGB(255, 228, 201, 232),
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: const SizedBox(
+                      width: 250,
+                      height: 40,
+                      child: Center(
+                        child: Text(
+                          "목표 확인 및 사용자 서재",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
               // 중간 공백
               const SizedBox(height: 25),
 
@@ -426,7 +464,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
               // 중간 공백
               const SizedBox(height: 30),
 
-              // 읽고 싶은 책
+              // 읽고 싶은 도서
               TapToExpand(
                 color: Colors.purple,
                 content: Center(
@@ -436,71 +474,80 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: 5,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 10.0,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Column(
-                          children: [
-                            // 도서 이미지
-                            Image.asset("assets/imgs/icon.png"),
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          // 도서 상세 페이지로 라우팅
+                          // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 싶은 도서임을 알려야 한다.
+                          Get.off(() => BookShowPreview());
+                        },
+                        child: Card(
+                          elevation: 10.0,
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Column(
+                            children: [
+                              // 도서 이미지
+                              Image.asset("assets/imgs/icon.png"),
 
-                            // 도서 제목
-                            Text("도서입니다."),
+                              // 도서 제목
+                              Text("도서입니다."),
 
-                            // 중간 공백
-                            const SizedBox(height: 10),
+                              // 중간 공백
+                              const SizedBox(height: 10),
 
-                            Row(
-                              children: [
-                                // 읽고 싶은 책 삭제하기
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // 클라이언트에서 해당 책을 삭제하고 서버와 통신
-                                    // 서버는 읽고 싶은 책에서 해당 책을 삭제한다.
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                              Row(
+                                children: [
+                                  // 읽고 싶은 도서 삭제하기
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // 클라이언트에서 해당 책을 삭제하고 서버와 통신
+                                      // 서버는 읽고 싶은 책에서 해당 책을 삭제한다.
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      backgroundColor: Colors.purple,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 10,
+                                      ),
                                     ),
-                                    backgroundColor: Colors.purple,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 10,
-                                    ),
+                                    child: const Text("삭제하기"),
                                   ),
-                                  child: const Text("삭제하기"),
-                                ),
 
-                                // 중간 공백
-                                const SizedBox(width: 10),
+                                  // 중간 공백
+                                  const SizedBox(width: 10),
 
-                                // 책 읽기
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // 클라이언트에서 해당 책을 삭제하고 읽고 있는 책으로 등록한다.
+                                  // 책 읽기
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      // 클라이언트에서 해당 책을 삭제하고 읽고 있는 책으로 등록한다.
 
-                                    // 서버와 통신
-                                    // 서버는 읽고 싶은 책에서 해당 책을 삭제한다.
-                                    // 서버는 읽고 있는 책으로 해당 책을 등록한다.
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                      // 서버와 통신
+                                      // 서버는 읽고 싶은 책에서 해당 책을 삭제한다.
+                                      // 서버는 읽고 있는 책으로 해당 책을 등록한다.
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      backgroundColor: Colors.purple,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 10,
+                                      ),
                                     ),
-                                    backgroundColor: Colors.purple,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 10,
-                                    ),
+                                    child: Text("도서 읽기"),
                                   ),
-                                  child: Text("책 읽기"),
-                                ),
-                              ],
-                            )
-                          ],
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       separatorBuilder: (context, index) => const SizedBox(
@@ -510,7 +557,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                   ),
                 ),
                 title: const Text(
-                  "읽고 싶은 책",
+                  "읽고 싶은 도서",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -526,7 +573,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
               // 중간 공백
               const SizedBox(height: 30),
 
-              // 읽고 있는 책
+              // 읽고 있는 도서
               TapToExpand(
                 color: Colors.purple,
                 content: Center(
@@ -536,102 +583,109 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: 5,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 10.0,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Column(
-                          children: [
-                            // 도서 이미지
-                            Image.asset("assets/imgs/icon.png"),
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          // 도서 상세 페이지로 라우팅
+                          // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 있는 도서을 알려야 한다.
+                          Get.off(() => BookShowPreview());
+                        },
+                        child: Card(
+                          elevation: 10.0,
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Column(
+                            children: [
+                              // 도서 이미지
+                              Image.asset("assets/imgs/icon.png"),
 
-                            const Text("2023-4-21 읽기 시작"),
+                              const Text("2023-4-21 읽기 시작"),
 
-                            // 중간 공백
-                            const SizedBox(height: 10),
+                              // 중간 공백
+                              const SizedBox(height: 10),
 
-                            // 도서 제목
-                            const Text("도서입니다."),
+                              // 도서 제목
+                              const Text("도서입니다."),
 
-                            // 중간 공백
-                            const SizedBox(height: 10),
+                              // 중간 공백
+                              const SizedBox(height: 10),
 
-                            // 진행도 확인
-                            GestureDetector(
-                              onTap: () {
-                                Get.dialog(
-                                  AlertDialog(
-                                    title: const Text('진행도 수정'),
-                                    content: SizedBox(
-                                      width: 100,
-                                      height: 100,
-                                      child: Column(
-                                        children: [
-                                          // Text
-                                          const Text("진행도 수정할 페이지를 입력"),
+                              // 진행도 확인
+                              GestureDetector(
+                                onTap: () {
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: const Text('진행도 수정'),
+                                      content: SizedBox(
+                                        width: 100,
+                                        height: 100,
+                                        child: Column(
+                                          children: [
+                                            // Text
+                                            const Text("진행도 수정할 페이지를 입력"),
 
-                                          // 중간 공백
-                                          const SizedBox(height: 10),
+                                            // 중간 공백
+                                            const SizedBox(height: 10),
 
-                                          // TextField
-                                          SizedBox(
-                                            width: 50,
-                                            height: 50,
-                                            child: TextField(
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              controller: editPageController,
-                                            ),
-                                          )
-                                        ],
+                                            // TextField
+                                            SizedBox(
+                                              width: 50,
+                                              height: 50,
+                                              child: TextField(
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                controller: editPageController,
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("적용하기"),
+                                          onPressed: () {
+                                            print(int.parse(
+                                                editPageController.text));
+
+                                            // 클라이언트에 읽은 페이지를 업데이트하고
+                                            // 서버와 통신
+                                            // 서버는 해당 책에 대한 읽은 페이지를 업데이트한다.
+
+                                            // 만약 클라이언트에서 해당 책에 대한 최종 페이지를 입력했다면
+                                            // 클라이언트는 읽고 있는 책에서 해당 책을 삭제하고 읽은 책으로 등록한다.
+                                            // 서버와 통신
+                                            // 서버는 읽고 있는 책에서 해당 책을 삭제하고 읽은 책으로 등록한다.
+                                            editPageController.text = "";
+                                            Get.back();
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                    actions: [
-                                      TextButton(
-                                        child: const Text("적용하기"),
-                                        onPressed: () {
-                                          print(int.parse(
-                                              editPageController.text));
-
-                                          // 클라이언트에 읽은 페이지를 업데이트하고
-                                          // 서버와 통신
-                                          // 서버는 해당 책에 대한 읽은 페이지를 업데이트한다.
-
-                                          // 만약 클라이언트에서 해당 책에 대한 최종 페이지를 입력했다면
-                                          // 클라이언트는 읽고 있는 책에서 해당 책을 삭제하고 읽은 책으로 등록한다.
-                                          // 서버와 통신
-                                          // 서버는 읽고 있는 책에서 해당 책을 삭제하고 읽은 책으로 등록한다.
-                                          editPageController.text = "";
-                                          Get.back();
-                                        },
-                                      ),
-                                    ],
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 10.0,
+                                  shadowColor: Colors.grey.withOpacity(0.5),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
                                   ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 10.0,
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 30,
-                                  child: Center(
-                                    child: Text(
-                                      "100/500",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
+                                  child: const SizedBox(
+                                    width: 100,
+                                    height: 30,
+                                    child: Center(
+                                      child: Text(
+                                        "100/500",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       separatorBuilder: (context, index) => const SizedBox(
@@ -641,7 +695,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                   ),
                 ),
                 title: const Text(
-                  "읽고 있는 책",
+                  "읽고 있는 도서",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -657,7 +711,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
               // 중간 공백
               const SizedBox(height: 30),
 
-              // 읽은 책
+              // 읽은 도서
               TapToExpand(
                 color: Colors.purple,
                 content: Center(
@@ -667,28 +721,35 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: 5,
-                      itemBuilder: (context, index) => Card(
-                        elevation: 10.0,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Column(
-                          children: [
-                            // 도서 이미지
-                            Image.asset("assets/imgs/icon.png"),
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          // 도서 상세 페이지로 라우팅
+                          // 해당 도서 데이터를 arguments로 전달하며 이것이 읽은 도서을 알려야 한다.
+                          Get.off(() => BookShowPreview());
+                        },
+                        child: Card(
+                          elevation: 10.0,
+                          shadowColor: Colors.grey.withOpacity(0.5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Column(
+                            children: [
+                              // 도서 이미지
+                              Image.asset("assets/imgs/icon.png"),
 
-                            Text("2023-4-21 읽기 완료"),
+                              Text("2023-4-21 읽기 완료"),
 
-                            // 중간 공백
-                            const SizedBox(height: 10),
+                              // 중간 공백
+                              const SizedBox(height: 10),
 
-                            // 도서 제목
-                            Text("도서입니다."),
+                              // 도서 제목
+                              Text("도서입니다."),
 
-                            // 중간 공백
-                            const SizedBox(height: 10),
-                          ],
+                              // 중간 공백
+                              const SizedBox(height: 10),
+                            ],
+                          ),
                         ),
                       ),
                       separatorBuilder: (context, index) => const SizedBox(
@@ -698,7 +759,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                   ),
                 ),
                 title: const Text(
-                  "읽은 책",
+                  "읽은 도서",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,

@@ -22,7 +22,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
   };
 
   // 현재 한국 시간 변수
-  DateTime? currentTime = null;
+  DateTime? currentTime;
 
   @override
   void initState() {

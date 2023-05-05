@@ -1,5 +1,6 @@
 // 환경 설정 페이지
 import 'package:book_project/controller/user_info.dart';
+import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/my_page.dart';
 import 'package:book_project/screen/book/report_history.dart';
@@ -181,7 +182,18 @@ class _ConfigurationState extends State<Configuration> {
             // 로그아웃
             GestureDetector(
               onTap: () {
+                // user_info.dart에 있는 정보 초기화
+                UserInfo.identity = null;
+                UserInfo.userValue = null;
+                UserInfo.id = null;
+                UserInfo.password = null;
+                UserInfo.name = null;
+                UserInfo.age = null;
+                UserInfo.selectedCode = null;
+                UserInfo.email = null;
+
                 // 로그아웃
+                Get.off(() => const LoginScreen());
               },
               child: Card(
                 elevation: 10.0,

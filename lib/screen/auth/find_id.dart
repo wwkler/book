@@ -312,7 +312,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           // 서버와 통신
                           // 이메일을 통해 사용자의 아이디를 찾는다.
                           final response = await dio.post(
-                            'http://192.168.20.55:8080/register',
+                            'http://49.161.110.41:8080/register',
                             data: {
                               // 이메일(String)
                               'email': email,

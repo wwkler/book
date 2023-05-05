@@ -31,12 +31,6 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   }
 
   @override
-  void didUpdateWidget(covariant BookSearchRecommend oldWidget) {
-    print("Book Search Recommend didUpdateWidget 시작");
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
   void dispose() {
     print("Book Search Recommend state 종료");
     super.dispose();
@@ -92,13 +86,13 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
               // 중간 공백
               const SizedBox(height: 10),
 
-              // StatefulWidget - didUpdageWidget()를 실험하기 위해 임시적으로 쓴 것
-              ElevatedButton(
-                onPressed: () {
-                  Get.to(() => Test());
-                },
-                child: Text("이동"),
-              ),
+              // // StatefulWidget - didUpdageWidget()를 실험하기 위해 임시적으로 쓴 것
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Get.to(() => Test());
+              //   },
+              //   child: Text("이동"),
+              // ),
 
               // 검색어
               AnimSearchBar(
@@ -107,12 +101,23 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                 helpText: "책 또는 저자를 입력",
                 suffixIcon: const Icon(Icons.arrow_back),
                 onSuffixTap: () {
-                  setState(() {
-                    searchTextController.clear();
-                  });
+                  searchTextController.clear();
                 },
                 onSubmitted: (String value) {
-                  Get.off(() => const BookSearchResult());
+                  // BookSearchResult로 라우팅하면서 검색어 데이터도 함께 보낸다
+                  if (searchTextController.text.isNotEmpty) {
+                    Get.off(
+                      () => const BookSearchResult(),
+                      arguments: searchTextController.text,
+                    );
+                  } else {
+                    Get.snackbar(
+                      "이상 메시지",
+                      "책 또는 저자를 입력해주세요",
+                      duration: const Duration(seconds: 5),
+                      snackPosition: SnackPosition.TOP,
+                    );
+                  }
                 },
               ),
 
