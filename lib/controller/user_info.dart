@@ -12,7 +12,7 @@ class UserInfo {
   static String? id;
 
   // 사용자 비밀번호
-  static String? password;
+  // static String? password;
 
   // 사용자 이름
   static String? name;

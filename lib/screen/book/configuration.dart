@@ -186,7 +186,7 @@ class _ConfigurationState extends State<Configuration> {
                 UserInfo.identity = null;
                 UserInfo.userValue = null;
                 UserInfo.id = null;
-                UserInfo.password = null;
+                // UserInfo.password = null;
                 UserInfo.name = null;
                 UserInfo.age = null;
                 UserInfo.selectedCode = null;

@@ -1,13 +1,16 @@
 // 앱의 로고인 페이지 화면
-import 'package:book_project/screen/auth/change_password.dart';
 import 'package:book_project/screen/auth/find_id.dart';
+import 'package:book_project/screen/auth/find_password.dart';
 import 'package:book_project/screen/auth/sign_up.dart';
+import 'package:book_project/screen/auth/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../controller/user_info.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -190,11 +193,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             // 비밀번호 정규식: ^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$ (숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여 8자리 이상 입력)
                             validator: (String? value) {
-                              if (!RegExp(
-                                      r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
-                                  .hasMatch(value!)) {
+                              // if (!RegExp(
+                              //         r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
+                              //     .hasMatch(value!)) {
+                              //   isPasswordState = false;
+                              //   return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
+                              // } else {
+                              //   isPasswordState = true;
+                              //   return null;
+                              // }
+
+                              // 비밀번호 8자리 ~ 14자리만 받도록 합니다.
+                              if (!(value!.length > 7 && value.length < 15)) {
                                 isPasswordState = false;
-                                return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
+                                return "비밀번호는 8 ~ 14자 여야 합니다.";
                               } else {
                                 isPasswordState = true;
                                 return null;
@@ -240,58 +252,72 @@ class _LoginScreenState extends State<LoginScreen> {
                   // 로고인 버튼
                   ElevatedButton(
                     onPressed: () async {
-                      Get.off(() => BookFluidNavBar());
+                      // Get.off(() => BookFluidNavBar());
 
-                      // if (isIdState == true && isPasswordState == true) {
-                      //   // 서버와 통신
-                      //   // ID, Password가 존재하는지 확인한다.
-                      //   final response = await dio.post(
-                      //     'http://49.161.110.41:8080/login',
-                      //     data: {
-                      //       // 사용자 아이디(string)
-                      //       'account': id,
+                      if (isIdState == true && isPasswordState == true) {
+                        // 서버와 통신
+                        // ID, Password가 존재하는지 확인한다.
+                        final response = await dio.post(
+                          'http://49.161.110.41:8080/login',
+                          data: {
+                            // 사용자 아이디(string)
+                            'account': id,
 
-                      //       // 사용자 비밀번호(string)
-                      //       'password': password,
-                      //     },
-                      //     options: Options(
-                      //       validateStatus: (_) => true,
-                      //       contentType: Headers.jsonContentType,
-                      //       responseType: ResponseType.json,
-                      //     ),
-                      //   );
+                            // 사용자 비밀번호(string)
+                            'password': password,
+                          },
+                          options: Options(
+                            validateStatus: (_) => true,
+                            contentType: Headers.jsonContentType,
+                            responseType: ResponseType.json,
+                          ),
+                        );
 
-                      //   // 서버와 통신 성공
-                      //   if (response.statusCode == 200) {
-                      //     print("서버와 통신 성공");
-                      //     print("서버에서 제공해주는 데이터 : ${response.data}");
+                        // 서버와 통신 성공
+                        if (response.statusCode == 200) {
+                          print("서버와 통신 성공");
+                          print("서버에서 제공해주는 데이터 : ${response.data}");
+                          print(response.data["id"]);
+                          print(response.data["account"]);
 
-                      //     // 회원 정보를 가져와서 user_info.dart에 저장한다.
+                          // 회원 정보를 가져와서 user_info.dart에 저장한다.
+                          if (response.data["roles"][0]["name"] == "ADMIN") {
+                            UserInfo.identity = UserManagerCheck.manager;
+                          } else {
+                            UserInfo.identity = UserManagerCheck.user;
+                          }
 
-                      //     // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
-                      //     Get.off(() => BookFluidNavBar());
-                      //   }
-                      //   // 서버와 통신 실패
-                      //   else {
-                      //     print("서버와 통신 실패");
-                      //     print("서버 통신 에러 코드 : ${response.statusCode}");
+                          UserInfo.userValue = response.data["id"].toString();
+                          UserInfo.id = response.data["account"];
+                          // UserInfo.password = response.data["password"];
+                          UserInfo.name = response.data["name"];
+                          UserInfo.age = response.data["age"];
+                          UserInfo.selectedCode = response.data["prefer"];
+                          UserInfo.email = response.data["email"];
 
-                      //     Get.snackbar(
-                      //       "서버 통신 실패",
-                      //       "서버 통신 에러 코드 : ${response.statusCode}",
-                      //       duration: const Duration(seconds: 5),
-                      //       snackPosition: SnackPosition.TOP,
-                      //     );
-                      //   }
+                          // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
+                          Get.off(() => BookFluidNavBar());
+                        }
+                        // 서버와 통신 실패
+                        else {
+                          print("서버와 통신 실패");
+                          print("서버 통신 에러 코드 : ${response.statusCode}");
 
-                      // } else {
-                      //   Get.snackbar(
-                      //     "이상 메시지",
-                      //     "아이디/비밀번호 정규표현식이 적합하지 않음",
-                      //     duration: const Duration(seconds: 5),
-                      //     snackPosition: SnackPosition.TOP,
-                      //   );
-                      // }
+                          Get.snackbar(
+                            "서버 통신 실패",
+                            "서버 통신 에러 코드 : ${response.statusCode}",
+                            duration: const Duration(seconds: 5),
+                            snackPosition: SnackPosition.TOP,
+                          );
+                        }
+                      } else {
+                        Get.snackbar(
+                          "이상 메시지",
+                          "아이디/비밀번호 정규표현식이 적합하지 않음",
+                          duration: const Duration(seconds: 5),
+                          snackPosition: SnackPosition.TOP,
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -383,13 +409,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.black.withOpacity(0.6),
                             ),
                           ),
-                          // Change Password Text
+                          // Find Password Text
                           TextButton(
                             onPressed: () {
-                              Get.off(() => ChangePasswordScreen());
+                              Get.off(() => FindPasswordScreen());
                             },
                             child: const Text(
-                              'Change Password',
+                              'Find Password',
                               style: TextStyle(
                                 color: Colors.purple,
                                 fontWeight: FontWeight.w500,

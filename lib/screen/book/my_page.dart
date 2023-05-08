@@ -1,5 +1,7 @@
+import 'package:book_project/controller/user_info.dart';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -15,62 +17,66 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   final _formKey = GlobalKey<FormState>();
 
-  // id
-  String id = "사용자 원래 ID";
-  bool isIdState = false;
+  // 이메일
+  String email = UserInfo.email.toString();
+  bool isEmailState = false;
 
   // password
-  String password = "사용자 원래 Password";
+  String password = "";
   bool isPasswordState = false;
 
   // verifyPassword
-  String verifyPassword = "사용자 원래 Password";
-  bool isVerifyPasswordState = false;
+  // String verifyPassword = "";
+  // bool isVerifyPasswordState = false;
 
-  // name
-  String name = "사용자 원래 이름";
-  bool isNameState = false;
+  // // name
+  // String name = "";
+  // bool isNameState = false;
 
-  // age
-  String age = "사용자 원래 나이";
-  bool isAgeState = false;
-
+  // // age
+  // String age = "";
+  // bool isAgeState = false;
 
   // category
-  List<String> category = [
-    "국내도서>소설",
-    "국내도서>시/에세이",
-    "국내도서>예술/대중문화",
-    "국내도서>사회과학",
-    "국내도서>역사와 문화",
-    "국내도서>잡지",
-    "국내도서>만화",
-    "국내도서>유아",
-    "국내도서>아동",
-    "국내도서>가정과 생활",
-    "국내도서>청소년",
-    "국내도서>초등학습서",
-    "국내도서>고등학습서",
-    "국내도서>국어/외국어/사전",
-    "국내도서>자연과 과학",
-    "국내도서>경제경영",
-    "국내도서>자기계발",
-    "국내도서>인문",
-    "국내도서>종교/역학",
-    "국내도서>컴퓨터/인터넷",
-    "국내도서>자격서/수험서",
-    "국내도서>취미/레저",
-    "국내도서>전공도서/대학교재",
-    "국내도서>건강/뷰티",
-    "국내도서/여행",
-    "국내도서>중등학습서",
-  ];
-  String selectedCategory = "국내도서>소설";
+  Map<int, String> category = {
+    101: "국내도서>소설",
+    102: "국내도서>시/에세이",
+    103: "국내도서>예술/대중문화",
+    104: "국내도서>사회과학",
+    105: "국내도서>역사와 문화",
+    107: "국내도서>잡지",
+    108: "국내도서>만화",
+    109: "국내도서>유아",
+    110: "국내도서>아동",
+    111: "국내도서>가정과 생활",
+    112: "국내도서>청소년",
+    113: "국내도서>초등학습서",
+    114: "국내도서>고등학습서",
+    115: "국내도서>국어/외국어/사전",
+    116: "국내도서>자연과 과학",
+    117: "국내도서>경제경영",
+    118: "국내도서>자기계발",
+    119: "국내도서>인문",
+    120: "국내도서>종교/역학",
+    122: "국내도서>컴퓨터/인터넷",
+    123: "국내도서>자격서/수험서",
+    124: "국내도서>취미/레저",
+    125: "국내도서>전공도서/대학교재",
+    126: "국내도서>건강/뷰티",
+    128: "국내도서/여행",
+    129: "국내도서>중등학습서",
+  };
+  String? selectedCategory;
+  int selectedCode = UserInfo.selectedCode!;
+
+  // 서버와 통신
+  var dio = Dio();
 
   @override
   void initState() {
     super.initState();
     print("MyPage initState 시작");
+    selectedCategory = category[selectedCode];
   }
 
   @override
@@ -151,7 +157,7 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 30),
 
-                    // 변경할 ID
+                    // 변경할 이메일
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 40,
@@ -160,29 +166,27 @@ class _MyPageState extends State<MyPage> {
                         top: 20,
                       ),
                       child: TextFormField(
-                        initialValue: id,
+                        initialValue: UserInfo.email,
                         autovalidateMode: AutovalidateMode.always,
                         onChanged: (val) {
                           setState(() {
-                            id = val;
+                            email = val;
                           });
                         },
                         onSaved: (val) {
                           setState(() {
-                            id = val!;
+                            email = val!;
                           });
                         },
                         validator: (value) {
-                          // 아이디 정규식: ^[0-9a-z]+$; (숫자 또는 영문 또는 숫자와 영문 조합 아이디 생성 가능)
-                          // 아이디 길이는 8자리 이상 12자리 이하
-                          if (!RegExp(r"^[0-9a-z]+$").hasMatch(value!)) {
-                            isIdState = false;
-                            return "숫자, 영문만 입력해주세요";
-                          } else if (value.length < 8 || value.length > 13) {
-                            isIdState = false;
-                            return "8자리 이상 12자리 이하를 입력해주세요";
+                          // 이메일 정규식 체크
+                          if (!RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value!)) {
+                            isEmailState = false;
+                            return "올바른 이메일 형식이 아닙니다.";
                           } else {
-                            isIdState = true;
+                            isEmailState = true;
                             return null;
                           }
                         },
@@ -205,8 +209,8 @@ class _MyPageState extends State<MyPage> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          labelText: "ID",
-                          hintText: 'ex) abcdefg1',
+                          labelText: "Email",
+                          hintText: 'ex) winner23456@naver.com',
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
                       ),
@@ -280,196 +284,208 @@ class _MyPageState extends State<MyPage> {
                     // 중간 공백
                     const SizedBox(height: 10),
 
-                    // Verify Password
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: verifyPassword,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          verifyPassword = val;
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            verifyPassword = val!;
-                          });
-                        },
-                        validator: (String? value) {
-                          if (isPasswordState == false) {
-                            isVerifyPasswordState = false;
-                            return "적합한 Password를 먼저 입력해주세요";
-                          }
-
-                          if (isPasswordState == true && value!.isEmpty) {
-                            isVerifyPasswordState = false;
-                            return "사전에 입력한 Password를 다시 입력해주세요";
-                          }
-
-                          if (isPasswordState == true && value != password) {
-                            isVerifyPasswordState = false;
-                            return "사전에 입력한 Password와 맞지 않습니다.";
-                          }
-
-                          if (isPasswordState == true && value == password) {
-                            isVerifyPasswordState = true;
-                            return null;
-                          }
-                        },
-                        obscuringCharacter: '*',
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
+                    const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "비밀번호를 변경하고 싶으면 변경한 비밀번호를 적고\n 그렇지 않으면 원래 비밀번호를 입력해주세요 ",
+                          style: TextStyle(
+                            fontSize: 12.0,
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "Verify Password",
-                          hintText: 'ex) ********',
-                          labelStyle: TextStyle(color: Colors.purple),
                         ),
                       ),
                     ),
+
+                    // Verify Password
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 40,
+                    //     right: 40,
+                    //     bottom: 20,
+                    //     top: 20,
+                    //   ),
+                    //   child: TextFormField(
+                    //     initialValue: verifyPassword,
+                    //     autovalidateMode: AutovalidateMode.always,
+                    //     onChanged: (val) {
+                    //       verifyPassword = val;
+                    //     },
+                    //     onSaved: (val) {
+                    //       setState(() {
+                    //         verifyPassword = val!;
+                    //       });
+                    //     },
+                    //     validator: (String? value) {
+                    //       if (isPasswordState == false) {
+                    //         isVerifyPasswordState = false;
+                    //         return "적합한 Password를 먼저 입력해주세요";
+                    //       }
+
+                    //       if (isPasswordState == true && value!.isEmpty) {
+                    //         isVerifyPasswordState = false;
+                    //         return "사전에 입력한 Password를 다시 입력해주세요";
+                    //       }
+
+                    //       if (isPasswordState == true && value != password) {
+                    //         isVerifyPasswordState = false;
+                    //         return "사전에 입력한 Password와 맞지 않습니다.";
+                    //       }
+
+                    //       if (isPasswordState == true && value == password) {
+                    //         isVerifyPasswordState = true;
+                    //         return null;
+                    //       }
+                    //     },
+                    //     obscuringCharacter: '*',
+                    //     obscureText: true,
+                    //     decoration: const InputDecoration(
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       prefixIcon: Icon(
+                    //         Icons.person,
+                    //         color: Colors.purple,
+                    //       ),
+                    //       filled: true,
+                    //       fillColor: Colors.white,
+                    //       labelText: "Verify Password",
+                    //       hintText: 'ex) ********',
+                    //       labelStyle: TextStyle(color: Colors.purple),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // 중간 공백
                     const SizedBox(height: 10),
 
                     // 변경할 이름
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: name,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            name = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            name = val!;
-                          });
-                        },
-                        // 이름 정규표현식 : ^[가-힣]{2,4}$ (한글 이름 최소 2자 최대 4자)
-                        validator: (String? value) {
-                          if (!RegExp(r"^[가-힣]{2,4}$").hasMatch(value!)) {
-                            isNameState = false;
-                            return "한글 이름 2-4자를 입력해주세요";
-                          }
-                          isNameState = true;
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "이름",
-                          hintText: "ex) 홍길동",
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 40,
+                    //     right: 40,
+                    //     bottom: 20,
+                    //     top: 20,
+                    //   ),
+                    //   child: TextFormField(
+                    //     initialValue: UserInfo.name,
+                    //     autovalidateMode: AutovalidateMode.always,
+                    //     onChanged: (val) {
+                    //       setState(() {
+                    //         name = val;
+                    //       });
+                    //     },
+                    //     onSaved: (val) {
+                    //       setState(() {
+                    //         name = val!;
+                    //       });
+                    //     },
+                    //     // 이름 정규표현식 : ^[가-힣]{2,4}$ (한글 이름 최소 2자 최대 4자)
+                    //     validator: (String? value) {
+                    //       if (!RegExp(r"^[가-힣]{2,4}$").hasMatch(value!)) {
+                    //         isNameState = false;
+                    //         return "한글 이름 2-4자를 입력해주세요";
+                    //       }
+                    //       isNameState = true;
+                    //       return null;
+                    //     },
+                    //     decoration: const InputDecoration(
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       prefixIcon: Icon(
+                    //         Icons.person,
+                    //         color: Colors.purple,
+                    //       ),
+                    //       filled: true,
+                    //       fillColor: Colors.white,
+                    //       labelText: "이름",
+                    //       hintText: "ex) 홍길동",
+                    //       labelStyle: TextStyle(color: Colors.purple),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // 중간 공백
                     const SizedBox(height: 10),
 
                     // 변경할 나이
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: age,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            age = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            age = val!;
-                          });
-                        },
-                        // 나이 정규표현식 ^[0-9]+$
-                        // 나이는 최소 1자 최대 2자
-                        validator: (String? value) {
-                          if (!RegExp(r"^[0-9]+$").hasMatch(value!)) {
-                            isAgeState = false;
-                            return "숫자를 입력해주세요";
-                          } else if (value.length >= 3) {
-                            isAgeState = false;
-                            return "숫자로 최소 1자, 최대 2자를 입력해주세요";
-                          } else {
-                            isAgeState = true;
-                            return null;
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "나이",
-                          hintText: "ex) 25",
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 40,
+                    //     right: 40,
+                    //     bottom: 20,
+                    //     top: 20,
+                    //   ),
+                    //   child: TextFormField(
+                    //     initialValue: UserInfo.age.toString(),
+                    //     autovalidateMode: AutovalidateMode.always,
+                    //     onChanged: (val) {
+                    //       setState(() {
+                    //         age = val;
+                    //       });
+                    //     },
+                    //     onSaved: (val) {
+                    //       setState(() {
+                    //         age = val!;
+                    //       });
+                    //     },
+                    //     // 나이 정규표현식 ^[0-9]+$
+                    //     // 나이는 최소 1자 최대 2자
+                    //     validator: (String? value) {
+                    //       if (!RegExp(r"^[0-9]+$").hasMatch(value!)) {
+                    //         isAgeState = false;
+                    //         return "숫자를 입력해주세요";
+                    //       } else if (value.length >= 3) {
+                    //         isAgeState = false;
+                    //         return "숫자로 최소 1자, 최대 2자를 입력해주세요";
+                    //       } else {
+                    //         isAgeState = true;
+                    //         return null;
+                    //       }
+                    //     },
+                    //     decoration: const InputDecoration(
+                    //       focusedBorder: UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       enabledBorder: UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       prefixIcon: Icon(
+                    //         Icons.person,
+                    //         color: Colors.purple,
+                    //       ),
+                    //       filled: true,
+                    //       fillColor: Colors.white,
+                    //       labelText: "나이",
+                    //       hintText: "ex) 25",
+                    //       labelStyle: TextStyle(color: Colors.purple),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // 중간 공백
                     const SizedBox(height: 10),
@@ -506,13 +522,20 @@ class _MyPageState extends State<MyPage> {
                           hintText: "인문",
                           labelStyle: TextStyle(color: Colors.purple),
                         ),
-                        value: selectedCategory,
+                        value: category[UserInfo.selectedCode],
                         onChanged: (String? value) {
                           setState(() {
                             selectedCategory = value!;
+                            selectedCode = category.keys
+                                .toList()
+                                .where(
+                                  (int key) => category[key] == value,
+                                )
+                                .toList()[0];
+                            print(selectedCode);
                           });
                         },
-                        items: category
+                        items: category.values
                             .map((e) =>
                                 DropdownMenuItem(value: e, child: Text(e)))
                             .toList(),
@@ -528,12 +551,61 @@ class _MyPageState extends State<MyPage> {
                       child: SizedBox(
                         width: 250,
                         child: ElevatedButton(
-                          onPressed: () {
-                            // 검증
+                          onPressed: () async {
+                            if (isEmailState == true &&
+                                isPasswordState == true) {
+                              // 서버와 통신
+                              // 회원 정보를 데이터베이스에 등록한다.
+                              final response = await dio.put(
+                                'http://49.161.110.41:8080/MyPage/info_change',
+                                data: {
+                                  'id': UserInfo.userValue,
+                                  'email': email,
+                                  'password': password,
+                                  'prefer': selectedCode,
+                                },
+                                options: Options(
+                                  validateStatus: (_) => true,
+                                  contentType: Headers.jsonContentType,
+                                  responseType: ResponseType.json,
+                                ),
+                              );
 
-                            // 서버와 통신
+                              print({
+                                'id': UserInfo.userValue,
+                                'email': email,
+                                'password': password,
+                                'prefer': selectedCode,
+                              });
 
-                            // 사용자의 개인 정보를 변경한다.
+                              // 서버와 통신 성공
+                              if (response.statusCode == 200) {
+                                print("서버와 통신 성공");
+                                print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                                // 회원 가입 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                                // Get.off(() => const LoginScreen());
+                              }
+                              // 서버와 통신 실패
+                              else {
+                                print("서버와 통신 실패");
+                                print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                                Get.snackbar(
+                                  "서버 통신 실패",
+                                  "서버 통신 에러 코드 : ${response.statusCode}",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                            } else {
+                              Get.snackbar(
+                                "이상 메시지",
+                                "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(

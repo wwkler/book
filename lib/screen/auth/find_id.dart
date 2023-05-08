@@ -23,11 +23,11 @@ class _FindIdScreenState extends State<FindIdScreen> {
   bool isEmailState = false;
 
   // 앱에서 사용자에게 제공하는 인증번호
-  EmailOTP myauth = EmailOTP();
+  // EmailOTP myauth = EmailOTP();
 
   // 사용자가 입력해야 하는 인증번호
-  String emailVerificationValue = "";
-  bool isEmailVerificationValue = false;
+  // String emailVerificationValue = "";
+  // bool isEmailVerificationValue = false;
 
   // 서버와 통신
   var dio = Dio();
@@ -146,7 +146,6 @@ class _FindIdScreenState extends State<FindIdScreen> {
                             email = val!;
                           });
                         },
-                        // 핸드폰 번호 정규표현식 : ^010-?([0-9]{4})-?([0-9]{4})$
                         // 이메일 정규 표현식 ^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+
                         validator: (value) {
                           if (!RegExp(
@@ -176,128 +175,129 @@ class _FindIdScreenState extends State<FindIdScreen> {
                             Icons.person,
                             color: Colors.purple,
                           ),
-                          suffixIcon: GestureDetector(
-                            onTap: () async {
-                              if (isEmailState == true) {
-                                myauth.setConfig(
-                                  appEmail: "me@rohitchouhan.com",
-                                  appName: "Email OTP",
-                                  userEmail: email,
-                                  otpLength: 6,
-                                  otpType: OTPType.digitsOnly,
-                                );
+                          //   suffixIcon: GestureDetector(
+                          //     onTap: () async {
+                          //       if (isEmailState == true) {
+                          //         myauth.setConfig(
+                          //           appEmail: "me@rohitchouhan.com",
+                          //           appName: "Email OTP",
+                          //           userEmail: email,
+                          //           otpLength: 6,
+                          //           otpType: OTPType.digitsOnly,
+                          //         );
 
-                                if (await myauth.sendOTP() == true) {
-                                  Get.snackbar(
-                                    "확인 메시지",
-                                    "이메일로 인증 번호를 전송했습니다",
-                                    duration: const Duration(seconds: 5),
-                                    snackPosition: SnackPosition.TOP,
-                                  );
-                                } else {
-                                  Get.snackbar(
-                                    "이상 메시지",
-                                    "FAIL",
-                                    duration: const Duration(seconds: 5),
-                                    snackPosition: SnackPosition.TOP,
-                                  );
-                                }
-                              } else {
-                                Get.snackbar(
-                                  "이상 메시지",
-                                  "이메일을 올바르게 입력해주세요",
-                                  duration: const Duration(seconds: 5),
-                                  snackPosition: SnackPosition.TOP,
-                                );
-                              }
-                            },
-                            child: const Icon(Icons.message),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "이메일 주소",
-                          hintText: 'ex) abcdef@naver.com',
-                          labelStyle: const TextStyle(color: Colors.purple),
+                          //         if (await myauth.sendOTP() == true) {
+                          //           Get.snackbar(
+                          //             "확인 메시지",
+                          //             "이메일로 인증 번호를 전송했습니다",
+                          //             duration: const Duration(seconds: 5),
+                          //             snackPosition: SnackPosition.TOP,
+                          //           );
+                          //         } else {
+                          //           Get.snackbar(
+                          //             "이상 메시지",
+                          //             "FAIL",
+                          //             duration: const Duration(seconds: 5),
+                          //             snackPosition: SnackPosition.TOP,
+                          //           );
+                          //         }
+                          //       } else {
+                          //         Get.snackbar(
+                          //           "이상 메시지",
+                          //           "이메일을 올바르게 입력해주세요",
+                          //           duration: const Duration(seconds: 5),
+                          //           snackPosition: SnackPosition.TOP,
+                          //         );
+                          //       }
+                          //     },
+                          //     child: const Icon(Icons.message),
+                          //   ),
+                          //   filled: true,
+                          //   fillColor: Colors.white,
+                          //   labelText: "이메일 주소",
+                          //   hintText: 'ex) abcdef@naver.com',
+                          //   labelStyle: const TextStyle(color: Colors.purple),
+                          // ),
                         ),
                       ),
                     ),
 
                     // 인증값
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            emailVerificationValue = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            emailVerificationValue = val!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "인증번호를 입력해주세요";
-                          } else {
-                            return null;
-                          }
-                        },
-                        decoration: InputDecoration(
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          suffixIcon: GestureDetector(
-                            onTap: () async {
-                              if (await myauth.verifyOTP(
-                                      otp: emailVerificationValue) ==
-                                  true) {
-                                isEmailVerificationValue = true;
-                                Get.snackbar(
-                                  "확인 메시지",
-                                  "인증 완료 되었습니다",
-                                  duration: const Duration(seconds: 5),
-                                  snackPosition: SnackPosition.TOP,
-                                );
-                              } else {
-                                isEmailVerificationValue = false;
-                                Get.snackbar(
-                                  "이상 메시지",
-                                  "FAIL",
-                                  duration: const Duration(seconds: 5),
-                                  snackPosition: SnackPosition.TOP,
-                                );
-                              }
-                            },
-                            child: const Icon(Icons.check),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "인증번호",
-                          hintText: 'ex) 000000',
-                          labelStyle: const TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 40,
+                    //     right: 40,
+                    //     bottom: 20,
+                    //     top: 20,
+                    //   ),
+                    //   child: TextFormField(
+                    //     autovalidateMode: AutovalidateMode.always,
+                    //     onChanged: (val) {
+                    //       setState(() {
+                    //         emailVerificationValue = val;
+                    //       });
+                    //     },
+                    //     onSaved: (val) {
+                    //       setState(() {
+                    //         emailVerificationValue = val!;
+                    //       });
+                    //     },
+                    //     validator: (value) {
+                    //       if (value!.isEmpty) {
+                    //         return "인증번호를 입력해주세요";
+                    //       } else {
+                    //         return null;
+                    //       }
+                    //     },
+                    //     decoration: InputDecoration(
+                    //       focusedBorder: const UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       enabledBorder: const UnderlineInputBorder(
+                    //         borderSide: BorderSide.none,
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(10),
+                    //         ),
+                    //       ),
+                    //       prefixIcon: const Icon(
+                    //         Icons.person,
+                    //         color: Colors.purple,
+                    //       ),
+                    //       suffixIcon: GestureDetector(
+                    //         onTap: () async {
+                    //           if (await myauth.verifyOTP(
+                    //                   otp: emailVerificationValue) ==
+                    //               true) {
+                    //             isEmailVerificationValue = true;
+                    //             Get.snackbar(
+                    //               "확인 메시지",
+                    //               "인증 완료 되었습니다",
+                    //               duration: const Duration(seconds: 5),
+                    //               snackPosition: SnackPosition.TOP,
+                    //             );
+                    //           } else {
+                    //             isEmailVerificationValue = false;
+                    //             Get.snackbar(
+                    //               "이상 메시지",
+                    //               "FAIL",
+                    //               duration: const Duration(seconds: 5),
+                    //               snackPosition: SnackPosition.TOP,
+                    //             );
+                    //           }
+                    //         },
+                    //         child: const Icon(Icons.check),
+                    //       ),
+                    //       filled: true,
+                    //       fillColor: Colors.white,
+                    //       labelText: "인증번호",
+                    //       hintText: 'ex) 000000',
+                    //       labelStyle: const TextStyle(color: Colors.purple),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // 중간 공백
                     const SizedBox(
@@ -307,12 +307,11 @@ class _FindIdScreenState extends State<FindIdScreen> {
                     // 아이디 찾기 버튼
                     ElevatedButton(
                       onPressed: () async {
-                        if (isEmailState == true &&
-                            isEmailVerificationValue == true) {
+                        if (isEmailState == true) {
                           // 서버와 통신
                           // 이메일을 통해 사용자의 아이디를 찾는다.
                           final response = await dio.post(
-                            'http://49.161.110.41:8080/register',
+                            'http://49.161.110.41:8080/Find/Account',
                             data: {
                               // 이메일(String)
                               'email': email,
@@ -339,7 +338,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                                   child: Column(
                                     children: [
                                       // 아이디를 보여주는 문구
-                                      Text("회원님 아이디는\n(서버에서 받아온 id)입니다."),
+                                      Text("회원님 아이디는\n${response.data}입니다."),
 
                                       // 중간 공백
                                       const SizedBox(height: 50),

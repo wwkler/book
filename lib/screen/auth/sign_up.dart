@@ -273,11 +273,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         // 비밀번호 정규식: ^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$ (숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여 8자리 이상 입력)
                         validator: (String? value) {
-                          if (!RegExp(
-                                  r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
-                              .hasMatch(value!)) {
+                          // if (!RegExp(
+                          //         r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,14})(?=.*[a-zA-Z]{2,14}).{8,14}$")
+                          //     .hasMatch(value!)) {
+                          //   isPasswordState = false;
+                          //   return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
+                          // } else {
+                          //   isPasswordState = true;
+                          //   return null;
+                          // }
+
+                          // 비밀번호 8자리 ~ 14자리만 받도록 합니다.
+                          if (!(value!.length > 7 && value.length < 15)) {
                             isPasswordState = false;
-                            return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
+                            return "비밀번호는 8 ~ 14자 여야 합니다.";
                           } else {
                             isPasswordState = true;
                             return null;
