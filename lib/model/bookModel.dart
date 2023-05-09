@@ -1,4 +1,5 @@
 // 도서 데이터를 생성하는 클래스
+// 서버로부터 받아온 검색 도서, 추천 도서, 베스트셀러 도서, 신간 도서를 받아 객체로 변환하는 역할을 한다.
 
 class BookModel {
   // 도서 고유값
@@ -17,7 +18,7 @@ class BookModel {
   final String publisher;
 
   // 도서 출판일
-  final DateTime pub_date;
+  final String pub_date;
 
   // 도서 이미지
   final String cover;
@@ -49,7 +50,7 @@ class BookModel {
       json["author"],
       json["categoryId"],
       json["publisher"],
-      json["pub_date"],
+      json["pub_date"], // 서버에서 받아온 데이터 타입이 DateTime일 수도 있으므로 String으로 변환해야 할 수 도 있다.
       json["cover"],
       json["description"],
       json["link"],

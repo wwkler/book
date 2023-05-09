@@ -287,7 +287,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (!(value!.length > 7 && value.length < 15)) {
                             isPasswordState = false;
                             return "비밀번호는 8 ~ 14자 여야 합니다.";
-                          } else {
+                          } 
+                          //
+                          else {
                             isPasswordState = true;
                             return null;
                           }

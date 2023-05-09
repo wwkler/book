@@ -1,7 +1,7 @@
 // 도서 커뮤니티 페이지
 import 'package:anim_search_bar/anim_search_bar.dart';
-import 'package:book_project/controller/user_info.dart';
-import 'package:book_project/screen/auth/user_manager_check.dart';
+import 'package:book_project/const/user_manager_check.dart';
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_review_write.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-// 비밀번호 찾기 페이지
+// 임시 비밀번호 제공 페이지
 import 'dart:math';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:dio/dio.dart';
@@ -113,9 +113,9 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                       width: 600,
                     ),
 
-                    // BookMakase ChangePassword Text
+                    // BookMakase Find Password Text
                     Text(
-                      "BookMakase\n ChangePassword Screen",
+                      "BookMakase\n Find Password Screen",
                       style: GoogleFonts.indieFlower(
                         textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -124,9 +124,9 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                       ),
                     ),
 
-                    // Please ChangePassword to continue using our app Text
+                    // Please Find Password to continue using our app Text
                     Text(
-                      "Please FindPassword to continue using our app",
+                      "Please Find Password to continue using our app",
                       style: GoogleFonts.indieFlower(
                         textStyle: TextStyle(
                           color: Colors.black.withOpacity(0.5),
@@ -563,7 +563,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                         ),
                       ),
                       child: const Text(
-                        "Find Password",
+                        "임시 비밀번호 발급",
                         style: TextStyle(fontSize: 15),
                       ),
                     ),

@@ -1,5 +1,5 @@
 // 사용자 정보를 저장한다.
-import 'package:book_project/screen/auth/user_manager_check.dart';
+import 'package:book_project/const/user_manager_check.dart';
 
 class UserInfo {
   // 사용자인지 관리자인지에 대한 변수

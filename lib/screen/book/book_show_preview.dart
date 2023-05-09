@@ -1,7 +1,7 @@
 // 도서 상세 정보 페이지
 import 'dart:ui' as ui;
-import 'package:book_project/controller/user_info.dart';
-import 'package:book_project/screen/auth/user_manager_check.dart';
+import 'package:book_project/model/user_info.dart';
+import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_search_recommend.dart';
 import 'package:book_project/screen/book/book_show_preview_edit.dart';
@@ -135,15 +135,15 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                   BorderRadius.circular(_borderRadius),
                               gradient: LinearGradient(
                                 colors: [
-                                  items[0].startColor,
-                                  items[0].endColor
+                                  items[1].startColor,
+                                  items[1].endColor
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: items[0].endColor,
+                                  color: items[1].endColor,
                                   blurRadius: 12,
                                   offset: const Offset(0, 6),
                                 ),
@@ -156,8 +156,11 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                             top: 0,
                             child: CustomPaint(
                               size: const Size(100, 150),
-                              painter: CustomCardShapePainter(_borderRadius,
-                                  items[0].startColor, items[0].endColor),
+                              painter: CustomCardShapePainter(
+                                _borderRadius,
+                                items[1].startColor,
+                                items[1].endColor,
+                              ),
                             ),
                           ),
                           Positioned.fill(

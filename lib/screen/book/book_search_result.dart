@@ -60,12 +60,12 @@ class _BookSearchResultState extends State<BookSearchResult> {
     super.dispose();
   }
 
-  // 검색어를 요청해서 서버로부터 도서 데이터를 받는다.
+  // 검색어를 요청해서 서버로부터 인터파크 책검색 API 데이터를 받는다.
   Future<void> getBookDatas() async {
     // bookModels를 clear 한다.
     bookModels.clear();
 
-    // 서버 url를 설정한다.
+    // 접속하려는 서버 url를 설정한다.
     String url =
         "http://49.161.110.41:8080/${discrimition != "" ? discrimition : text}";
 
@@ -77,7 +77,9 @@ class _BookSearchResultState extends State<BookSearchResult> {
 
     print(url);
 
-    // 서버와 통신
+    await Future.delayed(Duration(seconds: 5));
+
+    // 서버와 통신 - 서버에 접속해서 인터파크 도서 검색 API 데이터를 받는다.
     // final response = await dio.get(
     //   url,
     //   options: Options(
@@ -87,7 +89,11 @@ class _BookSearchResultState extends State<BookSearchResult> {
     //   ),
     // );
 
-    // response에 따라 isBookData를 true로 줘야할지 말아야할지 결정
+    // response.data에 도서 데이터가 있느냐 없느냐에 따라 다른 로직 구현
+
+    //  // response.data가 있으면, 객체로 변환하여 저장하고, isBookData를 true로 저장한다.
+
+    //  // response.data가 없으면 그냥 isBookData를 false로 저장한다.
   }
 
   @override
@@ -96,43 +102,43 @@ class _BookSearchResultState extends State<BookSearchResult> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-            future: getBookDatas(),
-            builder: (context, snapshot) {
-              // 도서 데이터가 아직 오지 않았을 경우
-              // if (snapshot.hasData == false) {
-              //   return Container(
-              //     width: MediaQuery.of(context).size.width,
-              //     // 배경 이미지
-              //     decoration: const BoxDecoration(
-              //       image: DecorationImage(
-              //         image: AssetImage("assets/imgs/background_book1.jpg"),
-              //         fit: BoxFit.fill,
-              //         opacity: 0.3,
-              //       ),
-              //     ),
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: const [
-              //         // 프로그래스바
-              //         CircularProgressIndicator(),
+          future: getBookDatas(),
+          builder: (context, snapshot) {
+            // getBookDatas()를 실행하는 동안만 실행
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                // 배경 이미지
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/imgs/background_book1.jpg"),
+                    fit: BoxFit.fill,
+                    opacity: 0.3,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    // 프로그래스바
+                    CircularProgressIndicator(),
 
-              //         // 중간 공백
-              //         SizedBox(height: 40),
+                    // 중간 공백
+                    SizedBox(height: 40),
 
-              //         // 도서 데이터들을 가져오고 있습니다.
-              //         Text(
-              //           "도서 데이터를 가져오고 있습니다",
-              //           style: TextStyle(
-              //             fontSize: 20,
-              //             fontWeight: FontWeight.w700,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   );
-              // }
-              // 도서 데이터가 왔을 떄
-              // else {
+                    // 도서 데이터들을 가져오고 있습니다.
+                    Text(
+                      "도서 데이터를 가져오고 있습니다",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+            // getBookDatas()를 다 실행했으면....
+            else {
               return Container(
                 width: MediaQuery.of(context).size.width,
                 // 배경 이미지
@@ -193,7 +199,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
 
                       // 도서 Text
                       Padding(
@@ -249,18 +255,19 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                               decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(
-                                                        _borderRadius),
+                                                  _borderRadius,
+                                                ),
                                                 gradient: LinearGradient(
-                                                    colors: [
-                                                      items[index].startColor,
-                                                      items[index].endColor
-                                                    ],
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight),
+                                                  colors: [
+                                                    items[1].startColor,
+                                                    items[1].endColor
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
                                                 boxShadow: [
                                                   BoxShadow(
-                                                    color:
-                                                        items[index].endColor,
+                                                    color: items[1].endColor,
                                                     blurRadius: 12,
                                                     offset: const Offset(0, 6),
                                                   ),
@@ -274,9 +281,10 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                               child: CustomPaint(
                                                 size: const Size(100, 150),
                                                 painter: CustomCardShapePainter(
-                                                    _borderRadius,
-                                                    items[index].startColor,
-                                                    items[index].endColor),
+                                                  _borderRadius,
+                                                  items[1].startColor,
+                                                  items[1].endColor,
+                                                ),
                                               ),
                                             ),
                                             Positioned.fill(
@@ -367,19 +375,20 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                           items[index]
                                                               .rating
                                                               .toString(),
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  'Avenir',
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily:
+                                                                'Avenir',
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
                                                         ),
                                                         RatingBar(
-                                                            rating: items[index]
-                                                                .rating),
+                                                          rating: items[index]
+                                                              .rating,
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -432,8 +441,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
                 ),
               );
             }
-            // },
-            ),
+          },
+        ),
       ),
     );
   }
