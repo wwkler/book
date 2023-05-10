@@ -6,7 +6,7 @@ class UserInfo {
   static UserManagerCheck? identity;
 
   // 사용자 고유값
-  static String? userValue;
+  static int? userValue;
 
   // 사용자 아이디
   static String? id;
@@ -25,4 +25,7 @@ class UserInfo {
 
   // 이메일
   static String? email;
+
+  // 토큰
+  static String? token;
 }

@@ -1,7 +1,6 @@
 // 도서 검색/추천 페이지
 import 'dart:async';
 import 'dart:math';
-
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/screen/book/book_search_result.dart';
@@ -12,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 class BookSearchRecommend extends StatefulWidget {
-  BookSearchRecommend({Key? key, int? randomNum}) : super(key: key);
+  BookSearchRecommend({Key? key}) : super(key: key);
 
   @override
   State<BookSearchRecommend> createState() => _BookSearchRecommendState();
@@ -48,8 +47,6 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
   // 추천 도서, 베스트 셀러 도서, 신간 도서를 받아오는 함수
   Future<void> getBookDatas() async {
-    // bookModels를 clear 한다.
-
     // 접속하려는 서버 url를 설정한다.
     String url = "http://49.161.110.41:8080/";
 
@@ -156,8 +153,10 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                     //   onPressed: () async {
                     //     // 인터파크 api 검색 도서 호출
                     //     final response = await dio.get(
-                    //         // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=삼국지&output=json",
-                    //         "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=시크릿&inputEncoding=euc-kr&categoryId=101&output=json");
+                    //       "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=삼국지&output=json",
+                    //     );
+
+                    //     // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=시크릿&inputEncoding=euc-kr&categoryId=101&output=json");
                     //     if (response.statusCode == 200) {
                     //       print(response.data);
                     //     }
@@ -351,7 +350,6 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         ),
                       ),
                     ),
-
 
                     // 중간 공백
                     const SizedBox(height: 30),

@@ -312,14 +312,14 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                         // 도서 정보
                                                         Text(
                                                           items[index].name,
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontFamily:
-                                                                  'Avenir',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily:
+                                                                'Avenir',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
                                                         ),
                                                         // 도서 정보
                                                         Text(
@@ -332,7 +332,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                           ),
                                                         ),
                                                         const SizedBox(
-                                                            height: 16),
+                                                          height: 16,
+                                                        ),
                                                         Row(
                                                           children: <Widget>[
                                                             // 아이콘
