@@ -287,7 +287,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (!(value!.length > 7 && value.length < 15)) {
                             isPasswordState = false;
                             return "비밀번호는 8 ~ 14자 여야 합니다.";
-                          } 
+                          }
                           //
                           else {
                             isPasswordState = true;
@@ -881,7 +881,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           // 서버와 통신
                           // 회원 정보를 데이터베이스에 등록한다.
                           final response = await dio.post(
-                            'http://49.161.110.41:8080/register',
+                            // 'http://49.161.110.41:8080/register',
+                            'http://116.122.96.53:8080/register',
                             data: {
                               // 사용자 아이디(string)
                               'account': id,

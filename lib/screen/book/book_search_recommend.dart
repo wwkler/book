@@ -48,11 +48,10 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   // 추천 도서, 베스트 셀러 도서, 신간 도서를 받아오는 함수
   Future<void> getBookDatas() async {
     // 접속하려는 서버 url를 설정한다.
-    String url = "http://49.161.110.41:8080/";
+    String url = "http://192.168.0.43:8080/";
 
     print(url);
 
-    await Future.delayed(const Duration(seconds: 20));
 
     // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.
     // final response = await dio.get(
@@ -147,22 +146,6 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                   children: [
                     // 중간 공백
                     const SizedBox(height: 30),
-
-                    // 인터파크 api 검색 도서 호출 테스트
-                    // ElevatedButton(
-                    //   onPressed: () async {
-                    //     // 인터파크 api 검색 도서 호출
-                    //     final response = await dio.get(
-                    //       "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=삼국지&output=json",
-                    //     );
-
-                    //     // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=시크릿&inputEncoding=euc-kr&categoryId=101&output=json");
-                    //     if (response.statusCode == 200) {
-                    //       print(response.data);
-                    //     }
-                    //   },
-                    //   child: Text("인터파크 api 검색 도서 가져오기"),
-                    // ),
 
                     // 도서 검색, 추천 Text
                     Padding(

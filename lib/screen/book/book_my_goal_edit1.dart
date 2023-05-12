@@ -1,8 +1,13 @@
 // 목표 설정/수정하는 페이지
+import 'dart:ffi';
+
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_my_goal_edit2.dart';
 import 'package:book_project/screen/book/book_my_goal_edit3.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
 import 'book_fluid_nav_bar.dart';
 
@@ -52,16 +57,29 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
   // 목표 설정 변수
   String objDate = "목표 기간을 설정해주세요";
 
+  // 이전 페이지에서 받은 배열 objectives
+  List<Map<String, dynamic>>? objectives;
+
+  // 서버 통신 사용함
+  var dio = Dio();
+
   @override
   void initState() {
-    print("Book My Goal Edit1 initState 시작");
     super.initState();
+    print("Book My Goal Edit1 initState 시작");
+    objectives = Get.arguments;
   }
 
   @override
   void dispose() {
     print("Book My Goal Edit1 dispose 시작");
     super.dispose();
+  }
+
+  // 날짜를 format 시켜주는 함수
+  String formatDate(DateTime date) {
+    final formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
   }
 
   @override
@@ -133,7 +151,10 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                       GestureDetector(
                         onTap: () {
                           // 목표 2 페이지로 라우팅
-                          Get.off(() => BookMyGoalEdit2());
+                          Get.off(
+                            () => BookMyGoalEdit2(),
+                            arguments: objectives,
+                          );
                         },
                         child: Card(
                           elevation: 10.0,
@@ -371,7 +392,7 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                   // 중간 공백
                   const SizedBox(height: 25),
 
-                  // 목표 설정 기간 버튼
+                  // 목표 기간 설정하는 버튼
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -392,8 +413,7 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                           );
                           if (selectedDate != null) {
                             setState(() {
-                              objDate =
-                                  "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                              objDate = formatDate(selectedDate);
                             });
                           }
                         },
@@ -423,33 +443,202 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                   // 중간 공백
                   const SizedBox(height: 50),
 
-                  // 목표 설정/수정 버튼
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          print(readBooksCountController.text);
-                          // 서버와 통신
-                          // 서버에서 사용자에 대한 목표 선택할 도서 분야, 목표 도서 권수, 목표기간을 업데이트한다.
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                  // 현재 시간이 endDate보다 적으면     목표 수정하기 버튼을 보여준다.
+                  // 아예 서버에서 받아온 목표 데이터가 없거나 ,현재 시간이 endDate보다 크면      목표 설정하기 버튼을 보여준다.
+                  objectives![0]["data"] == "none" ||
+                          objectives![0]["endDate"]
+                                  .toString()
+                                  .compareTo(formatDate(DateTime.now())) <
+                              0
+
+                      // 목표 설정하기 버튼 나옴
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                DateTime dt = DateTime.now();
+                                //검증하기
+                                if (readBooksCountController.text.length > 1 &&
+                                    readBooksCountController.text.length < 3 &&
+                                    objDate != "목표 기간을 설정해주세요") {
+                                  // 서버와 통신
+                                  final response = await dio.post(
+                                    'http://116.122.96.53:8080/goal',
+                                    // 서버에 보내야 하는 데이터
+                                    data: {
+                                      // 사용자 고유값
+                                      "memberId": UserInfo.userValue,
+
+                                      // 목표 이름
+                                      "goalname": "목표_1_${UserInfo.id}",
+
+                                      // 도서 카테코리 번호
+                                      "categoryId": selectedCode,
+
+                                      // 목표 도서량
+                                      "targetQuantity": int.parse(
+                                        readBooksCountController.text,
+                                      ),
+
+                                      // 읽은 책 갯수(0으로 초기 설정)
+                                      "readed": 0,
+
+                                      // 시작일
+                                      "startDate": formatDate(dt),
+
+                                      // 목표일
+                                      "endDate": objDate,
+
+                                      // 완료 여부(false로 초기설정)
+                                      "completed": false,
+                                    },
+                                    options: Options(
+                                      validateStatus: (_) => true,
+                                      contentType: Headers.jsonContentType,
+                                      responseType: ResponseType.json,
+                                    ),
+                                  );
+
+                                  // 서버와 통신 성공
+                                  if (response.statusCode == 200) {
+                                    print("서버와 통신 성공");
+                                    print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                                    // 라우팅
+                                    Get.off(() => BookFluidNavBar());
+                                  }
+                                  // 서버와 통신 실패
+                                  else {
+                                    print("서버와 통신 실패");
+                                    print(
+                                        "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                    Get.snackbar(
+                                      "서버 통신 실패",
+                                      "서버 통신 에러 코드 : ${response.statusCode}",
+                                      duration: const Duration(seconds: 5),
+                                      snackPosition: SnackPosition.TOP,
+                                    );
+                                  }
+                                }
+                                //
+                                else {
+                                  Get.snackbar(
+                                    "이상 메시지",
+                                    "클라이언트에서 입력을 적합하지 않게 하였습니다.",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                backgroundColor: Colors.purple,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 20,
+                                ),
+                              ),
+                              child: const Text(
+                                "목표 설정하기",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
                           ),
-                          backgroundColor: Colors.purple,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 20,
+                        )
+                      // 목표 수정하기 버튼 나옴
+                      : Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                DateTime dt = DateTime.now();
+                                //검증하기
+                                if (readBooksCountController.text.length > 1 &&
+                                    readBooksCountController.text.length < 3 &&
+                                    objDate != "목표 기간을 설정해주세요") {
+                                  // 서버와 통신
+                                  final response = await dio.put(
+                                    'http://116.122.96.53:8080/goal/update',
+                                    // 서버에 보내야 하는 데이터
+                                    data: {
+                                      // 목표 이름
+                                      "goalname": objectives![0]["goalname"],
+
+                                      // 도서 카테코리 번호
+                                      "categoryId": selectedCode,
+
+                                      // 목표 도서량
+                                      "targetQuantity": int.parse(
+                                        readBooksCountController.text,
+                                      ),
+
+                                      // 읽은 책 갯수(0으로 초기 설정)
+                                      "readed": 0,
+
+                                      // 시작일
+                                      "startDate": formatDate(dt),
+
+                                      // 목표일
+                                      "endDate": objDate,
+
+                                      // 완료 여부
+                                      // "completed": ,
+                                    },
+                                    options: Options(
+                                      validateStatus: (_) => true,
+                                      contentType: Headers.jsonContentType,
+                                      responseType: ResponseType.json,
+                                    ),
+                                  );
+
+                                  // 서버와 통신 성공
+                                  if (response.statusCode == 200) {
+                                    print("서버와 통신 성공");
+                                    print("서버에서 제공해주는 데이터 : ${response.data}");
+                                  }
+                                  // 서버와 통신 실패
+                                  else {
+                                    print("서버와 통신 실패");
+                                    print(
+                                        "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                    Get.snackbar(
+                                      "서버 통신 실패",
+                                      "서버 통신 에러 코드 : ${response.statusCode}",
+                                      duration: const Duration(seconds: 5),
+                                      snackPosition: SnackPosition.TOP,
+                                    );
+                                  }
+                                } else {
+                                  Get.snackbar(
+                                    "이상 메시지",
+                                    "클라이언트에서 입력을 적합하지 않게 하였습니다.",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                backgroundColor: Colors.purple,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 20,
+                                ),
+                              ),
+                              child: const Text(
+                                "목표 수정하기",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          "목표 설정/수정하기",
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

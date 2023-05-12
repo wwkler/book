@@ -255,7 +255,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         // 서버와 통신
                         // ID, Password가 존재하는지 확인한다.
                         final response = await dio.post(
-                          'http://49.161.110.41:8080/login',
+                          // 'http://49.161.110.41:8080/login',
+                          'http://116.122.96.53:8080/login',
                           data: {
                             // 사용자 아이디(string)
                             'account': id,

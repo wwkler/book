@@ -1,7 +1,6 @@
 // 사용자 관리하는 페이지
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/model/user_model.dart';

@@ -25,10 +25,10 @@ class _BookSearchResultState extends State<BookSearchResult> {
   String discrimition = Get.arguments;
 
   // 검색어를 요청해서 서버로부터 받은 데이터가 존재하는지 안하는지 판별하는 변수
-  bool isBookData = true;
+  bool isSearchBookData = true;
 
   // 검색어를 요청해서 서버로부터 받은 도서 데이터
-  List<BookModel> bookModels = [];
+  List<BookModel> searchBookModels = [];
 
   // 서버와 통신
   var dio = Dio();
@@ -51,6 +51,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
   @override
   void initState() {
     print("Book Search Result InitState 시작");
+
     super.initState();
   }
 
@@ -61,39 +62,61 @@ class _BookSearchResultState extends State<BookSearchResult> {
   }
 
   // 검색어를 요청해서 서버로부터 인터파크 책검색 API 데이터를 받는다.
-  Future<void> getBookDatas() async {
+  Future<void> getSearchBookDatas() async {
     // bookModels를 clear 한다.
-    bookModels.clear();
+    searchBookModels.clear();
 
     // 접속하려는 서버 url를 설정한다.
     String url =
-        "http://49.161.110.41:8080/${discrimition != "" ? discrimition : text}";
+        "http://116.122.96.53:8080/api/search?query=${discrimition != "" ? discrimition : text}";
+
+    // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=${discrimition != "" ? discrimition : text}&output=json";
 
     // 이전 페이지에서 검색어를 요청해서 서버로부터 도서 데이터를 받을 경우에 대한 로직 처리
     if (discrimition != "") {
       discrimition = "";
-      print("discrimition : $discrimition");
     }
 
-    print(url);
-
-    await Future.delayed(Duration(seconds: 5));
-
     // 서버와 통신 - 서버에 접속해서 인터파크 도서 검색 API 데이터를 받는다.
-    // final response = await dio.get(
-    //   url,
-    //   options: Options(
-    //     validateStatus: (_) => true,
-    //     contentType: Headers.jsonContentType,
-    //     responseType: ResponseType.json,
-    //   ),
-    // );
+    final response = await dio.get(
+      url,
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은 데이터 : ${response.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response.statusCode}");
+    }
 
     // response.data에 도서 데이터가 있느냐 없느냐에 따라 다른 로직 구현
+    if ((response.data["item"] as List<dynamic>).isEmpty) {
+      print("도서 데이터가 없다.");
+      isSearchBookData = false;
+    }
+    //
+    else {
+      print("도서 데이터가 있다.");
+      print((response.data["item"] as List<dynamic>).length);
 
-    //  // response.data가 있으면, 객체로 변환하여 저장하고, isBookData를 true로 저장한다.
+      searchBookModels = (response.data["item"] as List<dynamic>).map(
+        (dynamic e) {
+          return BookModel.fromJson(e as Map<String, dynamic>);
+        },
+      ).toList();
 
-    //  // response.data가 없으면 그냥 isBookData를 false로 저장한다.
+      print("searchBookModels : $searchBookModels");
+
+      isSearchBookData = true;
+    }
   }
 
   @override
@@ -102,9 +125,9 @@ class _BookSearchResultState extends State<BookSearchResult> {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder(
-          future: getBookDatas(),
+          future: getSearchBookDatas(),
           builder: (context, snapshot) {
-            // getBookDatas()를 실행하는 동안만 실행
+            // getSearchBookDatas()를 실행하는 동안만 실행
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Container(
                 width: MediaQuery.of(context).size.width,
@@ -137,7 +160,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                 ),
               );
             }
-            // getBookDatas()를 다 실행했으면....
+            // getSerachBookDatas()를 다 실행했으면....
             else {
               return Container(
                 width: MediaQuery.of(context).size.width,
@@ -232,13 +255,13 @@ class _BookSearchResultState extends State<BookSearchResult> {
                       // 중간 공백
                       const SizedBox(height: 20),
 
-                      // 책 결과물 -> 없으면 결과가 없다는 text를 화면에 보여주고, 있으면 책들을 보여준다.
-                      isBookData == true
+                      // 검색 도서 결과물 -> 없으면 결과가 없다는 text를 화면에 보여주고, 있으면 도서들을 보여준다.
+                      isSearchBookData == true
                           ? Expanded(
                               flex: 1,
                               child: ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: items.length,
+                                itemCount: searchBookModels.length,
                                 itemBuilder: (context, index) {
                                   return Center(
                                     child: Padding(
@@ -246,7 +269,10 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                       child: GestureDetector(
                                         onTap: () {
                                           // 도서 상세 페이지로 라우팅
-                                          Get.off(() => BookShowPreview());
+                                          Get.off(
+                                            () => BookShowPreview(),
+                                            arguments: searchBookModels[index],
+                                          );
                                         },
                                         child: Stack(
                                           children: <Widget>[
@@ -279,7 +305,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                               bottom: 0,
                                               top: 0,
                                               child: CustomPaint(
-                                                size: const Size(100, 150),
+                                                size: const Size(80, 50),
                                                 painter: CustomCardShapePainter(
                                                   _borderRadius,
                                                   items[1].startColor,
@@ -289,107 +315,67 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                             ),
                                             Positioned.fill(
                                               child: Row(
-                                                children: <Widget>[
+                                                children: [
+                                                  // 중간 공백
+                                                  const SizedBox(width: 10),
+
                                                   // 도서 이미지
                                                   Expanded(
-                                                    child: Image.asset(
-                                                      'assets/imgs/icon.png',
-                                                      height: 64,
-                                                      width: 64,
+                                                    flex: 1,
+                                                    child: Image.network(
+                                                      searchBookModels[index]
+                                                          .coverSmallUrl,
+                                                      width: 100,
+                                                      height: 100,
                                                     ),
-                                                    flex: 2,
                                                   ),
-                                                  // 도서 정보들
+
+                                                  // 중간 공백
+                                                  const SizedBox(width: 10),
+
+                                                  // 도서 제목
                                                   Expanded(
-                                                    flex: 4,
+                                                    flex: 2,
+                                                    child: Text(
+                                                      searchBookModels[index]
+                                                          .title,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'Avenir',
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  // 중간 공백
+                                                  const SizedBox(width: 20),
+
+                                                  // 도서 번쨰 체크
+                                                  Expanded(
+                                                    flex: 1,
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.min,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        // 도서 정보
+                                                      children: [
                                                         Text(
-                                                          items[index].name,
+                                                          "도서 ${index + 1}",
                                                           style:
                                                               const TextStyle(
                                                             color: Colors.white,
                                                             fontFamily:
                                                                 'Avenir',
+                                                            fontSize: 15,
                                                             fontWeight:
                                                                 FontWeight.w700,
                                                           ),
                                                         ),
-                                                        // 도서 정보
-                                                        Text(
-                                                          items[index].category,
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily:
-                                                                'Avenir',
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 16,
-                                                        ),
-                                                        Row(
-                                                          children: <Widget>[
-                                                            // 아이콘
-                                                            const Icon(
-                                                              Icons.location_on,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 16,
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 8,
-                                                            ),
-                                                            // 도서 정보
-                                                            Flexible(
-                                                              child: Text(
-                                                                items[index]
-                                                                    .location,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontFamily:
-                                                                      'Avenir',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  // 별점
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        Text(
-                                                          items[index]
-                                                              .rating
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily:
-                                                                'Avenir',
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                        ),
-                                                        RatingBar(
-                                                          rating: items[index]
-                                                              .rating,
-                                                        ),
+
+                                                        // RatingBar(
+                                                        //   rating: items[index]
+                                                        //       .rating,
+                                                        // ),
                                                       ],
                                                     ),
                                                   ),

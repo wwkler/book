@@ -1,5 +1,6 @@
 // 도서 상세 정보 페이지
 import 'dart:ui' as ui;
+import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
@@ -30,6 +31,39 @@ class BookShowPreview extends StatefulWidget {
 }
 
 class _BookShowPreviewState extends State<BookShowPreview> {
+  // 도서 데이터
+  BookModel? bookModel;
+
+  // 도서 분야
+  Map<int, String> category = {
+    101: "국내도서>소설",
+    102: "국내도서>시/에세이",
+    103: "국내도서>예술/대중문화",
+    104: "국내도서>사회과학",
+    105: "국내도서>역사와 문화",
+    107: "국내도서>잡지",
+    108: "국내도서>만화",
+    109: "국내도서>유아",
+    110: "국내도서>아동",
+    111: "국내도서>가정과 생활",
+    112: "국내도서>청소년",
+    113: "국내도서>초등학습서",
+    114: "국내도서>고등학습서",
+    115: "국내도서>국어/외국어/사전",
+    116: "국내도서>자연과 과학",
+    117: "국내도서>경제경영",
+    118: "국내도서>자기계발",
+    119: "국내도서>인문",
+    120: "국내도서>종교/역학",
+    122: "국내도서>컴퓨터/인터넷",
+    123: "국내도서>자격서/수험서",
+    124: "국내도서>취미/레저",
+    125: "국내도서>전공도서/대학교재",
+    126: "국내도서>건강/뷰티",
+    128: "국내도서/여행",
+    129: "국내도서>중등학습서",
+  };
+
   // 도서 상세 정보 페이지 UI으로 보여주기 위한 변수, 배열
   final double _borderRadius = 24;
   var items = [
@@ -49,6 +83,9 @@ class _BookShowPreviewState extends State<BookShowPreview> {
   void initState() {
     print("Book Show Preview InitState 시작");
     super.initState();
+
+    bookModel = Get.arguments;
+    print("도서 작가 : ${bookModel!.author}");
   }
 
   @override
@@ -123,131 +160,200 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                 // 도서 상세 정보 UI
                 Expanded(
                   flex: 1,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            height: 300,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(_borderRadius),
-                              gradient: LinearGradient(
-                                colors: [
-                                  items[1].startColor,
-                                  items[1].endColor
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: items[1].endColor,
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
+                  child: GestureDetector(
+                    onTap: () {
+                      print("도서 구입 링크로 이동");
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              height: 280,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(_borderRadius),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    items[1].startColor,
+                                    items[1].endColor
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
                                 ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            top: 0,
-                            child: CustomPaint(
-                              size: const Size(100, 150),
-                              painter: CustomCardShapePainter(
-                                _borderRadius,
-                                items[1].startColor,
-                                items[1].endColor,
-                              ),
-                            ),
-                          ),
-                          Positioned.fill(
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: Image.asset(
-                                    'assets/imgs/icon.png',
-                                    height: 64,
-                                    width: 64,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: items[1].endColor,
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 6),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        items[0].name,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Avenir',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Text(
-                                        items[0].category,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: 'Avenir',
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      Row(
-                                        children: <Widget>[
-                                          const Icon(
-                                            Icons.location_on,
-                                            color: Colors.white,
-                                            size: 16,
-                                          ),
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              items[0].location,
+                                ],
+                              ),
+                            ),
+
+                            // Positioned(
+                            //   right: 0,
+                            //   bottom: 0,
+                            //   top: 0,
+                            //   child: CustomPaint(
+                            //     size: const Size(100, 150),
+                            //     painter: CustomCardShapePainter(
+                            //       _borderRadius,
+                            //       items[1].startColor,
+                            //       items[1].endColor,
+                            //     ),
+                            //   ),
+                            // ),
+                            Positioned.fill(
+                              child: Row(
+                                children: [
+                                  // 중간 공백
+                                  const SizedBox(width: 10),
+                                  // 도서 이미지
+                                  Expanded(
+                                    flex: 1,
+                                    child: Image.network(
+                                      bookModel!.coverSmallUrl,
+                                      width: 500,
+                                      height: 300,
+                                    ),
+                                  ),
+
+                                  // 중간 공백
+                                  const SizedBox(width: 10),
+
+                                  Expanded(
+                                    flex: 2,
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // 도서 제목
+                                            Text(
+                                              bookModel!.title,
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Avenir',
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w700,
                                               ),
                                             ),
-                                          ),
-                                        ],
+
+                                            // 중간 공백
+                                            const SizedBox(height: 5),
+
+                                            // 도서 작가 이름(null이 되어 있는 경우도 존재한다.)
+                                            bookModel!.author != ""
+                                                ? Text(
+                                                    "${bookModel!.author} 작가",
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: 'Avenir',
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  )
+                                                : const Visibility(
+                                                    visible: false,
+                                                    child: Text(
+                                                      "작가 이름이 없는 관계로 보여주지 않습니다.",
+                                                    ),
+                                                  ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 5),
+
+                                            // 도서 분야
+                                            Text(
+                                              category[bookModel!.categoryId]
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Avenir',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 5),
+
+                                            // 도서 출판사
+                                            Text(
+                                              "${bookModel!.publisher} 출판사",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Avenir',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 5),
+
+                                            // 도서 출판일
+                                            Text(
+                                              "출판일 ${bookModel!.pubDate}",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Avenir',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 5),
+
+                                            // 도서 가격
+                                            Text(
+                                              "${bookModel!.priceStandard}원",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Avenir',
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 20),
+
+                                            // 도서 설명
+                                            Text(
+                                              bookModel!.description,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Avenir',
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Text(
-                                        items[0].rating.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: 'Avenir',
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      RatingBar(rating: items[0].rating),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
 
                 // 중간 공백
-                const SizedBox(height: 40),
+                const SizedBox(height: 10),
 
                 // 찜하기, 도서 읽기 버튼
                 Row(
@@ -401,7 +507,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                 ),
 
                 // 중간 공백
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
 
                 // 도서 상세 정보 수정(관리자 권한)
                 UserInfo.identity == UserManagerCheck.manager
