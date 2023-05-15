@@ -1,6 +1,7 @@
 // 목표 설정/수정하는 페이지
 import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_my_goal_edit2.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ntp/ntp.dart';
@@ -52,10 +53,17 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
   // 목표 설정 변수
   String objDate = "목표 기간을 설정해주세요";
 
+  // 이전 페이지에서 받은 배열 objectives
+  List<Map<String, dynamic>>? objectives;
+
+  // 서버 통신 사용함
+  var dio = Dio();
+
   @override
   void initState() {
     print("Book My Goal Edit3 initState 시작");
     super.initState();
+    objectives = Get.arguments;
   }
 
   @override
@@ -107,7 +115,10 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                       // 목표 1
                       GestureDetector(
                         onTap: () {
-                          Get.off(() => BookMyGoalEdit1());
+                          Get.off(
+                            () => BookMyGoalEdit1(),
+                            arguments: objectives,
+                          );
                         },
                         child: Card(
                           elevation: 10.0,
@@ -135,7 +146,10 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                       // 목표 2
                       GestureDetector(
                         onTap: () {
-                          Get.off(() => BookMyGoalEdit2());
+                          Get.off(
+                            () => BookMyGoalEdit2(),
+                            arguments: objectives,
+                          );
                         },
                         child: Card(
                           elevation: 10.0,
@@ -293,14 +307,16 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                   ),
 
                   // 목표 도서 권수 설정
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: readBooksCountController,
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: readBooksCountController,
+                        ),
                       ),
                     ),
                   ),

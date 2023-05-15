@@ -1,5 +1,6 @@
 // 아이디를 찾기 위한 화면
 import 'dart:math';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
@@ -311,7 +312,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           // 서버와 통신
                           // 이메일을 통해 사용자의 아이디를 찾는다.
                           final response = await dio.post(
-                            'http://49.161.110.41:8080/Find/Account',
+                            'http://${IpAddress.hyunukIP}:8080/Find/Account',
                             data: {
                               // 이메일(String)
                               'email': email,

@@ -1,5 +1,6 @@
 // 임시 비밀번호 제공 페이지
 import 'dart:math';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
@@ -522,7 +523,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                           // 서버와 통신
                           // 사용자의 비밀번호를 변경한다.
                           final response = await dio.post(
-                            'http://49.161.110.41:8080/Find/PWD',
+                            'http://${IpAddress.hyunukIP}:8080/Find/PWD',
                             data: {
                               // 사용자 아이디(string)
                               'account': id,

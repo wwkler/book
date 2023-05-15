@@ -1,4 +1,5 @@
 // 앱의 로고인 페이지 화면
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/auth/find_id.dart';
@@ -140,11 +141,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (!RegExp(r"^[0-9a-z]+$").hasMatch(value!)) {
                                 isIdState = false;
                                 return "숫자, 영문만 입력해주세요";
-                              } else if (value.length < 6 ||
-                                  value.length > 13) {
+                              }
+                              //
+                              else if (value.length < 6 || value.length > 13) {
                                 isIdState = false;
                                 return "6자리 이상 12자리 이하를 입력해주세요";
-                              } else {
+                              }
+                              //
+                              else {
                                 isIdState = true;
                                 return null;
                               }
@@ -250,13 +254,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   // 로고인 버튼
                   ElevatedButton(
                     onPressed: () async {
-                      // Get.off(() => BookFluidNavBar());
+                      Get.off(() => BookFluidNavBar());
+
                       if (isIdState == true && isPasswordState == true) {
                         // 서버와 통신
                         // ID, Password가 존재하는지 확인한다.
                         final response = await dio.post(
-                          // 'http://49.161.110.41:8080/login',
-                          'http://116.122.96.53:8080/login',
+                          'http://${IpAddress.hyunukIP}:8080/login',
                           data: {
                             // 사용자 아이디(string)
                             'account': id,
@@ -274,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // 서버와 통신 성공
                         if (response.statusCode == 200) {
                           print("서버와 통신 성공");
-                          print("서버에서 제공해주는 데이터 : ${response.data}");
+                          print("서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
 
                           // 서버에서 회원 정보를 가져와서 model에 user_info.dart에 저장한다.
                           if (response.data["roles"][0]["name"] ==

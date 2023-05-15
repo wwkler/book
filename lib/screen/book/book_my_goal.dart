@@ -1,10 +1,17 @@
 // 도서 나만의 목표 페이지
+import 'dart:math';
+
+import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
+import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:ntp/ntp.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
 
 class BookMyGoal extends StatefulWidget {
@@ -19,17 +26,20 @@ class _BookMyGoalState extends State<BookMyGoal> {
   final editPageController = TextEditingController();
 
   // 목표 1, 2, 3 데이터를 담는 배열
-  List<Map<String, dynamic>> objectives = [
-    {"data": "none"},
-    {"data": "none"},
-    {"data": "none"},
-  ];
+  List<Map<String, dynamic>> objectives = [];
 
   // 읽고 싶은 도서 (배열)
+  List<BookModel> wantToReadBooks = [];
 
   // 읽고 있는 도서 (배열)
+  List<BookModel> nowReadBooks = [];
+  // 읽고 있는 도서에 대한 currentPage와 totalPage (배열)
+  List<Map<String, int>> nowReadBooks_currentPage_totalPage = [];
 
   // 읽은 도서 (배열)
+  List<BookModel> readBooks = [];
+  // 읽은 도서 날짜 기록하는 (배열)
+  List<String> readBooks_completed_dateTime = [];
 
   // 서버를 사용하기 위한 변수
   var dio = Dio();
@@ -48,11 +58,24 @@ class _BookMyGoalState extends State<BookMyGoal> {
   }
 
   // 나의 목표를 가져오기 위한 함수
-  Future<void> getMyGoals() async {
-    // 서버와 통신
+  Future<void> getServerDatas() async {
+    // 데이터 clear
+    objectives.clear();
+    for (int i = 0; i < 3; i++) {
+      objectives.add({"data": "none"});
+    }
+
+    wantToReadBooks.clear();
+    nowReadBooks.clear();
+    nowReadBooks_currentPage_totalPage.clear();
+    readBooks.clear();
+    readBooks_completed_dateTime.clear();
+
+    // 본격적으로 서버와 통신한다.
+
     // 서버에 목표 1 데이터가 있는지 확인한다.
     final response1 = await dio.get(
-      "http://116.122.96.53:8080/goal/isExist?goalname=목표_1_${UserInfo.id}",
+      "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_1_${UserInfo.id}",
       options: Options(
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
@@ -63,7 +86,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     // 목표 1 데이터가 있을 떄.... -> 목표 1과 관련된 내용을 서버를 통해 가져온다.
     if (response1.data == true) {
       final response1_1 = await dio.get(
-        "http://116.122.96.53:8080/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
+        "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -86,9 +109,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       }
     }
 
-    // 목표 2과 관련된 내용을 서버를 통해 가져온다.
+    // 서버에 목표 2 데이터가 있는지 확인한다.
     final response2 = await dio.get(
-      "http://116.122.96.53:8080/goal/isExist?goalname=목표_2_winner23456",
+      "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_2_${UserInfo.id}",
       options: Options(
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
@@ -99,7 +122,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     // 목표 2 데이터가 있을 떄.... -> 목표 2과 관련된 내용을 서버를 통해 가져온다.
     if (response2.data == true) {
       final response2_2 = await dio.get(
-        "http://116.122.96.53:8080/goal/getByGoalname?goalname=목표_2_winner23456",
+        "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_2_winner23456",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -109,7 +132,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
       if (response2_2.statusCode == 200) {
         print("서버와 통신 성공");
-        print("서버에서 목표 1 받은 데이터 : ${response2_2.data}");
+        print("서버에서 목표 2 받은 데이터 : ${response2_2.data}");
         objectives.removeAt(1);
         objectives.insert(1, response2_2.data as Map<String, dynamic>);
 
@@ -122,8 +145,289 @@ class _BookMyGoalState extends State<BookMyGoal> {
       }
     }
 
-    // 목표 3과 관련된 내용을 서버를 통해 가져온다.
-    print("objectives : $objectives");
+    // 서버에 목표 3 데이터가 있는지 확인한다.
+    final response3 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_3_${UserInfo.id}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    // 목표 3 데이터가 있을 떄.... -> 목표 3과 관련된 내용을 서버를 통해 가져온다.
+    if (response3.data == true) {
+      final response3_3 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_3_${UserInfo.id}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response3_3.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 목표 3 받은 데이터 : ${response3_3.data}");
+        objectives.removeAt(1);
+        objectives.insert(1, response3_3.data as Map<String, dynamic>);
+
+        print("objectives : $objectives");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response3_3.statusCode}");
+      }
+    }
+
+    // 읽고 싶은 도서를 서버에서 가져온다.
+    final response4 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/bookshelves/getLikedBooks?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response4.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은 읽고 싶은 도서 데이터: ${response4.data}");
+
+      wantToReadBooks = (response4.data as List<dynamic>).map(
+        (dynamic e) {
+          return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+        },
+      ).toList();
+
+      print("wantToReadBooks : $wantToReadBooks");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response4.statusCode}");
+    }
+
+    // 읽고 있는 도서를 서버에서 가져온다.
+    final response5 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response5.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은 읽고 있는 도서 데이터: ${response5.data}");
+
+      nowReadBooks = (response5.data as List<dynamic>).map(
+        (dynamic e) {
+          // 읽고 있는 도서에 대한 currentPage와 totalPage도 추가한다.
+          nowReadBooks_currentPage_totalPage.add({
+            "currentPage": e["currentPage"] as int,
+            "totalPage": e["totalPage"] as int,
+          });
+          return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+        },
+      ).toList();
+
+      print("nowReadBooks : $nowReadBooks");
+      print(
+          "nowReadBooks_currentPage_totalPage : ${nowReadBooks_currentPage_totalPage}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response5.statusCode}");
+    }
+
+    // 읽은 도서를 서버에서 가져온다.
+    final response6 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response6.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은 읽은 도서 데이터: ${response6.data}");
+
+      readBooks = (response6.data as List<dynamic>).map(
+        (dynamic e) {
+          // 도서 읽은 날짜를 배열에 추가한다.
+          readBooks_completed_dateTime.add(
+            (e["finishedDate"] as String).substring(0, 10),
+          );
+
+          return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+        },
+      ).toList();
+
+      print("readBooks : $readBooks");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response6.statusCode}");
+    }
+
+    // 목표와 관련된 분석 내용을 서버에서 가져온다.
+
+    // // 개인의 완료 달성 수 를 서버에서 가져온다.
+    final response7 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/getCompletedCount?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response7.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은 완료 달성 수 데이터: ${response7.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response7.statusCode}");
+    }
+
+    // // 개인의 성공률을 서버에서 가져온다.
+    final response8 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/getSuccessRate?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response8.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은  데이터: ${response8.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response8.statusCode}");
+    }
+
+    // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표 얼마나 달성했는지를 서버에서 가져온다.
+    final response9 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/similarCompleteds?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response9.statusCode == 200) {
+      print("서버와 통신 성공");
+      print(
+          "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 얼마나 달성했는지에 대한 데이터: ${response8.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response9.statusCode}");
+    }
+
+    // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수를 서버에서 가져온다.
+    final response10 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/similarChallengers?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response10.statusCode == 200) {
+      print("서버와 통신 성공");
+      print(
+          "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수 데이터: ${response10.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response10.statusCode}");
+    }
+    // // 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수를 서버에서 가져온다.
+
+    final response11 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/similarCompletedsAll?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response11.statusCode == 200) {
+      print("서버와 통신 성공");
+      print(
+          "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수 데이터: ${response11.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response11.statusCode}");
+    }
+
+    // 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 를 서버에서 가져온다.
+    final response12 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/similarChallengersAll?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response12.statusCode == 200) {
+      print("서버와 통신 성공");
+      print(
+          "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 데이터: ${response12.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response12.statusCode}");
+    }
+
+    // // 같은 나이대 목표 평균 성공률을 서버에서 가져온다.
+    final response13 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/goal/getAverageRate?memberId=${UserInfo.userValue}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
+
+    if (response13.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 받은 같은 나이대 목표 평균 성공률데이터: ${response13.data}");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response13.statusCode}");
+    }
+  }
+
+  // 날짜를 format 시켜주는 함수
+  String formatDate(DateTime date) {
+    final formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
   }
 
   @override
@@ -131,7 +435,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     print("Book_my_goal build 시작");
 
     return FutureBuilder(
-      future: getMyGoals(),
+      future: getServerDatas(),
       builder: (context, snapshot) {
         // getMyGoals()를 실행하는 동안만 실행
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -154,9 +458,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                 // 중간 공백
                 SizedBox(height: 40),
 
-                // 도서 데이터들을 가져오고 있습니다.
+                // 목표 및 사용자 서재 데이터를 가져오고 있습니다
                 Text(
-                  "도서 데이터를 가져오고 있습니다",
+                  "목표 및 사용자 서재\n 데이터를 가져오고 있습니다",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -251,22 +555,93 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     const SizedBox(height: 25),
 
                     // 1번째 목표, 2번쨰 목표, 3번쨰 목표
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // 목표 1를 눌렀을 떄 다이어로그를 표시한다.
-                          GestureDetector(
-                            onTap: () {
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // 1번째 목표
+                        GestureDetector(
+                          onTap: () async {
+                            // 현재 시간을 가져온다.
+                            DateTime currentTime = await NTP.now();
+                            currentTime = currentTime
+                                .toUtc()
+                                .add(const Duration(hours: 9));
+
+                            // 목표 1과 관련되서 데이터가 없을 떄 경우
+                            if (objectives[0]["data"] == "none") {
                               // 목표 1과 관련된 dialog를 요약적으로 보여준다.
                               Get.dialog(
-                                // 목표 1과 관련되서 데이터가 없거나, 현재 시간이 endTime보다 클 경우
-                                //  // 목표를 설정해야 한다고 알림 메시지를 보여준다.
+                                AlertDialog(
+                                  title: const Text("목표 1"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 텍스트
+                                        const Text(
+                                          "목표 1에 대한 데이터가 없습니다.\n목표를 설정해주세요",
+                                        ),
 
-                                // 현재 시간이 endTime보다 작을 경우
-                                // 목표 1 데이터에 대해서 자세히 보여준다.
-                                //
+                                        // 다이어로그에서 나가는 버튼
+                                        Center(
+                                          child: TextButton(
+                                            child: const Text("나가기"),
+                                            onPressed: () {
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 현재 시간이 endTime보다 클 경우
+                            // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
+                            else if (objectives[0]["endTime"]
+                                    .toString()
+                                    .compareTo(formatDate(currentTime)) <
+                                0) {
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("목표 1"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 텍스트
+                                        const Text(
+                                          "목표 1 종료 기간이 지났습니다.\n목표를 재설정해주세요",
+                                        ),
+
+                                        // 다이어로그에서 나가는 버튼
+                                        Center(
+                                          child: TextButton(
+                                            child: const Text("나가기"),
+                                            onPressed: () {
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 현재 시간이 endTime보다 작을 경우
+                            // 목표 1 데이터에 대해서 정보를 요약적으로 보여준다.
+                            else {
+                              Get.dialog(
                                 AlertDialog(
                                   title: const Text("목표 1"),
                                   content: SizedBox(
@@ -279,7 +654,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         children: [
                                           // 진행 기간
                                           Text(
-                                              "진행 기간 : 2023-04-21 ~ 2023-05-21"),
+                                            "진행 기간 : 2023-04-21 ~ 2023-05-21",
+                                          ),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
@@ -302,7 +678,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 로고인 페이지로 이동하는 버튼
+                                          // 진행률
+                                          Text("진행률 : 50%"),
+
+                                          // 다이어로그에서 나가는 버튼
                                           Center(
                                             child: TextButton(
                                               child: const Text("나가기"),
@@ -318,37 +697,117 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 ),
                               );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                elevation: 10.0,
-                                color: const Color.fromARGB(255, 228, 201, 232),
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 40,
-                                  child: Center(
-                                    child: Text(
-                                      "1번째 목표",
-                                      // "목표를 설정해주세요!!",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              elevation: 10.0,
+                              color: const Color.fromARGB(255, 228, 201, 232),
+                              shadowColor: Colors.grey.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: const SizedBox(
+                                width: 100,
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    "1번째 목표",
+                                    // "목표를 설정해주세요!!",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                        ),
 
-                          // 목표 2
-                          GestureDetector(
-                            onTap: () {
-                              // 목표 2와 관련된 dialog를 요약적으로 보여준다.
+                        // 2번쨰 목표
+                        GestureDetector(
+                          onTap: () async {
+                            // 현재 시간을 가져온다.
+                            DateTime currentTime = await NTP.now();
+                            currentTime = currentTime
+                                .toUtc()
+                                .add(const Duration(hours: 9));
+
+                            // 목표 2과 관련되서 데이터가 없을 떄 경우
+                            if (objectives[1]["data"] == "none") {
+                              // 목표 2과 관련된 dialog를 요약적으로 보여준다.
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("목표 2"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 텍스트
+                                        const Text(
+                                          "목표 2에 대한 데이터가 없습니다.\n목표를 설정해주세요",
+                                        ),
+
+                                        // 다이어로그에서 나가는 버튼
+                                        Center(
+                                          child: TextButton(
+                                            child: const Text("나가기"),
+                                            onPressed: () {
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 현재 시간이 endTime보다 클 경우
+                            // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
+                            else if (objectives[1]["endTime"]
+                                    .toString()
+                                    .compareTo(formatDate(currentTime)) <
+                                0) {
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("목표 2"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 텍스트
+                                        const Text(
+                                          "목표 2 종료 기간이 지났습니다.\n목표를 재설정해주세요",
+                                        ),
+
+                                        // 다이어로그에서 나가는 버튼
+                                        Center(
+                                          child: TextButton(
+                                            child: const Text("나가기"),
+                                            onPressed: () {
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 현재 시간이 endTime보다 작을 경우
+                            // 목표 2 데이터에 대해서 정보를 요약적으로 보여준다.
+                            else {
                               Get.dialog(
                                 AlertDialog(
                                   title: const Text("목표 2"),
@@ -362,7 +821,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         children: [
                                           // 진행 기간
                                           Text(
-                                              "진행 기간 : 2023-04-21 ~ 2023-05-21"),
+                                            "진행 기간 : 2023-04-21 ~ 2023-05-21",
+                                          ),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
@@ -385,7 +845,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 로고인 페이지로 이동하는 버튼
+                                          // 진행률
+                                          Text("진행률 : 50%"),
+
+                                          // 다이어로그에서 나가는 버튼
                                           Center(
                                             child: TextButton(
                                               child: const Text("나가기"),
@@ -401,37 +864,117 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 ),
                               );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                elevation: 10.0,
-                                color: const Color.fromARGB(255, 228, 201, 232),
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 40,
-                                  child: Center(
-                                    child: Text(
-                                      "2번째 목표",
-                                      // "목표를 설정해주세요!!",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              elevation: 10.0,
+                              color: const Color.fromARGB(255, 228, 201, 232),
+                              shadowColor: Colors.grey.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: const SizedBox(
+                                width: 100,
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    "2번째 목표",
+                                    // "목표를 설정해주세요!!",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                        ),
 
-                          // 목표 3
-                          GestureDetector(
-                            onTap: () {
-                              // 목표 3와 관련된 dialog를 요약적으로 보여준다.
+                        // 3번쨰 목표
+                        GestureDetector(
+                          onTap: () async {
+                            // 현재 시간을 가져온다.
+                            DateTime currentTime = await NTP.now();
+                            currentTime = currentTime
+                                .toUtc()
+                                .add(const Duration(hours: 9));
+
+                            // 목표 3과 관련되서 데이터가 없을 떄 경우
+                            if (objectives[2]["data"] == "none") {
+                              // 목표 2과 관련된 dialog를 요약적으로 보여준다.
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("목표 3"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 텍스트
+                                        const Text(
+                                          "목표 3에 대한 데이터가 없습니다.\n목표를 설정해주세요",
+                                        ),
+
+                                        // 다이어로그에서 나가는 버튼
+                                        Center(
+                                          child: TextButton(
+                                            child: const Text("나가기"),
+                                            onPressed: () {
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 현재 시간이 endTime보다 클 경우
+                            // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
+                            else if (objectives[2]["endTime"]
+                                    .toString()
+                                    .compareTo(formatDate(currentTime)) <
+                                0) {
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("목표 3"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 텍스트
+                                        const Text(
+                                          "목표 3 종료 기간이 지났습니다.\n목표를 재설정해주세요",
+                                        ),
+
+                                        // 다이어로그에서 나가는 버튼
+                                        Center(
+                                          child: TextButton(
+                                            child: const Text("나가기"),
+                                            onPressed: () {
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 현재 시간이 endTime보다 작을 경우
+                            // 목표 3 데이터에 대해서 정보를 요약적으로 보여준다.
+                            else {
                               Get.dialog(
                                 AlertDialog(
                                   title: const Text("목표 3"),
@@ -445,7 +988,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         children: [
                                           // 진행 기간
                                           Text(
-                                              "진행 기간 : 2023-04-21 ~ 2023-05-21"),
+                                            "진행 기간 : 2023-04-21 ~ 2023-05-21",
+                                          ),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
@@ -468,7 +1012,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 로고인 페이지로 이동하는 버튼
+                                          // 진행률
+                                          Text("진행률 : 50%"),
+
+                                          // 다이어로그에서 나가는 버튼
                                           Center(
                                             child: TextButton(
                                               child: const Text("나가기"),
@@ -484,34 +1031,34 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 ),
                               );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                elevation: 10.0,
-                                color: const Color.fromARGB(255, 228, 201, 232),
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 40,
-                                  child: Center(
-                                    child: Text(
-                                      "3번째 목표",
-                                      // "목표를 설정해주세요!!",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Card(
+                              elevation: 10.0,
+                              color: const Color.fromARGB(255, 228, 201, 232),
+                              shadowColor: Colors.grey.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: const SizedBox(
+                                width: 100,
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    "3번째 목표",
+                                    // "목표를 설정해주세요!!",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
 
                     // 중간 공백
@@ -611,91 +1158,301 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       content: Center(
                         child: SizedBox(
                           width: 300,
-                          height: 300,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) => GestureDetector(
-                              onTap: () {
-                                // 도서 상세 페이지로 라우팅
-                                // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 싶은 도서임을 알려야 한다.
-                                Get.off(() => BookShowPreview());
-                              },
-                              child: Card(
-                                elevation: 10.0,
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Column(
-                                  children: [
-                                    // 도서 이미지
-                                    Image.asset("assets/imgs/icon.png"),
-
-                                    // 도서 제목
-                                    Text("도서입니다."),
-
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
-
-                                    Row(
-                                      children: [
-                                        // 읽고 싶은 도서 삭제하기
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // 클라이언트에서 해당 책을 삭제하고 서버와 통신
-                                            // 서버는 읽고 싶은 책에서 해당 책을 삭제한다.
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            backgroundColor: Colors.purple,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                              vertical: 10,
-                                            ),
+                          height: 400,
+                          child: wantToReadBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: wantToReadBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 상세 페이지로 라우팅
+                                      // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 싶은 도서임을 알려야 한다.
+                                      Get.off(() => BookShowPreview());
+                                    },
+                                    child: SizedBox(
+                                      width: 250,
+                                      height: 400,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Card(
+                                          elevation: 10.0,
+                                          shadowColor:
+                                              Colors.grey.withOpacity(0.5),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
                                           ),
-                                          child: const Text("삭제하기"),
-                                        ),
+                                          child: Column(
+                                            children: [
+                                              // 삭제하기 버튼
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    // 삭제하는 다이어로그가 나온다.
+                                                    Get.dialog(
+                                                      AlertDialog(
+                                                        title: const Text(
+                                                          "읽고 싶은 도서에서 삭제하기",
+                                                        ),
+                                                        content: SizedBox(
+                                                          width: 100,
+                                                          height: 150,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              // 텍스트
+                                                              const Text(
+                                                                "읽고 싶은 도서에서 삭제하시겠습니까?",
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  // 삭제하기 버튼
+                                                                  Center(
+                                                                    child:
+                                                                        TextButton(
+                                                                      child:
+                                                                          const Text(
+                                                                        "삭제하기",
+                                                                      ),
+                                                                      onPressed:
+                                                                          () async {
+                                                                        // 서버와 통신
+                                                                        // 읽고 싶은 도서를 삭제한다.
+                                                                        print(
+                                                                            "읽고 싶은 도서 삭제 요청 url : http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0}");
+                                                                        final response =
+                                                                            await dio.delete(
+                                                                          "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0",
+                                                                          options:
+                                                                              Options(
+                                                                            validateStatus: (_) =>
+                                                                                true,
+                                                                            contentType:
+                                                                                Headers.jsonContentType,
+                                                                            responseType:
+                                                                                ResponseType.json,
+                                                                          ),
+                                                                        );
+                                                                        // 다이어로그를 삭제한다.
+                                                                        Get.back();
 
-                                        // 중간 공백
-                                        const SizedBox(width: 10),
+                                                                        // 화면을 재랜더링 한다.
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    ),
+                                                                  ),
 
-                                        // 책 읽기
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            // 클라이언트에서 해당 책을 삭제하고 읽고 있는 책으로 등록한다.
+                                                                  // 나가기 버튼
+                                                                  Center(
+                                                                    child:
+                                                                        TextButton(
+                                                                      child:
+                                                                          const Text(
+                                                                        "나가기",
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        // 다이어로그를 삭제한다.
+                                                                        Get.back();
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
 
-                                            // 서버와 통신
-                                            // 서버는 읽고 싶은 책에서 해당 책을 삭제한다.
-                                            // 서버는 읽고 있는 책으로 해당 책을 등록한다.
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            backgroundColor: Colors.purple,
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 10,
-                                              vertical: 10,
-                                            ),
+                                                    // 서버와 통신
+                                                  },
+                                                  icon: const Icon(Icons.clear),
+                                                ),
+                                              ),
+
+                                              // 도서 이미지
+                                              // Image.asset(
+                                              //   "assets/imgs/icon.png",
+                                              //   width: 150,
+                                              //   height: 150,
+                                              // ),
+
+                                              Image.network(
+                                                wantToReadBooks[index]
+                                                    .coverSmallUrl,
+                                                width: 150,
+                                                height: 150,
+                                              ),
+
+                                              // 도서 제목
+                                              // Text(
+                                              //   "도서입니다.",
+                                              //   style: TextStyle(
+                                              //     fontWeight: FontWeight.w700,
+                                              //   ),
+                                              // ),
+
+                                              Text(
+                                                wantToReadBooks[index].title,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+
+                                              // 중간 공백
+                                              const SizedBox(height: 10),
+
+                                              // 중간 공백
+                                              const SizedBox(width: 10),
+
+                                              // 도서 읽기 버튼
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  // 다이어로그
+                                                  Get.dialog(
+                                                    AlertDialog(
+                                                      title: const Text(
+                                                        "읽고 있는 도서 추가",
+                                                      ),
+                                                      content: SizedBox(
+                                                        width: 100,
+                                                        height: 150,
+                                                        child: Column(
+                                                          children: [
+                                                            const Text(
+                                                              "읽고 있는 도서로 추가하시겠습니까?",
+                                                            ),
+
+                                                            // 중간 공백
+                                                            const SizedBox(
+                                                              height: 50,
+                                                            ),
+
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                // 예
+                                                                TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    "추가",
+                                                                  ),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    // 서버와 통신
+                                                                    // 사용자의 읽고 있는 책에 도서 추가
+                                                                    final response =
+                                                                        await dio
+                                                                            .put(
+                                                                      // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
+                                                                      "http://116.122.96.53:8080/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&totalPage=100",
+                                                                      options:
+                                                                          Options(
+                                                                        validateStatus:
+                                                                            (_) =>
+                                                                                true,
+                                                                        contentType:
+                                                                            Headers.jsonContentType,
+                                                                        responseType:
+                                                                            ResponseType.json,
+                                                                      ),
+                                                                    );
+
+                                                                    if (response
+                                                                            .statusCode ==
+                                                                        200) {
+                                                                      print(
+                                                                          "서버와 통신 성공");
+                                                                      print(
+                                                                          "찜하기를 통해 받은 데이터 : ${response.data}");
+                                                                    }
+                                                                    //
+                                                                    else {
+                                                                      print(
+                                                                          "서버와 통신 실패");
+                                                                      print(
+                                                                          "서버 통신 에러 코드 : ${response.statusCode}");
+                                                                    }
+
+                                                                    //  다이어로그를 삭제한다.
+                                                                    Get.back();
+
+                                                                    // 도서 검색, 추천 페이지로 이동 (라우팅)
+                                                                    Get.off(() =>
+                                                                        BookFluidNavBar());
+                                                                  },
+                                                                ),
+
+                                                                // 아니오
+                                                                TextButton(
+                                                                  child: const Text(
+                                                                      "추가하지 않음"),
+                                                                  onPressed:
+                                                                      () {
+                                                                    // 다이어로그를 삭제한다.
+                                                                    Get.back();
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      10.0,
+                                                    ),
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.purple,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 10,
+                                                    vertical: 10,
+                                                  ),
+                                                ),
+                                                child: const Text("도서 읽기"),
+                                              ),
+
+                                              // 중간 공백
+                                              const SizedBox(height: 25),
+                                            ],
                                           ),
-                                          child: Text("도서 읽기"),
                                         ),
-                                      ],
-                                    )
-                                  ],
+                                      ),
+                                    ),
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 20,
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "읽고 싶은 도서가 없습니다.",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              width: 20,
-                            ),
-                          ),
                         ),
                       ),
                       title: const Text(
@@ -720,124 +1477,402 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       color: Colors.purple,
                       content: Center(
                         child: SizedBox(
-                          width: 350,
-                          height: 350,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) => GestureDetector(
-                              onTap: () {
-                                // 도서 상세 페이지로 라우팅
-                                // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 있는 도서을 알려야 한다.
-                                Get.off(() => BookShowPreview());
-                              },
-                              child: Card(
-                                elevation: 10.0,
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Column(
-                                  children: [
-                                    // 도서 이미지
-                                    Image.asset("assets/imgs/icon.png"),
-
-                                    const Text("2023-4-21 읽기 시작"),
-
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
-
-                                    // 도서 제목
-                                    const Text("도서입니다."),
-
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
-
-                                    // 진행도 확인
-                                    GestureDetector(
-                                      onTap: () {
-                                        Get.dialog(
-                                          AlertDialog(
-                                            title: const Text('진행도 수정'),
-                                            content: SizedBox(
-                                              width: 100,
-                                              height: 100,
-                                              child: Column(
-                                                children: [
-                                                  // Text
-                                                  const Text("진행도 수정할 페이지를 입력"),
-
-                                                  // 중간 공백
-                                                  const SizedBox(height: 10),
-
-                                                  // TextField
-                                                  SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child: TextField(
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      controller:
-                                                          editPageController,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text("적용하기"),
-                                                onPressed: () {
-                                                  print(int.parse(
-                                                      editPageController.text));
-
-                                                  // 클라이언트에 읽은 페이지를 업데이트하고
-                                                  // 서버와 통신
-                                                  // 서버는 해당 책에 대한 읽은 페이지를 업데이트한다.
-
-                                                  // 만약 클라이언트에서 해당 책에 대한 최종 페이지를 입력했다면
-                                                  // 클라이언트는 읽고 있는 책에서 해당 책을 삭제하고 읽은 책으로 등록한다.
-                                                  // 서버와 통신
-                                                  // 서버는 읽고 있는 책에서 해당 책을 삭제하고 읽은 책으로 등록한다.
-                                                  editPageController.text = "";
-                                                  Get.back();
-                                                },
-                                              ),
-                                            ],
+                          width: 300,
+                          height: 400,
+                          child: nowReadBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: nowReadBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 상세 페이지로 라우팅
+                                      // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 있는 도서을 알려야 한다.
+                                      Get.off(() => BookShowPreview());
+                                    },
+                                    child: SizedBox(
+                                      width: 250,
+                                      height: 400,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Card(
+                                          elevation: 10.0,
+                                          shadowColor:
+                                              Colors.grey.withOpacity(0.5),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
                                           ),
-                                        );
-                                      },
-                                      child: Card(
-                                        elevation: 10.0,
-                                        shadowColor:
-                                            Colors.grey.withOpacity(0.5),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        child: const SizedBox(
-                                          width: 100,
-                                          height: 30,
-                                          child: Center(
-                                            child: Text(
-                                              "100/500",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
+                                          child: Column(
+                                            children: [
+                                              // 삭제하기 버튼
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    // 삭제하는 다이어로그가 나온다.
+                                                    Get.dialog(
+                                                      AlertDialog(
+                                                        title: const Text(
+                                                          "읽고 있는 도서에서 삭제하기",
+                                                        ),
+                                                        content: SizedBox(
+                                                          width: 100,
+                                                          height: 150,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              // 텍스트
+                                                              const Text(
+                                                                "읽고 있는 도서에서 삭제하시겠습니까?",
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  // 삭제하기 버튼
+                                                                  Center(
+                                                                    child:
+                                                                        TextButton(
+                                                                      child:
+                                                                          const Text(
+                                                                        "삭제하기",
+                                                                      ),
+                                                                      onPressed:
+                                                                          () async {
+                                                                        // 서버와 통신
+                                                                        // 읽고 있는 도서를 삭제한다.
+                                                                        final response =
+                                                                            await dio.delete(
+                                                                          "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&param=1",
+                                                                          options:
+                                                                              Options(
+                                                                            validateStatus: (_) =>
+                                                                                true,
+                                                                            contentType:
+                                                                                Headers.jsonContentType,
+                                                                            responseType:
+                                                                                ResponseType.json,
+                                                                          ),
+                                                                        );
+                                                                        // 다이어로그를 삭제한다.
+                                                                        Get.back();
+
+                                                                        // 화면을 재랜더링 한다.
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    ),
+                                                                  ),
+
+                                                                  // 나가기 버튼
+                                                                  Center(
+                                                                    child:
+                                                                        TextButton(
+                                                                      child:
+                                                                          const Text(
+                                                                        "나가기",
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        // 다이어로그를 삭제한다.
+                                                                        Get.back();
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  icon: const Icon(Icons.clear),
+                                                ),
                                               ),
-                                            ),
+
+                                              // 도서 이미지
+                                              // Image.asset(
+                                              //   "assets/imgs/icon.png",
+                                              //   width: 150,
+                                              //   height: 150,
+                                              // ),
+
+                                              // 도서 이미지
+                                              Image.network(
+                                                nowReadBooks[index]
+                                                    .coverSmallUrl,
+                                                width: 150,
+                                                height: 150,
+                                              ),
+
+                                              // 도서 제목
+                                              Text(
+                                                nowReadBooks[index].title,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+
+                                              // 중간 공백
+                                              const SizedBox(height: 10),
+
+                                              // 진행도 표시, 도서 읽기 완료 버튼
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    // 진행도 확인
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Get.dialog(
+                                                          AlertDialog(
+                                                            title: const Text(
+                                                              '진행도 수정',
+                                                            ),
+                                                            content: SizedBox(
+                                                              width: 100,
+                                                              height: 100,
+                                                              child: Column(
+                                                                children: [
+                                                                  // Text
+                                                                  const Text(
+                                                                    "진행도 수정할 페이지를 입력",
+                                                                  ),
+
+                                                                  // 중간 공백
+                                                                  const SizedBox(
+                                                                    height: 10,
+                                                                  ),
+
+                                                                  // TextField
+                                                                  SizedBox(
+                                                                    width: 50,
+                                                                    height: 50,
+                                                                    child:
+                                                                        TextField(
+                                                                      keyboardType:
+                                                                          TextInputType
+                                                                              .number,
+                                                                      controller:
+                                                                          editPageController,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                child:
+                                                                    const Text(
+                                                                  "적용하기",
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  // 진행도를 수정하도록 서버와 통신한다.
+                                                                  print(
+                                                                      "진행도 수정 설정한 페이지수 : ${int.parse(editPageController.text)}");
+
+                                                                  final response =
+                                                                      await dio
+                                                                          .post(
+                                                                    "http://116.122.96.53:8080/bookshelves/updateCurrentReading?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&page=${int.parse(editPageController.text)}",
+                                                                    options:
+                                                                        Options(
+                                                                      validateStatus:
+                                                                          (_) =>
+                                                                              true,
+                                                                      contentType:
+                                                                          Headers
+                                                                              .jsonContentType,
+                                                                      responseType:
+                                                                          ResponseType
+                                                                              .json,
+                                                                    ),
+                                                                  );
+
+                                                                  // editPageController.text를 다시 빈칸으로 만듦
+                                                                  editPageController
+                                                                      .text = "";
+
+                                                                  // 다이어로그를 삭제한다.
+                                                                  Get.back();
+
+                                                                  // 화면 잰더링
+                                                                  setState(
+                                                                      () {});
+                                                                },
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Card(
+                                                        elevation: 10.0,
+                                                        shadowColor: Colors.grey
+                                                            .withOpacity(0.5),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            5.0,
+                                                          ),
+                                                        ),
+                                                        child: SizedBox(
+                                                          width: 100,
+                                                          height: 30,
+                                                          child: Center(
+                                                            child: Text(
+                                                              "${nowReadBooks_currentPage_totalPage[index]["currentPage"]}/${nowReadBooks_currentPage_totalPage[index]["totalPage"]}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                    // 도서 읽기 완료 버튼
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        // 읽기 완료 다이어로그를 표시한다.
+                                                        Get.dialog(
+                                                          AlertDialog(
+                                                            title: const Text(
+                                                              "읽기 완료",
+                                                            ),
+                                                            content: SizedBox(
+                                                              width: 100,
+                                                              height: 150,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  // 텍스트
+                                                                  const Text(
+                                                                    "읽기 완료를 하시겠습니까?",
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceEvenly,
+                                                                    children: [
+                                                                      // 읽기 완료 버튼
+                                                                      Center(
+                                                                        child:
+                                                                            TextButton(
+                                                                          child:
+                                                                              const Text(
+                                                                            "읽기 완료",
+                                                                          ),
+                                                                          onPressed:
+                                                                              () async {
+                                                                            // 서버와 통신
+                                                                            // 도서 읽기 완료 한다.
+                                                                            final response =
+                                                                                await dio.put(
+                                                                              "http://${IpAddress.hyunukIP}:8080/bookshelves/addFinished?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}",
+                                                                              options: Options(
+                                                                                validateStatus: (_) => true,
+                                                                                contentType: Headers.jsonContentType,
+                                                                                responseType: ResponseType.json,
+                                                                              ),
+                                                                            );
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+
+                                                                            // 화면을 재랜더링 한다.
+                                                                            setState(() {});
+                                                                          },
+                                                                        ),
+                                                                      ),
+
+                                                                      // 나가기 버튼
+                                                                      Center(
+                                                                        child:
+                                                                            TextButton(
+                                                                          child:
+                                                                              const Text(
+                                                                            "나가기",
+                                                                          ),
+                                                                          onPressed:
+                                                                              () {
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+                                                                          },
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            10.0,
+                                                          ),
+                                                        ),
+                                                        backgroundColor:
+                                                            Colors.purple,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 10,
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          const Text("읽기 완료"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              // 중간 공백
+                                              const SizedBox(height: 20),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 20,
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "읽고 있는 도서가 없습니다",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              width: 20,
-                            ),
-                          ),
                         ),
                       ),
                       title: const Text(
@@ -863,46 +1898,170 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       content: Center(
                         child: SizedBox(
                           width: 300,
-                          height: 300,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) => GestureDetector(
-                              onTap: () {
-                                // 도서 상세 페이지로 라우팅
-                                // 해당 도서 데이터를 arguments로 전달하며 이것이 읽은 도서을 알려야 한다.
-                                Get.off(() => BookShowPreview());
-                              },
-                              child: Card(
-                                elevation: 10.0,
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
+                          height: 400,
+                          child: readBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: readBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 상세 페이지로 라우팅
+                                      // 해당 도서 데이터를 arguments로 전달하며 이것이 읽은 도서을 알려야 한다.
+                                      Get.off(() => BookShowPreview());
+                                    },
+                                    child: SizedBox(
+                                      width: 250,
+                                      height: 400,
+                                      child: Card(
+                                        elevation: 10.0,
+                                        shadowColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            // 삭제하기
+                                            // 삭제하기 버튼
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  // 삭제하는 다이어로그가 나온다.
+                                                  Get.dialog(
+                                                    AlertDialog(
+                                                      title: const Text(
+                                                        "읽은 도서에서 삭제하기",
+                                                      ),
+                                                      content: SizedBox(
+                                                        width: 100,
+                                                        height: 150,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            // 텍스트
+                                                            const Text(
+                                                              "읽은 도서에서 삭제하시겠습니까?",
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceEvenly,
+                                                              children: [
+                                                                // 삭제하기 버튼
+                                                                Center(
+                                                                  child:
+                                                                      TextButton(
+                                                                    child:
+                                                                        const Text(
+                                                                      "삭제하기",
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      // 서버와 통신
+                                                                      // 읽은 도서를 삭제한다.
+                                                                      final response =
+                                                                          await dio
+                                                                              .delete(
+                                                                        "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${readBooks[index].itemId}&param=2",
+                                                                        options:
+                                                                            Options(
+                                                                          validateStatus: (_) =>
+                                                                              true,
+                                                                          contentType:
+                                                                              Headers.jsonContentType,
+                                                                          responseType:
+                                                                              ResponseType.json,
+                                                                        ),
+                                                                      );
+                                                                      // 다이어로그를 삭제한다.
+                                                                      Get.back();
+
+                                                                      // 화면을 재랜더링 한다.
+                                                                      setState(
+                                                                          () {});
+                                                                    },
+                                                                  ),
+                                                                ),
+
+                                                                // 나가기 버튼
+                                                                Center(
+                                                                  child:
+                                                                      TextButton(
+                                                                    child:
+                                                                        const Text(
+                                                                      "나가기",
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      // 다이어로그를 삭제한다.
+                                                                      Get.back();
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                icon: const Icon(Icons.clear),
+                                              ),
+                                            ),
+
+                                            // 도서 이미지
+                                            Image.network(
+                                              readBooks[index].coverSmallUrl,
+                                              width: 150,
+                                              height: 150,
+                                            ),
+
+                                            Text(
+                                              "${readBooks_completed_dateTime[index]} 읽기 완료",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 10),
+
+                                            // 도서 제목
+                                            Text(
+                                              readBooks[index].title,
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 10),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 20,
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "읽은 도서가 없습니다",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                                child: Column(
-                                  children: [
-                                    // 도서 이미지
-                                    Image.asset("assets/imgs/icon.png"),
-
-                                    Text("2023-4-21 읽기 완료"),
-
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
-
-                                    // 도서 제목
-                                    Text("도서입니다."),
-
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                              width: 20,
-                            ),
-                          ),
                         ),
                       ),
                       title: const Text(

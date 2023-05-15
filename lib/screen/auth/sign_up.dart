@@ -1,6 +1,7 @@
 // 회원가입 하는 페이지 화면
 import 'dart:convert';
 import 'dart:math';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
@@ -881,8 +882,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           // 서버와 통신
                           // 회원 정보를 데이터베이스에 등록한다.
                           final response = await dio.post(
-                            // 'http://49.161.110.41:8080/register',
-                            'http://116.122.96.53:8080/register',
+                            'http://${IpAddress.hyunukIP}:8080/register',
                             data: {
                               // 사용자 아이디(string)
                               'account': id,

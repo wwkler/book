@@ -69,7 +69,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
     // 접속하려는 서버 url를 설정한다.
     String url =
         "http://116.122.96.53:8080/api/search?query=${discrimition != "" ? discrimition : text}";
-
+    // "http://49.161.110.41:8080/api/search?query=${discrimition != "" ? discrimition : text}";
     // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=${discrimition != "" ? discrimition : text}&output=json";
 
     // 이전 페이지에서 검색어를 요청해서 서버로부터 도서 데이터를 받을 경우에 대한 로직 처리
@@ -90,32 +90,32 @@ class _BookSearchResultState extends State<BookSearchResult> {
     if (response.statusCode == 200) {
       print("서버와 통신 성공");
       print("서버에서 받은 데이터 : ${response.data}");
+
+      // response.data에 도서 데이터가 있느냐 없느냐에 따라 다른 로직 구현
+      if ((response.data["item"] as List<dynamic>).isEmpty) {
+        print("도서 데이터가 없다.");
+        isSearchBookData = false;
+      }
+      //
+      else {
+        print("도서 데이터가 있다.");
+        print((response.data["item"] as List<dynamic>).length);
+
+        searchBookModels = (response.data["item"] as List<dynamic>).map(
+          (dynamic e) {
+            return BookModel.fromJson(e as Map<String, dynamic>);
+          },
+        ).toList();
+
+        print("searchBookModels : $searchBookModels");
+
+        isSearchBookData = true;
+      }
     }
     //
     else {
       print("서버와 통신 실패");
       print("서버 통신 에러 코드 : ${response.statusCode}");
-    }
-
-    // response.data에 도서 데이터가 있느냐 없느냐에 따라 다른 로직 구현
-    if ((response.data["item"] as List<dynamic>).isEmpty) {
-      print("도서 데이터가 없다.");
-      isSearchBookData = false;
-    }
-    //
-    else {
-      print("도서 데이터가 있다.");
-      print((response.data["item"] as List<dynamic>).length);
-
-      searchBookModels = (response.data["item"] as List<dynamic>).map(
-        (dynamic e) {
-          return BookModel.fromJson(e as Map<String, dynamic>);
-        },
-      ).toList();
-
-      print("searchBookModels : $searchBookModels");
-
-      isSearchBookData = true;
     }
   }
 
@@ -162,268 +162,277 @@ class _BookSearchResultState extends State<BookSearchResult> {
             }
             // getSerachBookDatas()를 다 실행했으면....
             else {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                // 배경 이미지
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/imgs/background_book1.jpg"),
-                    fit: BoxFit.fill,
-                    opacity: 0.3,
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  // 배경 이미지
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/imgs/background_book1.jpg"),
+                      fit: BoxFit.fill,
+                      opacity: 0.3,
+                    ),
                   ),
-                ),
 
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // 이전 페이지 아이콘, search bar
-                      Row(
-                        children: [
-                          // 이전 페이지 아이콘
-                          IconButton(
-                            onPressed: () {
-                              Get.off(() => BookFluidNavBar());
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              size: 30,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 이전 페이지 아이콘, search bar
+                        Row(
+                          children: [
+                            // 이전 페이지 아이콘
+                            IconButton(
+                              onPressed: () {
+                                Get.off(() => BookFluidNavBar());
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                size: 30,
+                              ),
                             ),
-                          ),
 
-                          const SizedBox(width: 10),
+                            const SizedBox(width: 10),
 
-                          // search bar
-                          AnimSearchBar(
-                            width: 300,
-                            textController: searchTextController,
-                            helpText: "책 또는 저자를 입력",
-                            suffixIcon: const Icon(Icons.arrow_back),
-                            onSuffixTap: () {
-                              searchTextController.clear();
-                            },
-                            onSubmitted: (String value) {
-                              if (searchTextController.text.isNotEmpty) {
-                                text = value;
-                                setState(() {});
-                              } else {
-                                Get.snackbar(
-                                  "이상 메시지",
-                                  "책 또는 저자를 입력해주세요",
-                                  duration: const Duration(seconds: 5),
-                                  snackPosition: SnackPosition.TOP,
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-
-                      // 중간 공백
-                      const SizedBox(height: 5),
-
-                      // 도서 Text
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Card(
-                            elevation: 10.0,
-                            color: const Color.fromARGB(255, 228, 201, 232),
-                            shadowColor: Colors.grey.withOpacity(0.5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                            // search bar
+                            AnimSearchBar(
+                              width: 300,
+                              textController: searchTextController,
+                              helpText: "책 또는 저자를 입력",
+                              suffixIcon: const Icon(Icons.arrow_back),
+                              onSuffixTap: () {
+                                searchTextController.clear();
+                              },
+                              onSubmitted: (String value) {
+                                if (searchTextController.text.isNotEmpty) {
+                                  text = value;
+                                  setState(() {});
+                                } else {
+                                  Get.snackbar(
+                                    "이상 메시지",
+                                    "책 또는 저자를 입력해주세요",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
+                              },
                             ),
-                            child: const SizedBox(
-                              width: 250,
-                              height: 40,
-                              child: Center(
-                                child: Text(
-                                  "도서",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
+                          ],
+                        ),
+
+                        // 중간 공백
+                        const SizedBox(height: 5),
+
+                        // 도서 Text
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: Card(
+                              elevation: 10.0,
+                              color: const Color.fromARGB(255, 228, 201, 232),
+                              shadowColor: Colors.grey.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: const SizedBox(
+                                width: 250,
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    "도서",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
 
-                      // 중간 공백
-                      const SizedBox(height: 20),
+                        // 중간 공백
+                        const SizedBox(height: 20),
 
-                      // 검색 도서 결과물 -> 없으면 결과가 없다는 text를 화면에 보여주고, 있으면 도서들을 보여준다.
-                      isSearchBookData == true
-                          ? Expanded(
-                              flex: 1,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: searchBookModels.length,
-                                itemBuilder: (context, index) {
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          // 도서 상세 페이지로 라우팅
-                                          Get.off(
-                                            () => BookShowPreview(),
-                                            arguments: searchBookModels[index],
-                                          );
-                                        },
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Container(
-                                              height: 150,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  _borderRadius,
-                                                ),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    items[1].startColor,
-                                                    items[1].endColor
-                                                  ],
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                ),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: items[1].endColor,
-                                                    blurRadius: 12,
-                                                    offset: const Offset(0, 6),
+                        // 검색 도서 결과물 -> 없으면 결과가 없다는 text를 화면에 보여주고, 있으면 도서들을 보여준다.
+                        isSearchBookData == true
+                            ? Expanded(
+                                flex: 1,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: searchBookModels.length,
+                                  itemBuilder: (context, index) {
+                                    return Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            // 도서 상세 페이지로 라우팅
+                                            Get.off(
+                                              () => BookShowPreview(),
+                                              arguments:
+                                                  searchBookModels[index],
+                                            );
+                                          },
+                                          child: Stack(
+                                            children: <Widget>[
+                                              Container(
+                                                height: 150,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    _borderRadius,
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                            Positioned(
-                                              right: 0,
-                                              bottom: 0,
-                                              top: 0,
-                                              child: CustomPaint(
-                                                size: const Size(80, 50),
-                                                painter: CustomCardShapePainter(
-                                                  _borderRadius,
-                                                  items[1].startColor,
-                                                  items[1].endColor,
-                                                ),
-                                              ),
-                                            ),
-                                            Positioned.fill(
-                                              child: Row(
-                                                children: [
-                                                  // 중간 공백
-                                                  const SizedBox(width: 10),
-
-                                                  // 도서 이미지
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Image.network(
-                                                      searchBookModels[index]
-                                                          .coverSmallUrl,
-                                                      width: 100,
-                                                      height: 100,
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      items[1].startColor,
+                                                      items[1].endColor
+                                                    ],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: items[1].endColor,
+                                                      blurRadius: 12,
+                                                      offset:
+                                                          const Offset(0, 6),
                                                     ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Positioned(
+                                                right: 0,
+                                                bottom: 0,
+                                                top: 0,
+                                                child: CustomPaint(
+                                                  size: const Size(80, 50),
+                                                  painter:
+                                                      CustomCardShapePainter(
+                                                    _borderRadius,
+                                                    items[1].startColor,
+                                                    items[1].endColor,
                                                   ),
+                                                ),
+                                              ),
+                                              Positioned.fill(
+                                                child: Row(
+                                                  children: [
+                                                    // 중간 공백
+                                                    const SizedBox(width: 10),
 
-                                                  // 중간 공백
-                                                  const SizedBox(width: 10),
-
-                                                  // 도서 제목
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Text(
-                                                      searchBookModels[index]
-                                                          .title,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontFamily: 'Avenir',
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w700,
+                                                    // 도서 이미지
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Image.network(
+                                                        searchBookModels[index]
+                                                            .coverSmallUrl,
+                                                        width: 100,
+                                                        height: 100,
                                                       ),
                                                     ),
-                                                  ),
 
-                                                  // 중간 공백
-                                                  const SizedBox(width: 20),
+                                                    // 중간 공백
+                                                    const SizedBox(width: 10),
 
-                                                  // 도서 번쨰 체크
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Text(
-                                                          "도서 ${index + 1}",
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.white,
-                                                            fontFamily:
-                                                                'Avenir',
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
+                                                    // 도서 제목
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Text(
+                                                        searchBookModels[index]
+                                                            .title,
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily: 'Avenir',
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.w700,
                                                         ),
-
-                                                        // RatingBar(
-                                                        //   rating: items[index]
-                                                        //       .rating,
-                                                        // ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+
+                                                    // 중간 공백
+                                                    const SizedBox(width: 20),
+
+                                                    // 도서 번쨰 체크
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Text(
+                                                            "도서 ${index + 1}",
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  'Avenir',
+                                                              fontSize: 15,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                            ),
+                                                          ),
+
+                                                          // RatingBar(
+                                                          //   rating: items[index]
+                                                          //       .rating,
+                                                          // ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height: 400,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // 중간 공백
+                                    const SizedBox(height: 100),
+
+                                    // 데이터가 존재하지 않는 아이콘
+                                    Image.asset(
+                                      "assets/imgs/sad.png",
+                                      width: 100,
+                                      height: 100,
                                     ),
-                                  );
-                                },
-                              ),
-                            )
-                          : SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 400,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // 중간 공백
-                                  const SizedBox(height: 100),
 
-                                  // 데이터가 존재하지 않는 아이콘
-                                  Image.asset(
-                                    "assets/imgs/sad.png",
-                                    width: 100,
-                                    height: 100,
-                                  ),
+                                    // 중간 공백
+                                    const SizedBox(height: 40),
 
-                                  // 중간 공백
-                                  const SizedBox(height: 40),
-
-                                  // 데이터가 존재하지 않습니다 Text
-                                  Text(
-                                    "데이터가 존재하지 않습니다.",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
+                                    // 데이터가 존재하지 않습니다 Text
+                                    Text(
+                                      "데이터가 존재하지 않습니다.",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
 
-                      // 중간 공백
-                      const SizedBox(height: 40),
-                    ],
+                        // 중간 공백
+                        const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
                 ),
               );

@@ -1,3 +1,4 @@
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
@@ -567,7 +568,7 @@ class _MyPageState extends State<MyPage> {
                               // 서버와 통신
                               // 회원 정보를 데이터베이스에 등록한다.
                               final response = await dio.put(
-                                'http://49.161.110.41:8080/MyPage/info_change',
+                                'http://${IpAddress.hyunukIP}:8080/MyPage/info_change',
                                 data: {
                                   'id': UserInfo.userValue,
                                   'email': email,

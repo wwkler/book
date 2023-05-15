@@ -2,7 +2,9 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/bookModel.dart';
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_search_result.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:book_project/screen/book/test.dart';
@@ -37,6 +39,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   void initState() {
     print("Book Search Recommend InitState 시작");
     super.initState();
+    print("사용자 선호 코드 : ${UserInfo.selectedCode}");
   }
 
   @override
@@ -47,47 +50,98 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
   // 추천 도서, 베스트 셀러 도서, 신간 도서를 받아오는 함수
   Future<void> getBookDatas() async {
-    // 접속하려는 서버 url를 설정한다.
-    String url = "http://192.168.0.43:8080/";
+    recommendationBooks.clear();
+    bestSellerBooks.clear();
+    newBooks.clear();
 
-    print(url);
-
+    await Future.delayed(const Duration(seconds: 2));
 
     // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.
-    // final response = await dio.get(
-    //   url,
-    //   options: Options(
-    //     validateStatus: (_) => true,
-    //     contentType: Headers.jsonContentType,
-    //     responseType: ResponseType.json,
-    //   ),
-    // );
+    // 주의사항) 인터파크 추천 도서 API 데이터를 상황에 따라 줄 떄도 있고, 주지 않을 떄 도 있다.
+    //         그 점을 이용해서 데이터 핸들링을 해야 할 것 같다.
+    final response1 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/api/recommended?categoryId=${UserInfo.selectedCode}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
 
-    // response.data를 객체로 변환
+    if (response1.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 추천 도서 받은 데이터 : ${response1.data}");
+
+      recommendationBooks = (response1.data["item"] as List<dynamic>).map(
+        (dynamic e) {
+          return BookModel.fromJson(e as Map<String, dynamic>);
+        },
+      ).toList();
+
+      print("recommendationBooks : $recommendationBooks");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response1.statusCode}");
+    }
 
     // 서버와 통신 - 서버에 접속해서 인터파크 베스트셀러 도서 API 데이터를 받는다.
-    // final response = await dio.get(
-    //   url,
-    //   options: Options(
-    //     validateStatus: (_) => true,
-    //     contentType: Headers.jsonContentType,
-    //     responseType: ResponseType.json,
-    //   ),
-    // );
+    final response2 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/api/popular?categoryId=${UserInfo.selectedCode}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
 
-    // response.data를 객체로 변환
+    if (response2.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 베스트셀러 받은 데이터 : ${response2.data}");
+
+      bestSellerBooks = (response2.data["item"] as List<dynamic>).map(
+        (dynamic e) {
+          // print("도서 id : ${e["itemId"]}");
+          return BookModel.fromJson(e as Map<String, dynamic>);
+        },
+      ).toList();
+
+      print("bestSellerBooks : $bestSellerBooks");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response2.statusCode}");
+    }
 
     // 서버와 통신 - 서버에 접속해서 인터파크 신간 도서 API 데이터를 받는다.
-    // final response = await dio.get(
-    //   url,
-    //   options: Options(
-    //     validateStatus: (_) => true,
-    //     contentType: Headers.jsonContentType,
-    //     responseType: ResponseType.json,
-    //   ),
-    // );
+    final response3 = await dio.get(
+      "http://${IpAddress.hyunukIP}:8080/api/newbooks?categoryId=${UserInfo.selectedCode}",
+      options: Options(
+        validateStatus: (_) => true,
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.json,
+      ),
+    );
 
-    // response.data를 객체로 변환
+    if (response3.statusCode == 200) {
+      print("서버와 통신 성공");
+      print("서버에서 신간 도서 받은 데이터 : ${response3.data}");
+
+      newBooks = (response3.data["item"] as List<dynamic>).map(
+        (dynamic e) {
+          return BookModel.fromJson(e as Map<String, dynamic>);
+        },
+      ).toList();
+
+      print("newBooks : $newBooks");
+    }
+    //
+    else {
+      print("서버와 통신 실패");
+      print("서버 통신 에러 코드 : ${response3.statusCode}");
+    }
   }
 
   @override
@@ -258,7 +312,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                         image: const DecorationImage(
                                           fit: BoxFit.fill,
                                           image: AssetImage(
-                                              "assets/imgs/icon.png"),
+                                            "assets/imgs/icon.png",
+                                          ),
                                         )),
                                   ),
                                 ),
@@ -290,7 +345,22 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
+
+                    // 추천 도서 text
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: Text(
+                          "추천 도서",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
 
                     // 추천 도서를 보여주는 공간
                     Padding(
@@ -298,44 +368,95 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       child: Container(
                         color: Colors.purple,
                         width: 400,
-                        height: 300,
+                        height: 350,
                         padding: const EdgeInsets.all(16.0),
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              // 도서 상세 페이지로 라우팅
-                              Get.off(() => BookShowPreview());
-                            },
-                            child: Card(
-                              elevation: 10.0,
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Column(
-                                children: [
-                                  // 도서 이미지
-                                  Image.asset("assets/imgs/icon.png"),
+                        child: recommendationBooks.isNotEmpty
+                            ? ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: recommendationBooks.length,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    // 도서 상세 페이지로 라우팅
+                                    Get.off(
+                                      () => BookShowPreview(),
+                                      arguments: recommendationBooks[index],
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 350,
+                                    child: Card(
+                                      elevation: 10.0,
+                                      shadowColor: Colors.grey.withOpacity(0.5),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            // 도서 이미지
+                                            Image.network(
+                                              recommendationBooks[index]
+                                                  .coverSmallUrl,
+                                              width: 150,
+                                              height: 150,
+                                            ),
 
-                                  // 중간 공백
-                                  const SizedBox(height: 30),
+                                            // 중간 공백
+                                            // const SizedBox(height: 30),
 
-                                  // 도서 제목
-                                  const Text("추천 도서입니다."),
-                                ],
+                                            // 도서 제목
+                                            Text(
+                                              recommendationBooks[index].title,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(width: 20),
+                              )
+                            : const Center(
+                                child: Text(
+                                  "추천 도서를 제공하지 않습니다.",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(width: 20),
-                        ),
                       ),
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
+
+                    // 베스트셀러 도서 text
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: Text(
+                          "베스트셀러 도서",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
 
                     // 베스트셀러 도서를 보여주는 공간
                     Padding(
@@ -343,33 +464,56 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       child: Container(
                         color: Colors.purple,
                         width: 400,
-                        height: 300,
+                        height: 350,
                         padding: const EdgeInsets.all(16.0),
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 5,
+                          itemCount: bestSellerBooks.length,
                           itemBuilder: (context, index) => GestureDetector(
                             onTap: () {
                               // 도서 페이지로 라우팅
-                              Get.off(() => BookShowPreview());
+                              Get.off(
+                                () => BookShowPreview(),
+                                arguments: bestSellerBooks[index],
+                              );
                             },
-                            child: Card(
-                              elevation: 10.0,
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Column(
-                                children: [
-                                  // 도서 이미지
-                                  Image.asset("assets/imgs/icon.png"),
+                            child: SizedBox(
+                              width: 200,
+                              height: 350,
+                              child: Card(
+                                elevation: 10.0,
+                                shadowColor: Colors.grey.withOpacity(0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // 도서 이미지
+                                    Image.network(
+                                      bestSellerBooks[index].coverSmallUrl,
+                                      width: 200,
+                                      height: 200,
+                                    ),
 
-                                  // 중간 공백
-                                  const SizedBox(height: 30),
+                                    // 중간 공백
+                                    const SizedBox(height: 10),
 
-                                  // 도서 제목
-                                  const Text("베스트셀러 도서입니다."),
-                                ],
+                                    // 도서 제목
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        bestSellerBooks[index].title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -381,7 +525,22 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 20),
+
+                    // 신간 도서 text
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: Text(
+                          "신간 도서",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
 
                     // 신간 도서를 보여주는 공간
                     Padding(
@@ -389,33 +548,56 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       child: Container(
                         color: Colors.purple,
                         width: 400,
-                        height: 300,
+                        height: 350,
                         padding: const EdgeInsets.all(16.0),
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 5,
+                          itemCount: newBooks.length,
                           itemBuilder: (context, index) => GestureDetector(
                             onTap: () {
                               // 도서 상세 페이지로 라우팅
-                              Get.off(() => BookShowPreview());
+                              Get.off(
+                                () => BookShowPreview(),
+                                arguments: newBooks[index],
+                              );
                             },
-                            child: Card(
-                              elevation: 10.0,
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              child: Column(
-                                children: [
-                                  // 도서 이미지
-                                  Image.asset("assets/imgs/icon.png"),
+                            child: SizedBox(
+                              width: 200,
+                              height: 350,
+                              child: Card(
+                                elevation: 10.0,
+                                shadowColor: Colors.grey.withOpacity(0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // 도서 이미지
+                                    Image.network(
+                                      newBooks[index].coverSmallUrl,
+                                      width: 200,
+                                      height: 200,
+                                    ),
 
-                                  // 중간 공백
-                                  const SizedBox(height: 30),
+                                    // 중간 공백
+                                    const SizedBox(height: 10),
 
-                                  // 도서 제목
-                                  const Text("신간 도서입니다."),
-                                ],
+                                    // 도서 제목
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        newBooks[index].title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

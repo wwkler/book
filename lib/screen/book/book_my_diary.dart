@@ -281,6 +281,6 @@ class _BookMyDiaryState extends State<BookMyDiary> {
     currentTime = currentTime!.toUtc().add(const Duration(hours: 9));
     print(currentTime);
 
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 3));
   }
 }

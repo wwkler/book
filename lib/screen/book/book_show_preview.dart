@@ -1,11 +1,13 @@
 // 도서 상세 정보 페이지
 import 'dart:ui' as ui;
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_search_recommend.dart';
 import 'package:book_project/screen/book/book_show_preview_edit.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -79,6 +81,9 @@ class _BookShowPreviewState extends State<BookShowPreview> {
         'Dubai · In BurJuman', '...'),
   ];
 
+  // 서버와 통신
+  var dio = Dio();
+
   @override
   void initState() {
     print("Book Show Preview InitState 시작");
@@ -86,6 +91,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
 
     bookModel = Get.arguments;
     print("도서 작가 : ${bookModel!.author}");
+    print("도서 분야 : ${bookModel!.categoryId}");
   }
 
   @override
@@ -96,6 +102,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
 
   @override
   Widget build(BuildContext context) {
+    print("도서 분야 : ${bookModel!.categoryId}");
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -248,7 +255,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                             // 중간 공백
                                             const SizedBox(height: 5),
 
-                                            // 도서 작가 이름(null이 되어 있는 경우도 존재한다.)
+                                            // 도서 작가 이름
                                             bookModel!.author != ""
                                                 ? Text(
                                                     "${bookModel!.author} 작가",
@@ -271,16 +278,25 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                             const SizedBox(height: 5),
 
                                             // 도서 분야
-                                            Text(
-                                              category[bookModel!.categoryId]
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Avenir',
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
+                                            bookModel!.categoryId != 0
+                                                ? Text(
+                                                    category[bookModel!
+                                                            .categoryId]
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: 'Avenir',
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  )
+                                                : const Visibility(
+                                                    visible: false,
+                                                    child: Text(
+                                                      "도서 카테코리 번호가 없어서 보여주지 않습니다.",
+                                                    ),
+                                                  ),
 
                                             // 중간 공백
                                             const SizedBox(height: 5),
@@ -386,6 +402,27 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                         onPressed: () async {
                                           // 서버와 통신
                                           // 읽고 싶은 책 추가
+                                          final response = await dio.put(
+                                            "http://${IpAddress.hyunukIP}:8080/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
+                                            options: Options(
+                                              validateStatus: (_) => true,
+                                              contentType:
+                                                  Headers.jsonContentType,
+                                              responseType: ResponseType.json,
+                                            ),
+                                          );
+
+                                          if (response.statusCode == 200) {
+                                            print("서버와 통신 성공");
+                                            print(
+                                                "찜하기를 통해 받은 데이터 : ${response.data}");
+                                          }
+                                          //
+                                          else {
+                                            print("서버와 통신 실패");
+                                            print(
+                                                "서버 통신 에러 코드 : ${response.statusCode}");
+                                          }
 
                                           //  다이어로그를 삭제한다.
                                           Get.back();
@@ -399,9 +436,6 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                       TextButton(
                                         child: const Text("추가하지 않음"),
                                         onPressed: () {
-                                          // 서버와 통신
-                                          // 읽고 싶은 책 추가
-
                                           // 다이어로그를 삭제한다.
                                           Get.back();
                                         },
@@ -460,11 +494,33 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                         onPressed: () async {
                                           // 서버와 통신
                                           // 사용자의 읽고 있는 책에 도서 추가
+                                          final response = await dio.put(
+                                            // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
+                                            "http://${IpAddress.hyunukIP}:8080/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=100",
+                                            options: Options(
+                                              validateStatus: (_) => true,
+                                              contentType:
+                                                  Headers.jsonContentType,
+                                              responseType: ResponseType.json,
+                                            ),
+                                          );
+
+                                          if (response.statusCode == 200) {
+                                            print("서버와 통신 성공");
+                                            print(
+                                                "찜하기를 통해 받은 데이터 : ${response.data}");
+                                          }
+                                          //
+                                          else {
+                                            print("서버와 통신 실패");
+                                            print(
+                                                "서버 통신 에러 코드 : ${response.statusCode}");
+                                          }
 
                                           //  다이어로그를 삭제한다.
                                           Get.back();
 
-                                          // 도서 검색, 추천 페이지로 이동
+                                          // 도서 검색, 추천 페이지로 이동 (라우팅)
                                           Get.off(() => BookFluidNavBar());
                                         },
                                       ),
@@ -473,9 +529,6 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                       TextButton(
                                         child: const Text("추가하지 않음"),
                                         onPressed: () {
-                                          // 서버와 통신
-                                          // 읽고 싶은 책 추가
-
                                           // 다이어로그를 삭제한다.
                                           Get.back();
                                         },

@@ -1,4 +1,5 @@
 // 목표 설정/수정하는 페이지
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_my_goal_edit3.dart';
@@ -66,8 +67,6 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
     print("Book My Goal Edit2 initState 시작");
     super.initState();
     objectives = Get.arguments;
-
-    print("objectives[1] : ${objectives![1]}");
   }
 
   @override
@@ -182,7 +181,10 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                       // 목표 3
                       GestureDetector(
                         onTap: () {
-                          Get.off(() => BookMyGoalEdit3());
+                          Get.off(
+                            () => const BookMyGoalEdit3(),
+                            arguments: objectives,
+                          );
                         },
                         child: Card(
                           elevation: 10.0,
@@ -321,14 +323,16 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                   ),
 
                   // 목표 도서 권수 설정
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        controller: readBooksCountController,
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          controller: readBooksCountController,
+                        ),
                       ),
                     ),
                   ),
@@ -462,7 +466,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                     objDate != "목표 기간을 설정해주세요") {
                                   // 서버와 통신
                                   final response = await dio.post(
-                                    'http://116.122.96.53:8080/goal',
+                                    'http://${IpAddress.hyunukIP}:8080/goal',
                                     // 서버에 보내야 하는 데이터
                                     data: {
                                       // 사용자 고유값
@@ -560,7 +564,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                     objDate != "목표 기간을 설정해주세요") {
                                   // 서버와 통신
                                   final response = await dio.post(
-                                    'http://116.122.96.53:8080/goal',
+                                    'http://${IpAddress.hyunukIP}:8080/goal',
                                     // 서버에 보내야 하는 데이터
                                     data: {
                                       // 사용자 고유값
