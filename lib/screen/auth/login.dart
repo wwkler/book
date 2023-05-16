@@ -152,6 +152,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 isIdState = true;
                                 return null;
                               }
+                              // isIdState = true;
+                              // return null;
                             },
                             decoration: const InputDecoration(
                               focusedBorder: UnderlineInputBorder(
@@ -254,67 +256,113 @@ class _LoginScreenState extends State<LoginScreen> {
                   // 로고인 버튼
                   ElevatedButton(
                     onPressed: () async {
-                      Get.off(() => BookFluidNavBar());
+                      // Get.off(() => BookFluidNavBar());
 
                       if (isIdState == true && isPasswordState == true) {
-                        // 서버와 통신
-                        // ID, Password가 존재하는지 확인한다.
-                        final response = await dio.post(
-                          'http://${IpAddress.hyunukIP}:8080/login',
-                          data: {
-                            // 사용자 아이디(string)
-                            'account': id,
+                        // 서버 통신 시도
+                        try {
+                          final response = await dio.post(
+                            // 'http://${IpAddress.hyunukIP}:8080/login',
+                            'http://${IpAddress.youngZoonIP}:8080/login',
+                            // 'http://${IpAddress.innerServerIP}/login',
+                            data: {
+                              // 사용자 아이디(string)
+                              'account': id,
 
-                            // 사용자 비밀번호(string)
-                            'password': password,
-                          },
-                          options: Options(
-                            validateStatus: (_) => true,
-                            contentType: Headers.jsonContentType,
-                            responseType: ResponseType.json,
-                          ),
-                        );
+                              // 사용자 비밀번호(string)
+                              'password': password,
+                            },
+                            options: Options(
+                              validateStatus: (_) => true,
+                              contentType: Headers.jsonContentType,
+                              responseType: ResponseType.json,
+                            ),
+                          );
 
-                        // 서버와 통신 성공
-                        if (response.statusCode == 200) {
-                          print("서버와 통신 성공");
-                          print("서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
+                          // 서버와 통신 성공
+                          // 아이디와 비밀번호를 체크한다
+                          if (response.statusCode == 200) {
+                            print("서버와 통신 성공");
+                            print("서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
 
-                          // 서버에서 회원 정보를 가져와서 model에 user_info.dart에 저장한다.
-                          if (response.data["roles"][0]["name"] ==
-                              "ROLE_ADMIN") {
-                            UserInfo.identity = UserManagerCheck.manager;
+                            // 로고인에 성공하였다는 snackBar를 띄운다
+                            Get.snackbar(
+                              "로고인 성공",
+                              "로고인에 성공하였습니다",
+                              duration: const Duration(seconds: 5),
+                              snackPosition: SnackPosition.TOP,
+                            );
+
+                            // 서버에서 회원 정보를 가져와서 model에 user_info.dart에 저장한다.
+                            if (response.data["roles"][0]["name"] ==
+                                "ROLE_ADMIN") {
+                              UserInfo.identity = UserManagerCheck.manager;
+                            }
+                            //
+                            else {
+                              UserInfo.identity = UserManagerCheck.user;
+                            }
+                            UserInfo.userValue = response.data["id"];
+                            UserInfo.id = response.data["account"];
+                            UserInfo.name = response.data["name"];
+                            UserInfo.age = response.data["age"];
+                            UserInfo.selectedCode = response.data["prefer"];
+                            UserInfo.token = response.data["token"];
+                            UserInfo.email = response.data["email"];
+
+                            // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
+                            Get.off(() => BookFluidNavBar());
                           }
-                          //
+                          // 서버와 통신 실패
                           else {
-                            UserInfo.identity = UserManagerCheck.user;
+                            print("서버와 통신 실패");
+                            print("서버 통신 에러 코드 : ${response.statusCode}");
+                            print("메시지 : ${response.data}");
+
+                            // 잘못된 계정 정보 입니다
+                            if (response.data == "잘못된 계정 정보입니다.") {
+                              Get.snackbar(
+                                "잘못된 계정 정보",
+                                "아이디, 비밀번호를 다시 입력해주세요",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
+
+                            // 잘못된 비밀번호 입니다
+                            else if (response.data == "잘못된 비밀번호입니다.") {
+                              Get.snackbar(
+                                "잘못된 비밀번호",
+                                "비밀번호를 다시 입력해주세요",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
+
+                            // ban 됐을 떄 처리
+                            else {
+                              Get.snackbar(
+                                "사용자 계정 정지 알림",
+                                "${(response.data as String).substring(0, 10)}까지 계정이 정지되었습니다",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
                           }
-
-                          UserInfo.userValue = response.data["id"];
-                          UserInfo.id = response.data["account"];
-                          UserInfo.name = response.data["name"];
-                          UserInfo.age = response.data["age"];
-                          UserInfo.selectedCode = response.data["prefer"];
-                          UserInfo.token = response.data["token"];
-                          UserInfo.email = response.data["email"];
-
-                          // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
-                          Get.off(() => BookFluidNavBar());
                         }
-                        // 서버와 통신 실패
-                        else {
-                          print("서버와 통신 실패");
-                          print("서버 통신 에러 코드 : ${response.statusCode}");
-
+                        // DioError[unknown]: null이 메시지로 나타났을 떄
+                        // 즉 서버가 열리지 않았다는 뜻이다
+                        catch (e) {
+                          // 서버가 열리지 않았다는 snackBar를 띄운다
                           Get.snackbar(
-                            "서버 통신 실패",
-                            "서버 통신 에러 코드 : ${response.statusCode}",
+                            "서버 열리지 않음",
+                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                             duration: const Duration(seconds: 5),
                             snackPosition: SnackPosition.TOP,
                           );
                         }
                       }
-                      //
+                      // 사용자가 입력값을 적합하지 않게 했을 떄
                       else {
                         Get.snackbar(
                           "이상 메시지",

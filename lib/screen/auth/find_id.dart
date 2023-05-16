@@ -309,71 +309,99 @@ class _FindIdScreenState extends State<FindIdScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         if (isEmailState == true) {
-                          // 서버와 통신
-                          // 이메일을 통해 사용자의 아이디를 찾는다.
-                          final response = await dio.post(
-                            'http://${IpAddress.hyunukIP}:8080/Find/Account',
-                            data: {
-                              // 이메일(String)
-                              'email': email,
-                            },
-                            options: Options(
-                              validateStatus: (_) => true,
-                              contentType: Headers.jsonContentType,
-                              responseType: ResponseType.json,
-                            ),
-                          );
-
-                          // 서버와 통신 성공
-                          if (response.statusCode == 200) {
-                            print("서버와 통신 성공");
-                            print("서버에서 제공해주는 데이터 : ${response.data}");
-
-                            // 아이디를 보여주는 다이어로그
-                            Get.dialog(
-                              AlertDialog(
-                                title: const Text("아이디 찾기"),
-                                content: SizedBox(
-                                  width: 100,
-                                  height: 150,
-                                  child: Column(
-                                    children: [
-                                      // 아이디를 보여주는 문구
-                                      Text("회원님 아이디는\n${response.data}입니다."),
-
-                                      // 중간 공백
-                                      const SizedBox(height: 50),
-
-                                      // 로고인 페이지로 이동하는 버튼
-                                      TextButton(
-                                        child: const Text("로고인 페이지로 이동"),
-                                        onPressed: () {
-                                          // 아이디를 보여주는 다이어로그를 삭제한다.
-                                          Get.back();
-
-                                          // 로고인 페이지로 라우팅
-                                          Get.off(() => const LoginScreen());
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                          // 서버와 통신 시도
+                          try {
+                            final response = await dio.post(
+                              // 'http://${IpAddress.hyunukIP}:8080/Find/Account',
+                              'http://${IpAddress.youngZoonIP}:8080/Find/Account',
+                              // 'http://${IpAddress.innerServerIP}/register',
+                              data: {
+                                'email': email,
+                              },
+                              options: Options(
+                                validateStatus: (_) => true,
+                                contentType: Headers.jsonContentType,
+                                responseType: ResponseType.json,
                               ),
                             );
-                          }
-                          // 서버와 통신 실패
-                          else {
-                            print("서버와 통신 실패");
-                            print("서버 통신 에러 코드 : ${response.statusCode}");
 
+                            // 서버와 통신 성공
+                            if (response.statusCode == 200) {
+                              print("서버와 통신 성공");
+                              print("서버에서 제공해주는 데이터 : ${response.data}");
+
+                              // 아이디를 보여주는 다이어로그
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("아이디 찾기"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      children: [
+                                        // 아이디를 보여주는 문구
+                                        Text("회원님 아이디는\n${response.data}입니다."),
+
+                                        // 중간 공백
+                                        const SizedBox(height: 50),
+
+                                        // 로고인 페이지로 이동하는 버튼
+                                        TextButton(
+                                          child: const Text("로고인 페이지로 이동"),
+                                          onPressed: () {
+                                            // 아이디를 보여주는 다이어로그를 삭제한다.
+                                            Get.back();
+
+                                            // 로고인 페이지로 라우팅
+                                            Get.off(() => const LoginScreen());
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 서버와 통신 실패
+                            else {
+                              print("서버와 통신 실패");
+                              print("서버 통신 에러 코드 : ${response.statusCode}");
+                              print("메시지 : ${response.data}");
+
+                              // 이메일을 찾을 수 없습니다
+                              if (response.data == "이메일을 찾을수 없습니다") {
+                                Get.snackbar(
+                                  "이메일 찾기 실패",
+                                  "회원 가입시 입력했던 이메일이 적합하지 않습니다",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                              // 그 외 메시지
+                              else {
+                                Get.snackbar(
+                                  "아이디 찾기 실패",
+                                  "서버 통신 에러로 아이디 찾기가 실패하였습니다",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                            }
+                          }
+                          // DioError[unknown]: null이 메시지로 나타났을 떄
+                          // 즉 서버가 열리지 않았다는 뜻이다
+                          catch (e) {
+                            // 서버가 열리지 않았다는 snackBar를 띄운다
                             Get.snackbar(
-                              "서버 통신 실패",
-                              "서버 통신 에러 코드 : ${response.statusCode}",
+                              "서버 열리지 않음",
+                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                               duration: const Duration(seconds: 5),
                               snackPosition: SnackPosition.TOP,
                             );
                           }
-                        } else {
+                        }
+                        // 사용자의 입력이 올바르지 않았을 떄
+                        else {
                           Get.snackbar(
                               "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
                               duration: const Duration(seconds: 5),

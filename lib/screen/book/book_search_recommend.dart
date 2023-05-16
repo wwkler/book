@@ -1,13 +1,11 @@
 // 도서 검색/추천 페이지
 import 'dart:async';
-import 'dart:math';
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_search_result.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
-import 'package:book_project/screen/book/test.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -32,6 +30,9 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   // 신간 도서
   List<BookModel> newBooks = [];
 
+  // 사용자가 앱을 사용하면서 ban됐는지 실시간으로 확인하는 변수
+  StreamSubscription<int>? monitorBan;
+
   // 서버 통신
   var dio = Dio();
 
@@ -39,11 +40,32 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   void initState() {
     print("Book Search Recommend InitState 시작");
     super.initState();
-    print("사용자 선호 코드 : ${UserInfo.selectedCode}");
+
+    monitorBan = Stream.periodic(
+      const Duration(seconds: 5),
+      (x) => x,
+    ).listen((event) async {
+      // 밴 됐는지 안됐는지 확인하는 메소드를 호출한다.
+      await getBanDatas();
+
+      // ban 시간과 현재 시간을 비교한다.
+    });
   }
 
   @override
-  void dispose() {
+  Future<void> deactivate() async {
+    print("Book Search Recommend deactivate 호출");
+    super.deactivate();
+
+    // 스트림 제거
+    if (monitorBan != null) {
+      await monitorBan!.cancel();
+      print("스트림 제거합니다");
+    }
+  }
+
+  @override
+  void dispose() async {
     print("Book Search Recommend state 종료");
     super.dispose();
   }
@@ -56,91 +78,147 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.
-    // 주의사항) 인터파크 추천 도서 API 데이터를 상황에 따라 줄 떄도 있고, 주지 않을 떄 도 있다.
-    //         그 점을 이용해서 데이터 핸들링을 해야 할 것 같다.
-    final response1 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/api/recommended?categoryId=${UserInfo.selectedCode}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.
+      // 주의사항) 인터파크 추천 도서 API 데이터를 상황에 따라 줄 떄도 있고, 주지 않을 떄 도 있다.
+      //         그 점을 이용해서 데이터 핸들링을 해야 할 것 같다.
+      final response1 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/api/recommended?categoryId=${UserInfo.selectedCode}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response1.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 추천 도서 받은 데이터 : ${response1.data}");
+      if (response1.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 추천 도서 받은 데이터 : ${response1.data}");
 
-      recommendationBooks = (response1.data["item"] as List<dynamic>).map(
-        (dynamic e) {
-          return BookModel.fromJson(e as Map<String, dynamic>);
+        recommendationBooks = (response1.data["item"] as List<dynamic>).map(
+          (dynamic e) {
+            return BookModel.fromJson(e as Map<String, dynamic>);
+          },
+        ).toList();
+
+        print("recommendationBooks : $recommendationBooks");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response1.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
+    }
+
+    try {
+      // 서버와 통신 - 서버에 접속해서 인터파크 베스트셀러 도서 API 데이터를 받는다.
+      final response2 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/api/popular?categoryId=${UserInfo.selectedCode}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+      if (response2.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 베스트셀러 받은 데이터 : ${response2.data}");
+
+        bestSellerBooks = (response2.data["item"] as List<dynamic>).map(
+          (dynamic e) {
+            return BookModel.fromJson(e as Map<String, dynamic>);
+          },
+        ).toList();
+
+        print("bestSellerBooks : $bestSellerBooks");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response2.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
+    }
+
+    try {
+      // 서버와 통신 - 서버에 접속해서 인터파크 신간 도서 API 데이터를 받는다.
+      final response3 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/api/newbooks?categoryId=${UserInfo.selectedCode}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response3.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 신간 도서 받은 데이터 : ${response3.data}");
+
+        newBooks = (response3.data["item"] as List<dynamic>).map(
+          (dynamic e) {
+            return BookModel.fromJson(e as Map<String, dynamic>);
+          },
+        ).toList();
+
+        print("newBooks : $newBooks");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response3.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
+    }
+  }
+
+  // 서버에서 벤 데이터를 호출하는 함수
+  Future<void> getBanDatas() async {
+    try {
+      final response4 = await dio.post(
+        "http://${IpAddress.youngZoonIP}:8080/user/getInfo",
+        // "http://${IpAddress.hyunukIP}:8080/user/getInfo",
+        data: {
+          "account": UserInfo.id,
         },
-      ).toList();
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-      print("recommendationBooks : $recommendationBooks");
+      if (response4.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받아온 ban 정보 : ${response4.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response4.statusCode}");
+        print("에러 메시지 : ${response4.data}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response1.statusCode}");
-    }
-
-    // 서버와 통신 - 서버에 접속해서 인터파크 베스트셀러 도서 API 데이터를 받는다.
-    final response2 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/api/popular?categoryId=${UserInfo.selectedCode}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response2.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 베스트셀러 받은 데이터 : ${response2.data}");
-
-      bestSellerBooks = (response2.data["item"] as List<dynamic>).map(
-        (dynamic e) {
-          // print("도서 id : ${e["itemId"]}");
-          return BookModel.fromJson(e as Map<String, dynamic>);
-        },
-      ).toList();
-
-      print("bestSellerBooks : $bestSellerBooks");
-    }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response2.statusCode}");
-    }
-
-    // 서버와 통신 - 서버에 접속해서 인터파크 신간 도서 API 데이터를 받는다.
-    final response3 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/api/newbooks?categoryId=${UserInfo.selectedCode}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response3.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 신간 도서 받은 데이터 : ${response3.data}");
-
-      newBooks = (response3.data["item"] as List<dynamic>).map(
-        (dynamic e) {
-          return BookModel.fromJson(e as Map<String, dynamic>);
-        },
-      ).toList();
-
-      print("newBooks : $newBooks");
-    }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response3.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
     }
   }
 

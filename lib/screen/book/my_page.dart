@@ -1,11 +1,8 @@
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/user_info.dart';
-import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
 class MyPage extends StatefulWidget {
@@ -568,7 +565,8 @@ class _MyPageState extends State<MyPage> {
                               // 서버와 통신
                               // 회원 정보를 데이터베이스에 등록한다.
                               final response = await dio.put(
-                                'http://${IpAddress.hyunukIP}:8080/MyPage/info_change',
+                                // 'http://${IpAddress.hyunukIP}:8080/MyPage/info_change',
+                                'http://${IpAddress.youngZoonIP}:8080/MyPage/info_change',
                                 data: {
                                   'id': UserInfo.userValue,
                                   'email': email,
@@ -576,6 +574,9 @@ class _MyPageState extends State<MyPage> {
                                   'prefer': selectedCode,
                                 },
                                 options: Options(
+                                  headers: {
+                                    "Authorization": "Bearer ${UserInfo.token}"
+                                  },
                                   validateStatus: (_) => true,
                                   contentType: Headers.jsonContentType,
                                   responseType: ResponseType.json,
@@ -609,7 +610,9 @@ class _MyPageState extends State<MyPage> {
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
-                            } else {
+                            }
+                            // 사용자가 입력한 값이 적합하지 않음
+                            else {
                               Get.snackbar(
                                 "이상 메시지",
                                 "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",

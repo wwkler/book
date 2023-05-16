@@ -276,6 +276,10 @@ class _ConfigurationState extends State<Configuration> {
                                             inputPasswordController.text,
                                       },
                                       options: Options(
+                                        headers: {
+                                          "Authorization":
+                                              "Bearer ${UserInfo.token}",
+                                        },
                                         validateStatus: (_) => true,
                                         contentType: Headers.jsonContentType,
                                         responseType: ResponseType.json,

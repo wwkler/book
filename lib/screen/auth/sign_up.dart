@@ -879,60 +879,88 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isEmailVerificationValue == true &&
                             isServiceCheck == true &&
                             isPersonInformationCheck == true) {
-                          // 서버와 통신
-                          // 회원 정보를 데이터베이스에 등록한다.
-                          final response = await dio.post(
-                            'http://${IpAddress.hyunukIP}:8080/register',
-                            data: {
-                              // 사용자 아이디(string)
-                              'account': id,
+                          // 서버와 통신 시도
+                          try {
+                            final response = await dio.post(
+                              // 'http://${IpAddress.hyunukIP}:8080/register',
+                              'http://${IpAddress.youngZoonIP}:8080/register',
+                              // 'http://${IpAddress.innerServerIP}/register',
+                              data: {
+                                // 사용자 아이디(string)
+                                'account': id,
 
-                              // 사용자 비밀번호(string)
-                              'password': password,
+                                // 사용자 비밀번호(string)
+                                'password': password,
 
-                              // 이름(String)
-                              'name': name,
+                                // 이름(String)
+                                'name': name,
 
-                              // 나이(int)
-                              'age': age,
+                                // 나이(int)
+                                'age': age,
 
-                              // 성별(String)
-                              'gender': gender,
+                                // 성별(String)
+                                'gender': gender,
 
-                              // 선호 도서 장르(int)
-                              'prefer': selectedCode,
+                                // 선호 도서 장르(int)
+                                'prefer': selectedCode,
 
-                              // 이메일(String)
-                              'email': email,
-                            },
-                            options: Options(
-                              validateStatus: (_) => true,
-                              contentType: Headers.jsonContentType,
-                              responseType: ResponseType.json,
-                            ),
-                          );
+                                // 이메일(String)
+                                'email': email,
+                              },
+                              options: Options(
+                                validateStatus: (_) => true,
+                                contentType: Headers.jsonContentType,
+                                responseType: ResponseType.json,
+                              ),
+                            );
 
-                          // 서버와 통신 성공
-                          if (response.statusCode == 200) {
-                            print("서버와 통신 성공");
-                            print("서버에서 제공해주는 데이터 : ${response.data}");
+                            // 서버와 통신 성공
+                            // 회원 정보를 데이터베이스에 등록한다.
+                            if (response.statusCode == 200) {
+                              print("서버와 통신 성공");
+                              print("서버에서 제공해주는 데이터 : ${response.data}");
 
-                            // 회원 가입 페이지에서 벗어나 로고인 페이지로 라우팅한다.
-                            Get.off(() => const LoginScreen());
+                              // 회원 가입 성공했다는 snackBar를 보여준다
+                              Get.snackbar(
+                                "회원 가입 성공",
+                                "회원 가입에 성공하였습니다",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+
+                              // 회원 가입 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                              Get.off(() => const LoginScreen());
+                            }
+                            // 서버와 통신 실패
+                            else {
+                              print("서버와 통신 실패");
+                              print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                              // 회원 가입 실패했다는 snackBar를 보여준다
+                              Get.snackbar(
+                                "회원 가입 실패",
+                                "서버 통신 에러로 회원 가입이 실패하였습니다",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
                           }
-                          // 서버와 통신 실패
-                          else {
-                            print("서버와 통신 실패");
-                            print("서버 통신 에러 코드 : ${response.statusCode}");
+                          // DioError[unknown]: null이 메시지로 나타났을 떄
+                          // 즉 서버가 열리지 않았다는 뜻이다
+                          catch (e) {
+                            print("try catch 의 메시지 : ${e}");
 
+                            // 서버가 열리지 않았다는 snackBar를 띄운다
                             Get.snackbar(
-                              "서버 통신 실패",
-                              "서버 통신 에러 코드 : ${response.statusCode}",
+                              "서버 열리지 않음",
+                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                               duration: const Duration(seconds: 5),
                               snackPosition: SnackPosition.TOP,
                             );
                           }
-                        } else {
+                        }
+                        // 사용자의 입력값이 올바르지 않았을 떄 
+                        else {
                           Get.snackbar(
                             "이상 메시지",
                             "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",

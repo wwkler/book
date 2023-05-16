@@ -12,4 +12,5 @@ class IpAddress {
   // 학과 서버 ip(외부)
 
   // 학과 서버 ip(내부)
+  static String innerServerIP = "192.9.202.17:60001";
 }

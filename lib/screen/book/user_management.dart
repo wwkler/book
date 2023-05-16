@@ -1,14 +1,11 @@
 // 사용자 관리하는 페이지
-import 'dart:convert';
-import 'dart:math';
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/model/user_model.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 
 class UserManagement extends StatefulWidget {
@@ -32,7 +29,7 @@ class UserManagementState extends State<UserManagement> {
   Future<dynamic> getMemberList() async {
     // 서버와 통신 - 회원 데이터를 모두 가져온다.
     final response = await dio.get(
-      "http://49.161.110.41:8080/getMemberList",
+      "http://${IpAddress.innerServerIP}/getMemberList",
       options: Options(
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
@@ -376,6 +373,7 @@ class UserManagementState extends State<UserManagement> {
                                                       ),
                                                     ),
                                                   ),
+
                                                   // 사용자명
                                                   SizedBox(
                                                     width: 100,
@@ -398,6 +396,7 @@ class UserManagementState extends State<UserManagement> {
                                                       ),
                                                     ),
                                                   ),
+
                                                   // 이메일
                                                   SizedBox(
                                                     width: 100,
@@ -408,6 +407,7 @@ class UserManagementState extends State<UserManagement> {
                                                       ),
                                                     ),
                                                   ),
+
                                                   // 성별
                                                   SizedBox(
                                                     width: 100,
@@ -419,6 +419,7 @@ class UserManagementState extends State<UserManagement> {
                                                       ),
                                                     ),
                                                   ),
+
                                                   // 나이
                                                   SizedBox(
                                                     width: 100,
@@ -435,7 +436,7 @@ class UserManagementState extends State<UserManagement> {
                                                   // 중간 공백
                                                   const SizedBox(width: 20),
 
-                                                  // 관리 (정지, 탈퇴)
+                                                  // 관리 - 정지
                                                   SizedBox(
                                                     width: 200,
                                                     height: 100,
@@ -443,9 +444,50 @@ class UserManagementState extends State<UserManagement> {
                                                       children: [
                                                         // 정지 버튼
                                                         ElevatedButton(
-                                                          onPressed: () {
+                                                          onPressed: () async {
                                                             // 서버와 통신
                                                             // 사용자 계정을 정지한다.
+                                                            final response =
+                                                                await dio.post(
+                                                              "http://${IpAddress.innerServerIP}/admin/banMember",
+                                                              data: {
+                                                                "id": UserInfo
+                                                                    .userValue,
+                                                                "banTime": 10,
+                                                              },
+                                                              options: Options(
+                                                                headers: {
+                                                                  "Authorization":
+                                                                      "Bearer ${UserInfo.token}",
+                                                                },
+                                                                validateStatus:
+                                                                    (_) => true,
+                                                                contentType: Headers
+                                                                    .jsonContentType,
+                                                                responseType:
+                                                                    ResponseType
+                                                                        .json,
+                                                              ),
+                                                            );
+
+                                                            if (response
+                                                                    .statusCode ==
+                                                                200) {
+                                                              print(
+                                                                  "서버와 통신 성공");
+                                                              print(
+                                                                  "서버에서 추천 도서 받은 데이터 : ${response.data}");
+                                                            }
+                                                            //
+                                                            else {
+                                                              print(
+                                                                  "서버와 통신 실패");
+                                                              print(
+                                                                  "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                              print(
+                                                                  "에러 메시지: ${response.data}");
+                                                            }
                                                           },
                                                           style: ElevatedButton
                                                               .styleFrom(

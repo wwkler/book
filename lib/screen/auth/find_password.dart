@@ -520,33 +520,105 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                     ElevatedButton(
                       onPressed: () async {
                         if (isIdState == true && isEmailState == true) {
-                          // 서버와 통신
-                          // 사용자의 비밀번호를 변경한다.
-                          final response = await dio.post(
-                            'http://${IpAddress.hyunukIP}:8080/Find/PWD',
-                            data: {
-                              // 사용자 아이디(string)
-                              'account': id,
+                          // 서버와 통신 시도
+                          try {
+                            final response = await dio.post(
+                              // 'http://${IpAddress.hyunukIP}:8080/Find/PWD',
+                              'http://${IpAddress.youngZoonIP}:8080/Find/PWD',
+                              // 'http://${IpAddress.innerServerIP}/Find/PWDr',
+                              data: {
+                                // 사용자 아이디(string)
+                                'account': id,
 
-                              // 이메일(String)
-                              'email': email,
-                            },
-                            options: Options(
-                              validateStatus: (_) => true,
-                              contentType: Headers.jsonContentType,
-                              responseType: ResponseType.json,
-                            ),
-                          );
+                                // 이메일(String)
+                                'email': email,
+                              },
+                              options: Options(
+                                validateStatus: (_) => true,
+                                contentType: Headers.jsonContentType,
+                                responseType: ResponseType.json,
+                              ),
+                            );
 
-                          // 서버와 통신 성공
-                          if (response.statusCode == 200) {
-                            print("서버와 통신 성공");
-                            print("서버에서 제공해주는 데이터 : ${response.data}");
+                            // 서버와 통신 성공
+                            // 임시 비밀번호를 발급한다
+                            if (response.statusCode == 200) {
+                              print("서버와 통신 성공");
+                              print("서버에서 제공해주는 데이터 : ${response.data}");
 
-                            // 비밀번호 변경 페이지에서 벗어나 로고인 페이지로 라우팅한다.
-                            Get.off(() => const LoginScreen());
+                              Get.dialog(
+                                AlertDialog(
+                                  title: const Text("임시 비밀번호 발급"),
+                                  content: SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Column(
+                                      children: [
+                                        // 임시 비밀번호를 보여주는 문구
+                                        const Text(
+                                          "임시 비밀번호는 이메일에서 확인하세요",
+                                        ),
+
+                                        // 중간 공백
+                                        const SizedBox(height: 25),
+
+                                        // 로고인 페이지로 이동하는 버튼
+                                        TextButton(
+                                          child: const Text("로고인 페이지로 이동"),
+                                          onPressed: () {
+                                            // 아이디를 보여주는 다이어로그를 삭제한다.
+                                            Get.back();
+
+                                            // 비밀번호 변경 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                                            Get.off(() => const LoginScreen());
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            // 서버 통신 실패
+                            else {
+                              print("서버와 통신 실패");
+                              print("서버 통신 실패 코드 : ${response.statusCode}");
+                              print("메시지 : ${response.data}");
+
+                              //이메일 또는 계정을 찾을수 없습니다.
+                              if (response.data == "이메일 또는 계정을 찾을수 없습니다.") {
+                                Get.snackbar(
+                                  "이메일 또는 계정 찾기 실패",
+                                  "이메일 또는 계정을 다시 입력해주세요",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                              // 나머지 외
+                              else {
+                                Get.snackbar(
+                                  "임시 비밀번호 발급 실패",
+                                  "서버 통신 에러로\n임시 비밀번호 발급이 실패하였습니다",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP,
+                                );
+                              }
+                            }
                           }
-                        } else {
+                          // DioError[unknown]: null이 메시지로 나타났을 떄
+                          // 즉 서버가 열리지 않았다는 뜻이다
+                          catch (e) {
+                            // 서버가 열리지 않았다는 snackBar를 띄운다
+                            Get.snackbar(
+                              "서버 열리지 않음",
+                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                              duration: const Duration(seconds: 5),
+                              snackPosition: SnackPosition.TOP,
+                            );
+                          }
+                        }
+                        // 사용자가 입력값을 적합하지 않게 했을 떄
+                        else {
                           Get.snackbar(
                               "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
                               duration: const Duration(seconds: 5),
