@@ -48,7 +48,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
       // 밴 됐는지 안됐는지 확인하는 메소드를 호출한다.
       await getBanDatas();
 
-      // ban 시간과 현재 시간을 비교한다.
+      // ban이 null에서 날짜 뜨는 순간일 떄 처리
     });
   }
 
@@ -544,61 +544,76 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         width: 400,
                         height: 350,
                         padding: const EdgeInsets.all(16.0),
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: bestSellerBooks.length,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              // 도서 페이지로 라우팅
-                              Get.off(
-                                () => BookShowPreview(),
-                                arguments: bestSellerBooks[index],
-                              );
-                            },
-                            child: SizedBox(
-                              width: 200,
-                              height: 350,
-                              child: Card(
-                                elevation: 10.0,
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // 도서 이미지
-                                    Image.network(
-                                      bestSellerBooks[index].coverSmallUrl,
-                                      width: 200,
-                                      height: 200,
-                                    ),
+                        child: bestSellerBooks.isNotEmpty
+                            ? ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: bestSellerBooks.length,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    // 도서 페이지로 라우팅
+                                    Get.off(
+                                      () => BookShowPreview(),
+                                      arguments: bestSellerBooks[index],
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 350,
+                                    child: Card(
+                                      elevation: 10.0,
+                                      shadowColor: Colors.grey.withOpacity(0.5),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          // 도서 이미지
+                                          Image.network(
+                                            bestSellerBooks[index]
+                                                .coverSmallUrl,
+                                            width: 200,
+                                            height: 200,
+                                          ),
 
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
+                                          // 중간 공백
+                                          const SizedBox(height: 10),
 
-                                    // 도서 제목
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        bestSellerBooks[index].title,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w700,
-                                        ),
+                                          // 도서 제목
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              bestSellerBooks[index].title,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  width: 20,
+                                ),
+                              )
+                            : const Center(
+                                child: Text(
+                                  "서버 오류로 베스트셀러 도서를 가져오지 못했습니다",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            width: 20,
-                          ),
-                        ),
                       ),
                     ),
 
@@ -628,61 +643,75 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         width: 400,
                         height: 350,
                         padding: const EdgeInsets.all(16.0),
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: newBooks.length,
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () {
-                              // 도서 상세 페이지로 라우팅
-                              Get.off(
-                                () => BookShowPreview(),
-                                arguments: newBooks[index],
-                              );
-                            },
-                            child: SizedBox(
-                              width: 200,
-                              height: 350,
-                              child: Card(
-                                elevation: 10.0,
-                                shadowColor: Colors.grey.withOpacity(0.5),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // 도서 이미지
-                                    Image.network(
-                                      newBooks[index].coverSmallUrl,
-                                      width: 200,
-                                      height: 200,
-                                    ),
+                        child: newBooks.isNotEmpty
+                            ? ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: newBooks.length,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    // 도서 상세 페이지로 라우팅
+                                    Get.off(
+                                      () => BookShowPreview(),
+                                      arguments: newBooks[index],
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 350,
+                                    child: Card(
+                                      elevation: 10.0,
+                                      shadowColor: Colors.grey.withOpacity(0.5),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          // 도서 이미지
+                                          Image.network(
+                                            newBooks[index].coverSmallUrl,
+                                            width: 200,
+                                            height: 200,
+                                          ),
 
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
+                                          // 중간 공백
+                                          const SizedBox(height: 10),
 
-                                    // 도서 제목
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        newBooks[index].title,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w700,
-                                        ),
+                                          // 도서 제목
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              newBooks[index].title,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  width: 20,
+                                ),
+                              )
+                            : const Center(
+                                child: Text(
+                                  "서버 오류로 인해 신간 도서를 가져오지 못했습니다",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          separatorBuilder: (context, index) => const SizedBox(
-                            width: 20,
-                          ),
-                        ),
                       ),
                     ),
 

@@ -562,50 +562,63 @@ class _MyPageState extends State<MyPage> {
                           onPressed: () async {
                             if (isEmailState == true &&
                                 isPasswordState == true) {
-                              // 서버와 통신
-                              // 회원 정보를 데이터베이스에 등록한다.
-                              final response = await dio.put(
-                                // 'http://${IpAddress.hyunukIP}:8080/MyPage/info_change',
-                                'http://${IpAddress.youngZoonIP}:8080/MyPage/info_change',
-                                data: {
-                                  'id': UserInfo.userValue,
-                                  'email': email,
-                                  'password': password,
-                                  'prefer': selectedCode,
-                                },
-                                options: Options(
-                                  headers: {
-                                    "Authorization": "Bearer ${UserInfo.token}"
+                              try {
+                                // 서버와 통신
+                                // 회원 정보를 데이터베이스에 등록한다.
+                                final response = await dio.put(
+                                  // 'http://${IpAddress.hyunukIP}:8080/MyPage/info_change',
+                                  'http://${IpAddress.youngZoonIP}:8080/MyPage/info_change',
+                                  data: {
+                                    'id': UserInfo.userValue,
+                                    'email': email,
+                                    'password': password,
+                                    'prefer': selectedCode,
                                   },
-                                  validateStatus: (_) => true,
-                                  contentType: Headers.jsonContentType,
-                                  responseType: ResponseType.json,
-                                ),
-                              );
+                                  options: Options(
+                                    headers: {
+                                      "Authorization":
+                                          "Bearer ${UserInfo.token}"
+                                    },
+                                    validateStatus: (_) => true,
+                                    contentType: Headers.jsonContentType,
+                                    responseType: ResponseType.json,
+                                  ),
+                                );
 
-                              print({
-                                'id': UserInfo.userValue,
-                                'email': email,
-                                'password': password,
-                                'prefer': selectedCode,
-                              });
+                                // 서버와 통신 성공
+                                if (response.statusCode == 200) {
+                                  print("서버와 통신 성공");
+                                  print("서버에서 제공해주는 데이터 : ${response.data}");
 
-                              // 서버와 통신 성공
-                              if (response.statusCode == 200) {
-                                print("서버와 통신 성공");
-                                print("서버에서 제공해주는 데이터 : ${response.data}");
+                                  Get.snackbar(
+                                    "내 정보 변경 성공",
+                                    "내 정보가 정상적으로 변경되었습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
 
-                                // 회원 가입 페이지에서 벗어나 로고인 페이지로 라우팅한다.
-                                // Get.off(() => const LoginScreen());
+                                  Get.off(() => BookFluidNavBar());
+                                }
+                                // 서버와 통신 실패
+                                else {
+                                  print("서버와 통신 실패");
+                                  print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                                  Get.snackbar(
+                                    "내 정보 변경 실패",
+                                    "내 정보가 변경되지 않았습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
                               }
-                              // 서버와 통신 실패
-                              else {
-                                print("서버와 통신 실패");
-                                print("서버 통신 에러 코드 : ${response.statusCode}");
-
+                              // DioError[unknown]: null이 메시지로 나타났을 떄
+                              // 즉 서버가 열리지 않았다는 뜻이다
+                              catch (e) {
+                                // 서버가 열리지 않았다는 snackBar를 띄운다
                                 Get.snackbar(
-                                  "서버 통신 실패",
-                                  "서버 통신 에러 코드 : ${response.statusCode}",
+                                  "서버 열리지 않음",
+                                  "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                   duration: const Duration(seconds: 5),
                                   snackPosition: SnackPosition.TOP,
                                 );

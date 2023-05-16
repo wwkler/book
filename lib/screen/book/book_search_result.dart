@@ -24,9 +24,6 @@ class _BookSearchResultState extends State<BookSearchResult> {
   // 현재 페이지에서 검색어를 통해 서버로부터 도서 데이터를 받는지 판별하는 변수
   String discrimition = Get.arguments;
 
-  // 검색어를 요청해서 서버로부터 받은 데이터가 존재하는지 안하는지 판별하는 변수
-  bool isSearchBookData = true;
-
   // 검색어를 요청해서 서버로부터 받은 도서 데이터
   List<BookModel> searchBookModels = [];
 
@@ -77,45 +74,49 @@ class _BookSearchResultState extends State<BookSearchResult> {
       discrimition = "";
     }
 
-    // 서버와 통신 - 서버에 접속해서 인터파크 도서 검색 API 데이터를 받는다.
-    final response = await dio.get(
-      url,
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // 서버와 통신 - 서버에 접속해서 인터파크 도서 검색 API 데이터를 받는다.
+      final response = await dio.get(
+        url,
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은 데이터 : ${response.data}");
+      if (response.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 데이터 : ${response.data}");
 
-      // response.data에 도서 데이터가 있느냐 없느냐에 따라 다른 로직 구현
-      if ((response.data["item"] as List<dynamic>).isEmpty) {
-        print("도서 데이터가 없다.");
-        isSearchBookData = false;
+        // response.data에 도서 데이터가 있느냐 없느냐에 따라 다른 로직 구현
+        if ((response.data["item"] as List<dynamic>).isEmpty) {
+          print("도서 데이터가 없다.");
+        }
+        //
+        else {
+          print("도서 데이터가 있다.");
+          print((response.data["item"] as List<dynamic>).length);
+
+          searchBookModels = (response.data["item"] as List<dynamic>).map(
+            (dynamic e) {
+              return BookModel.fromJson(e as Map<String, dynamic>);
+            },
+          ).toList();
+
+          print("searchBookModels : $searchBookModels");
+        }
       }
       //
       else {
-        print("도서 데이터가 있다.");
-        print((response.data["item"] as List<dynamic>).length);
-
-        searchBookModels = (response.data["item"] as List<dynamic>).map(
-          (dynamic e) {
-            return BookModel.fromJson(e as Map<String, dynamic>);
-          },
-        ).toList();
-
-        print("searchBookModels : $searchBookModels");
-
-        isSearchBookData = true;
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response.statusCode}");
       }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
     }
   }
 
@@ -258,8 +259,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
                         // 중간 공백
                         const SizedBox(height: 20),
 
-                        // 검색 도서 결과물 -> 없으면 결과가 없다는 text를 화면에 보여주고, 있으면 도서들을 보여준다.
-                        isSearchBookData == true
+                        // 검색 도서 결과물이 있으면 도서들을 보여주고, 없으면 없다는 메시지를 화면에 표시한다.
+                        searchBookModels.isNotEmpty
                             ? Expanded(
                                 flex: 1,
                                 child: ListView.builder(

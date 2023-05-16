@@ -19,6 +19,9 @@ class UserManagementState extends State<UserManagement> {
   // 검색어를 받기 위한 변수
   TextEditingController searchTextController = TextEditingController();
 
+  // 사용자 정지 일수를 정하기 위한 변수
+  TextEditingController setBanTimeController = TextEditingController();
+
   // 회원 데이터
   List<UserModel> memberList = [];
 
@@ -28,19 +31,26 @@ class UserManagementState extends State<UserManagement> {
   // 회원 데이터를 모두 가져오는 함수
   Future<dynamic> getMemberList() async {
     // 서버와 통신 - 회원 데이터를 모두 가져온다.
-    final response = await dio.get(
-      "http://${IpAddress.innerServerIP}/getMemberList",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-        headers: {
-          "Authorization": "Bearer ${UserInfo.token}",
-        },
-      ),
-    );
+    try {
+      final response = await dio.get(
+        "http://${IpAddress.innerServerIP}/getMemberList",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
+        ),
+      );
 
-    return response.data;
+      return response.data;
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
+    }
   }
 
   // snapshot.data를 가지고 memberList에 추가하는 함수
@@ -445,49 +455,143 @@ class UserManagementState extends State<UserManagement> {
                                                         // 정지 버튼
                                                         ElevatedButton(
                                                           onPressed: () async {
-                                                            // 서버와 통신
-                                                            // 사용자 계정을 정지한다.
-                                                            final response =
-                                                                await dio.post(
-                                                              "http://${IpAddress.innerServerIP}/admin/banMember",
-                                                              data: {
-                                                                "id": UserInfo
-                                                                    .userValue,
-                                                                "banTime": 10,
-                                                              },
-                                                              options: Options(
-                                                                headers: {
-                                                                  "Authorization":
-                                                                      "Bearer ${UserInfo.token}",
-                                                                },
-                                                                validateStatus:
-                                                                    (_) => true,
-                                                                contentType: Headers
-                                                                    .jsonContentType,
-                                                                responseType:
-                                                                    ResponseType
-                                                                        .json,
+                                                            // ban 시간을 정할 수 있는 다이어로그
+                                                            Get.dialog(
+                                                              AlertDialog(
+                                                                title:
+                                                                    const Text(
+                                                                  "사용자 정지 일수 설정",
+                                                                ),
+                                                                content:
+                                                                    SizedBox(
+                                                                  width: 100,
+                                                                  height: 150,
+                                                                  child: Column(
+                                                                    children: [
+                                                                      // 아이디를 보여주는 문구
+                                                                      const Text(
+                                                                        "사용자 정지 일수를 설정해주세요",
+                                                                      ),
+
+                                                                      // 중간 공백
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            20,
+                                                                      ),
+
+                                                                      // 정지 일수를 입력하는 곳
+                                                                      // 총 페이지 수 설정
+                                                                      Center(
+                                                                        child:
+                                                                            Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(16.0),
+                                                                          child:
+                                                                              SizedBox(
+                                                                            width:
+                                                                                50,
+                                                                            height:
+                                                                                50,
+                                                                            child:
+                                                                                TextField(
+                                                                              keyboardType: TextInputType.number,
+                                                                              controller: setBanTimeController,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+
+                                                                      // 정지시키기 버튼
+                                                                      TextButton(
+                                                                        child:
+                                                                            const Text(
+                                                                          "정지시키기",
+                                                                        ),
+                                                                        onPressed:
+                                                                            () async {
+                                                                          // 서버와 통신
+                                                                          // 사용자 계정을 정지한다.
+                                                                          try {
+                                                                            final response =
+                                                                                await dio.post(
+                                                                              "http://${IpAddress.innerServerIP}/admin/banMember",
+                                                                              data: {
+                                                                                "id": UserInfo.userValue,
+                                                                                "banTime": int.parse(setBanTimeController.text),
+                                                                              },
+                                                                              options: Options(
+                                                                                headers: {
+                                                                                  "Authorization": "Bearer ${UserInfo.token}",
+                                                                                },
+                                                                                validateStatus: (_) => true,
+                                                                                contentType: Headers.jsonContentType,
+                                                                                responseType: ResponseType.json,
+                                                                              ),
+                                                                            );
+
+                                                                            // setBanTimeController.text를 빈칸으로 만든다.
+                                                                            setBanTimeController.text =
+                                                                                "";
+
+                                                                            if (response.statusCode ==
+                                                                                200) {
+                                                                              print("서버와 통신 성공");
+                                                                              print("서버에서 받은 데이터 : ${response.data}");
+
+                                                                              Get.snackbar(
+                                                                                "사용자 정지시키기 성공",
+                                                                                "해당 사용자가 정지되었습니다",
+                                                                                duration: const Duration(
+                                                                                  seconds: 5,
+                                                                                ),
+                                                                                snackPosition: SnackPosition.TOP,
+                                                                              );
+
+                                                                              // 사용자 정지 일수를 설정하는 다이어로그를 삭제한다
+                                                                              Get.back();
+
+                                                                              // 라우팅
+                                                                              Get.off(
+                                                                                () => BookFluidNavBar(),
+                                                                              );
+                                                                            }
+                                                                            //
+                                                                            else {
+                                                                              print("서버와 통신 실패");
+                                                                              print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                                              print("에러 메시지: ${response.data}");
+
+                                                                              Get.snackbar(
+                                                                                "사용자 정지시키기 실패",
+                                                                                "해당 사용자 정지가 반영되지 않았습니다",
+                                                                                duration: const Duration(
+                                                                                  seconds: 5,
+                                                                                ),
+                                                                                snackPosition: SnackPosition.TOP,
+                                                                              );
+                                                                            }
+                                                                          }
+                                                                          // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                          // 즉 서버가 열리지 않았다는 뜻이다
+                                                                          catch (e) {
+                                                                            // 서버가 열리지 않았다는 snackBar를 띄운다
+                                                                            Get.snackbar(
+                                                                              "서버 열리지 않음",
+                                                                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                              duration: const Duration(
+                                                                                seconds: 5,
+                                                                              ),
+                                                                              snackPosition: SnackPosition.TOP,
+                                                                            );
+                                                                          }
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
                                                               ),
                                                             );
-
-                                                            if (response
-                                                                    .statusCode ==
-                                                                200) {
-                                                              print(
-                                                                  "서버와 통신 성공");
-                                                              print(
-                                                                  "서버에서 추천 도서 받은 데이터 : ${response.data}");
-                                                            }
-                                                            //
-                                                            else {
-                                                              print(
-                                                                  "서버와 통신 실패");
-                                                              print(
-                                                                  "서버 통신 에러 코드 : ${response.statusCode}");
-
-                                                              print(
-                                                                  "에러 메시지: ${response.data}");
-                                                            }
                                                           },
                                                           style: ElevatedButton
                                                               .styleFrom(

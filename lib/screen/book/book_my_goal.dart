@@ -22,7 +22,9 @@ class BookMyGoal extends StatefulWidget {
 }
 
 class _BookMyGoalState extends State<BookMyGoal> {
-  // 읽고 있는 책의 진행도를 설정하기 위한 변수
+  // 읽고 있는 도서의 총 페이지를 설정하기 위한 변수
+  final setPageController = TextEditingController();
+  // 읽고 있는 도서의 진행도를 설정하기 위한 변수
   final editPageController = TextEditingController();
 
   // 목표 1, 2, 3 데이터를 담는 배열
@@ -74,19 +76,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
     // 본격적으로 서버와 통신한다.
 
     // 서버에 목표 1 데이터가 있는지 확인한다.
-    final response1 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_1_${UserInfo.id}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    // 목표 1 데이터가 있을 떄.... -> 목표 1과 관련된 내용을 서버를 통해 가져온다.
-    if (response1.data == true) {
-      final response1_1 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
+    try {
+      final response1 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_1_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -94,35 +86,42 @@ class _BookMyGoalState extends State<BookMyGoal> {
         ),
       );
 
-      if (response1_1.statusCode == 200) {
-        print("서버와 통신 성공");
-        print("서버에서 목표 1 받은 데이터 : ${response1_1.data}");
-        objectives.removeAt(0);
-        objectives.insert(0, response1_1.data as Map<String, dynamic>);
+      // 목표 1 데이터가 있을 떄.... -> 목표 1과 관련된 내용을 서버를 통해 가져온다.
+      if (response1.data == true) {
+        final response1_1 = await dio.get(
+          "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
+          options: Options(
+            validateStatus: (_) => true,
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json,
+          ),
+        );
 
-        print("objectives : $objectives");
-      }
-      //
-      else {
-        print("서버와 통신 실패");
-        print("서버 통신 에러 코드 : ${response1_1.statusCode}");
+        if (response1_1.statusCode == 200) {
+          print("서버와 통신 성공");
+          print("서버에서 목표 1 받은 데이터 : ${response1_1.data}");
+          objectives.removeAt(0);
+          objectives.insert(0, response1_1.data as Map<String, dynamic>);
+
+          print("objectives : $objectives");
+        }
+        //
+        else {
+          print("서버와 통신 실패");
+          print("서버 통신 에러 코드 : ${response1_1.statusCode}");
+        }
       }
     }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 1이 열리지 않음");
+    }
 
-    // 서버에 목표 2 데이터가 있는지 확인한다.
-    final response2 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_2_${UserInfo.id}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    // 목표 2 데이터가 있을 떄.... -> 목표 2과 관련된 내용을 서버를 통해 가져온다.
-    if (response2.data == true) {
-      final response2_2 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_2_winner23456",
+    try {
+      // 서버에 목표 2 데이터가 있는지 확인한다.
+      final response2 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_2_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -130,35 +129,42 @@ class _BookMyGoalState extends State<BookMyGoal> {
         ),
       );
 
-      if (response2_2.statusCode == 200) {
-        print("서버와 통신 성공");
-        print("서버에서 목표 2 받은 데이터 : ${response2_2.data}");
-        objectives.removeAt(1);
-        objectives.insert(1, response2_2.data as Map<String, dynamic>);
+      // 목표 2 데이터가 있을 떄.... -> 목표 2과 관련된 내용을 서버를 통해 가져온다.
+      if (response2.data == true) {
+        final response2_2 = await dio.get(
+          "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_2_winner23456",
+          options: Options(
+            validateStatus: (_) => true,
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json,
+          ),
+        );
 
-        print("objectives : $objectives");
-      }
-      //
-      else {
-        print("서버와 통신 실패");
-        print("서버 통신 에러 코드 : ${response2_2.statusCode}");
+        if (response2_2.statusCode == 200) {
+          print("서버와 통신 성공");
+          print("서버에서 목표 2 받은 데이터 : ${response2_2.data}");
+          objectives.removeAt(1);
+          objectives.insert(1, response2_2.data as Map<String, dynamic>);
+
+          print("objectives : $objectives");
+        }
+        //
+        else {
+          print("서버와 통신 실패");
+          print("서버 통신 에러 코드 : ${response2_2.statusCode}");
+        }
       }
     }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 2가 열리지 않음");
+    }
 
-    // 서버에 목표 3 데이터가 있는지 확인한다.
-    final response3 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_3_${UserInfo.id}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    // 목표 3 데이터가 있을 떄.... -> 목표 3과 관련된 내용을 서버를 통해 가져온다.
-    if (response3.data == true) {
-      final response3_3 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_3_${UserInfo.id}",
+    try {
+      // 서버에 목표 3 데이터가 있는지 확인한다.
+      final response3 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_3_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -166,261 +172,347 @@ class _BookMyGoalState extends State<BookMyGoal> {
         ),
       );
 
-      if (response3_3.statusCode == 200) {
-        print("서버와 통신 성공");
-        print("서버에서 목표 3 받은 데이터 : ${response3_3.data}");
-        objectives.removeAt(1);
-        objectives.insert(1, response3_3.data as Map<String, dynamic>);
+      // 목표 3 데이터가 있을 떄.... -> 목표 3과 관련된 내용을 서버를 통해 가져온다.
+      if (response3.data == true) {
+        final response3_3 = await dio.get(
+          "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_3_${UserInfo.id}",
+          options: Options(
+            validateStatus: (_) => true,
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json,
+          ),
+        );
 
-        print("objectives : $objectives");
+        if (response3_3.statusCode == 200) {
+          print("서버와 통신 성공");
+          print("서버에서 목표 3 받은 데이터 : ${response3_3.data}");
+          objectives.removeAt(1);
+          objectives.insert(1, response3_3.data as Map<String, dynamic>);
+
+          print("objectives : $objectives");
+        }
+        //
+        else {
+          print("서버와 통신 실패");
+          print("서버 통신 에러 코드 : ${response3_3.statusCode}");
+        }
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 3이 열리지 않음");
+    }
+
+    try {
+      // 읽고 싶은 도서를 서버에서 가져온다.
+      final response4 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/bookshelves/getLikedBooks?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response4.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 읽고 싶은 도서 데이터: ${response4.data}");
+
+        wantToReadBooks = (response4.data as List<dynamic>).map(
+          (dynamic e) {
+            return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+          },
+        ).toList();
+
+        print("wantToReadBooks : $wantToReadBooks");
       }
       //
       else {
         print("서버와 통신 실패");
-        print("서버 통신 에러 코드 : ${response3_3.statusCode}");
+        print("서버 통신 에러 코드 : ${response4.statusCode}");
       }
     }
-
-    // 읽고 싶은 도서를 서버에서 가져온다.
-    final response4 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/bookshelves/getLikedBooks?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response4.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은 읽고 싶은 도서 데이터: ${response4.data}");
-
-      wantToReadBooks = (response4.data as List<dynamic>).map(
-        (dynamic e) {
-          return BookModel.fromJson(e["book"] as Map<String, dynamic>);
-        },
-      ).toList();
-
-      print("wantToReadBooks : $wantToReadBooks");
-    }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response4.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 4가 열리지 않음");
     }
 
-    // 읽고 있는 도서를 서버에서 가져온다.
-    final response5 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // 읽고 있는 도서를 서버에서 가져온다.
+      final response5 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response5.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은 읽고 있는 도서 데이터: ${response5.data}");
+      if (response5.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 읽고 있는 도서 데이터: ${response5.data}");
 
-      nowReadBooks = (response5.data as List<dynamic>).map(
-        (dynamic e) {
-          // 읽고 있는 도서에 대한 currentPage와 totalPage도 추가한다.
-          nowReadBooks_currentPage_totalPage.add({
-            "currentPage": e["currentPage"] as int,
-            "totalPage": e["totalPage"] as int,
-          });
-          return BookModel.fromJson(e["book"] as Map<String, dynamic>);
-        },
-      ).toList();
+        nowReadBooks = (response5.data as List<dynamic>).map(
+          (dynamic e) {
+            // 읽고 있는 도서에 대한 currentPage와 totalPage도 추가한다.
+            nowReadBooks_currentPage_totalPage.add({
+              "currentPage": e["currentPage"] as int,
+              "totalPage": e["totalPage"] as int,
+            });
+            return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+          },
+        ).toList();
 
-      print("nowReadBooks : $nowReadBooks");
-      print(
-          "nowReadBooks_currentPage_totalPage : ${nowReadBooks_currentPage_totalPage}");
+        print("nowReadBooks : $nowReadBooks");
+        print(
+            "nowReadBooks_currentPage_totalPage : ${nowReadBooks_currentPage_totalPage}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response5.statusCode}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response5.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 5가 열리지 않음");
     }
 
-    // 읽은 도서를 서버에서 가져온다.
-    final response6 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // 읽은 도서를 서버에서 가져온다.
+      final response6 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response6.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은 읽은 도서 데이터: ${response6.data}");
+      if (response6.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 읽은 도서 데이터: ${response6.data}");
 
-      readBooks = (response6.data as List<dynamic>).map(
-        (dynamic e) {
-          // 도서 읽은 날짜를 배열에 추가한다.
-          readBooks_completed_dateTime.add(
-            (e["finishedDate"] as String).substring(0, 10),
-          );
+        readBooks = (response6.data as List<dynamic>).map(
+          (dynamic e) {
+            // 도서 읽은 날짜를 배열에 추가한다.
+            readBooks_completed_dateTime.add(
+              (e["finishedDate"] as String).substring(0, 10),
+            );
 
-          return BookModel.fromJson(e["book"] as Map<String, dynamic>);
-        },
-      ).toList();
+            return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+          },
+        ).toList();
 
-      print("readBooks : $readBooks");
+        print("readBooks : $readBooks");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response6.statusCode}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response6.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 6이 열리지 않음");
     }
 
     // 목표와 관련된 분석 내용을 서버에서 가져온다.
+    try {
+      // // 개인의 완료 달성 수 를 서버에서 가져온다.
+      final response7 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/getCompletedCount?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    // // 개인의 완료 달성 수 를 서버에서 가져온다.
-    final response7 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/getCompletedCount?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response7.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은 완료 달성 수 데이터: ${response7.data}");
+      if (response7.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 완료 달성 수 데이터: ${response7.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response7.statusCode}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response7.statusCode}");
-    }
-
-    // // 개인의 성공률을 서버에서 가져온다.
-    final response8 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/getSuccessRate?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response8.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은  데이터: ${response8.data}");
-    }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response8.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 7이 열리지 않음");
     }
 
-    // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표 얼마나 달성했는지를 서버에서 가져온다.
-    final response9 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/similarCompleteds?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // // 개인의 성공률을 서버에서 가져온다.
+      final response8 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/getSuccessRate?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response9.statusCode == 200) {
-      print("서버와 통신 성공");
-      print(
-          "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 얼마나 달성했는지에 대한 데이터: ${response8.data}");
+      if (response8.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은  데이터: ${response8.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response8.statusCode}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response9.statusCode}");
-    }
-
-    // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수를 서버에서 가져온다.
-    final response10 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/similarChallengers?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response10.statusCode == 200) {
-      print("서버와 통신 성공");
-      print(
-          "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수 데이터: ${response10.data}");
-    }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response10.statusCode}");
-    }
-    // // 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수를 서버에서 가져온다.
-
-    final response11 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/similarCompletedsAll?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
-
-    if (response11.statusCode == 200) {
-      print("서버와 통신 성공");
-      print(
-          "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수 데이터: ${response11.data}");
-    }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response11.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 8이 열리지 않음");
     }
 
-    // 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 를 서버에서 가져온다.
-    final response12 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/similarChallengersAll?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표 얼마나 달성했는지를 서버에서 가져온다.
+      final response9 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/similarCompleteds?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response12.statusCode == 200) {
-      print("서버와 통신 성공");
-      print(
-          "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 데이터: ${response12.data}");
+      if (response9.statusCode == 200) {
+        print("서버와 통신 성공");
+        print(
+            "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 얼마나 달성했는지에 대한 데이터: ${response9.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response9.statusCode}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response12.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 9가 열리지 않음");
     }
 
-    // // 같은 나이대 목표 평균 성공률을 서버에서 가져온다.
-    final response13 = await dio.get(
-      "http://${IpAddress.hyunukIP}:8080/goal/getAverageRate?memberId=${UserInfo.userValue}",
-      options: Options(
-        validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
-      ),
-    );
+    try {
+      // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수를 서버에서 가져온다.
+      final response10 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/similarChallengers?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    if (response13.statusCode == 200) {
-      print("서버와 통신 성공");
-      print("서버에서 받은 같은 나이대 목표 평균 성공률데이터: ${response13.data}");
+      if (response10.statusCode == 200) {
+        print("서버와 통신 성공");
+        print(
+            "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수 데이터: ${response10.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response10.statusCode}");
+      }
     }
-    //
-    else {
-      print("서버와 통신 실패");
-      print("서버 통신 에러 코드 : ${response13.statusCode}");
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 10이 열리지 않음");
+    }
+
+    try {
+      // // 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수를 서버에서 가져온다.
+      final response11 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/similarCompletedsAll?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response11.statusCode == 200) {
+        print("서버와 통신 성공");
+        print(
+            "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수 데이터: ${response11.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response11.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 11이 열리지 않음");
+    }
+
+    try {
+      // 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 를 서버에서 가져온다.
+      final response12 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/similarChallengersAll?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response12.statusCode == 200) {
+        print("서버와 통신 성공");
+        print(
+            "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 데이터: ${response12.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response12.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 12가 열리지 않음");
+    }
+
+    try {
+      // // 같은 나이대 목표 평균 성공률을 서버에서 가져온다.
+      final response13 = await dio.get(
+        "http://${IpAddress.hyunukIP}:8080/goal/getAverageRate?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response13.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 같은 나이대 목표 평균 성공률데이터: ${response13.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response13.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 13이 열리지 않음");
     }
   }
 
@@ -1225,27 +1317,55 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           () async {
                                                                         // 서버와 통신
                                                                         // 읽고 싶은 도서를 삭제한다.
-                                                                        print(
-                                                                            "읽고 싶은 도서 삭제 요청 url : http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0}");
-                                                                        final response =
-                                                                            await dio.delete(
-                                                                          "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0",
-                                                                          options:
-                                                                              Options(
-                                                                            validateStatus: (_) =>
-                                                                                true,
-                                                                            contentType:
-                                                                                Headers.jsonContentType,
-                                                                            responseType:
-                                                                                ResponseType.json,
-                                                                          ),
-                                                                        );
-                                                                        // 다이어로그를 삭제한다.
-                                                                        Get.back();
+                                                                        try {
+                                                                          final response =
+                                                                              await dio.delete(
+                                                                            "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0",
+                                                                            options:
+                                                                                Options(
+                                                                              validateStatus: (_) => true,
+                                                                              contentType: Headers.jsonContentType,
+                                                                              responseType: ResponseType.json,
+                                                                            ),
+                                                                          );
 
-                                                                        // 화면을 재랜더링 한다.
-                                                                        setState(
-                                                                            () {});
+                                                                          if (response.statusCode ==
+                                                                              200) {
+                                                                            Get.snackbar(
+                                                                              "읽고 싶은 도서에서 삭제 성공",
+                                                                              "읽고 싶은 도서에서 삭제 성공하였습니다",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP,
+                                                                            );
+
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+
+                                                                            // 화면을 재랜더링 한다.
+                                                                            setState(() {});
+                                                                          }
+                                                                          //
+                                                                          else {
+                                                                            Get.snackbar(
+                                                                              "읽고 싶은 도서에서 삭제 실패",
+                                                                              "읽고 싶은 도서에서 삭제 실패하였습니다\n다시 시도해주세요",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP,
+                                                                            );
+                                                                          }
+                                                                        }
+                                                                        // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                        // 즉 서버가 열리지 않았다는 뜻이다
+                                                                        catch (e) {
+                                                                          Get.snackbar(
+                                                                            "서버 열리지 않음",
+                                                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                            duration:
+                                                                                const Duration(seconds: 5),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          );
+                                                                        }
                                                                       },
                                                                     ),
                                                                   ),
@@ -1328,6 +1448,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                         height: 150,
                                                         child: Column(
                                                           children: [
+                                                            // text
                                                             const Text(
                                                               "읽고 있는 도서로 추가하시겠습니까?",
                                                             ),
@@ -1350,47 +1471,114 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                   ),
                                                                   onPressed:
                                                                       () async {
-                                                                    // 서버와 통신
-                                                                    // 사용자의 읽고 있는 책에 도서 추가
-                                                                    final response =
-                                                                        await dio
-                                                                            .put(
-                                                                      // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
-                                                                      "http://116.122.96.53:8080/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&totalPage=100",
-                                                                      options:
-                                                                          Options(
-                                                                        validateStatus:
-                                                                            (_) =>
-                                                                                true,
-                                                                        contentType:
-                                                                            Headers.jsonContentType,
-                                                                        responseType:
-                                                                            ResponseType.json,
-                                                                      ),
-                                                                    );
-
-                                                                    if (response
-                                                                            .statusCode ==
-                                                                        200) {
-                                                                      print(
-                                                                          "서버와 통신 성공");
-                                                                      print(
-                                                                          "찜하기를 통해 받은 데이터 : ${response.data}");
-                                                                    }
-                                                                    //
-                                                                    else {
-                                                                      print(
-                                                                          "서버와 통신 실패");
-                                                                      print(
-                                                                          "서버 통신 에러 코드 : ${response.statusCode}");
-                                                                    }
-
-                                                                    //  다이어로그를 삭제한다.
+                                                                    // 다이어로그를 삭제한다
                                                                     Get.back();
 
-                                                                    // 도서 검색, 추천 페이지로 이동 (라우팅)
-                                                                    Get.off(() =>
-                                                                        BookFluidNavBar());
+                                                                    // 읽고 싶은 도서의 총 페이지수를 사용자가 설정하는 다이어로그
+                                                                    Get.dialog(
+                                                                      AlertDialog(
+                                                                        title:
+                                                                            const Text(
+                                                                          "읽고 싶은 도서 총 페이지 수 설정",
+                                                                        ),
+                                                                        content:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              100,
+                                                                          height:
+                                                                              150,
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              // 아이디를 보여주는 문구
+                                                                              const Text("읽고 싶은 도서 총 페이지 수를 설정해주세요"),
+
+                                                                              // 중간 공백
+                                                                              const SizedBox(height: 50),
+
+                                                                              // 총 페이지 수 설정
+                                                                              Center(
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(16.0),
+                                                                                  child: SizedBox(
+                                                                                    width: 50,
+                                                                                    height: 50,
+                                                                                    child: TextField(
+                                                                                      keyboardType: TextInputType.number,
+                                                                                      controller: setPageController,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+
+                                                                              // 로고인 페이지로 이동하는 버튼
+                                                                              TextButton(
+                                                                                child: const Text("설정"),
+                                                                                onPressed: () async {
+                                                                                  // setPageController.text를 빈칸으로 다시 설정한다
+                                                                                  setPageController.text = "";
+
+                                                                                  // 서버와 통신
+                                                                                  try {
+                                                                                    final response = await dio.put(
+                                                                                      // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
+                                                                                      "http://116.122.96.53:8080/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&totalPage=${int.parse(setPageController.text)}",
+                                                                                      options: Options(
+                                                                                        validateStatus: (_) => true,
+                                                                                        contentType: Headers.jsonContentType,
+                                                                                        responseType: ResponseType.json,
+                                                                                      ),
+                                                                                    );
+
+                                                                                    if (response.statusCode == 200) {
+                                                                                      print("서버와 통신 성공");
+                                                                                      print("읽고 있는 도서 추가를 통해 받은 데이터 : ${response.data}");
+
+                                                                                      Get.snackbar(
+                                                                                        "읽고 싶은 도서로 추가 성공",
+                                                                                        "읽고 싶은 도서로 추가 성공하였습니다",
+                                                                                        duration: const Duration(seconds: 5),
+                                                                                        snackPosition: SnackPosition.TOP,
+                                                                                      );
+
+                                                                                      //  다이어로그를 삭제한다.
+                                                                                      Get.back();
+
+                                                                                      // 도서 검색, 추천 페이지로 이동 (라우팅)
+                                                                                      Get.off(() => BookFluidNavBar());
+                                                                                    }
+                                                                                    //
+                                                                                    else {
+                                                                                      print("서버와 통신 실패");
+                                                                                      print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                                                      Get.snackbar(
+                                                                                        "읽고 싶은 도서로 추가 실패",
+                                                                                        "읽고 싶은 도서로 추가 실패하였습니다\n다시 시도해주세요",
+                                                                                        duration: const Duration(seconds: 5),
+                                                                                        snackPosition: SnackPosition.TOP,
+                                                                                      );
+                                                                                    }
+                                                                                  }
+                                                                                  // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                                  // 즉 서버가 열리지 않았다는 뜻이다
+                                                                                  catch (e) {
+                                                                                    Get.snackbar(
+                                                                                      "서버 열리지 않음",
+                                                                                      "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                                      duration: const Duration(seconds: 5),
+                                                                                      snackPosition: SnackPosition.TOP,
+                                                                                    );
+                                                                                  }
+                                                                                },
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      barrierDismissible:
+                                                                          false,
+                                                                    );
                                                                   },
                                                                 ),
 
@@ -1545,25 +1733,55 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           () async {
                                                                         // 서버와 통신
                                                                         // 읽고 있는 도서를 삭제한다.
-                                                                        final response =
-                                                                            await dio.delete(
-                                                                          "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&param=1",
-                                                                          options:
-                                                                              Options(
-                                                                            validateStatus: (_) =>
-                                                                                true,
-                                                                            contentType:
-                                                                                Headers.jsonContentType,
-                                                                            responseType:
-                                                                                ResponseType.json,
-                                                                          ),
-                                                                        );
-                                                                        // 다이어로그를 삭제한다.
-                                                                        Get.back();
+                                                                        try {
+                                                                          final response =
+                                                                              await dio.delete(
+                                                                            "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&param=1",
+                                                                            options:
+                                                                                Options(
+                                                                              validateStatus: (_) => true,
+                                                                              contentType: Headers.jsonContentType,
+                                                                              responseType: ResponseType.json,
+                                                                            ),
+                                                                          );
 
-                                                                        // 화면을 재랜더링 한다.
-                                                                        setState(
-                                                                            () {});
+                                                                          if (response.statusCode ==
+                                                                              200) {
+                                                                            Get.snackbar(
+                                                                              "읽고 있는 도서에서 삭제 성공",
+                                                                              "읽고 싶은 도서에서 삭제 성공하였습니다",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP,
+                                                                            );
+
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+
+                                                                            // 화면을 재랜더링 한다.
+                                                                            setState(() {});
+                                                                          }
+                                                                          //
+                                                                          else {
+                                                                            Get.snackbar(
+                                                                              "읽고 있는 도서에서 삭제 실패",
+                                                                              "읽고 싶은 도서에서 삭제 실패하였습니다\n다시 시도해주세요",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP,
+                                                                            );
+                                                                          }
+                                                                        }
+                                                                        // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                        // 즉 서버가 열리지 않았다는 뜻이다
+                                                                        catch (e) {
+                                                                          Get.snackbar(
+                                                                            "서버 열리지 않음",
+                                                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                            duration:
+                                                                                const Duration(seconds: 5),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          );
+                                                                        }
                                                                       },
                                                                     ),
                                                                   ),
@@ -1680,35 +1898,72 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                   // 진행도를 수정하도록 서버와 통신한다.
                                                                   print(
                                                                       "진행도 수정 설정한 페이지수 : ${int.parse(editPageController.text)}");
+                                                                  try {
+                                                                    final response =
+                                                                        await dio
+                                                                            .post(
+                                                                      "http://116.122.96.53:8080/bookshelves/updateCurrentReading?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&page=${int.parse(editPageController.text)}",
+                                                                      options:
+                                                                          Options(
+                                                                        validateStatus:
+                                                                            (_) =>
+                                                                                true,
+                                                                        contentType:
+                                                                            Headers.jsonContentType,
+                                                                        responseType:
+                                                                            ResponseType.json,
+                                                                      ),
+                                                                    );
 
-                                                                  final response =
-                                                                      await dio
-                                                                          .post(
-                                                                    "http://116.122.96.53:8080/bookshelves/updateCurrentReading?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&page=${int.parse(editPageController.text)}",
-                                                                    options:
-                                                                        Options(
-                                                                      validateStatus:
-                                                                          (_) =>
-                                                                              true,
-                                                                      contentType:
-                                                                          Headers
-                                                                              .jsonContentType,
-                                                                      responseType:
-                                                                          ResponseType
-                                                                              .json,
-                                                                    ),
-                                                                  );
+                                                                    if (response
+                                                                            .statusCode ==
+                                                                        200) {
+                                                                      Get.snackbar(
+                                                                        "진행도 수정 성공",
+                                                                        "해당 도서 진행도 수정을 하였습니다",
+                                                                        duration:
+                                                                            const Duration(seconds: 5),
+                                                                        snackPosition:
+                                                                            SnackPosition.TOP,
+                                                                      );
+                                                                      // editPageController.text를 다시 빈칸으로 만듦
+                                                                      editPageController
+                                                                          .text = "";
 
-                                                                  // editPageController.text를 다시 빈칸으로 만듦
-                                                                  editPageController
-                                                                      .text = "";
+                                                                      // 다이어로그를 삭제한다.
+                                                                      Get.back();
 
-                                                                  // 다이어로그를 삭제한다.
-                                                                  Get.back();
-
-                                                                  // 화면 잰더링
-                                                                  setState(
-                                                                      () {});
+                                                                      // 화면 잰더링
+                                                                      setState(
+                                                                        () {},
+                                                                      );
+                                                                    }
+                                                                    //
+                                                                    else {
+                                                                      Get.snackbar(
+                                                                        "진행도 수정 실패",
+                                                                        "진행도 수정 실패하였습니다\n다시 시도해주세요",
+                                                                        duration:
+                                                                            const Duration(seconds: 5),
+                                                                        snackPosition:
+                                                                            SnackPosition.TOP,
+                                                                      );
+                                                                    }
+                                                                  }
+                                                                  // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                  // 즉 서버가 열리지 않았다는 뜻이다
+                                                                  catch (e) {
+                                                                    Get.snackbar(
+                                                                      "서버 열리지 않음",
+                                                                      "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              5),
+                                                                      snackPosition:
+                                                                          SnackPosition
+                                                                              .TOP,
+                                                                    );
+                                                                  }
                                                                 },
                                                               ),
                                                             ],
@@ -1781,22 +2036,52 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           ),
                                                                           onPressed:
                                                                               () async {
-                                                                            // 서버와 통신
-                                                                            // 도서 읽기 완료 한다.
-                                                                            final response =
-                                                                                await dio.put(
-                                                                              "http://${IpAddress.hyunukIP}:8080/bookshelves/addFinished?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}",
-                                                                              options: Options(
-                                                                                validateStatus: (_) => true,
-                                                                                contentType: Headers.jsonContentType,
-                                                                                responseType: ResponseType.json,
-                                                                              ),
-                                                                            );
-                                                                            // 다이어로그를 삭제한다.
-                                                                            Get.back();
+                                                                            try {
+                                                                              // 서버와 통신
+                                                                              // 도서 읽기 완료 한다.
+                                                                              final response = await dio.put(
+                                                                                "http://${IpAddress.hyunukIP}:8080/bookshelves/addFinished?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}",
+                                                                                options: Options(
+                                                                                  validateStatus: (_) => true,
+                                                                                  contentType: Headers.jsonContentType,
+                                                                                  responseType: ResponseType.json,
+                                                                                ),
+                                                                              );
 
-                                                                            // 화면을 재랜더링 한다.
-                                                                            setState(() {});
+                                                                              if (response.statusCode == 200) {
+                                                                                Get.snackbar(
+                                                                                  "도서 읽기 완료 성공",
+                                                                                  "해당 도서 읽기 완료 성공하였습니다",
+                                                                                  duration: const Duration(seconds: 5),
+                                                                                  snackPosition: SnackPosition.TOP,
+                                                                                );
+
+                                                                                // 다이어로그를 삭제한다.
+                                                                                Get.back();
+
+                                                                                // 화면을 재랜더링 한다.
+                                                                                setState(() {});
+                                                                              }
+                                                                              //
+                                                                              else {
+                                                                                Get.snackbar(
+                                                                                  "도서 읽기 완료 반영 실패",
+                                                                                  "해당 도서 읽기 완료 반영이 되지 않았습니다\n다시 시도해주세요",
+                                                                                  duration: const Duration(seconds: 5),
+                                                                                  snackPosition: SnackPosition.TOP,
+                                                                                );
+                                                                              }
+                                                                            }
+                                                                            // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                            // 즉 서버가 열리지 않았다는 뜻이다
+                                                                            catch (e) {
+                                                                              Get.snackbar(
+                                                                                "서버 열리지 않음",
+                                                                                "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                                duration: const Duration(seconds: 5),
+                                                                                snackPosition: SnackPosition.TOP,
+                                                                              );
+                                                                            }
                                                                           },
                                                                         ),
                                                                       ),
@@ -1962,28 +2247,65 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                     ),
                                                                     onPressed:
                                                                         () async {
-                                                                      // 서버와 통신
-                                                                      // 읽은 도서를 삭제한다.
-                                                                      final response =
-                                                                          await dio
-                                                                              .delete(
-                                                                        "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${readBooks[index].itemId}&param=2",
-                                                                        options:
-                                                                            Options(
-                                                                          validateStatus: (_) =>
-                                                                              true,
-                                                                          contentType:
-                                                                              Headers.jsonContentType,
-                                                                          responseType:
-                                                                              ResponseType.json,
-                                                                        ),
-                                                                      );
-                                                                      // 다이어로그를 삭제한다.
-                                                                      Get.back();
+                                                                      try {
+                                                                        // 서버와 통신
+                                                                        // 읽은 도서를 삭제한다.
+                                                                        final response =
+                                                                            await dio.delete(
+                                                                          "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${readBooks[index].itemId}&param=2",
+                                                                          options:
+                                                                              Options(
+                                                                            validateStatus: (_) =>
+                                                                                true,
+                                                                            contentType:
+                                                                                Headers.jsonContentType,
+                                                                            responseType:
+                                                                                ResponseType.json,
+                                                                          ),
+                                                                        );
 
-                                                                      // 화면을 재랜더링 한다.
-                                                                      setState(
-                                                                          () {});
+                                                                        if (response.statusCode ==
+                                                                            200) {
+                                                                          Get.snackbar(
+                                                                            "읽은 도서 삭제 성공",
+                                                                            "읽은 도서 삭제 성공하였습니다",
+                                                                            duration:
+                                                                                const Duration(seconds: 5),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          );
+
+                                                                          // 다이어로그를 삭제한다.
+                                                                          Get.back();
+
+                                                                          // 화면을 재랜더링 한다.
+                                                                          setState(
+                                                                              () {});
+                                                                        }
+                                                                        //
+                                                                        else {
+                                                                          Get.snackbar(
+                                                                            "읽은 도서 삭제 실패",
+                                                                            "읽은 도서 삭제 실패하였습니다\n다시 시도해주세요",
+                                                                            duration:
+                                                                                const Duration(seconds: 5),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          );
+                                                                        }
+                                                                      }
+                                                                      // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                      // 즉 서버가 열리지 않았다는 뜻이다
+                                                                      catch (e) {
+                                                                        Get.snackbar(
+                                                                          "서버 열리지 않음",
+                                                                          "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                          duration:
+                                                                              const Duration(seconds: 5),
+                                                                          snackPosition:
+                                                                              SnackPosition.TOP,
+                                                                        );
+                                                                      }
                                                                     },
                                                                   ),
                                                                 ),

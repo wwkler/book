@@ -519,64 +519,85 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {
-                                        // 서버와 통신
-                                        final response = await dio.post(
-                                          'http://${IpAddress.hyunukIP}:8080/goal',
-                                          // 서버에 보내야 하는 데이터
-                                          data: {
-                                            // 사용자 고유값
-                                            "memberId": UserInfo.userValue,
+                                        try {
+                                          // 서버와 통신
+                                          final response = await dio.post(
+                                            'http://${IpAddress.hyunukIP}:8080/goal',
+                                            // 서버에 보내야 하는 데이터
+                                            data: {
+                                              // 사용자 고유값
+                                              "memberId": UserInfo.userValue,
 
-                                            // 목표 이름
-                                            "goalname": "목표_1_${UserInfo.id}",
+                                              // 목표 이름
+                                              "goalname": "목표_1_${UserInfo.id}",
 
-                                            // 도서 카테코리 번호
-                                            "categoryId": selectedCode,
+                                              // 도서 카테코리 번호
+                                              "categoryId": selectedCode,
 
-                                            // 목표 도서량
-                                            "targetQuantity": int.parse(
-                                              readBooksCountController.text,
+                                              // 목표 도서량
+                                              "targetQuantity": int.parse(
+                                                readBooksCountController.text,
+                                              ),
+
+                                              // 읽은 책 갯수(0으로 초기 설정)
+                                              "readed": 0,
+
+                                              // 시작일
+                                              "startDate":
+                                                  formatDate(currentTime!),
+
+                                              // 목표일
+                                              "endDate": objDate,
+
+                                              // 완료 여부(false로 초기설정)
+                                              "completed": false,
+                                            },
+                                            options: Options(
+                                              validateStatus: (_) => true,
+                                              contentType:
+                                                  Headers.jsonContentType,
+                                              responseType: ResponseType.json,
                                             ),
+                                          );
 
-                                            // 읽은 책 갯수(0으로 초기 설정)
-                                            "readed": 0,
+                                          // 서버와 통신 성공
+                                          if (response.statusCode == 200) {
+                                            print("서버와 통신 성공");
+                                            print(
+                                                "서버에서 제공해주는 데이터 : ${response.data}");
 
-                                            // 시작일
-                                            "startDate":
-                                                formatDate(currentTime!),
+                                            Get.snackbar(
+                                              "목표1 설정하기 반영 성공",
+                                              "목표1 설정하기 반영 성공하였습니다",
+                                              duration:
+                                                  const Duration(seconds: 5),
+                                              snackPosition: SnackPosition.TOP,
+                                            );
 
-                                            // 목표일
-                                            "endDate": objDate,
+                                            // 라우팅
+                                            Get.off(() => BookFluidNavBar());
+                                          }
+                                          // 서버와 통신 실패
+                                          else {
+                                            print("서버와 통신 실패");
+                                            print(
+                                                "서버 통신 에러 코드 : ${response.statusCode}");
 
-                                            // 완료 여부(false로 초기설정)
-                                            "completed": false,
-                                          },
-                                          options: Options(
-                                            validateStatus: (_) => true,
-                                            contentType:
-                                                Headers.jsonContentType,
-                                            responseType: ResponseType.json,
-                                          ),
-                                        );
-
-                                        // 서버와 통신 성공
-                                        if (response.statusCode == 200) {
-                                          print("서버와 통신 성공");
-                                          print(
-                                              "서버에서 제공해주는 데이터 : ${response.data}");
-
-                                          // 라우팅
-                                          Get.off(() => BookFluidNavBar());
+                                            Get.snackbar(
+                                              "목표1 설정하기 반영 실패",
+                                              "목표1 설정하기 반영 실패하였습니다\n다시 시도해주세요",
+                                              duration:
+                                                  const Duration(seconds: 5),
+                                              snackPosition: SnackPosition.TOP,
+                                            );
+                                          }
                                         }
-                                        // 서버와 통신 실패
-                                        else {
-                                          print("서버와 통신 실패");
-                                          print(
-                                              "서버 통신 에러 코드 : ${response.statusCode}");
-
+                                        // DioError[unknown]: null이 메시지로 나타났을 떄
+                                        // 즉 서버가 열리지 않았다는 뜻이다
+                                        catch (e) {
                                           Get.snackbar(
-                                            "서버 통신 실패",
-                                            "서버 통신 에러 코드 : ${response.statusCode}",
+                                            "서버 열리지 않음",
+                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                             duration:
                                                 const Duration(seconds: 5),
                                             snackPosition: SnackPosition.TOP,
@@ -617,72 +638,93 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      // DateTime dt = await NTP.now();
-
                                       //검증하기
                                       if (readBooksCountController.text.length > 1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {
-                                        // 서버와 통신
-                                        final response = await dio.put(
-                                          'http://${IpAddress.hyunukIP}:8080/goal/update',
-                                          // 서버에 보내야 하는 데이터
-                                          data: {
-                                            // 목표 이름
-                                            "goalname": objectives![0]
-                                                ["goalname"],
+                                        try {
+                                          // 서버와 통신
+                                          final response = await dio.put(
+                                            'http://${IpAddress.hyunukIP}:8080/goal/update',
+                                            // 서버에 보내야 하는 데이터
+                                            data: {
+                                              // 목표 이름
+                                              "goalname": objectives![0]
+                                                  ["goalname"],
 
-                                            // 도서 카테코리 번호
-                                            "categoryId": selectedCode,
+                                              // 도서 카테코리 번호
+                                              "categoryId": selectedCode,
 
-                                            // 목표 도서량
-                                            "targetQuantity": int.parse(
-                                              readBooksCountController.text,
+                                              // 목표 도서량
+                                              "targetQuantity": int.parse(
+                                                readBooksCountController.text,
+                                              ),
+
+                                              // 읽은 책 갯수(0으로 초기 설정)
+                                              "readed": 0,
+
+                                              // 시작일
+                                              "startDate":
+                                                  formatDate(currentTime!),
+
+                                              // 목표일
+                                              "endDate": objDate,
+
+                                              // 완료 여부
+                                              // "completed": ,
+                                            },
+                                            options: Options(
+                                              validateStatus: (_) => true,
+                                              contentType:
+                                                  Headers.jsonContentType,
+                                              responseType: ResponseType.json,
                                             ),
+                                          );
 
-                                            // 읽은 책 갯수(0으로 초기 설정)
-                                            "readed": 0,
+                                          // 서버와 통신 성공
+                                          if (response.statusCode == 200) {
+                                            print("서버와 통신 성공");
+                                            print(
+                                                "서버에서 제공해주는 데이터 : ${response.data}");
 
-                                            // 시작일
-                                            "startDate":
-                                                formatDate(currentTime!),
+                                            Get.snackbar(
+                                              "목표1 수정 반영 성공",
+                                              "목표1 수정 반영 성공하였습니다",
+                                              duration:
+                                                  const Duration(seconds: 5),
+                                              snackPosition: SnackPosition.TOP,
+                                            );
+                                          }
+                                          // 서버와 통신 실패
+                                          else {
+                                            print("서버와 통신 실패");
+                                            print(
+                                                "서버 통신 에러 코드 : ${response.statusCode}");
 
-                                            // 목표일
-                                            "endDate": objDate,
-
-                                            // 완료 여부
-                                            // "completed": ,
-                                          },
-                                          options: Options(
-                                            validateStatus: (_) => true,
-                                            contentType:
-                                                Headers.jsonContentType,
-                                            responseType: ResponseType.json,
-                                          ),
-                                        );
-
-                                        // 서버와 통신 성공
-                                        if (response.statusCode == 200) {
-                                          print("서버와 통신 성공");
-                                          print(
-                                              "서버에서 제공해주는 데이터 : ${response.data}");
+                                            Get.snackbar(
+                                              "목표1 수정 반영 실패",
+                                              "목표1 수정 반영 실패하였습니다\n다시 시도해주세요",
+                                              duration:
+                                                  const Duration(seconds: 5),
+                                              snackPosition: SnackPosition.TOP,
+                                            );
+                                          }
                                         }
-                                        // 서버와 통신 실패
-                                        else {
-                                          print("서버와 통신 실패");
-                                          print(
-                                              "서버 통신 에러 코드 : ${response.statusCode}");
-
+                                        // DioError[unknown]: null이 메시지로 나타났을 떄
+                                        // 즉 서버가 열리지 않았다는 뜻이다
+                                        catch (e) {
                                           Get.snackbar(
-                                            "서버 통신 실패",
-                                            "서버 통신 에러 코드 : ${response.statusCode}",
+                                            "서버 열리지 않음",
+                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                             duration:
                                                 const Duration(seconds: 5),
                                             snackPosition: SnackPosition.TOP,
                                           );
                                         }
-                                      } else {
+                                      }
+                                      //
+                                      else {
                                         Get.snackbar(
                                           "이상 메시지",
                                           "클라이언트에서 입력을 적합하지 않게 하였습니다.",

@@ -158,7 +158,7 @@ class _ConfigurationState extends State<Configuration> {
             GestureDetector(
               onTap: () {
                 // 내 정보 변경하기 페이지로 라우팅
-                Get.off(() => MyPage());
+                Get.off(() => const MyPage());
               },
               child: Card(
                 elevation: 10.0,
@@ -198,6 +198,13 @@ class _ConfigurationState extends State<Configuration> {
                 UserInfo.age = null;
                 UserInfo.selectedCode = null;
                 UserInfo.email = null;
+
+                Get.snackbar(
+                  "로그아웃",
+                  "로그아웃을 하였습니다",
+                  duration: const Duration(seconds: 5),
+                  snackPosition: SnackPosition.TOP,
+                );
 
                 // 로그아웃
                 Get.off(() => const LoginScreen());
@@ -265,49 +272,73 @@ class _ConfigurationState extends State<Configuration> {
                                 TextButton(
                                   child: const Text("클릭"),
                                   onPressed: () async {
-                                    // 다이어로그에 있는 버튼을 누르면 서버와 통신을 한다.
-                                    final response = await dio.post(
-                                      'http://49.161.110.41:8080/withdrawMember',
-                                      data: {
-                                        // 계정
-                                        'account': UserInfo.id,
-                                        // 비밀번호
-                                        'password':
-                                            inputPasswordController.text,
-                                      },
-                                      options: Options(
-                                        headers: {
-                                          "Authorization":
-                                              "Bearer ${UserInfo.token}",
+                                    try {
+                                      // 다이어로그에 있는 버튼을 누르면 서버와 통신을 한다.
+                                      final response = await dio.post(
+                                        'http://49.161.110.41:8080/withdrawMember',
+                                        data: {
+                                          // 계정
+                                          'account': UserInfo.id,
+                                          // 비밀번호
+                                          'password':
+                                              inputPasswordController.text,
                                         },
-                                        validateStatus: (_) => true,
-                                        contentType: Headers.jsonContentType,
-                                        responseType: ResponseType.json,
-                                      ),
-                                    );
+                                        options: Options(
+                                          headers: {
+                                            "Authorization":
+                                                "Bearer ${UserInfo.token}",
+                                          },
+                                          validateStatus: (_) => true,
+                                          contentType: Headers.jsonContentType,
+                                          responseType: ResponseType.json,
+                                        ),
+                                      );
 
-                                    // 서버와 통신 성공
-                                    if (response.statusCode == 200) {
-                                      print("서버와 통신 성공");
-                                      print(
-                                          "서버에서 제공해주는 데이터 : ${response.data}");
+                                      // 서버와 통신 성공
+                                      if (response.statusCode == 200) {
+                                        print("서버와 통신 성공");
+                                        print(
+                                            "서버에서 제공해주는 데이터 : ${response.data}");
 
-                                      // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로고인 페이지로 이동시킨다.
-                                      if (response.data == true) {
-                                        print("회원 탈퇴 되었습니다.");
+                                        // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로고인 페이지로 이동시킨다.
+                                        if (response.data == true) {
+                                          print("회원 탈퇴 되었습니다.");
 
-                                        // 아이디를 보여주는 다이어로그를 삭제한다.
-                                        Get.back();
+                                          Get.snackbar(
+                                            "회원탈퇴 성공",
+                                            "사용자 정보가 삭제되었습니다",
+                                            duration:
+                                                const Duration(seconds: 5),
+                                            snackPosition: SnackPosition.TOP,
+                                          );
 
-                                        // 로고인 페이지로 라우팅
-                                        Get.off(() => const LoginScreen());
+                                          // 아이디를 보여주는 다이어로그를 삭제한다.
+                                          Get.back();
+
+                                          // 로고인 페이지로 라우팅
+                                          Get.off(() => const LoginScreen());
+                                        }
                                       }
-                                      // 서버에서 받은 데이터가 false인 경우
+                                      //
                                       else {
-                                        print("회원 탈퇴 안되었습니다.");
+                                        Get.snackbar(
+                                          "회원탈퇴 반영 실패",
+                                          "사용자 정보가 삭제되지 않았습니다",
+                                          duration: const Duration(seconds: 5),
+                                          snackPosition: SnackPosition.TOP,
+                                        );
                                       }
-                                    } else {
-                                      print("서버 통신 실패");
+                                    }
+                                    // DioError[unknown]: null이 메시지로 나타났을 떄
+                                    // 즉 서버가 열리지 않았다는 뜻이다
+                                    catch (e) {
+                                      // 서버가 열리지 않았다는 snackBar를 띄운다
+                                      Get.snackbar(
+                                        "서버 열리지 않음",
+                                        "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                        duration: const Duration(seconds: 5),
+                                        snackPosition: SnackPosition.TOP,
+                                      );
                                     }
                                   },
                                 ),

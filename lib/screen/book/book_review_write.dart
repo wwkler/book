@@ -54,41 +54,55 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
   // 읽은 도서를 가져오는 함수
   Future<void> getReadBookDatas() async {
     if (callServer == true) {
-      final response = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
-        options: Options(
-          validateStatus: (_) => true,
-          contentType: Headers.jsonContentType,
-          responseType: ResponseType.json,
-        ),
-      );
+      try {
+        final response = await dio.get(
+          "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
+          options: Options(
+            validateStatus: (_) => true,
+            contentType: Headers.jsonContentType,
+            responseType: ResponseType.json,
+          ),
+        );
 
-      if (response.statusCode == 200) {
-        print("서버와 통신 성공");
-        print("서버에서 받은 읽은 도서 데이터: ${response.data}");
+        if (response.statusCode == 200) {
+          print("서버와 통신 성공");
+          print("서버에서 받은 읽은 도서 데이터: ${response.data}");
 
-        readBooks = (response.data as List<dynamic>).map(
-          (dynamic e) {
-            // 도서 읽은 날짜를 배열에 추가한다.
-            readBooks_completed_dateTime.add(
-              (e["finishedDate"] as String).substring(0, 10),
-            );
+          readBooks = (response.data as List<dynamic>).map(
+            (dynamic e) {
+              // 도서 읽은 날짜를 배열에 추가한다.
+              readBooks_completed_dateTime.add(
+                (e["finishedDate"] as String).substring(0, 10),
+              );
 
-            return BookModel.fromJson(e["book"] as Map<String, dynamic>);
-          },
-        ).toList();
+              return BookModel.fromJson(e["book"] as Map<String, dynamic>);
+            },
+          ).toList();
 
-        if (readBooks.isNotEmpty) {
-          selectedBook = readBooks[0];
+          if (readBooks.isNotEmpty) {
+            selectedBook = readBooks[0];
+          }
+
+          print("readBooks : $readBooks");
+          print(
+              "readBooks_completed_dateTime : ${readBooks_completed_dateTime}");
         }
-
-        print("readBooks : $readBooks");
-        print("readBooks_completed_dateTime : ${readBooks_completed_dateTime}");
+        //
+        else {
+          print("서버와 통신 실패");
+          print("서버 통신 에러 코드 : ${response.statusCode}");
+        }
       }
-      //
-      else {
-        print("서버와 통신 실패");
-        print("서버 통신 에러 코드 : ${response.statusCode}");
+      // DioError[unknown]: null이 메시지로 나타났을 떄
+      // 즉 서버가 열리지 않았다는 뜻이다
+      catch (e) {
+        // 서버가 열리지 않았다는 snackBar를 띄운다
+        Get.snackbar(
+          "서버 열리지 않음",
+          "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+          duration: const Duration(seconds: 5),
+          snackPosition: SnackPosition.TOP,
+        );
       }
     }
   }
@@ -462,43 +476,68 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                             onPressed: () async {
                               // 서버와 통신
                               // 데이터베이스에 도서 리뷰 데이터를 추가한다.
+                              try {
+                                final response = await dio.post(
+                                  "http://${IpAddress.hyunukIP}:8080/reviews/save",
+                                  data: {
+                                    // 리뷰 제목
+                                    "title": reviewTitleController.text,
 
-                              final response = await dio.post(
-                                "http://${IpAddress.hyunukIP}:8080/reviews/save",
-                                data: {
-                                  // 리뷰 제목
-                                  "title": reviewTitleController.text,
+                                    // 리뷰 내용
+                                    "content": reviewContentController.text,
 
-                                  // 리뷰 내용
-                                  "content": reviewContentController.text,
+                                    // 리뷰 평점
+                                    "rating": reviewPoint,
 
-                                  // 리뷰 평점
-                                  "rating": reviewPoint,
+                                    // 사용자 고유값
+                                    "memberId": UserInfo.userValue,
 
-                                  // 사용자 고유값
-                                  "memberId": UserInfo.userValue,
+                                    // 도서 id
+                                    "itemId": selectedBook!.itemId,
+                                  },
+                                  options: Options(
+                                    validateStatus: (_) => true,
+                                    contentType: Headers.jsonContentType,
+                                    responseType: ResponseType.json,
+                                  ),
+                                );
 
-                                  // 도서 id
-                                  "itemId": selectedBook!.itemId,
-                                },
-                                options: Options(
-                                  validateStatus: (_) => true,
-                                  contentType: Headers.jsonContentType,
-                                  responseType: ResponseType.json,
-                                ),
-                              );
+                                if (response.statusCode == 200) {
+                                  print("서버와 통신 성공");
+                                  print("서버 성공데이터: ${response.data}");
 
-                              if (response.statusCode == 200) {
-                                print("서버와 통신 성공");
-                                print("서버 성공데이터: ${response.data}");
+                                  Get.snackbar(
+                                    "리뷰 작성 성공",
+                                    "리뷰 작성 완료하였습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
 
-                                // 라우팅
-                                Get.off(() => BookFluidNavBar());
+                                  // 라우팅
+                                  Get.off(() => BookFluidNavBar());
+                                }
+                                //
+                                else {
+                                  print("서버와 통신 실패");
+                                  print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                                  Get.snackbar(
+                                    "리뷰 작성 반영 실패",
+                                    "리뷰 작성 반영 실패 하였습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
+                                }
                               }
-                              //
-                              else {
-                                print("서버와 통신 실패");
-                                print("서버 통신 에러 코드 : ${response.statusCode}");
+                              // DioError[unknown]: null이 메시지로 나타났을 떄
+                              // 즉 서버가 열리지 않았다는 뜻이다
+                              catch (e) {
+                                Get.snackbar(
+                                  "서버 열리지 않음",
+                                  "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                  duration: const Duration(seconds: 5),
+                                  snackPosition: SnackPosition.TOP,
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(
