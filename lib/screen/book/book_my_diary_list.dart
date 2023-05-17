@@ -36,7 +36,6 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
         body: SingleChildScrollView(
           child: Container(
             width: MediaQuery.of(context).size.width,
-
             // 배경 이미지
             decoration: const BoxDecoration(
               image: DecorationImage(

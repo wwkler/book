@@ -31,7 +31,7 @@ class _BookCommunityState extends State<BookCommunity> {
   List<BookModel> reviewBooks = [];
 
   // 전체 데이터만 가져올지 검색어에 해당하는 데이터만 가져올지 정하는 플래그 변수
-  bool isCallAll = true;
+  // bool isCallAll = true;
 
   // 서버를 사용하기 위한 변수
   var dio = Dio();
@@ -54,10 +54,8 @@ class _BookCommunityState extends State<BookCommunity> {
     reviewWriterInfos.clear();
     reviewBooks.clear();
 
-    if (isCallAll == true) {
-      // isCallAll를 false로 변경한다
-      isCallAll = false;
-
+    // keyword == "" 일 떄 전체 리뷰 데이터를 가져온다
+    if (keyword == "") {
       print("전체 리뷰 데이터를 가져오고 있습니다");
 
       // 전체 데이터를 가져온다
@@ -116,7 +114,7 @@ class _BookCommunityState extends State<BookCommunity> {
         print("서버가 열리지 않음");
       }
     }
-    //
+    // keyword != ""일 떄 검색어에 해당하는 리뷰 데이터를 가져온다
     else {
       print("검색어에 해당하는  리뷰 데이터를 가져오고 있습니다");
 
@@ -399,7 +397,78 @@ class _BookCommunityState extends State<BookCommunity> {
 
                                                 // 좋아요 버튼
                                                 IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () async {
+                                                    try {
+                                                      final response =
+                                                          await dio.post(
+                                                        'http://${IpAddress.hyunukIP}/reviews/addLike?reviewId=${reviewWriterInfos[index]["id"]}',
+                                                        data: {},
+                                                        options: Options(
+                                                          validateStatus: (_) =>
+                                                              true,
+                                                          contentType: Headers
+                                                              .jsonContentType,
+                                                          responseType:
+                                                              ResponseType.json,
+                                                        ),
+                                                      );
+
+                                                      // 서버와 통신에 성공
+                                                      if (response.statusCode ==
+                                                          200) {
+                                                        print("서버와 통신 성공");
+                                                        print(
+                                                            "서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
+
+                                                        // 로고인에 성공하였다는 snackBar를 띄운다
+                                                        Get.snackbar(
+                                                          "좋아요 클릭 성공",
+                                                          "해당 리뷰 게시물에 좋아요를 클릭했습니다",
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 5),
+                                                          snackPosition:
+                                                              SnackPosition.TOP,
+                                                        );
+
+                                                        // 화면 재랜더링
+                                                        setState(() {});
+                                                      }
+                                                      // 서버와 통신 실패
+                                                      else {
+                                                        print("서버와 통신 실패");
+                                                        print(
+                                                            "서버 통신 에러 코드 : ${response.statusCode}");
+                                                        print(
+                                                            "메시지 : ${response.data}");
+
+                                                        // 좋아요 반영에 실패하였다는 snackBar를 띄운다
+                                                        Get.snackbar(
+                                                          "좋아요 반영 실패",
+                                                          "해당 리뷰 게시물에 좋아요가 반영되지 않았습니다",
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 5),
+                                                          snackPosition:
+                                                              SnackPosition.TOP,
+                                                        );
+                                                      }
+                                                    }
+                                                    // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                    // 즉 서버가 열리지 않았다는 뜻이다
+                                                    catch (e) {
+                                                      // 서버가 열리지 않았다는 snackBar를 띄운다
+                                                      Get.snackbar(
+                                                        "서버 열리지 않음",
+                                                        "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                        duration:
+                                                            const Duration(
+                                                                seconds: 5),
+                                                        snackPosition:
+                                                            SnackPosition.TOP,
+                                                      );
+                                                    }
+                                                  },
                                                   icon: const Icon(
                                                     Icons.favorite,
                                                     color: Colors.blue,
@@ -904,9 +973,118 @@ class _BookCommunityState extends State<BookCommunity> {
                                                         const EdgeInsets.all(
                                                             64.0),
                                                     child: ElevatedButton(
-                                                      onPressed: () {
-                                                        // 서버와 통신
-                                                        // 리뷰 글을 삭제한다.
+                                                      onPressed: () async {
+                                                        // 리뷰글을 삭제하는 다이어로그를 띄운다
+                                                        Get.dialog(
+                                                          AlertDialog(
+                                                            title: const Text(
+                                                              "리뷰글 삭제",
+                                                            ),
+                                                            content: SizedBox(
+                                                              width: 100,
+                                                              height: 150,
+                                                              child: Column(
+                                                                children: [
+                                                                  // text
+                                                                  const Text(
+                                                                    "리뷰글을 삭제하시겠습니까?",
+                                                                  ),
+
+                                                                  // 중간 공백
+                                                                  const SizedBox(
+                                                                    height: 25,
+                                                                  ),
+
+                                                                  // 리뷰글 삭제하기 버튼
+                                                                  TextButton(
+                                                                    child:
+                                                                        const Text(
+                                                                      "삭제하기",
+                                                                    ),
+                                                                    onPressed:
+                                                                        () async {
+                                                                      // 서버와 통신
+                                                                      // 전체 데이터를 가져온다
+                                                                      try {
+                                                                        final response =
+                                                                            await dio.delete(
+                                                                          "http://${IpAddress.hyunukIP}/reviews/delete?reviewId=${reviewWriterInfos[index]["id"]}",
+                                                                          options:
+                                                                              Options(
+                                                                            validateStatus: (_) =>
+                                                                                true,
+                                                                            contentType:
+                                                                                Headers.jsonContentType,
+                                                                            responseType:
+                                                                                ResponseType.json,
+                                                                          ),
+                                                                        );
+
+                                                                        if (response.statusCode ==
+                                                                            200) {
+                                                                          print(
+                                                                              "서버와 통신 성공");
+                                                                          print(
+                                                                              "서버에서 받아온 데이터 : ${response.data}");
+
+                                                                          // 삭제하기 다이어로그를 없앤다
+                                                                          Get.back();
+
+                                                                          // 리뷰글을 삭제했다는 snackBar를 띄운다
+                                                                          Get.snackbar(
+                                                                            "리뷰글 삭제 성공",
+                                                                            "리뷰글을 삭제하였습니다",
+                                                                            duration:
+                                                                                const Duration(seconds: 5),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          );
+
+                                                                          // 화면 재랜더링
+                                                                          setState(
+                                                                              () {});
+                                                                        }
+                                                                        //
+                                                                        else {
+                                                                          print(
+                                                                              "서버와 통신 실패");
+                                                                          print(
+                                                                              "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                                          // 리뷰글을 삭제 snackBar를 띄운다
+                                                                          Get.snackbar(
+                                                                            "리뷰글 삭제 반영 실패",
+                                                                            "리뷰글이 삭제되지 않았습니다 다시 시도해주세요",
+                                                                            duration:
+                                                                                const Duration(seconds: 5),
+                                                                            snackPosition:
+                                                                                SnackPosition.TOP,
+                                                                          );
+                                                                        }
+                                                                      }
+                                                                      // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                      // 즉 서버가 열리지 않았다는 뜻이다
+                                                                      catch (e) {
+                                                                        print(
+                                                                            "서버가 열리지 않음");
+
+                                                                        // 서버가 닫혀있는 snackBar를 띄운다
+                                                                        Get.snackbar(
+                                                                          "서버가 닫혀 있음",
+                                                                          "서버가 열리지 않았습니다",
+                                                                          duration:
+                                                                              const Duration(seconds: 5),
+                                                                          snackPosition:
+                                                                              SnackPosition.TOP,
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
                                                       },
                                                       style: ElevatedButton
                                                           .styleFrom(

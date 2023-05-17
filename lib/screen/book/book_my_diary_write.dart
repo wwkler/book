@@ -1,7 +1,11 @@
 // 도서 일지 작성 페이지
 import 'dart:io';
 
+import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/model/bookModel.dart';
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,26 +19,36 @@ class BookMyDiaryWrite extends StatefulWidget {
 }
 
 class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
-  // 읽고 있는 도서 목록
-  final List<String> readNowBooks = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-    'Item5',
-    'Item6',
-    'Item7',
-    'Item8',
-  ];
+  // // 읽고 있는 도서 목록
+  // final List<String> readNowBooks = [
+  //   'Item1',
+  //   'Item2',
+  //   'Item3',
+  //   'Item4',
+  //   'Item5',
+  //   'Item6',
+  //   'Item7',
+  //   'Item8',
+  // ];
+  // // 선택한 읽고 있는 도서
+  // String? selectedValue;
+
+  // 읽고 있는 도서
+  List<BookModel> nowReadBooks = [];
   // 선택한 읽고 있는 도서
-  String? selectedValue;
+  BookModel? selectedBook;
+  // 서버 호출 플래그
+  bool callServer = true;
 
   // 카메라
   final ImagePicker _picker = ImagePicker();
-  XFile? _photo = null;
+  XFile? _photo;
 
   // 감상평 Text
   final reviewController = TextEditingController();
+
+  // 서버를 사용하는 변수
+  var dio = Dio();
 
   @override
   void initState() {
@@ -47,6 +61,9 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
     print("Book My Diary Write state 종료");
     super.dispose();
   }
+
+  // 읽고 있는 도서, 읽은 도서를 가져오는 함수
+  
 
   @override
   Widget build(BuildContext context) {
@@ -116,114 +133,286 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                   // 중간 공백
                   const SizedBox(height: 40),
 
-                  // 읽고 있는 도서 검색
-                  Center(
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2(
-                        isExpanded: true,
-                        hint: Row(
-                          children: const [
-                            Icon(
-                              Icons.list,
-                              size: 16,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                '읽고 있는 도서 검색',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: readNowBooks
-                            .map(
-                              (String item) => DropdownMenuItem<String>(
-                                value: item,
-                                child: Row(
-                                  children: [
-                                    // 읽고 있는 도서 이미지
-                                    Image.asset(
-                                      "assets/imgs/icon.png",
-                                    ),
+                  // // 읽고 있는 도서 검색
+                  // Center(
+                  //   child: DropdownButtonHideUnderline(
+                  //     child: DropdownButton2(
+                  //       isExpanded: true,
+                  //       hint: Row(
+                  //         children: const [
+                  //           Icon(
+                  //             Icons.list,
+                  //             size: 16,
+                  //             color: Colors.white,
+                  //           ),
+                  //           SizedBox(
+                  //             width: 10,
+                  //           ),
+                  //           Expanded(
+                  //             child: Text(
+                  //               '읽고 있는 도서 검색',
+                  //               style: TextStyle(
+                  //                 fontSize: 14,
+                  //                 fontWeight: FontWeight.bold,
+                  //                 color: Colors.white,
+                  //               ),
+                  //               overflow: TextOverflow.ellipsis,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       items: readNowBooks
+                  //           .map(
+                  //             (String item) => DropdownMenuItem<String>(
+                  //               value: item,
+                  //               child: Row(
+                  //                 children: [
+                  //                   // 읽고 있는 도서 이미지
+                  //                   Image.asset(
+                  //                     "assets/imgs/icon.png",
+                  //                   ),
 
-                                    // 중간 공백
-                                    const SizedBox(width: 20),
+                  //                   // 중간 공백
+                  //                   const SizedBox(width: 20),
 
-                                    // 읽고 있는 도서 제목
-                                    Text(
-                                      item,
-                                      style: const TextStyle(
+                  //                   // 읽고 있는 도서 제목
+                  //                   Text(
+                  //                     item,
+                  //                     style: const TextStyle(
+                  //                       fontSize: 14,
+                  //                       fontWeight: FontWeight.bold,
+                  //                       color: Colors.white,
+                  //                     ),
+                  //                     overflow: TextOverflow.ellipsis,
+                  //                   ),
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           )
+                  //           .toList(),
+                  //       value: selectedValue,
+                  //       onChanged: (String? value) {
+                  //         setState(() {
+                  //           selectedValue = value as String;
+                  //         });
+                  //       },
+                  //       buttonStyleData: ButtonStyleData(
+                  //         height: 50,
+                  //         width: 250,
+                  //         padding: const EdgeInsets.only(left: 14, right: 14),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(14),
+                  //           border: Border.all(
+                  //             color: Colors.black26,
+                  //           ),
+                  //           color: Colors.purple,
+                  //         ),
+                  //         elevation: 2,
+                  //       ),
+                  //       iconStyleData: const IconStyleData(
+                  //         icon: Icon(
+                  //           Icons.arrow_forward_ios_outlined,
+                  //         ),
+                  //         iconSize: 14,
+                  //         iconEnabledColor: Colors.white,
+                  //         iconDisabledColor: Colors.grey,
+                  //       ),
+                  //       dropdownStyleData: DropdownStyleData(
+                  //         maxHeight: 200,
+                  //         width: 300,
+                  //         padding: null,
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(14),
+                  //           color: Colors.purple,
+                  //         ),
+                  //         elevation: 8,
+                  //         offset: const Offset(-20, 0),
+                  //         scrollbarTheme: ScrollbarThemeData(
+                  //           radius: const Radius.circular(40),
+                  //           thickness: MaterialStateProperty.all<double>(6),
+                  //           thumbVisibility:
+                  //               MaterialStateProperty.all<bool>(true),
+                  //         ),
+                  //       ),
+                  //       menuItemStyleData: const MenuItemStyleData(
+                  //         height: 80,
+                  //         padding: EdgeInsets.only(left: 14, right: 14),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+
+                  // 읽고 있는 도서가 있는지 없는지에 따라 다른 로직 구현
+                  nowReadBooks.isNotEmpty
+                      ? Center(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Row(
+                                children: const [
+                                  Icon(
+                                    Icons.list,
+                                    size: 16,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '읽고 있는 도서 검색',
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                              value: selectedBook!.title,
+                              items: nowReadBooks
+                                  .map(
+                                    (BookModel bookModel) =>
+                                        DropdownMenuItem<String>(
+                                      value: bookModel.title,
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(
+                                          children: [
+                                            // 읽은 도서 이미지
+                                            Image.network(
+                                              bookModel.coverSmallUrl,
+                                              width: 50,
+                                              height: 50,
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(width: 10),
+
+                                            // 읽은 도서 제목
+                                            Text(
+                                              bookModel.title,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(width: 10),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (String? bookName) {
+                                // 서버를 호출하지 않겠다.
+                                callServer = false;
+                                setState(() {
+                                  print("bookName : $bookName");
+                                  selectedBook = nowReadBooks.firstWhere(
+                                    (BookModel book) => book.title == bookName,
+                                  );
+                                  print("selectedBook : $selectedBook");
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                width: 250,
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: Colors.black26,
+                                  ),
+                                  color: Colors.purple,
+                                ),
+                                elevation: 2,
+                              ),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: Colors.white,
+                                iconDisabledColor: Colors.grey,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 200,
+                                width: 300,
+                                padding: null,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.purple,
+                                ),
+                                elevation: 8,
+                                offset: const Offset(-20, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
-                            )
-                            .toList(),
-                        value: selectedValue,
-                        onChanged: (String? value) {
-                          setState(() {
-                            selectedValue = value as String;
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: 250,
-                          padding: const EdgeInsets.only(left: 14, right: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: Colors.black26,
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 80,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
                             ),
-                            color: Colors.purple,
                           ),
-                          elevation: 2,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
+                        )
+                      : Center(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              isExpanded: true,
+                              hint: Row(
+                                children: const [
+                                  Icon(
+                                    Icons.list,
+                                    size: 16,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '읽고 있는 도서가 없습니다',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              items: [],
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                width: 250,
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: Colors.black26,
+                                  ),
+                                  color: Colors.purple,
+                                ),
+                                elevation: 2,
+                              ),
+                            ),
                           ),
-                          iconSize: 14,
-                          iconEnabledColor: Colors.white,
-                          iconDisabledColor: Colors.grey,
                         ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 200,
-                          width: 300,
-                          padding: null,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: Colors.purple,
-                          ),
-                          elevation: 8,
-                          offset: const Offset(-20, 0),
-                          scrollbarTheme: ScrollbarThemeData(
-                            radius: const Radius.circular(40),
-                            thickness: MaterialStateProperty.all<double>(6),
-                            thumbVisibility:
-                                MaterialStateProperty.all<bool>(true),
-                          ),
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 80,
-                          padding: EdgeInsets.only(left: 14, right: 14),
-                        ),
-                      ),
-                    ),
-                  ),
 
                   // 중간 공백
                   const SizedBox(height: 40),
@@ -239,6 +428,9 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                         );
 
                         if (photo != null) {
+                          print("photo_path : ${photo.path}");
+                          print(
+                              "photo_path의 데이터 타입 : ${photo.path.runtimeType}");
                           setState(() {
                             _photo = photo;
                           });
@@ -319,10 +511,67 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                     child: SizedBox(
                       width: 300,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // 서버와 통신
-                          // 서버에 새 일지를 추가한다.
-                          
+                        onPressed: () async {
+                          // 일지 작성 완료를 시도한다
+                          try {
+                            final response = await dio.post(
+                              "http://${IpAddress.hyunukIP}/journals/save",
+                              data: {
+                                "memberId": UserInfo.userValue,
+                                // 도서 id
+                                "itemId": selectedBook!.itemId,
+                                "content": reviewController.text,
+                                "image": _photo!.path,
+                              },
+                              options: Options(
+                                validateStatus: (_) => true,
+                                contentType: Headers.jsonContentType,
+                                responseType: ResponseType.json,
+                              ),
+                            );
+
+                            if (response.statusCode == 200) {
+                              print("서버와 통신 성공");
+                              print("서버에서 받아온 데이터 : ${response.data}");
+
+                              // 일지 작성 완료 snackBar를 띄운다
+                              Get.snackbar(
+                                "일지 작성 완료",
+                                "일지 작성 반영이 완료되었습니다",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+
+                              // 라우팅
+                              Get.off(() => BookFluidNavBar());
+                            }
+                            //
+                            else {
+                              print("서버와 통신 실패");
+                              print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                              // 일지 작성 반영 실패 snackBar를 띄운다
+                              Get.snackbar(
+                                "일지 작성 실패",
+                                "일지 작성 반영이 실패되었습니다",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
+                          }
+                          // DioError[unknown]: null이 메시지로 나타났을 떄
+                          // 즉 서버가 열리지 않았다는 뜻이다
+                          catch (e) {
+                            print("서버가 열리지 않음");
+
+                            // 서버가 열리지 않았음을 nackBar를 띄운다
+                            Get.snackbar(
+                              "서버가 열리지 않음",
+                              "서버가 열리지 않았습니다",
+                              duration: const Duration(seconds: 5),
+                              snackPosition: SnackPosition.TOP,
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

@@ -36,6 +36,21 @@ class _BookMyDiaryState extends State<BookMyDiary> {
     super.dispose();
   }
 
+  // 달력에 사용자 도서 일지를 보여주기 위한 함수
+  List<String> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
+  }
+
+  // 한국 시간을 얻기 위한 함수
+  Future<void> getKoreanTime() async {
+    // 한국 시간을 얻는다.
+    currentTime = await NTP.now();
+    currentTime = currentTime!.toUtc().add(const Duration(hours: 9));
+    print(currentTime);
+
+    await Future.delayed(const Duration(seconds: 3));
+  }
+
   @override
   Widget build(BuildContext context) {
     print("Book My Diary build 시작");
@@ -44,14 +59,6 @@ class _BookMyDiaryState extends State<BookMyDiary> {
       // 한국 시간을 받기 위해 기다린다. 참고로 도서 일지 데이터도 서버에서 받아온다.
       future: getKoreanTime(),
       builder: (context, snapshot) {
-        // if (currentTime == null) {
-        //   // 로딩 화면
-        //   return const SizedBox(
-        //     child: Center(
-        //       child: Text("기다려주세요"),
-        //     ),
-        //   );
-        // }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             width: MediaQuery.of(context).size.width,
@@ -188,7 +195,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 새 일지 작성 페이지로 라우팅
-                            Get.off(() => BookMyDiaryWrite());
+                            Get.off(() => const BookMyDiaryWrite());
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -228,7 +235,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 일지 보기 페이지로 라우팅
-                            Get.off(() => BookMyDiaryList());
+                            Get.off(() => const BookMyDiaryList());
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -267,20 +274,5 @@ class _BookMyDiaryState extends State<BookMyDiary> {
         }
       },
     );
-  }
-
-  // 달력에 사용자 도서 일지를 보여주기 위한 함수
-  List<String> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
-  }
-
-  // 한국 시간을 얻기 위한 함수
-  Future<void> getKoreanTime() async {
-    // 한국 시간을 얻는다.
-    currentTime = await NTP.now();
-    currentTime = currentTime!.toUtc().add(const Duration(hours: 9));
-    print(currentTime);
-
-    await Future.delayed(const Duration(seconds: 3));
   }
 }
