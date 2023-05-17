@@ -1,9 +1,12 @@
 // 도서 검색/추천 페이지
 import 'dart:async';
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:book_project/const/ban_check.dart';
 import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
+import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_search_result.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:dio/dio.dart';
@@ -30,9 +33,6 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   // 신간 도서
   List<BookModel> newBooks = [];
 
-  // 사용자가 앱을 사용하면서 ban됐는지 실시간으로 확인하는 변수
-  StreamSubscription<int>? monitorBan;
-
   // 서버 통신
   var dio = Dio();
 
@@ -41,31 +41,18 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
     print("Book Search Recommend InitState 시작");
     super.initState();
 
-    monitorBan = Stream.periodic(
-      const Duration(seconds: 5),
-      (x) => x,
-    ).listen((event) async {
-      // 밴 됐는지 안됐는지 확인하는 메소드를 호출한다.
-      await getBanDatas();
-
-      // ban이 null에서 날짜 뜨는 순간일 떄 처리
-    });
-  }
-
-  @override
-  Future<void> deactivate() async {
-    print("Book Search Recommend deactivate 호출");
-    super.deactivate();
-
-    // 스트림 제거
-    if (monitorBan != null) {
-      await monitorBan!.cancel();
-      print("스트림 제거합니다");
+    // 소속이 사용자 이면서 monitorBanFlag가 false일 떄만 실시간으로 사용자가 Ban 됐는지 실시간으로 모니터링 한다
+    if (UserInfo.identity == UserManagerCheck.user &&
+        BanCheck.monitorBanFlag == false) {
+      print("실시간으로 사용자가 Ban됐는지 실시간으로 모니터링 합니다");
+      // 사용자가 ban됐는지 실시간으로 모니터링 한다
+      BanCheck.monitor();
+      BanCheck.monitorBanFlag = true;
     }
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     print("Book Search Recommend state 종료");
     super.dispose();
   }
@@ -176,43 +163,6 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
       else {
         print("서버와 통신 실패");
         print("서버 통신 에러 코드 : ${response3.statusCode}");
-      }
-    }
-    // DioError[unknown]: null이 메시지로 나타났을 떄
-    // 즉 서버가 열리지 않았다는 뜻이다
-    catch (e) {
-      print("서버가 열리지 않음");
-    }
-  }
-
-  // 서버에서 벤 데이터를 호출하는 함수
-  Future<void> getBanDatas() async {
-    try {
-      final response4 = await dio.post(
-        "http://${IpAddress.youngZoonIP}:8080/user/getInfo",
-        // "http://${IpAddress.hyunukIP}:8080/user/getInfo",
-        data: {
-          "account": UserInfo.id,
-        },
-        options: Options(
-          headers: {
-            "Authorization": "Bearer ${UserInfo.token}",
-          },
-          validateStatus: (_) => true,
-          contentType: Headers.jsonContentType,
-          responseType: ResponseType.json,
-        ),
-      );
-
-      if (response4.statusCode == 200) {
-        print("서버와 통신 성공");
-        print("서버에서 받아온 ban 정보 : ${response4.data}");
-      }
-      //
-      else {
-        print("서버와 통신 실패");
-        print("서버 통신 에러 코드 : ${response4.statusCode}");
-        print("에러 메시지 : ${response4.data}");
       }
     }
     // DioError[unknown]: null이 메시지로 나타났을 떄

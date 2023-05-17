@@ -33,7 +33,7 @@ class UserManagementState extends State<UserManagement> {
     // 서버와 통신 - 회원 데이터를 모두 가져온다.
     try {
       final response = await dio.get(
-        "http://${IpAddress.innerServerIP}/getMemberList",
+        "http://${IpAddress.youngZoonIP}:8080/getMemberList",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -465,9 +465,15 @@ class UserManagementState extends State<UserManagement> {
                                                                 content:
                                                                     SizedBox(
                                                                   width: 100,
-                                                                  height: 150,
+                                                                  height: 200,
                                                                   child: Column(
                                                                     children: [
+                                                                      // 중간 공백
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            20,
+                                                                      ),
+
                                                                       // 아이디를 보여주는 문구
                                                                       const Text(
                                                                         "사용자 정지 일수를 설정해주세요",
@@ -509,15 +515,17 @@ class UserManagementState extends State<UserManagement> {
                                                                         ),
                                                                         onPressed:
                                                                             () async {
+                                                                          // print(
+                                                                          //     "setBanTimeController.text : ${setBanTimeController.text}");
                                                                           // 서버와 통신
                                                                           // 사용자 계정을 정지한다.
                                                                           try {
                                                                             final response =
                                                                                 await dio.post(
-                                                                              "http://${IpAddress.innerServerIP}/admin/banMember",
+                                                                              "http://${IpAddress.youngZoonIP}:8080/admin/banMember",
                                                                               data: {
-                                                                                "id": UserInfo.userValue,
-                                                                                "banTime": int.parse(setBanTimeController.text),
+                                                                                "id": memberList[index].id,
+                                                                                "bantime": int.parse(setBanTimeController.text),
                                                                               },
                                                                               options: Options(
                                                                                 headers: {

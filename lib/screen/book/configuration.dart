@@ -1,4 +1,5 @@
 // 환경 설정 페이지
+import 'package:book_project/const/ban_check.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/auth/login.dart';
@@ -188,7 +189,16 @@ class _ConfigurationState extends State<Configuration> {
 
             // 로그아웃
             GestureDetector(
-              onTap: () {
+              onTap: () async {
+                // 사용자 일 떄
+                if (UserInfo.identity == UserManagerCheck.user) {
+                  // ban을 실시간으로 하는 모니터링 하는 것을 중단한다
+                  await BanCheck.monitorBan!.cancel();
+
+                  // // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
+                  BanCheck.monitorBanFlag = false;
+                }
+
                 // user_info.dart에 있는 정보 초기화
                 UserInfo.identity = null;
                 UserInfo.userValue = null;
@@ -199,6 +209,7 @@ class _ConfigurationState extends State<Configuration> {
                 UserInfo.selectedCode = null;
                 UserInfo.email = null;
 
+                // 로그아웃 snackBar를 보여준다
                 Get.snackbar(
                   "로그아웃",
                   "로그아웃을 하였습니다",
@@ -242,7 +253,7 @@ class _ConfigurationState extends State<Configuration> {
                       // 비밀번호를 입력하는 다이어로그를 띄운다.
                       Get.dialog(
                         AlertDialog(
-                          title: const Text("비밀번호 입력"),
+                          title: const Text("회원 탈퇴"),
                           content: SizedBox(
                             width: 100,
                             height: 200,
@@ -304,6 +315,15 @@ class _ConfigurationState extends State<Configuration> {
                                         if (response.data == true) {
                                           print("회원 탈퇴 되었습니다.");
 
+                                        
+
+                                          // ban을 실시간으로 하는 모니터링 하는 것을 중단한다
+                                          await BanCheck.monitorBan!.cancel();
+
+                                          // // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
+                                          BanCheck.monitorBanFlag = false;
+
+                                          // 회원 탈퇴 했음을 snackBar로 띄운다
                                           Get.snackbar(
                                             "회원탈퇴 성공",
                                             "사용자 정보가 삭제되었습니다",
