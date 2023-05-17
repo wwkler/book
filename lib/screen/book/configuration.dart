@@ -1,5 +1,6 @@
 // 환경 설정 페이지
 import 'package:book_project/const/ban_check.dart';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/auth/login.dart';
@@ -286,7 +287,7 @@ class _ConfigurationState extends State<Configuration> {
                                     try {
                                       // 다이어로그에 있는 버튼을 누르면 서버와 통신을 한다.
                                       final response = await dio.post(
-                                        'http://49.161.110.41:8080/withdrawMember',
+                                        'http://${IpAddress.hyunukIP}/withdrawMember',
                                         data: {
                                           // 계정
                                           'account': UserInfo.id,

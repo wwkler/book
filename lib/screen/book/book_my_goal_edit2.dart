@@ -521,7 +521,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                         try {
                                           // 서버와 통신
                                           final response = await dio.post(
-                                            'http://${IpAddress.hyunukIP}:8080/goal',
+                                            'http://${IpAddress.hyunukIP}/goal',
                                             // 서버에 보내야 하는 데이터
                                             data: {
                                               // 사용자 고유값
@@ -646,7 +646,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                         try {
                                           // 서버와 통신
                                           final response = await dio.put(
-                                            'http://${IpAddress.hyunukIP}:8080/goal/update',
+                                            'http://${IpAddress.hyunukIP}/goal/update',
                                             // 서버에 보내야 하는 데이터
                                             data: {
                                               // 목표 이름

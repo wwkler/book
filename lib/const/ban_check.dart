@@ -28,8 +28,8 @@ class BanCheck {
         // 밴 됐는지 안됐는지 확인하는 메소드를 호출한다.
         try {
           final response = await dio.post(
-            "http://${IpAddress.youngZoonIP}:8080/user/getInfo",
-            // "http://${IpAddress.hyunukIP}:8080/user/getInfo",
+            // "http://${IpAddress.youngZoonIP}/user/getInfo",
+            "http://${IpAddress.hyunukIP}/user/getInfo",
             data: {
               "account": UserInfo.id,
             },
@@ -47,7 +47,7 @@ class BanCheck {
             print("서버와 통신 성공");
             print("서버에서 받아온 ban 정보 : ${response.data}");
 
-            // response.data["ban"]이 null이 아닐 떄 
+            // response.data["ban"]이 null이 아닐 떄
             if (response.data["ban"] != null) {
               DateTime currentTime = await NTP.now();
               currentTime = currentTime.toUtc().add(const Duration(hours: 9));
@@ -106,8 +106,8 @@ class BanCheck {
               else {
                 print("벤 안먹임");
               }
-            } 
-            // response.data["ban"]이 null일 떄 
+            }
+            // response.data["ban"]이 null일 떄
             else {
               print("벤 안먹임");
             }

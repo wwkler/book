@@ -404,7 +404,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                             // 서버와 통신
                                             // 읽고 싶은 책 추가
                                             final response = await dio.put(
-                                              "http://${IpAddress.hyunukIP}:8080/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
+                                              "http://${IpAddress.hyunukIP}/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
                                               options: Options(
                                                 validateStatus: (_) => true,
                                                 contentType:
@@ -529,7 +529,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                             // 사용자의 읽고 있는 책에 도서 추가
                                             final response = await dio.put(
                                               // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
-                                              "http://${IpAddress.hyunukIP}:8080/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=100",
+                                              "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=100",
                                               options: Options(
                                                 validateStatus: (_) => true,
                                                 contentType:

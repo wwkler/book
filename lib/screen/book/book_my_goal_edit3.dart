@@ -521,7 +521,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                         try {
                                           // 서버와 통신
                                           final response = await dio.post(
-                                            'http://${IpAddress.hyunukIP}:8080/goal',
+                                            'http://${IpAddress.hyunukIP}/goal',
                                             // 서버에 보내야 하는 데이터
                                             data: {
                                               // 사용자 고유값
@@ -637,7 +637,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      DateTime dt = DateTime.now();
+                                      // DateTime dt = DateTime.now();
                                       //검증하기
                                       if (readBooksCountController.text.length > 1 &&
                                           readBooksCountController.text.length <
@@ -646,7 +646,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                         try {
                                           // 서버와 통신
                                           final response = await dio.put(
-                                            'http://${IpAddress.hyunukIP}:8080/goal/update',
+                                            'http://${IpAddress.hyunukIP}/goal/update',
                                             // 서버에 보내야 하는 데이터
                                             data: {
                                               // 목표 이름

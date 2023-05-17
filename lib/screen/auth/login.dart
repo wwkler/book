@@ -262,14 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         // 서버 통신 시도
                         try {
                           final response = await dio.post(
-                            // 'http://${IpAddress.hyunukIP}:8080/login',
-                            'http://${IpAddress.youngZoonIP}:8080/login',
+                            'http://${IpAddress.hyunukIP}/login',
+                            // 'http://${IpAddress.youngZoonIP}:8080/login',
                             // 'http://${IpAddress.innerServerIP}/login',
                             data: {
-                              // 사용자 아이디(string)
                               'account': id,
-
-                              // 사용자 비밀번호(string)
                               'password': password,
                             },
                             options: Options(

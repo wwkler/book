@@ -312,8 +312,8 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           // 서버와 통신 시도
                           try {
                             final response = await dio.post(
-                              // 'http://${IpAddress.hyunukIP}:8080/Find/Account',
-                              'http://${IpAddress.youngZoonIP}:8080/Find/Account',
+                              'http://${IpAddress.hyunukIP}/Find/Account',
+                              // 'http://${IpAddress.youngZoonIP}/Find/Account',
                               // 'http://${IpAddress.innerServerIP}/register',
                               data: {
                                 'email': email,

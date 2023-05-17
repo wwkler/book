@@ -882,8 +882,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           // 서버와 통신 시도
                           try {
                             final response = await dio.post(
-                              // 'http://${IpAddress.hyunukIP}:8080/register',
-                              'http://${IpAddress.youngZoonIP}:8080/register',
+                              'http://${IpAddress.hyunukIP}/register',
+                              // 'http://${IpAddress.youngZoonIP}/register',
                               // 'http://${IpAddress.innerServerIP}/register',
                               data: {
                                 // 사용자 아이디(string)
@@ -959,7 +959,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             );
                           }
                         }
-                        // 사용자의 입력값이 올바르지 않았을 떄 
+                        // 사용자의 입력값이 올바르지 않았을 떄
                         else {
                           Get.snackbar(
                             "이상 메시지",

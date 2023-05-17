@@ -70,7 +70,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
       // 주의사항) 인터파크 추천 도서 API 데이터를 상황에 따라 줄 떄도 있고, 주지 않을 떄 도 있다.
       //         그 점을 이용해서 데이터 핸들링을 해야 할 것 같다.
       final response1 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/api/recommended?categoryId=${UserInfo.selectedCode}",
+        "http://${IpAddress.hyunukIP}/api/recommended?categoryId=${UserInfo.selectedCode}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -105,7 +105,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
     try {
       // 서버와 통신 - 서버에 접속해서 인터파크 베스트셀러 도서 API 데이터를 받는다.
       final response2 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/api/popular?categoryId=${UserInfo.selectedCode}",
+        "http://${IpAddress.hyunukIP}/api/popular?categoryId=${UserInfo.selectedCode}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -139,7 +139,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
     try {
       // 서버와 통신 - 서버에 접속해서 인터파크 신간 도서 API 데이터를 받는다.
       final response3 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/api/newbooks?categoryId=${UserInfo.selectedCode}",
+        "http://${IpAddress.hyunukIP}/api/newbooks?categoryId=${UserInfo.selectedCode}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,

@@ -566,8 +566,8 @@ class _MyPageState extends State<MyPage> {
                                 // 서버와 통신
                                 // 회원 정보를 데이터베이스에 등록한다.
                                 final response = await dio.put(
-                                  // 'http://${IpAddress.hyunukIP}:8080/MyPage/info_change',
-                                  'http://${IpAddress.youngZoonIP}:8080/MyPage/info_change',
+                                  'http://${IpAddress.hyunukIP}/MyPage/info_change',
+                                  // 'http://${IpAddress.youngZoonIP}/MyPage/info_change',
                                   data: {
                                     'id': UserInfo.userValue,
                                     'email': email,

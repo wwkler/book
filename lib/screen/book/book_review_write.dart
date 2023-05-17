@@ -56,7 +56,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
     if (callServer == true) {
       try {
         final response = await dio.get(
-          "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
+          "http://${IpAddress.hyunukIP}/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
           options: Options(
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
@@ -478,7 +478,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                               // 데이터베이스에 도서 리뷰 데이터를 추가한다.
                               try {
                                 final response = await dio.post(
-                                  "http://${IpAddress.hyunukIP}:8080/reviews/save",
+                                  "http://${IpAddress.hyunukIP}/reviews/save",
                                   data: {
                                     // 리뷰 제목
                                     "title": reviewTitleController.text,

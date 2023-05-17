@@ -523,8 +523,8 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                           // 서버와 통신 시도
                           try {
                             final response = await dio.post(
-                              // 'http://${IpAddress.hyunukIP}:8080/Find/PWD',
-                              'http://${IpAddress.youngZoonIP}:8080/Find/PWD',
+                              'http://${IpAddress.hyunukIP}/Find/PWD',
+                              // 'http://${IpAddress.youngZoonIP}/Find/PWD',
                               // 'http://${IpAddress.innerServerIP}/Find/PWDr',
                               data: {
                                 // 사용자 아이디(string)

@@ -1,6 +1,7 @@
 // 도서 검색어를 통한 결과물을 보여주는 페이지
 import 'dart:ui' as ui;
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
@@ -65,7 +66,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
 
     // 접속하려는 서버 url를 설정한다.
     String url =
-        "http://116.122.96.53:8080/api/search?query=${discrimition != "" ? discrimition : text}";
+        "http://${IpAddress.hyunukIP}/api/search?query=${discrimition != "" ? discrimition : text}";
     // "http://49.161.110.41:8080/api/search?query=${discrimition != "" ? discrimition : text}";
     // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=${discrimition != "" ? discrimition : text}&output=json";
 

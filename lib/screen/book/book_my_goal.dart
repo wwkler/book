@@ -78,7 +78,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     // 서버에 목표 1 데이터가 있는지 확인한다.
     try {
       final response1 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_1_${UserInfo.id}",
+        "http://${IpAddress.hyunukIP}/goal/isExist?goalname=목표_1_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -89,7 +89,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
       // 목표 1 데이터가 있을 떄.... -> 목표 1과 관련된 내용을 서버를 통해 가져온다.
       if (response1.data == true) {
         final response1_1 = await dio.get(
-          "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
+          "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
           options: Options(
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
@@ -121,7 +121,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // 서버에 목표 2 데이터가 있는지 확인한다.
       final response2 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_2_${UserInfo.id}",
+        "http://${IpAddress.hyunukIP}/goal/isExist?goalname=목표_2_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -132,7 +132,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
       // 목표 2 데이터가 있을 떄.... -> 목표 2과 관련된 내용을 서버를 통해 가져온다.
       if (response2.data == true) {
         final response2_2 = await dio.get(
-          "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_2_winner23456",
+          "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_2_winner23456",
           options: Options(
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
@@ -164,7 +164,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // 서버에 목표 3 데이터가 있는지 확인한다.
       final response3 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/isExist?goalname=목표_3_${UserInfo.id}",
+        "http://${IpAddress.hyunukIP}/goal/isExist?goalname=목표_3_${UserInfo.id}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -175,7 +175,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
       // 목표 3 데이터가 있을 떄.... -> 목표 3과 관련된 내용을 서버를 통해 가져온다.
       if (response3.data == true) {
         final response3_3 = await dio.get(
-          "http://${IpAddress.hyunukIP}:8080/goal/getByGoalname?goalname=목표_3_${UserInfo.id}",
+          "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_3_${UserInfo.id}",
           options: Options(
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
@@ -207,7 +207,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // 읽고 싶은 도서를 서버에서 가져온다.
       final response4 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/bookshelves/getLikedBooks?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/bookshelves/getLikedBooks?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -242,7 +242,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // 읽고 있는 도서를 서버에서 가져온다.
       final response5 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -284,7 +284,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // 읽은 도서를 서버에서 가져온다.
       final response6 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -325,7 +325,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // // 개인의 완료 달성 수 를 서버에서 가져온다.
       final response7 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/getCompletedCount?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/goal/getCompletedCount?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -352,7 +352,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // // 개인의 성공률을 서버에서 가져온다.
       final response8 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/getSuccessRate?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/goal/getSuccessRate?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -379,7 +379,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표 얼마나 달성했는지를 서버에서 가져온다.
       final response9 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/similarCompleteds?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
+        "http://${IpAddress.hyunukIP}/goal/similarCompleteds?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -407,7 +407,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // // 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수를 서버에서 가져온다.
       final response10 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/similarChallengers?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
+        "http://${IpAddress.hyunukIP}/goal/similarChallengers?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -435,7 +435,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // // 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수를 서버에서 가져온다.
       final response11 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/similarCompletedsAll?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/goal/similarCompletedsAll?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -463,7 +463,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 를 서버에서 가져온다.
       final response12 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/similarChallengersAll?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/goal/similarChallengersAll?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -491,7 +491,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     try {
       // // 같은 나이대 목표 평균 성공률을 서버에서 가져온다.
       final response13 = await dio.get(
-        "http://${IpAddress.hyunukIP}:8080/goal/getAverageRate?memberId=${UserInfo.userValue}",
+        "http://${IpAddress.hyunukIP}/goal/getAverageRate?memberId=${UserInfo.userValue}",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -1320,7 +1320,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         try {
                                                                           final response =
                                                                               await dio.delete(
-                                                                            "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0",
+                                                                            "http://${IpAddress.hyunukIP}/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0",
                                                                             options:
                                                                                 Options(
                                                                               validateStatus: (_) => true,
@@ -1522,7 +1522,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                   try {
                                                                                     final response = await dio.put(
                                                                                       // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
-                                                                                      "http://116.122.96.53:8080/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&totalPage=${int.parse(setPageController.text)}",
+                                                                                      "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&totalPage=${int.parse(setPageController.text)}",
                                                                                       options: Options(
                                                                                         validateStatus: (_) => true,
                                                                                         contentType: Headers.jsonContentType,
@@ -1736,7 +1736,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         try {
                                                                           final response =
                                                                               await dio.delete(
-                                                                            "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&param=1",
+                                                                            "http://${IpAddress.hyunukIP}/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&param=1",
                                                                             options:
                                                                                 Options(
                                                                               validateStatus: (_) => true,
@@ -1902,7 +1902,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                     final response =
                                                                         await dio
                                                                             .post(
-                                                                      "http://116.122.96.53:8080/bookshelves/updateCurrentReading?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&page=${int.parse(editPageController.text)}",
+                                                                      "http://${IpAddress.hyunukIP}/bookshelves/updateCurrentReading?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&page=${int.parse(editPageController.text)}",
                                                                       options:
                                                                           Options(
                                                                         validateStatus:
@@ -2040,7 +2040,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               // 서버와 통신
                                                                               // 도서 읽기 완료 한다.
                                                                               final response = await dio.put(
-                                                                                "http://${IpAddress.hyunukIP}:8080/bookshelves/addFinished?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}",
+                                                                                "http://${IpAddress.hyunukIP}/bookshelves/addFinished?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}",
                                                                                 options: Options(
                                                                                   validateStatus: (_) => true,
                                                                                   contentType: Headers.jsonContentType,
@@ -2252,7 +2252,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         // 읽은 도서를 삭제한다.
                                                                         final response =
                                                                             await dio.delete(
-                                                                          "http://116.122.96.53:8080/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${readBooks[index].itemId}&param=2",
+                                                                          "http://${IpAddress.hyunukIP}/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${readBooks[index].itemId}&param=2",
                                                                           options:
                                                                               Options(
                                                                             validateStatus: (_) =>
