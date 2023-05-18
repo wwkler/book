@@ -79,9 +79,9 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
             },
           ).toList();
 
-          if (readBooks.isNotEmpty) {
-            selectedBook = readBooks[0];
-          }
+          // if (readBooks.isNotEmpty) {
+          //   selectedBook = readBooks[0];
+          // }
 
           print("readBooks : $readBooks");
           print(
@@ -103,6 +103,10 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
           duration: const Duration(seconds: 5),
           snackPosition: SnackPosition.TOP,
         );
+      }
+
+      if (readBooks.isNotEmpty) {
+        selectedBook = readBooks[0];
       }
     }
   }

@@ -1,6 +1,9 @@
 // 도서 나만의 일지 페이지
+import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_my_diary_list.dart';
 import 'package:book_project/screen/book/book_my_diary_write.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -21,8 +24,14 @@ class _BookMyDiaryState extends State<BookMyDiary> {
     DateTime.utc(2023, 4, 9): ["Exist Book Diary History"],
   };
 
+  // 사용자 도서 일지 데이터
+  List<Map<String, dynamic>> diarys = [];
+
   // 현재 한국 시간 변수
   DateTime? currentTime;
+
+  // 서버를 사용하기 위한 변수
+  var dio = Dio();
 
   @override
   void initState() {
@@ -49,6 +58,41 @@ class _BookMyDiaryState extends State<BookMyDiary> {
     print(currentTime);
 
     await Future.delayed(const Duration(seconds: 3));
+
+    // 사용자가 작성한 일지 데이터를 가져온다
+    try {
+      final response = await dio.get(
+        "http://${IpAddress.hyunukIP}/journals/findJournalsByMember?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      // 서버와 통신 성공
+      // 회원 정보를 데이터베이스에 등록한다.
+      if (response.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 제공해주는 데이터 : ${response.data}");
+
+        diarys = (response.data as List<dynamic>)
+            .map((dynamic e) => e as Map<String, dynamic>)
+            .toList();
+
+        print("diarys : $diarys");
+      }
+      // 서버와 통신 실패
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 열리지 않음");
+    }
   }
 
   @override
@@ -235,7 +279,10 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 일지 보기 페이지로 라우팅
-                            Get.off(() => const BookMyDiaryList());
+                            Get.off(
+                              () => const BookMyDiaryList(),
+                              arguments: diarys,
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
