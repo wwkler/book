@@ -45,3 +45,4 @@ app.*.map.json
 
 
 # 특정 파일 업로드 제외
+/lib/const/ipAddress.dart
