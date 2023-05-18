@@ -30,6 +30,18 @@ class _BookMyGoalState extends State<BookMyGoal> {
   // 목표 1, 2, 3 데이터를 담는 배열
   List<Map<String, dynamic>> objectives = [];
 
+  List<String> objectAnaysisTitles = [
+    "완료 달성 수",
+    "개인이 목표 성공한 수",
+    "내가 선호하는 카테고리 번호에서 다른 사용자가 목표를 얼마나 달성했는지 수",
+    "내가 선호하는 카테고리 번호에서 다른 사용자가 목표 도전 중인 사람 수",
+    "카테고리 고려하지 않고 비슷한 나이대 중에서 완료한 사람들 수",
+    "카테고리 고려하지 않고 비슷한 나이대 중에 도전 중인 사람들 수",
+    "같은 나이대 목표 평균 성공률 수"
+  ];
+  // 목표 관련된 분석 내용
+  List<int> objectAnalysisContents = [-1, -1, -1, -1, -1, -1, -1];
+
   // 읽고 싶은 도서 (배열)
   List<BookModel> wantToReadBooks = [];
 
@@ -336,6 +348,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
       if (response7.statusCode == 200) {
         print("서버와 통신 성공");
         print("서버에서 받은 완료 달성 수 데이터: ${response7.data}");
+
+        objectAnalysisContents[0] = response7.data;
       }
       //
       else {
@@ -362,7 +376,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
       if (response8.statusCode == 200) {
         print("서버와 통신 성공");
-        print("서버에서 받은  데이터: ${response8.data}");
+        print("서버에서 받은 개인의 성공률 건수 데이터: ${response8.data}");
+        objectAnalysisContents[1] = response8.data;
       }
       //
       else {
@@ -391,6 +406,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
         print("서버와 통신 성공");
         print(
             "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 얼마나 달성했는지에 대한 데이터: ${response9.data}");
+        objectAnalysisContents[2] = response9.data;
       }
       //
       else {
@@ -419,6 +435,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
         print("서버와 통신 성공");
         print(
             "서버에서 받은 내가 선호하는 카테코리 번호에서 다른 사용자가 목표를 도전 중인 사람 수 데이터: ${response10.data}");
+        objectAnalysisContents[3] = response10.data;
       }
       //
       else {
@@ -447,6 +464,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
         print("서버와 통신 성공");
         print(
             "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 완료한 사람들 수 데이터: ${response11.data}");
+        objectAnalysisContents[4] = response11.data;
       }
       //
       else {
@@ -475,6 +493,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
         print("서버와 통신 성공");
         print(
             "서버에서 받은 카테고리 고려하지 않고 비슷한 나이 대 중에 도전 중인 사람들 수 데이터: ${response12.data}");
+        objectAnalysisContents[5] = response12.data;
       }
       //
       else {
@@ -502,6 +521,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
       if (response13.statusCode == 200) {
         print("서버와 통신 성공");
         print("서버에서 받은 같은 나이대 목표 평균 성공률데이터: ${response13.data}");
+        objectAnalysisContents[6] = response13.data;
       }
       //
       else {
@@ -621,7 +641,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                         onPressed: () {
                           // 화면을 라우팅하면서 목표 1, 2, 3를 관리하는 배열 objectives를 같이 넘긴다.
                           Get.off(
-                            () => BookMyGoalEdit1(),
+                            () => const BookMyGoalEdit1(),
                             arguments: objectives,
                           );
                         },
@@ -1162,7 +1182,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       height: 230,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 5,
+                        itemCount: objectAnalysisContents.length,
                         itemBuilder: (context, index) => SizedBox(
                           width: 400,
                           height: 230,
@@ -1209,7 +1229,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         image: const DecorationImage(
                                           fit: BoxFit.fill,
                                           image: AssetImage(
-                                              "assets/imgs/icon.png"),
+                                            "assets/imgs/icon.png",
+                                          ),
                                         )),
                                   ),
                                 ),
@@ -1217,15 +1238,16 @@ class _BookMyGoalState extends State<BookMyGoal> {
                               Positioned(
                                 top: 45,
                                 left: 180,
-                                child: SizedBox(
+                                child: Container(
+                                  padding: const EdgeInsets.all(16.0),
                                   width: 180,
                                   height: 150,
                                   child: Column(
                                     children: [
                                       Text(
-                                        "목표와 관련된 분석 내용",
+                                        "${objectAnaysisTitles[index]} ${objectAnalysisContents[index].toString()}",
                                         //"목표를 설정해주세요",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: Color(0xFF363f93),

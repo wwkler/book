@@ -24,6 +24,9 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   // 검색어를 받기 위한 변수
   TextEditingController searchTextController = TextEditingController();
 
+  // 북마카세가 제시하는 추천 도서
+  List<BookModel> bookMakaseRecommendBooks = [];
+
   // 추천 도서
   List<BookModel> recommendationBooks = [];
 
@@ -64,6 +67,34 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
     newBooks.clear();
 
     await Future.delayed(const Duration(seconds: 2));
+
+    // 서버와 통신 - 서버에 접속해서 북마카세가 추천하는 데이터를 받는다
+    try {
+      final response0 = await dio.get(
+        "http://${IpAddress.hyunukIP}/book/recommend?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response0.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 북마카세가 제시하는 추천 도서 받은 데이터 : ${response0.data}");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 북마카세 실패");
+        print("서버 통신 에러 코드 : ${response0.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
+    }
 
     try {
       // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.
@@ -374,6 +405,99 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
                     // 중간 공백
                     const SizedBox(height: 20),
+
+                    // 북마카세가 추천하는 도서 text
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: Text(
+                          "북마카세가 추천하는 도서",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // 북마카세가 추천하는 도서를 보여주는 공간
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Container(
+                        color: Colors.purple,
+                        width: 400,
+                        height: 350,
+                        padding: const EdgeInsets.all(16.0),
+                        child: bookMakaseRecommendBooks.isNotEmpty
+                            ? ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: recommendationBooks.length,
+                                itemBuilder: (context, index) =>
+                                    GestureDetector(
+                                  onTap: () {
+                                    // 도서 상세 페이지로 라우팅
+                                    Get.off(
+                                      () => BookShowPreview(),
+                                      arguments: recommendationBooks[index],
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 350,
+                                    child: Card(
+                                      elevation: 10.0,
+                                      shadowColor: Colors.grey.withOpacity(0.5),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            // 도서 이미지
+                                            Image.network(
+                                              recommendationBooks[index]
+                                                  .coverSmallUrl,
+                                              width: 150,
+                                              height: 150,
+                                            ),
+
+                                            // 중간 공백
+                                            // const SizedBox(height: 30),
+
+                                            // 도서 제목
+                                            Text(
+                                              recommendationBooks[index].title,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(width: 20),
+                              )
+                            : const Center(
+                                child: Text(
+                                  "북마카세가 추천하는 추천 도서를 제공하지 않습니다.",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ),
 
                     // 추천 도서 text
                     const Align(

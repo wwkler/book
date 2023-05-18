@@ -84,34 +84,36 @@ class _ReportHistoryState extends State<ReportHistory> {
       builder: (context, snapshot) {
         // getReports()를 실행하는 동안...
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            // 배경 이미지
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/imgs/background_book1.jpg"),
-                fit: BoxFit.fill,
-                opacity: 0.3,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                // 프로그래스바
-                CircularProgressIndicator(),
-
-                // 중간 공백
-                SizedBox(height: 40),
-
-                // 사용자 신고 데이터들을 가져오고 있습니다.
-                Text(
-                  "사용자 신고 데이터를 가져오고 있습니다",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
+          return Scaffold(
+            body: Container(
+              width: MediaQuery.of(context).size.width,
+              // 배경 이미지
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/imgs/background_book1.jpg"),
+                  fit: BoxFit.fill,
+                  opacity: 0.3,
                 ),
-              ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // 프로그래스바
+                  CircularProgressIndicator(),
+
+                  // 중간 공백
+                  SizedBox(height: 40),
+
+                  // 사용자 신고 데이터들을 가져오고 있습니다.
+                  Text(
+                    "사용자 신고 데이터를 가져오고 있습니다",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }
