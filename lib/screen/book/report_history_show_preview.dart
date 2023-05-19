@@ -27,6 +27,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
     print("ReportHistoryShowPreview initState 시작");
     super.initState();
     report = Get.arguments;
+    print("report : $report");
   }
 
   @override
@@ -291,7 +292,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                               Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
-                                  report!["content"],
+                                  report!["review"]["content"],
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,

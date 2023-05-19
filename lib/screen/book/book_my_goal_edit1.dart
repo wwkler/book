@@ -498,8 +498,8 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                         // 중간 공백
                         const SizedBox(height: 50),
 
-                        // 현재 시간이 endDate보다 적으면     목표 수정하기 버튼을 보여준다.
-                        // 아예 서버에서 받아온 목표 데이터가 없거나 , 현재 시간이 endDate보다 크면      목표 설정하기 버튼을 보여준다.
+                        // 아예 서버에서 받아온 목표 데이터가 없거나 , endDate가 현재 시간보다 작으면 목표 설정하기 버튼을 보여준다.
+                        // endDate가 현재 시간보다 크면 목표 수정하기 버튼을 보여준다.
                         objectives![0]["data"] == "none" ||
                                 objectives![0]["endDate"]
                                         .toString()

@@ -452,6 +452,8 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                 print(
                                     "photo_path의 데이터 타입 : ${photo.path.runtimeType}");
                                 setState(() {
+                                  // 서버를 호출하지 않겠다
+                                  callServer = false;
                                   _photo = photo;
                                 });
                               }

@@ -289,74 +289,96 @@ class _ReportHistoryState extends State<ReportHistory> {
                                     const SizedBox(height: 10),
 
                                     // 일지 리스트
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: reports.length,
-                                        itemBuilder: (context, index) =>
-                                            GestureDetector(
-                                          onTap: () {
-                                            // 신고 내역 자세히 보여주기 페이지로 라우팅
-                                            Get.off(
-                                              () =>
-                                                  const ReportHistoryShowPreview(),
-                                              arguments: reports[index],
-                                            );
-                                          },
-                                          child: Container(
-                                            color: Colors.yellow[50],
-                                            width: 200,
-                                            height: 100,
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: [
-                                                  // 번호
-                                                  SizedBox(
-                                                    width: 50,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(reports[index]
-                                                              ["member"]["id"]
-                                                          .toString()),
-                                                    ),
-                                                  ),
-                                                  // 사용자명
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(reports[index]
-                                                          ["member"]["name"]),
-                                                    ),
-                                                  ),
-                                                  // 아이디
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(reports[index]
-                                                              ["member"]
-                                                          ["account"]),
-                                                    ),
-                                                  ),
+                                    reports.isNotEmpty
+                                        ? Expanded(
+                                            flex: 1,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: reports.length,
+                                              itemBuilder: (context, index) =>
+                                                  GestureDetector(
+                                                onTap: () {
+                                                  // print(
+                                                  //     "arguments : ${reports[index]}");
+                                                  // 신고 내역 자세히 보여주기 페이지로 라우팅
+                                                  Get.off(
+                                                    () =>
+                                                        ReportHistoryShowPreview(),
+                                                    arguments: reports[index],
+                                                  );
+                                                },
+                                                child: Container(
+                                                  color: Colors.yellow[50],
+                                                  width: 200,
+                                                  height: 100,
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    child: Row(
+                                                      children: [
+                                                        // 번호
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(reports[
+                                                                        index][
+                                                                    "member"]["id"]
+                                                                .toString()),
+                                                          ),
+                                                        ),
+                                                        // 사용자명
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(reports[
+                                                                        index]
+                                                                    ["member"]
+                                                                ["name"]),
+                                                          ),
+                                                        ),
+                                                        // 아이디
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(reports[
+                                                                        index]
+                                                                    ["member"]
+                                                                ["account"]),
+                                                          ),
+                                                        ),
 
-                                                  // 중간 공백
-                                                  const SizedBox(width: 20),
+                                                        // 중간 공백
+                                                        const SizedBox(
+                                                            width: 20),
 
-                                                  // 신고 당한 날짜
-                                                  Text(reports[index]
-                                                          ["createdAt"]
-                                                      .toString()
-                                                      .substring(0, 10)),
-                                                ],
+                                                        // 신고 당한 날짜
+                                                        Text(reports[index]
+                                                                ["createdAt"]
+                                                            .toString()
+                                                            .substring(0, 10)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              color: Colors.yellow[50],
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              child: const Center(
+                                                child: Text("신고 내역 데이터가 없습니다"),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),

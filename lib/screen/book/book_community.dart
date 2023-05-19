@@ -1079,37 +1079,38 @@ class _BookCommunityState extends State<BookCommunity> {
                                                       ),
                                                     ),
                                                     elevation: 4.0, //그림자 깊이
-                                                    child: Row(
-                                                      children: [
-                                                        // 도서 이미지
-                                                        // Image.asset(
-                                                        //   "assets/imgs/icon.png",
-                                                        //   width: 150,
-                                                        //   height: 150,
-                                                        // ),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Row(
+                                                        children: [
+                                                          // 도서 이미지
+                                                          Image.network(
+                                                            reviewBooks[index]
+                                                                .coverSmallUrl,
+                                                            width: 150,
+                                                            height: 150,
+                                                          ),
 
-                                                        Image.network(
-                                                          reviewBooks[index]
-                                                              .coverSmallUrl,
-                                                          width: 150,
-                                                          height: 150,
-                                                        ),
-
-                                                        // 도서 작가, 출판사, 분류, 평균 평점
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            Text(
-                                                                "작가: ${reviewBooks[index].author}"),
-                                                            Text(
-                                                                "출판사:${reviewBooks[index].publisher}"),
-                                                            // Text("분류: "),
-                                                            // Text("평균 평점 : ${reviewBooks[index].}"),
-                                                          ],
-                                                        )
-                                                      ],
+                                                          // 도서 작가, 출판사, 분류, 평균 평점
+                                                          Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              Text(
+                                                                "작가: ${reviewBooks[index].author}",
+                                                              ),
+                                                              Text(
+                                                                "출판사:${reviewBooks[index].publisher}",
+                                                              ),
+                                                              // Text("분류: "),
+                                                              // Text("평균 평점 : ${reviewBooks[index].}"),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),

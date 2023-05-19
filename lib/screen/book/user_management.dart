@@ -33,7 +33,7 @@ class UserManagementState extends State<UserManagement> {
     // 서버와 통신 - 회원 데이터를 모두 가져온다.
     try {
       final response = await dio.get(
-        "http://${IpAddress.youngZoonIP}:8080/getMemberList",
+        "http://${IpAddress.hyunukIP}/getMemberList",
         options: Options(
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
@@ -222,7 +222,7 @@ class UserManagementState extends State<UserManagement> {
                                 height: 400,
                                 child: Column(
                                   children: [
-                                    // 번호, 사용자 이름, 아이디, 이메일, 성별, 나이 관리
+                                    // 고유값, 이름, 아이디, 이메일, 성별, 나이, 관리
                                     SizedBox(
                                       width: 450,
                                       height: 50,
@@ -355,326 +355,341 @@ class UserManagementState extends State<UserManagement> {
                                     const SizedBox(height: 10),
 
                                     // 일지 리스트
-                                    Expanded(
-                                      flex: 1,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: memberList.length,
-                                        itemBuilder: (context, index) =>
-                                            GestureDetector(
-                                          onTap: () {},
-                                          child: Container(
-                                            color: Colors.yellow[50],
-                                            width: 200,
-                                            height: 100,
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: [
-                                                  // 사용자 고유값
-                                                  SizedBox(
-                                                    width: 50,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(
-                                                        memberList[index]
-                                                            .id
-                                                            .toString(),
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 사용자명
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(
-                                                        memberList[index].name,
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 아이디
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(
-                                                        memberList[index]
-                                                            .account,
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 이메일
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(
-                                                        memberList[index].email,
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 성별
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(
-                                                        memberList[index]
-                                                            .gender,
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 나이
-                                                  SizedBox(
-                                                    width: 100,
-                                                    height: 100,
-                                                    child: Center(
-                                                      child: Text(
-                                                        memberList[index]
-                                                            .age
-                                                            .toString(),
-                                                      ),
-                                                    ),
-                                                  ),
-
-                                                  // 중간 공백
-                                                  const SizedBox(width: 20),
-
-                                                  // 관리 - 정지
-                                                  SizedBox(
-                                                    width: 200,
-                                                    height: 100,
+                                    memberList.isNotEmpty
+                                        ? Expanded(
+                                            flex: 1,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: memberList.length,
+                                              itemBuilder: (context, index) =>
+                                                  GestureDetector(
+                                                onTap: () {},
+                                                child: Container(
+                                                  color: Colors.yellow[50],
+                                                  width: 200,
+                                                  height: 100,
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.horizontal,
                                                     child: Row(
                                                       children: [
-                                                        // 정지 버튼
-                                                        ElevatedButton(
-                                                          onPressed: () async {
-                                                            // ban 시간을 정할 수 있는 다이어로그
-                                                            Get.dialog(
-                                                              AlertDialog(
-                                                                title:
-                                                                    const Text(
-                                                                  "사용자 정지 일수 설정",
-                                                                ),
-                                                                content:
-                                                                    SizedBox(
-                                                                  width: 100,
-                                                                  height: 200,
-                                                                  child: Column(
-                                                                    children: [
-                                                                      // 중간 공백
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-
-                                                                      // 아이디를 보여주는 문구
-                                                                      const Text(
-                                                                        "사용자 정지 일수를 설정해주세요",
-                                                                      ),
-
-                                                                      // 중간 공백
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-
-                                                                      // 정지 일수를 입력하는 곳
-                                                                      // 총 페이지 수 설정
-                                                                      Center(
-                                                                        child:
-                                                                            Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(16.0),
-                                                                          child:
-                                                                              SizedBox(
-                                                                            width:
-                                                                                50,
-                                                                            height:
-                                                                                50,
-                                                                            child:
-                                                                                TextField(
-                                                                              keyboardType: TextInputType.number,
-                                                                              controller: setBanTimeController,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-
-                                                                      // 정지시키기 버튼
-                                                                      TextButton(
-                                                                        child:
-                                                                            const Text(
-                                                                          "정지시키기",
-                                                                        ),
-                                                                        onPressed:
-                                                                            () async {
-                                                                          // print(
-                                                                          //     "setBanTimeController.text : ${setBanTimeController.text}");
-                                                                          // 서버와 통신
-                                                                          // 사용자 계정을 정지한다.
-                                                                          try {
-                                                                            final response =
-                                                                                await dio.post(
-                                                                              "http://${IpAddress.youngZoonIP}:8080/admin/banMember",
-                                                                              data: {
-                                                                                "id": memberList[index].id,
-                                                                                "bantime": int.parse(setBanTimeController.text),
-                                                                              },
-                                                                              options: Options(
-                                                                                headers: {
-                                                                                  "Authorization": "Bearer ${UserInfo.token}",
-                                                                                },
-                                                                                validateStatus: (_) => true,
-                                                                                contentType: Headers.jsonContentType,
-                                                                                responseType: ResponseType.json,
-                                                                              ),
-                                                                            );
-
-                                                                            // setBanTimeController.text를 빈칸으로 만든다.
-                                                                            setBanTimeController.text =
-                                                                                "";
-
-                                                                            if (response.statusCode ==
-                                                                                200) {
-                                                                              print("서버와 통신 성공");
-                                                                              print("서버에서 받은 데이터 : ${response.data}");
-
-                                                                              Get.snackbar(
-                                                                                "사용자 정지시키기 성공",
-                                                                                "해당 사용자가 정지되었습니다",
-                                                                                duration: const Duration(
-                                                                                  seconds: 5,
-                                                                                ),
-                                                                                snackPosition: SnackPosition.TOP,
-                                                                              );
-
-                                                                              // 사용자 정지 일수를 설정하는 다이어로그를 삭제한다
-                                                                              Get.back();
-
-                                                                              // 라우팅
-                                                                              Get.off(
-                                                                                () => BookFluidNavBar(),
-                                                                              );
-                                                                            }
-                                                                            //
-                                                                            else {
-                                                                              print("서버와 통신 실패");
-                                                                              print("서버 통신 에러 코드 : ${response.statusCode}");
-
-                                                                              print("에러 메시지: ${response.data}");
-
-                                                                              Get.snackbar(
-                                                                                "사용자 정지시키기 실패",
-                                                                                "해당 사용자 정지가 반영되지 않았습니다",
-                                                                                duration: const Duration(
-                                                                                  seconds: 5,
-                                                                                ),
-                                                                                snackPosition: SnackPosition.TOP,
-                                                                              );
-                                                                            }
-                                                                          }
-                                                                          // DioError[unknown]: null이 메시지로 나타났을 떄
-                                                                          // 즉 서버가 열리지 않았다는 뜻이다
-                                                                          catch (e) {
-                                                                            // 서버가 열리지 않았다는 snackBar를 띄운다
-                                                                            Get.snackbar(
-                                                                              "서버 열리지 않음",
-                                                                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                                              duration: const Duration(
-                                                                                seconds: 5,
-                                                                              ),
-                                                                              snackPosition: SnackPosition.TOP,
-                                                                            );
-                                                                          }
-                                                                        },
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                10.0,
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Colors.purple,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              horizontal: 10,
-                                                              vertical: 15,
+                                                        // 사용자 고유값
+                                                        SizedBox(
+                                                          width: 50,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(
+                                                              memberList[index]
+                                                                  .id
+                                                                  .toString(),
                                                             ),
                                                           ),
-                                                          child: const Text(
-                                                            "정지",
-                                                            style: TextStyle(
-                                                              fontSize: 12,
+                                                        ),
+
+                                                        // 사용자명
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(
+                                                              memberList[index]
+                                                                  .name,
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        // 아이디
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(
+                                                              memberList[index]
+                                                                  .account,
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        // 이메일
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(
+                                                              memberList[index]
+                                                                  .email,
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        // 성별
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(
+                                                              memberList[index]
+                                                                  .gender,
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        // 나이
+                                                        SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child: Center(
+                                                            child: Text(
+                                                              memberList[index]
+                                                                  .age
+                                                                  .toString(),
                                                             ),
                                                           ),
                                                         ),
 
                                                         // 중간 공백
                                                         const SizedBox(
-                                                          width: 10,
-                                                        ),
+                                                            width: 20),
 
-                                                        // 탈퇴 버튼
-                                                        // ElevatedButton(
-                                                        //   onPressed: () {
-                                                        //     // 서버와 통신
-                                                        //     // 사용자 계정을 탈퇴한다.
-                                                        //   },
-                                                        //   style: ElevatedButton
-                                                        //       .styleFrom(
-                                                        //     shape:
-                                                        //         RoundedRectangleBorder(
-                                                        //       borderRadius:
-                                                        //           BorderRadius
-                                                        //               .circular(
-                                                        //         10.0,
-                                                        //       ),
-                                                        //     ),
-                                                        //     backgroundColor:
-                                                        //         Colors.purple,
-                                                        //     padding:
-                                                        //         const EdgeInsets
-                                                        //             .symmetric(
-                                                        //       horizontal: 10,
-                                                        //       vertical: 15,
-                                                        //     ),
-                                                        //   ),
-                                                        //   child: const Text(
-                                                        //     "탈퇴",
-                                                        //     style: TextStyle(
-                                                        //       fontSize: 12,
-                                                        //     ),
-                                                        //   ),
-                                                        // ),
+                                                        // 관리 - 정지
+                                                        SizedBox(
+                                                          width: 200,
+                                                          height: 100,
+                                                          child: Row(
+                                                            children: [
+                                                              // 정지 버튼
+                                                              ElevatedButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  // ban 시간을 정할 수 있는 다이어로그
+                                                                  Get.dialog(
+                                                                    AlertDialog(
+                                                                      title:
+                                                                          const Text(
+                                                                        "사용자 정지 일수 설정",
+                                                                      ),
+                                                                      content:
+                                                                          SizedBox(
+                                                                        width:
+                                                                            100,
+                                                                        height:
+                                                                            200,
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            // 중간 공백
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+
+                                                                            // 아이디를 보여주는 문구
+                                                                            const Text(
+                                                                              "사용자 정지 일수를 설정해주세요",
+                                                                            ),
+
+                                                                            // 중간 공백
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+
+                                                                            // 정지 일수를 입력하는 곳
+                                                                            // 총 페이지 수 설정
+                                                                            Center(
+                                                                              child: Padding(
+                                                                                padding: const EdgeInsets.all(16.0),
+                                                                                child: SizedBox(
+                                                                                  width: 50,
+                                                                                  height: 50,
+                                                                                  child: TextField(
+                                                                                    keyboardType: TextInputType.number,
+                                                                                    controller: setBanTimeController,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+
+                                                                            // 정지시키기 버튼
+                                                                            TextButton(
+                                                                              child: const Text(
+                                                                                "정지시키기",
+                                                                              ),
+                                                                              onPressed: () async {
+                                                                                // print(
+                                                                                //     "setBanTimeController.text : ${setBanTimeController.text}");
+                                                                                // 서버와 통신
+                                                                                // 사용자 계정을 정지한다.
+                                                                                try {
+                                                                                  final response = await dio.post(
+                                                                                    "http://${IpAddress.hyunukIP}/admin/banMember",
+                                                                                    data: {
+                                                                                      "id": memberList[index].id,
+                                                                                      "bantime": int.parse(setBanTimeController.text),
+                                                                                    },
+                                                                                    options: Options(
+                                                                                      headers: {
+                                                                                        "Authorization": "Bearer ${UserInfo.token}",
+                                                                                      },
+                                                                                      validateStatus: (_) => true,
+                                                                                      contentType: Headers.jsonContentType,
+                                                                                      responseType: ResponseType.json,
+                                                                                    ),
+                                                                                  );
+
+                                                                                  // setBanTimeController.text를 빈칸으로 만든다.
+                                                                                  setBanTimeController.text = "";
+
+                                                                                  if (response.statusCode == 200) {
+                                                                                    print("서버와 통신 성공");
+                                                                                    print("서버에서 받은 데이터 : ${response.data}");
+
+                                                                                    Get.snackbar(
+                                                                                      "사용자 정지시키기 성공",
+                                                                                      "해당 사용자가 정지되었습니다",
+                                                                                      duration: const Duration(
+                                                                                        seconds: 5,
+                                                                                      ),
+                                                                                      snackPosition: SnackPosition.TOP,
+                                                                                    );
+
+                                                                                    // 사용자 정지 일수를 설정하는 다이어로그를 삭제한다
+                                                                                    Get.back();
+
+                                                                                    // 라우팅
+                                                                                    Get.off(
+                                                                                      () => BookFluidNavBar(),
+                                                                                    );
+                                                                                  }
+                                                                                  //
+                                                                                  else {
+                                                                                    print("서버와 통신 실패");
+                                                                                    print("서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                                                    print("에러 메시지: ${response.data}");
+
+                                                                                    Get.snackbar(
+                                                                                      "사용자 정지시키기 실패",
+                                                                                      "해당 사용자 정지가 반영되지 않았습니다",
+                                                                                      duration: const Duration(
+                                                                                        seconds: 5,
+                                                                                      ),
+                                                                                      snackPosition: SnackPosition.TOP,
+                                                                                    );
+                                                                                  }
+                                                                                }
+                                                                                // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                                // 즉 서버가 열리지 않았다는 뜻이다
+                                                                                catch (e) {
+                                                                                  // 서버가 열리지 않았다는 snackBar를 띄운다
+                                                                                  Get.snackbar(
+                                                                                    "서버 열리지 않음",
+                                                                                    "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                                                    duration: const Duration(
+                                                                                      seconds: 5,
+                                                                                    ),
+                                                                                    snackPosition: SnackPosition.TOP,
+                                                                                  );
+                                                                                }
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                      10.0,
+                                                                    ),
+                                                                  ),
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .purple,
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .symmetric(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical:
+                                                                        15,
+                                                                  ),
+                                                                ),
+                                                                child:
+                                                                    const Text(
+                                                                  "정지",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
+                                                                ),
+                                                              ),
+
+                                                              // 중간 공백
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+
+                                                              // 탈퇴 버튼
+                                                              // ElevatedButton(
+                                                              //   onPressed: () {
+                                                              //     // 서버와 통신
+                                                              //     // 사용자 계정을 탈퇴한다.
+                                                              //   },
+                                                              //   style: ElevatedButton
+                                                              //       .styleFrom(
+                                                              //     shape:
+                                                              //         RoundedRectangleBorder(
+                                                              //       borderRadius:
+                                                              //           BorderRadius
+                                                              //               .circular(
+                                                              //         10.0,
+                                                              //       ),
+                                                              //     ),
+                                                              //     backgroundColor:
+                                                              //         Colors.purple,
+                                                              //     padding:
+                                                              //         const EdgeInsets
+                                                              //             .symmetric(
+                                                              //       horizontal: 10,
+                                                              //       vertical: 15,
+                                                              //     ),
+                                                              //   ),
+                                                              //   child: const Text(
+                                                              //     "탈퇴",
+                                                              //     style: TextStyle(
+                                                              //       fontSize: 12,
+                                                              //     ),
+                                                              //   ),
+                                                              // ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
-                                                ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              color: Colors.yellow[50],
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: 100,
+                                              child: const Center(
+                                                child: Text("사용자 데이터가 없습니다"),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),

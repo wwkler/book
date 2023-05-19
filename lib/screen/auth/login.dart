@@ -1,4 +1,6 @@
 // 앱의 로고인 페이지 화면
+import 'dart:io';
+
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
@@ -350,12 +352,45 @@ class _LoginScreenState extends State<LoginScreen> {
                         // DioError[unknown]: null이 메시지로 나타났을 떄
                         // 즉 서버가 열리지 않았다는 뜻이다
                         catch (e) {
+                          print("메시지 : $e");
                           // 서버가 열리지 않았다는 snackBar를 띄운다
                           Get.snackbar(
                             "서버 열리지 않음",
                             "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                             duration: const Duration(seconds: 5),
                             snackPosition: SnackPosition.TOP,
+                          );
+
+                          // 앱을 종료하는 다이어로그를 띄운다
+                          Get.dialog(
+                            AlertDialog(
+                              title: const Text("서버가 열리지 않음"),
+                              content: SizedBox(
+                                width: 100,
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    // 아이디를 보여주는 문구
+                                    const Text("서버가 열리지 않아서 앱을 종료합니다"),
+
+                                    // 중간 공백
+                                    const SizedBox(height: 50),
+
+                                    // 앱 종료하기 버튼
+                                    TextButton(
+                                      child: const Text("앱 종료하기"),
+                                      onPressed: () {
+                                        // 앱 종료하기 보여주는 다이어로그를 삭제한다.
+                                        Get.back();
+
+                                        // 앱 종료
+                                        exit(0);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           );
                         }
                       }

@@ -1,6 +1,10 @@
 class IpAddress {
   // 현욱이 데스크톱 ip
-  static String hyunukIP = "192.168.0.45:8080";
+  // static String hyunukIP = "192.168.0.45:8080";
+
+  // static String hyunukIP = "192.9.202.17:60001";
+
+  static String hyunukIP = "172.16.231.88:8080";
 
   // 현욱이 노트북 ip
   // static String hyunukIP = "116.122.96.53:8080";

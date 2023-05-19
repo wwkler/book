@@ -36,7 +36,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
   // 신간 도서
   List<BookModel> newBooks = [];
 
-  // 서버 통신
+  // 서버 통신하는 변수
   var dio = Dio();
 
   @override
@@ -82,6 +82,9 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
       if (response0.statusCode == 200) {
         print("서버와 통신 성공");
         print("서버에서 북마카세가 제시하는 추천 도서 받은 데이터 : ${response0.data}");
+
+
+        
       }
       //
       else {

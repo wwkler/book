@@ -218,7 +218,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                               },
                               child: Card(
                                 elevation: 10.0,
-                                color: Colors.purple[200],
+                                color: const Color.fromARGB(255, 233, 227, 234),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
@@ -242,7 +242,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                             // 목표 3
                             Card(
                               elevation: 10.0,
-                              color: const Color.fromARGB(255, 233, 227, 234),
+                              color: Colors.purple[200],
                               shadowColor: Colors.grey.withOpacity(0.5),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -468,8 +468,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                 );
                                 if (selectedDate != null) {
                                   setState(() {
-                                    objDate =
-                                        "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                                    objDate = formatDate(selectedDate);
                                   });
                                 }
                               },
@@ -499,8 +498,8 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                         // 중간 공백
                         const SizedBox(height: 50),
 
-                        // 현재 시간이 endDate보다 적으면     목표 수정하기 버튼을 보여준다.
-                        // 아예 서버에서 받아온 목표 데이터가 없거나 ,현재 시간이 endDate보다 크면      목표 설정하기 버튼을 보여준다.
+                        // 아예 서버에서 받아온 목표 데이터가 없거나 , endDate가 현재 시간보다 작으면 목표 설정하기 버튼을 보여준다.
+                        // endDate가 현재 시간보다 크면 목표 수정하기 버튼을 보여준다.
                         objectives![2]["data"] == "none" ||
                                 objectives![2]["endDate"]
                                         .toString()

@@ -30,6 +30,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
   // 목표 1, 2, 3 데이터를 담는 배열
   List<Map<String, dynamic>> objectives = [];
 
+  // 목표 관련된 분석 내용
   List<String> objectAnaysisTitles = [
     "완료 달성 수",
     "개인이 목표 성공한 수",
@@ -39,7 +40,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
     "카테고리 고려하지 않고 비슷한 나이대 중에 도전 중인 사람들 수",
     "같은 나이대 목표 평균 성공률 수"
   ];
-  // 목표 관련된 분석 내용
   List<int> objectAnalysisContents = [-1, -1, -1, -1, -1, -1, -1];
 
   // 읽고 싶은 도서 (배열)
@@ -144,7 +144,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
       // 목표 2 데이터가 있을 떄.... -> 목표 2과 관련된 내용을 서버를 통해 가져온다.
       if (response2.data == true) {
         final response2_2 = await dio.get(
-          "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_2_winner23456",
+          "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_2_${UserInfo.id}",
           options: Options(
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
@@ -198,8 +198,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
         if (response3_3.statusCode == 200) {
           print("서버와 통신 성공");
           print("서버에서 목표 3 받은 데이터 : ${response3_3.data}");
-          objectives.removeAt(1);
-          objectives.insert(1, response3_3.data as Map<String, dynamic>);
+          objectives.removeAt(2);
+          objectives.insert(2, response3_3.data as Map<String, dynamic>);
 
           print("objectives : $objectives");
         }
@@ -1353,15 +1353,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
                                                                           if (response.statusCode ==
                                                                               200) {
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+
                                                                             Get.snackbar(
                                                                               "읽고 싶은 도서에서 삭제 성공",
                                                                               "읽고 싶은 도서에서 삭제 성공하였습니다",
                                                                               duration: const Duration(seconds: 5),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
-
-                                                                            // 다이어로그를 삭제한다.
-                                                                            Get.back();
 
                                                                             // 화면을 재랜더링 한다.
                                                                             setState(() {});
@@ -1422,12 +1422,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               ),
 
                                               // 도서 이미지
-                                              // Image.asset(
-                                              //   "assets/imgs/icon.png",
-                                              //   width: 150,
-                                              //   height: 150,
-                                              // ),
-
                                               Image.network(
                                                 wantToReadBooks[index]
                                                     .coverSmallUrl,
@@ -1436,17 +1430,14 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               ),
 
                                               // 도서 제목
-                                              // Text(
-                                              //   "도서입니다.",
-                                              //   style: TextStyle(
-                                              //     fontWeight: FontWeight.w700,
-                                              //   ),
-                                              // ),
-
-                                              Text(
-                                                wantToReadBooks[index].title,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  wantToReadBooks[index].title,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
                                                 ),
                                               ),
 
@@ -1508,7 +1499,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           width:
                                                                               100,
                                                                           height:
-                                                                              150,
+                                                                              200,
                                                                           child:
                                                                               Column(
                                                                             children: [
@@ -1516,7 +1507,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               const Text("읽고 싶은 도서 총 페이지 수를 설정해주세요"),
 
                                                                               // 중간 공백
-                                                                              const SizedBox(height: 50),
+                                                                              const SizedBox(height: 10),
 
                                                                               // 총 페이지 수 설정
                                                                               Center(
@@ -1533,13 +1524,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                 ),
                                                                               ),
 
-                                                                              // 로고인 페이지로 이동하는 버튼
+                                                                              // 총 페이지수 설정하는  버튼
                                                                               TextButton(
                                                                                 child: const Text("설정"),
                                                                                 onPressed: () async {
-                                                                                  // setPageController.text를 빈칸으로 다시 설정한다
-                                                                                  setPageController.text = "";
-
                                                                                   // 서버와 통신
                                                                                   try {
                                                                                     final response = await dio.put(
@@ -1552,9 +1540,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                       ),
                                                                                     );
 
+                                                                                    // setPageController.text를 빈칸으로 다시 설정한다
+                                                                                    setPageController.text = "";
+
                                                                                     if (response.statusCode == 200) {
                                                                                       print("서버와 통신 성공");
                                                                                       print("읽고 있는 도서 추가를 통해 받은 데이터 : ${response.data}");
+
+                                                                                      //  다이어로그를 삭제한다.
+                                                                                      Get.back();
 
                                                                                       Get.snackbar(
                                                                                         "읽고 싶은 도서로 추가 성공",
@@ -1563,11 +1557,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                         snackPosition: SnackPosition.TOP,
                                                                                       );
 
-                                                                                      //  다이어로그를 삭제한다.
-                                                                                      Get.back();
-
-                                                                                      // 도서 검색, 추천 페이지로 이동 (라우팅)
-                                                                                      Get.off(() => BookFluidNavBar());
+                                                                                      // 화면 재랜더링
+                                                                                      setState(() {});
                                                                                     }
                                                                                     //
                                                                                     else {
@@ -1599,7 +1590,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         ),
                                                                       ),
                                                                       barrierDismissible:
-                                                                          false,
+                                                                          true,
                                                                     );
                                                                   },
                                                                 ),
@@ -1769,15 +1760,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
                                                                           if (response.statusCode ==
                                                                               200) {
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+
                                                                             Get.snackbar(
                                                                               "읽고 있는 도서에서 삭제 성공",
                                                                               "읽고 싶은 도서에서 삭제 성공하였습니다",
                                                                               duration: const Duration(seconds: 5),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
-
-                                                                            // 다이어로그를 삭제한다.
-                                                                            Get.back();
 
                                                                             // 화면을 재랜더링 한다.
                                                                             setState(() {});
@@ -1851,10 +1842,14 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               ),
 
                                               // 도서 제목
-                                              Text(
-                                                nowReadBooks[index].title,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w700,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  nowReadBooks[index].title,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
                                                 ),
                                               ),
 
@@ -1940,6 +1935,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                     if (response
                                                                             .statusCode ==
                                                                         200) {
+                                                                      // 다이어로그를 삭제한다.
+                                                                      Get.back();
+
                                                                       Get.snackbar(
                                                                         "진행도 수정 성공",
                                                                         "해당 도서 진행도 수정을 하였습니다",
@@ -1951,9 +1949,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                       // editPageController.text를 다시 빈칸으로 만듦
                                                                       editPageController
                                                                           .text = "";
-
-                                                                      // 다이어로그를 삭제한다.
-                                                                      Get.back();
 
                                                                       // 화면 잰더링
                                                                       setState(
@@ -2071,15 +2066,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               );
 
                                                                               if (response.statusCode == 200) {
+                                                                                // 다이어로그를 삭제한다.
+                                                                                Get.back();
+
                                                                                 Get.snackbar(
                                                                                   "도서 읽기 완료 성공",
                                                                                   "해당 도서 읽기 완료 성공하였습니다",
                                                                                   duration: const Duration(seconds: 5),
                                                                                   snackPosition: SnackPosition.TOP,
                                                                                 );
-
-                                                                                // 다이어로그를 삭제한다.
-                                                                                Get.back();
 
                                                                                 // 화면을 재랜더링 한다.
                                                                                 setState(() {});
@@ -2288,6 +2283,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
                                                                         if (response.statusCode ==
                                                                             200) {
+                                                                          // 다이어로그를 삭제한다.
+                                                                          Get.back();
+
                                                                           Get.snackbar(
                                                                             "읽은 도서 삭제 성공",
                                                                             "읽은 도서 삭제 성공하였습니다",
@@ -2296,9 +2294,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             snackPosition:
                                                                                 SnackPosition.TOP,
                                                                           );
-
-                                                                          // 다이어로그를 삭제한다.
-                                                                          Get.back();
 
                                                                           // 화면을 재랜더링 한다.
                                                                           setState(
@@ -2366,10 +2361,14 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               height: 150,
                                             ),
 
-                                            Text(
-                                              "${readBooks_completed_dateTime[index]} 읽기 완료",
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w700,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "${readBooks_completed_dateTime[index]} 읽기 완료",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
 
