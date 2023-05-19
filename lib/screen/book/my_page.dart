@@ -1,5 +1,6 @@
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/model/user_info.dart';
+import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -590,14 +591,44 @@ class _MyPageState extends State<MyPage> {
                                   print("서버와 통신 성공");
                                   print("서버에서 제공해주는 데이터 : ${response.data}");
 
-                                  Get.snackbar(
-                                    "내 정보 변경 성공",
-                                    "내 정보가 정상적으로 변경되었습니다",
-                                    duration: const Duration(seconds: 5),
-                                    snackPosition: SnackPosition.TOP,
-                                  );
+                                  // 정보를 변경해서 로그인 페이지로 안내하는 다이어로그
+                                  Get.dialog(
+                                    AlertDialog(
+                                      title: const Text("로그인 페이지 이동 안내"),
+                                      content: SizedBox(
+                                        width: 100,
+                                        height: 150,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              "내 정보를 변경해서 로그인 페이지로 안내합니다",
+                                            ),
 
-                                  Get.off(() => BookFluidNavBar());
+                                            // 중간 공백
+                                            const SizedBox(height: 20),
+
+                                            // 다이어로그에서 나가는 버튼
+                                            Center(
+                                              child: TextButton(
+                                                child: const Text("로그인 페이지 이동"),
+                                                onPressed: () {
+                                                  // 다이어로그를 삭제한다.
+                                                  Get.back();
+
+                                                  // 라우팅
+                                                  Get.off(() =>
+                                                      const LoginScreen());
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    barrierDismissible: true,
+                                  );
                                 }
                                 // 서버와 통신 실패
                                 else {

@@ -70,6 +70,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
     // "http://49.161.110.41:8080/api/search?query=${discrimition != "" ? discrimition : text}";
     // "http://book.interpark.com/api/search.api?key=91AC2ACAC3C7059705E426DABAF9315BCAA238BFAA0056F78D7379F42177E28A&query=${discrimition != "" ? discrimition : text}&output=json";
 
+    print("url : $url");
+
     // 이전 페이지에서 검색어를 요청해서 서버로부터 도서 데이터를 받을 경우에 대한 로직 처리
     if (discrimition != "") {
       discrimition = "";
