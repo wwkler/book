@@ -89,69 +89,69 @@ class _ConfigurationState extends State<Configuration> {
             ),
 
             // 중간 공백
-            const SizedBox(height: 50),
+            // const SizedBox(height: 50),
 
-            // 검색어 저장 켜기/끄기
-            GestureDetector(
-              onTap: () {
-                // 서버와 통신
-                // 사용자에 대한 검색어 저장 켜기를 설정한다.
-                // 사용자에 대한 검색어 저장 끄기를 설정한다.
-              },
-              child: Card(
-                elevation: 10.0,
-                color: const Color.fromARGB(255, 233, 227, 234),
-                shadowColor: Colors.grey.withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      isSaveSearch ? "검색어 저장 켜기" : "검색어 저장 끄기",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // // 검색어 저장 켜기/끄기
+            // GestureDetector(
+            //   onTap: () {
+            //     // 서버와 통신
+            //     // 사용자에 대한 검색어 저장 켜기를 설정한다.
+            //     // 사용자에 대한 검색어 저장 끄기를 설정한다.
+            //   },
+            //   child: Card(
+            //     elevation: 10.0,
+            //     color: const Color.fromARGB(255, 233, 227, 234),
+            //     shadowColor: Colors.grey.withOpacity(0.5),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(20.0),
+            //     ),
+            //     child: SizedBox(
+            //       width: 250,
+            //       height: 50,
+            //       child: Center(
+            //         child: Text(
+            //           isSaveSearch ? "검색어 저장 켜기" : "검색어 저장 끄기",
+            //           style: const TextStyle(
+            //             fontSize: 15,
+            //             fontWeight: FontWeight.w700,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
-            // 중간 공백
-            const SizedBox(height: 50),
+            // // 중간 공백
+            // const SizedBox(height: 50),
 
-            // 검색 기록 삭제
-            GestureDetector(
-              onTap: () {
-                // 서버와 통신
-                // 서버에서 사용자에 대한 검색 기록을 삭제한다.
-              },
-              child: Card(
-                elevation: 10.0,
-                color: const Color.fromARGB(255, 233, 227, 234),
-                shadowColor: Colors.grey.withOpacity(0.5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: Center(
-                    child: Text(
-                      "검색 기록 삭제",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // // 검색 기록 삭제
+            // GestureDetector(
+            //   onTap: () {
+            //     // 서버와 통신
+            //     // 서버에서 사용자에 대한 검색 기록을 삭제한다.
+            //   },
+            //   child: Card(
+            //     elevation: 10.0,
+            //     color: const Color.fromARGB(255, 233, 227, 234),
+            //     shadowColor: Colors.grey.withOpacity(0.5),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(20.0),
+            //     ),
+            //     child: const SizedBox(
+            //       width: 250,
+            //       height: 50,
+            //       child: Center(
+            //         child: Text(
+            //           "검색 기록 삭제",
+            //           style: TextStyle(
+            //             fontSize: 15,
+            //             fontWeight: FontWeight.w700,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             // 중간 공백
             const SizedBox(height: 50),
@@ -462,7 +462,89 @@ class _ConfigurationState extends State<Configuration> {
             // 개인정보 보호 정책 (사용자만 볼 수 있고, 관리자는 볼 수 없다.)
             UserInfo.identity == UserManagerCheck.user
                 ? GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      // 개인정보 보호정책 dialog를 띄운다.
+                      Get.dialog(
+                        SizedBox(
+                          width: 300,
+                          height: 300,
+                          child: AlertDialog(
+                            title: const Text("서비스 이용 약관"),
+                            content: SizedBox(
+                              width: 300,
+                              height: 300,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Column(
+                                  children: [
+                                    // 개인정보 보호정책 text
+                                    const Text(
+                                        "아래의 개인정보 처리 방침은 BookMakase 개인이 서비스 하는 모든 제품에 적용 됩니다.\n"),
+
+                                    const Text(
+                                        "1. 개인정보의 처리 목적\nBookMakase 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.\n"),
+
+                                    const Text(
+                                        "- 고객 가입의사 확인, 고객에 대한 서비스 제공에 따른 본신 식별 및 인증, 회원자격 유지 및 관리, 물품이나 서비스 공급에 따른 금액 결제, 물품 또는 서비스의 공급 및 배송 등\n"),
+
+                                    const Text(
+                                        "2. 개인정보의 처리 및 보유 기간\n1) BookMakase 는 정보 주체로 부터 개인정보를 수집할 때 동의 받은 개인정보 보유 이용기간 또는 법령에 따른 개인정보 보유, 이용기간 내에서 개인정보를 처리 및 보유 합니다.\n2) 구체적인 개인정보 보유 기간은 다음과 같습니다.\n- 고객가입 및 관리 : 서비스 이용 계약 또는 회원가입 해지시 까지\n"),
+
+                                    const Text(
+                                        "3. 개인정보의 제3자 제공에 관한 사항\n1) BookMakase는 정보주체의 동의, 법률의 특별한 규정등 개인정보 보호법 제 17조 및 18조에 해당하는 경우에만 개인정보를 제 3자에게 제공합니다.\n2) BlockDMask 는 다음과 같이 개인정보를 제 3자에게 제공하고 있습니다.\n"),
+
+                                    const Text(
+                                        "- 제공받는 자의 개인정보 이용목적 : 다운받은 앱 사용시 수명주기와 발생 이벤트 등의 분석 및 통계용 (구글 애널리틱스), 정보주체별 맞춤광고 제공용(구글 애드몹)\n"),
+
+                                    const Text(
+                                        "- 제공받는 자의 보유, 이용기간 : 앱 설치시 부터 제품별 구글이 정한 기간에 따름\n- 제공받는 자의 제품별 개인정보처리방침 : 구글 개인정보 처리방침에 따름 (https://policies.google.com/privacy?hl=ko)\n"),
+
+                                    const Text(
+                                        "4. 개인정보처리 위탁\n① BookMakase 는 원활한 개인정보 업무처리를 위하여 다음과 같이 개인정보 처리업무를 위탁하고 있습니다.\n1. <위탁없음.>\n- 위탁받는 자 (수탁자) : 없음.\n- 위탁하는 업무의 내용 : 없음.\n- 위탁기간 : 없음.\n"),
+
+                                    const Text(
+                                        "② BlockDMask 은(는) 위탁계약 체결시 개인정보 보호법 제25조에 따라 위탁업무 수행목적 외 개인정보 처리금지, 기술적․관리적 보호조치, 재위탁 제한, 수탁자에 대한 관리․감독, 손해배상 등 책임에 관한 사항을 계약서 등 문서에 명시하고, 수탁자가 개인정보를 안전하게 처리하는지를 감독하고 있습니다.\n"),
+
+                                    const Text(
+                                        "③ 위탁업무의 내용이나 수탁자가 변경될 경우에는 지체없이 본 개인정보 처리방침을 통하여 공개하도록 하겠습니다.\n"),
+
+                                    const Text(
+                                        "5. 정보주체와 법정대리인의 권리·의무 및 그 행사방법 이용자는 개인정보주체로써 다음과 같은 권리를 행사할 수 있습니다.\n① 정보주체는 BlockDMask 에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.\n1. 개인정보 열람요구\n2. 오류 등이 있을 경우 정정 요구\n3. 삭제요구\n4. 처리정지 요구\n"),
+
+                                    const Text(
+                                        "6. 처리하는 개인정보의 항목 작성\n① BookMakase 은(는) 다음의 개인정보 항목을 처리하고 있습니다.\n- 필수항목 : 없음.\n- 선택항목 : 없음.\n"),
+
+                                    const Text(
+                                        "7. 개인정보의 파기\nBookMakase는 원칙적으로 개인정보 처리목적이 달성된 경우에는 지체없이 해당 개인정보를 파기합니다. 파기의 절차, 기한 및 방법은 다음과 같습니다.\n-파기절차 이용자가 입력한 정보는 목적 달성 후 별도의 DB에 옮겨져(종이의 경우 별도의 서류) 내부 방침 및 기타 관련 법령에 따라 일정기간 저장된 후 혹은 즉시 파기됩니다. 이 때, DB로 옮겨진 개인정보는 법률에 의한 경우가 아니고서는 다른 목적으로 이용되지 않습니다.\n-파기기한 이용자의 개인정보는 개인정보의 보유기간이 경과된 경우에는 보유기간의 종료일로부터 5일 이내에, 개인정보의 처리 목적 달성, 해당 서비스의 폐지, 사업의 종료 등 그 개인정보가 불필요하게 되었을 때에는 개인정보의 처리가 불필요한 것으로 인정되는 날로부터 5일 이내에 그 개인정보를 파기합니다.\n"),
+
+                                    const Text(
+                                        "8. 개인정보 자동 수집 장치의 설치•운영 및 거부에 관한 사항\nBookMakase는 정보주체의 이용정보를 저장하고 수시로 불러오는 '쿠키'를 사용하지 않습니다.\n정보 주체가 제3자인 구글에게 제공하는 정보는 BlockDMask와 상관없이 정보 주체 기기상의 구글 설정에 따릅니다.\n"),
+
+                                    const Text(
+                                        "9. 개인정보 보호책임자 작성\n① BookMakase는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.\n▶ 개인정보 보호책임자 BookMakase (이메일 : BookMakase@gmail.com)\n"),
+
+                                    const Text(
+                                        "10. 개인정보 처리방침 변경\n①이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.\n\n"),
+
+                                    const Text("2023.06.02. 최종 업데이트 됨."),
+
+                                    // 읽기 완료 이동하는 버튼
+                                    TextButton(
+                                      child: const Text("읽기 완료"),
+                                      onPressed: () {
+                                        // 서비스 이용 약관 다이어로그를 삭제한다.
+                                        Get.back();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        barrierDismissible: true,
+                      );
+                    },
                     child: Card(
                       elevation: 10.0,
                       color: const Color.fromARGB(255, 233, 227, 234),
@@ -498,7 +580,10 @@ class _ConfigurationState extends State<Configuration> {
             // 오픈소스 라이선스 (사용자만 볼 수 있고, 관리자는 볼 수 없다.)
             UserInfo.identity == UserManagerCheck.user
                 ? GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => const LicensePage()));
+                    },
                     child: Card(
                       elevation: 10.0,
                       color: const Color.fromARGB(255, 233, 227, 234),

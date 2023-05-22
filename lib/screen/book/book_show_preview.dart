@@ -354,7 +354,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                 await launchUrlString(
                                                   bookModel!.link,
                                                   mode: LaunchMode
-                                                      .externalApplication,
+                                                      .externalNonBrowserApplication,
                                                 );
                                               },
                                               child: Text(

@@ -330,92 +330,92 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                     ),
 
                     // 추천과 관련된 분석한 내용이 들어가는 Card
-                    SizedBox(
-                      width: 400,
-                      height: 230,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) => SizedBox(
-                          width: 400,
-                          height: 230,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 35,
-                                left: 20,
-                                child: Material(
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    height: 180,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          offset: const Offset(-10.0, 10.0),
-                                          blurRadius: 20.0,
-                                          spreadRadius: 4.0,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                left: 30,
-                                child: Card(
-                                  elevation: 10.0,
-                                  shadowColor: Colors.grey.withOpacity(0.5),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                  ),
-                                  child: Container(
-                                    width: 150,
-                                    height: 200,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        image: const DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: AssetImage(
-                                            "assets/imgs/icon.png",
-                                          ),
-                                        )),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 45,
-                                left: 180,
-                                child: SizedBox(
-                                  width: 180,
-                                  height: 150,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "추천과 관련된 분석 내용",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xFF363f93),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 400,
+                    //   height: 230,
+                    //   child: ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: 5,
+                    //     itemBuilder: (context, index) => SizedBox(
+                    //       width: 400,
+                    //       height: 230,
+                    //       child: Stack(
+                    //         children: [
+                    //           Positioned(
+                    //             top: 35,
+                    //             left: 20,
+                    //             child: Material(
+                    //               child: Container(
+                    //                 width:
+                    //                     MediaQuery.of(context).size.width * 0.9,
+                    //                 height: 180,
+                    //                 decoration: BoxDecoration(
+                    //                   color: Colors.white,
+                    //                   borderRadius: BorderRadius.circular(10.0),
+                    //                   boxShadow: [
+                    //                     BoxShadow(
+                    //                       color: Colors.grey.withOpacity(0.3),
+                    //                       offset: const Offset(-10.0, 10.0),
+                    //                       blurRadius: 20.0,
+                    //                       spreadRadius: 4.0,
+                    //                     )
+                    //                   ],
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           Positioned(
+                    //             top: 0,
+                    //             left: 30,
+                    //             child: Card(
+                    //               elevation: 10.0,
+                    //               shadowColor: Colors.grey.withOpacity(0.5),
+                    //               shape: RoundedRectangleBorder(
+                    //                 borderRadius: BorderRadius.circular(15.0),
+                    //               ),
+                    //               child: Container(
+                    //                 width: 150,
+                    //                 height: 200,
+                    //                 decoration: BoxDecoration(
+                    //                     borderRadius:
+                    //                         BorderRadius.circular(10.0),
+                    //                     image: const DecorationImage(
+                    //                       fit: BoxFit.fill,
+                    //                       image: AssetImage(
+                    //                         "assets/imgs/icon.png",
+                    //                       ),
+                    //                     )),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //           Positioned(
+                    //             top: 45,
+                    //             left: 180,
+                    //             child: SizedBox(
+                    //               width: 180,
+                    //               height: 150,
+                    //               child: Column(
+                    //                 children: [
+                    //                   Text(
+                    //                     "추천과 관련된 분석 내용",
+                    //                     style: TextStyle(
+                    //                       fontSize: 15,
+                    //                       fontWeight: FontWeight.bold,
+                    //                       color: Color(0xFF363f93),
+                    //                     ),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //             ),
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
                     // 중간 공백
-                    const SizedBox(height: 20),
+                    // const SizedBox(height: 20),
 
                     // 북마카세가 추천하는 도서 text
                     const Align(
