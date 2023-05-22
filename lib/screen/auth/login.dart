@@ -265,7 +265,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         try {
                           final response = await dio.post(
                             'http://${IpAddress.hyunukIP}/login',
-                            // 'http://${IpAddress.youngZoonIP}:8080/login',
                             // 'http://${IpAddress.innerServerIP}/login',
                             data: {
                               'account': id,
@@ -333,6 +332,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               Get.snackbar(
                                 "잘못된 비밀번호",
                                 "비밀번호를 다시 입력해주세요",
+                                duration: const Duration(seconds: 5),
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            }
+
+                            // 로고인 중에 오류가 발생했습니다
+                            else if (response.data == "로그인 중에 오류가 발생했습니다.") {
+                              Get.snackbar(
+                                "로고인 중에 오류 발생",
+                                "서버측 에러로 관리자에게 문의해주세요",
                                 duration: const Duration(seconds: 5),
                                 snackPosition: SnackPosition.TOP,
                               );

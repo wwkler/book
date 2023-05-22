@@ -275,6 +275,7 @@ class _ConfigurationState extends State<Configuration> {
                                       height: 50,
                                       child: TextField(
                                         controller: inputPasswordController,
+                                        textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
@@ -315,7 +316,7 @@ class _ConfigurationState extends State<Configuration> {
                                         // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로고인 페이지로 이동시킨다.
                                         if (response.data == true) {
                                           print("회원 탈퇴 되었습니다.");
-                                          
+
                                           // ban을 실시간으로 하는 모니터링 하는 것을 중단한다
                                           await BanCheck.monitorBan!.cancel();
 

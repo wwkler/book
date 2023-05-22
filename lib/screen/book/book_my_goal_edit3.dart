@@ -383,8 +383,10 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                               width: 50,
                               height: 50,
                               child: TextField(
+                                 controller: readBooksCountController,
+                                 textAlign: TextAlign.center,
                                 keyboardType: TextInputType.number,
-                                controller: readBooksCountController,
+                               
                               ),
                             ),
                           ),
@@ -513,7 +515,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       //검증하기
-                                      if (readBooksCountController.text.length > 1 &&
+                                      if (readBooksCountController.text.length >= 1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {
@@ -638,7 +640,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                     onPressed: () async {
                                       // DateTime dt = DateTime.now();
                                       //검증하기
-                                      if (readBooksCountController.text.length > 1 &&
+                                      if (readBooksCountController.text.length >= 1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {

@@ -54,6 +54,7 @@ class _BookCommunityState extends State<BookCommunity> {
     // 데이터 clear
     reviewWriterInfos.clear();
     reviewBooks.clear();
+    likeReviews.clear();
 
     // keyword == "" 일 떄 전체 리뷰 데이터를 가져온다
     if (keyword == "") {
@@ -114,47 +115,9 @@ class _BookCommunityState extends State<BookCommunity> {
       catch (e) {
         print("서버가 열리지 않음");
       }
-
-      // 사용자가 좋아요 등록한 리뷰 글 모음을 서버에서 가져온다
-      try {
-        final response = await dio.get(
-          "http://${IpAddress.hyunukIP}/reviews/getMemberLike?memberId=${UserInfo.userValue}",
-          options: Options(
-            validateStatus: (_) => true,
-            contentType: Headers.jsonContentType,
-            responseType: ResponseType.json,
-          ),
-        );
-
-        if (response.statusCode == 200) {
-          print("서버와 통신 성공");
-          print("서버에서 받아온 데이터 : ${response.data}");
-
-          // reviewBooks 데이터 추가
-          likeReviews = (response.data as List<dynamic>)
-              .map((dynamic e) => e["review"]["id"] as int)
-              .toList();
-
-          print("likeReviews : $likeReviews");
-        }
-        //
-        else {
-          print("서버와 통신 실패");
-          print("서버 통신 에러 코드 : ${response.statusCode}");
-        }
-      }
-      // DioError[unknown]: null이 메시지로 나타났을 떄
-      // 즉 서버가 열리지 않았다는 뜻이다
-      catch (e) {
-        print("서버가 열리지 않음");
-      }
     }
     // keyword != ""일 떄 검색어에 해당하는 리뷰 데이터를 가져온다
     else {
-      print("검색어에 해당하는  리뷰 데이터를 가져오고 있습니다");
-
-      print("http://${IpAddress.hyunukIP}/reviews/search?param=$keyword");
-
       // 검색어에 해당하는 데이터를 가져온다
       try {
         final response = await dio.get(
@@ -210,40 +173,40 @@ class _BookCommunityState extends State<BookCommunity> {
       catch (e) {
         print("서버가 열리지 않음");
       }
+    }
 
-      // 사용자가 좋아요 등록한 리뷰 글 모음을 서버에서 가져온다
-      try {
-        final response = await dio.get(
-          "http://${IpAddress.hyunukIP}/reviews/getMemberLike?memberId=${UserInfo.userValue}",
-          options: Options(
-            validateStatus: (_) => true,
-            contentType: Headers.jsonContentType,
-            responseType: ResponseType.json,
-          ),
-        );
+    // 사용자가 좋아요 등록한 리뷰 글 모음을 서버에서 가져온다
+    try {
+      final response = await dio.get(
+        "http://${IpAddress.hyunukIP}/reviews/getMemberLike?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-        if (response.statusCode == 200) {
-          print("서버와 통신 성공");
-          print("서버에서 받아온 데이터 : ${response.data}");
+      if (response.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받아온 데이터 : ${response.data}");
 
-          // reviewBooks 데이터 추가
-          likeReviews = (response.data as List<dynamic>)
-              .map((dynamic e) => e["review"]["id"] as int)
-              .toList();
+        // reviewBooks 데이터 추가
+        likeReviews = (response.data as List<dynamic>)
+            .map((dynamic e) => e["review"]["id"] as int)
+            .toList();
 
-          print("likeReviews : $likeReviews");
-        }
-        //
-        else {
-          print("서버와 통신 실패");
-          print("서버 통신 에러 코드 : ${response.statusCode}");
-        }
+        print("likeReviews : $likeReviews");
       }
-      // DioError[unknown]: null이 메시지로 나타났을 떄
-      // 즉 서버가 열리지 않았다는 뜻이다
-      catch (e) {
-        print("서버가 열리지 않음");
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response.statusCode}");
       }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
     }
   }
 
@@ -352,7 +315,7 @@ class _BookCommunityState extends State<BookCommunity> {
                             AnimSearchBar(
                               width: 250,
                               textController: searchTextController,
-                              helpText: "책 또는 저자를 입력",
+                              helpText: "리뷰 제목을 입력하세요",
                               suffixIcon: const Icon(Icons.arrow_back),
                               onSuffixTap: () {
                                 setState(() {
@@ -408,6 +371,7 @@ class _BookCommunityState extends State<BookCommunity> {
                           ? Expanded(
                               flex: 1,
                               child: ListView.builder(
+                                scrollDirection: Axis.vertical,
                                 shrinkWrap: true,
                                 itemCount: reviewBooks.length,
                                 itemBuilder: (context, index) => Padding(
@@ -425,13 +389,40 @@ class _BookCommunityState extends State<BookCommunity> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
+                                              // 중간 공백
+                                              const SizedBox(height: 10),
                                               // 이름
-                                              Text(
-                                                "${reviewWriterInfos[index]["name"]}\n\n@${reviewWriterInfos[index]["account"]}",
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                child: Text(
+                                                  "${reviewWriterInfos[index]["name"]}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+
+                                              // 중간 공백
+                                              const SizedBox(height: 10),
+
+                                              // 아이디
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                child: Text(
+                                                  "@${reviewWriterInfos[index]["account"]}",
+                                                  style: TextStyle(
+                                                    color: Colors.grey[500],
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
                                                 ),
                                               ),
 
@@ -439,11 +430,16 @@ class _BookCommunityState extends State<BookCommunity> {
                                               const SizedBox(height: 10),
 
                                               // 리뷰 제목
-                                              Text(
-                                                "리뷰 제목 : ${reviewWriterInfos[index]["title"]}",
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                child: Text(
+                                                  "리뷰 제목 : ${reviewWriterInfos[index]["title"]}",
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ),
 
@@ -682,18 +678,6 @@ class _BookCommunityState extends State<BookCommunity> {
                                                         "음란성/선전성": false,
                                                         "같은 내용 도배": false,
                                                       };
-                                                      // // 영리목적/홍보성
-                                                      // bool forProfit = false;
-                                                      // // 욕설/인신공격
-                                                      // bool abuse = false;
-                                                      // // 불법정보
-                                                      // bool illegalInfo = false;
-                                                      // // 개인정보노출
-                                                      // bool infoExposure = false;
-                                                      // // 음란성, 선전성
-                                                      // bool obscenity = false;
-                                                      // // 같은 내용 도배
-                                                      // bool papering = false;
 
                                                       // 신고 내용을 적는 textControleller
                                                       final reportContentController =
@@ -894,6 +878,8 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             TextField(
                                                                           controller:
                                                                               reportContentController,
+                                                                          textAlign:
+                                                                              TextAlign.center,
                                                                           keyboardType:
                                                                               TextInputType.multiline,
                                                                           minLines:
@@ -1001,6 +987,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                         print(
                                                                             "서버 에러 메시지 : ${response.data}");
 
+                                                                        // 신고하기 다이어로그를 지운다
+                                                                        Get.back();
+
                                                                         // 신고 실패를 띄운다
                                                                         Get.snackbar(
                                                                             "신고 실패",
@@ -1013,14 +1002,17 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                     // DioError[unknown]: null이 메시지로 나타났을 떄
                                                                     // 즉 서버가 열리지 않았다는 뜻이다
                                                                     catch (e) {
+                                                                      // 신고하기 다이어로그를 지운다
+                                                                      Get.back();
+
                                                                       Get.snackbar(
-                                                                          "서버가 열리지 않았습니다",
-                                                                          "서버가 열리지 않았습니다 관리자에게 문의해주세요",
-                                                                          duration: const Duration(
-                                                                              seconds:
-                                                                                  5),
-                                                                          snackPosition:
-                                                                              SnackPosition.TOP);
+                                                                        "서버가 열리지 않았습니다",
+                                                                        "서버가 열리지 않았습니다 관리자에게 문의해주세요",
+                                                                        duration:
+                                                                            const Duration(seconds: 5),
+                                                                        snackPosition:
+                                                                            SnackPosition.TOP,
+                                                                      );
                                                                     }
                                                                   },
                                                                 ),
@@ -1093,22 +1085,22 @@ class _BookCommunityState extends State<BookCommunity> {
                                                             height: 150,
                                                           ),
 
-                                                          // 도서 작가, 출판사, 분류, 평균 평점
-                                                          Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceEvenly,
-                                                            children: [
-                                                              Text(
-                                                                "작가: ${reviewBooks[index].author}",
-                                                              ),
-                                                              Text(
-                                                                "출판사:${reviewBooks[index].publisher}",
-                                                              ),
-                                                              // Text("분류: "),
-                                                              // Text("평균 평점 : ${reviewBooks[index].}"),
-                                                            ],
-                                                          )
+                                                          // 도서 제목
+                                                          Text(
+                                                            reviewBooks[index]
+                                                                .title,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+
+                                                          // 중간 공백
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -1125,6 +1117,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                     const EdgeInsets.all(16.0),
                                                 child: Text(
                                                   "리뷰 내용 : ${reviewWriterInfos[index]["content"]}",
+                                                  style: const TextStyle(
+                                                      fontSize: 19,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
 
@@ -1205,6 +1201,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             print("서버와 통신 실패");
                                                                             print("서버 통신 에러 코드 : ${response.statusCode}");
 
+                                                                            // 삭제하기 다이어로그를 없앤다
+                                                                            Get.back();
+
                                                                             // 리뷰글을 삭제 snackBar를 띄운다
                                                                             Get.snackbar(
                                                                               "리뷰글 삭제 반영 실패",
@@ -1219,6 +1218,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                         catch (e) {
                                                                           print(
                                                                               "서버가 열리지 않음");
+
+                                                                          // 삭제하기 다이어로그를 없앤다
+                                                                          Get.back();
 
                                                                           // 서버가 닫혀있는 snackBar를 띄운다
                                                                           Get.snackbar(

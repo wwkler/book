@@ -383,8 +383,9 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                               width: 50,
                               height: 50,
                               child: TextField(
-                                keyboardType: TextInputType.number,
                                 controller: readBooksCountController,
+                                textAlign: TextAlign.center,
+                                keyboardType: TextInputType.number,
                               ),
                             ),
                           ),
@@ -512,10 +513,10 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      // DateTime dt = await NTP.now();
-
                                       // 검증하기
-                                      if (readBooksCountController.text.length > 1 &&
+                                      if (readBooksCountController
+                                                  .text.length >=
+                                              1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {
@@ -639,7 +640,7 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       //검증하기
-                                      if (readBooksCountController.text.length > 1 &&
+                                      if (readBooksCountController.text.length >= 1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {

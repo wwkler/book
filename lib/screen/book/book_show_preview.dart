@@ -10,6 +10,7 @@ import 'package:book_project/screen/book/book_show_preview_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class BookShowPreview extends StatefulWidget {
   BookShowPreview({Key? key}) : super(key: key);
@@ -51,6 +52,9 @@ class _BookShowPreviewState extends State<BookShowPreview> {
     128: "국내도서/여행",
     129: "국내도서>중등학습서",
   };
+
+  // 읽고 있는 도서의 총 페이지를 설정하기 위한 변수
+  final setPageController = TextEditingController();
 
   // 도서 상세 정보 페이지 UI으로 보여주기 위한 변수, 배열
   final double _borderRadius = 24;
@@ -339,6 +343,30 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 20),
+
+                                            // 도서 구입 링크
+                                            GestureDetector(
+                                              onTap: () async {
+                                                // 도서 구입 링크로 이동하기
+                                                await launchUrlString(
+                                                  bookModel!.link,
+                                                  mode: LaunchMode
+                                                      .externalApplication,
+                                                );
+                                              },
+                                              child: Text(
+                                                bookModel!.link,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: 'Avenir',
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -405,6 +433,9 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                 "찜하기를 통해 받은 데이터 : ${response.data}",
                                               );
 
+                                              // 다이어로그를 삭제한다.
+                                              Get.back();
+
                                               Get.snackbar(
                                                 "찜하기 성공",
                                                 "읽고 싶은 도서로 추가하였습니다",
@@ -413,9 +444,6 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
-
-                                              //  다이어로그를 삭제한다.
-                                              Get.back();
 
                                               // 도서 검색, 추천 페이지로 이동
                                               Get.off(() => BookFluidNavBar());
@@ -426,9 +454,12 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                               print(
                                                   "서버 통신 에러 코드 : ${response.statusCode}");
 
+                                              //  다이어로그를 삭제한다.
+                                              Get.back();
+
                                               Get.snackbar(
                                                 "찜하기 실패",
-                                                "읽고 싶은 도서로 추가하지 못했습니다\n다시 한번 시도해주세요",
+                                                "읽고 싶은 도서로 추가하지 못했습니다\n이미 도서를 찜했을 가능성이 존재합니다.",
                                                 duration:
                                                     const Duration(seconds: 5),
                                                 snackPosition:
@@ -510,69 +541,217 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                       TextButton(
                                         child: const Text("추가"),
                                         onPressed: () async {
-                                          try {
-                                            // 서버와 통신
-                                            // 사용자의 읽고 있는 책에 도서 추가
-                                            final response = await dio.put(
-                                              // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
-                                              "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=100",
-                                              options: Options(
-                                                validateStatus: (_) => true,
-                                                contentType:
-                                                    Headers.jsonContentType,
-                                                responseType: ResponseType.json,
+                                          // 다이어로그를 삭제한다
+                                          Get.back();
+
+                                          // 도서의 총 페이지수를 사용자가 설정하는 다이어로그
+                                          Get.dialog(
+                                            AlertDialog(
+                                              title: const Text(
+                                                "도서 총 페이지 수 설정",
                                               ),
-                                            );
+                                              content: SizedBox(
+                                                width: 100,
+                                                height: 200,
+                                                child: Column(
+                                                  children: [
+                                                    // 아이디를 보여주는 문구
+                                                    const Text(
+                                                      "도서 총 페이지 수를 설정해주세요",
+                                                    ),
 
-                                            if (response.statusCode == 200) {
-                                              print("서버와 통신 성공");
-                                              print(
-                                                  "읽고 있는 도서를 통해 받은 데이터 : ${response.data}");
+                                                    // 중간 공백
+                                                    const SizedBox(height: 10),
 
-                                              Get.snackbar(
-                                                "읽고 있는 도서 성공",
-                                                "읽고 있는도서로 추가하였습니다",
-                                                duration:
-                                                    const Duration(seconds: 5),
-                                                snackPosition:
-                                                    SnackPosition.TOP,
-                                              );
+                                                    // 총 페이지 수 설정
+                                                    Center(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16.0),
+                                                        child: SizedBox(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: TextField(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            controller:
+                                                                setPageController,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
 
-                                              //  다이어로그를 삭제한다.
-                                              Get.back();
+                                                    // 총 페이지수 설정하는  버튼
+                                                    TextButton(
+                                                      child: const Text("설정"),
+                                                      onPressed: () async {
+                                                        // 서버와 통신
+                                                        try {
+                                                          final response =
+                                                              await dio.put(
+                                                            // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
+                                                            "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=${int.parse(setPageController.text)}",
+                                                            options: Options(
+                                                              validateStatus:
+                                                                  (_) => true,
+                                                              contentType: Headers
+                                                                  .jsonContentType,
+                                                              responseType:
+                                                                  ResponseType
+                                                                      .json,
+                                                            ),
+                                                          );
 
-                                              // 도서 검색, 추천 페이지로 이동 (라우팅)
-                                              Get.off(() => BookFluidNavBar());
-                                            }
-                                            //
-                                            else {
-                                              print("서버와 통신 실패");
-                                              print(
-                                                  "서버 통신 에러 코드 : ${response.statusCode}");
+                                                          // setPageController.text를 빈칸으로 다시 설정한다
+                                                          setPageController
+                                                              .text = "";
 
-                                              Get.snackbar(
-                                                "읽고 있는 도서 추가 실패",
-                                                "읽고 있는 도서로 추가하지 못했습니다\n다시 한번 시도해주세요",
-                                                duration:
-                                                    const Duration(seconds: 5),
-                                                snackPosition:
-                                                    SnackPosition.TOP,
-                                              );
-                                            }
-                                          }
-                                          // DioError[unknown]: null이 메시지로 나타났을 떄
-                                          // 즉 서버가 열리지 않았다는 뜻이다
-                                          catch (e) {
-                                            Get.snackbar(
-                                              "서버 열리지 않음",
-                                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                              duration:
-                                                  const Duration(seconds: 5),
-                                              snackPosition: SnackPosition.TOP,
-                                            );
-                                          }
+                                                          if (response
+                                                                  .statusCode ==
+                                                              200) {
+                                                            print("서버와 통신 성공");
+                                                            print(
+                                                                "읽고 있는 도서 추가를 통해 받은 데이터 : ${response.data}");
+
+                                                            //  다이어로그를 삭제한다.
+                                                            Get.back();
+
+                                                            // 읽고 있는 도서 추가 성공했다는 snackBar를 띄운다.
+                                                            Get.snackbar(
+                                                              "읽고 있는 도서로 추가 성공",
+                                                              "읽고 있는 도서로 추가 성공하였습니다",
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          5),
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .TOP,
+                                                            );
+
+                                                            // 라우팅
+                                                            Get.off(() =>
+                                                                BookFluidNavBar());
+                                                          }
+                                                          //
+                                                          else {
+                                                            print("서버와 통신 실패");
+                                                            print(
+                                                                "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                            // 다이어로그를 삭제한다.
+                                                            Get.back();
+
+                                                            // 읽고 있는 도서 추가 실패 했다는 다이어로그를 띄운다.
+                                                            Get.snackbar(
+                                                              "읽고 있는 도서로 추가 실패",
+                                                              "읽고 있는 도서로 추가 실패하였습니다\n이미 읽고 있는 도서에 등록 됐을 가능성이 존재합니다.",
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          5),
+                                                              snackPosition:
+                                                                  SnackPosition
+                                                                      .TOP,
+                                                            );
+                                                          }
+                                                        }
+                                                        // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                        // 즉 서버가 열리지 않았다는 뜻이다
+                                                        catch (e) {
+                                                          Get.snackbar(
+                                                            "서버 열리지 않음",
+                                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                                            duration:
+                                                                const Duration(
+                                                                    seconds: 5),
+                                                            snackPosition:
+                                                                SnackPosition
+                                                                    .TOP,
+                                                          );
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            barrierDismissible: true,
+                                          );
                                         },
                                       ),
+
+                                      //   try {
+                                      //     // 서버와 통신
+                                      //     // 사용자의 읽고 있는 책에 도서 추가
+                                      //     final response = await dio.put(
+                                      //       // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
+                                      //       "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=100",
+                                      //       options: Options(
+                                      //         validateStatus: (_) => true,
+                                      //         contentType:
+                                      //             Headers.jsonContentType,
+                                      //         responseType: ResponseType.json,
+                                      //       ),
+                                      //     );
+
+                                      //     if (response.statusCode == 200) {
+                                      //       print("서버와 통신 성공");
+                                      //       print(
+                                      //           "읽고 있는 도서를 통해 받은 데이터 : ${response.data}");
+
+                                      //       // 다이어로그를 삭제한다.
+                                      //       Get.back();
+
+                                      //       // 읽고 있는 도서로 추가 성공했다는 다이어로그를 띄운다.
+                                      //       Get.snackbar(
+                                      //         "읽고 싶은 도서로 추가 성공",
+                                      //         "읽고 싶은 도서로 추가 성공하였습니다",
+                                      //         duration:
+                                      //             const Duration(seconds: 5),
+                                      //         snackPosition:
+                                      //             SnackPosition.TOP,
+                                      //       );
+
+                                      //       // 도서 검색, 추천 페이지로 이동 (라우팅)
+                                      //       Get.off(() => BookFluidNavBar());
+                                      //     }
+                                      //     //
+                                      //     else {
+                                      //       print("서버와 통신 실패");
+                                      //       print(
+                                      //           "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                      //       // 다이어로그를 띄운다.
+                                      //       Get.back();
+
+                                      //       // 읽고 있는 도서 추가 실패 했다는 snackBar를 띄운다.
+                                      //       Get.snackbar(
+                                      //         "읽고 있는 도서 추가 실패",
+                                      //         "읽고 있는 도서로 추가하지 못했습니다\n이미 읽고 있는 도서 가능성이 존재합니다.",
+                                      //         duration:
+                                      //             const Duration(seconds: 5),
+                                      //         snackPosition:
+                                      //             SnackPosition.TOP,
+                                      //       );
+                                      //     }
+                                      //   }
+                                      //   // DioError[unknown]: null이 메시지로 나타났을 떄
+                                      //   // 즉 서버가 열리지 않았다는 뜻이다
+                                      //   catch (e) {
+                                      //     Get.snackbar(
+                                      //       "서버 열리지 않음",
+                                      //       "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                      //       duration:
+                                      //           const Duration(seconds: 5),
+                                      //       snackPosition: SnackPosition.TOP,
+                                      //     );
+                                      //   }
+                                      // },
 
                                       // 아니오
                                       TextButton(

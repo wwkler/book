@@ -62,42 +62,50 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
 
   // 추천 도서, 베스트 셀러 도서, 신간 도서를 받아오는 함수
   Future<void> getBookDatas() async {
+    // 데이터 clear
+    bookMakaseRecommendBooks.clear();
     recommendationBooks.clear();
     bestSellerBooks.clear();
     newBooks.clear();
 
+    // delay
     await Future.delayed(const Duration(seconds: 2));
 
     // 서버와 통신 - 서버에 접속해서 북마카세가 추천하는 데이터를 받는다
-    try {
-      final response0 = await dio.get(
-        "http://${IpAddress.hyunukIP}/book/recommend?memberId=${UserInfo.userValue}",
-        options: Options(
-          validateStatus: (_) => true,
-          contentType: Headers.jsonContentType,
-          responseType: ResponseType.json,
-        ),
-      );
+    // try {
+    //   final response0 = await dio.get(
+    //     "http://${IpAddress.hyunukIP}/book/recommend?memberId=${UserInfo.userValue}",
+    //     options: Options(
+    //       validateStatus: (_) => true,
+    //       contentType: Headers.jsonContentType,
+    //       responseType: ResponseType.json,
+    //     ),
+    //   );
 
-      if (response0.statusCode == 200) {
-        print("서버와 통신 성공");
-        print("서버에서 북마카세가 제시하는 추천 도서 받은 데이터 : ${response0.data}");
+    //   if (response0.statusCode == 200) {
+    //     print("서버와 통신 성공");
+    //     print("서버에서 북마카세가 제시하는 추천 도서 받은 데이터 : ${response0.data}");
 
+    //     bookMakaseRecommendBooks = (response0.data as List<dynamic>).map(
+    //       (dynamic e) {
+    //         return BookModel.fromJson(e as Map<String, dynamic>);
+    //       },
+    //     ).toList();
 
-        
-      }
-      //
-      else {
-        print("서버와 통신 실패");
-        print("서버 북마카세 실패");
-        print("서버 통신 에러 코드 : ${response0.statusCode}");
-      }
-    }
-    // DioError[unknown]: null이 메시지로 나타났을 떄
-    // 즉 서버가 열리지 않았다는 뜻이다
-    catch (e) {
-      print("서버가 열리지 않음");
-    }
+    //     print("bookMakaseRecommendBooks: $bookMakaseRecommendBooks");
+    //   }
+    //   //
+    //   else {
+    //     print("서버와 통신 실패");
+    //     print("서버 북마카세 실패");
+    //     print("서버 통신 에러 코드 : ${response0.statusCode}");
+    //   }
+    // }
+    // // DioError[unknown]: null이 메시지로 나타났을 떄
+    // // 즉 서버가 열리지 않았다는 뜻이다
+    // catch (e) {
+    //   print("서버가 열리지 않음");
+    // }
 
     try {
       // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.

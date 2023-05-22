@@ -82,6 +82,9 @@ dependencies:
   # 사용자의 uid를 저장하기 위한 라이브러리
   uuid: ^3.0.7
 
+  # url에 대한 페이지로 이동하는 라이브러리
+  url_launcher: ^6.1.11
+
 
 
 

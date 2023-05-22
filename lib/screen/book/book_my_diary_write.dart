@@ -35,7 +35,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
 
   // 읽고 있는 도서, 읽은 도서 배열
   List<BookModel> books = [];
-  // 선택한 읽고 있는 도서
+  // 선택한 읽고 있는 도서, 읽은 도서
   BookModel? selectedBook;
   // 서버 호출 플래그
   bool callServer = true;
@@ -557,63 +557,79 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                             width: 300,
                             child: ElevatedButton(
                               onPressed: () async {
-                                // 일지 작성 완료를 시도한다
-                                try {
-                                  final response = await dio.post(
-                                    "http://${IpAddress.hyunukIP}/journals/save",
-                                    data: {
-                                      "memberId": UserInfo.userValue,
-                                      "itemId": selectedBook!.itemId,
-                                      "title": diaryTitleController.text,
-                                      "content": diaryContentController.text,
-                                      "image": _photo!.path,
-                                    },
-                                    options: Options(
-                                      validateStatus: (_) => true,
-                                      contentType: Headers.jsonContentType,
-                                      responseType: ResponseType.json,
-                                    ),
-                                  );
-
-                                  if (response.statusCode == 200) {
-                                    print("서버와 통신 성공");
-                                    print("서버에서 받아온 데이터 : ${response.data}");
-
-                                    // 일지 작성 완료 snackBar를 띄운다
-                                    Get.snackbar(
-                                      "일지 작성 완료",
-                                      "일지 작성 반영이 완료되었습니다",
-                                      duration: const Duration(seconds: 5),
-                                      snackPosition: SnackPosition.TOP,
+                                // 검증
+                                if (diaryTitleController.text != "" &&
+                                    diaryContentController.text != "") {
+                                  // 일지 작성 완료를 시도한다
+                                  try {
+                                    final response = await dio.post(
+                                      "http://${IpAddress.hyunukIP}/journals/save",
+                                      data: {
+                                        "memberId": UserInfo.userValue,
+                                        "itemId": selectedBook!.itemId,
+                                        "title": diaryTitleController.text,
+                                        "content": diaryContentController.text,
+                                        "image": _photo == null
+                                            ? ""
+                                            : _photo!.path,
+                                      },
+                                      options: Options(
+                                        validateStatus: (_) => true,
+                                        contentType: Headers.jsonContentType,
+                                        responseType: ResponseType.json,
+                                      ),
                                     );
 
-                                    // 라우팅
-                                    Get.off(() => BookFluidNavBar());
-                                  }
-                                  //
-                                  else {
-                                    print("서버와 통신 실패");
-                                    print(
-                                        "서버 통신 에러 코드 : ${response.statusCode}");
+                                    if (response.statusCode == 200) {
+                                      print("서버와 통신 성공");
+                                      print("서버에서 받아온 데이터 : ${response.data}");
 
-                                    // 일지 작성 반영 실패 snackBar를 띄운다
+                                      // 일지 작성 완료 snackBar를 띄운다
+                                      Get.snackbar(
+                                        "일지 작성 완료",
+                                        "일지 작성 반영이 완료되었습니다",
+                                        duration: const Duration(seconds: 5),
+                                        snackPosition: SnackPosition.TOP,
+                                      );
+
+                                      // 라우팅
+                                      Get.off(() => BookFluidNavBar());
+                                    }
+                                    //
+                                    else {
+                                      print("서버와 통신 실패");
+                                      print(
+                                          "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                      // 일지 작성 반영 실패 snackBar를 띄운다
+                                      Get.snackbar(
+                                        "일지 작성 실패",
+                                        "일지 작성 반영이 실패되었습니다",
+                                        duration: const Duration(seconds: 5),
+                                        snackPosition: SnackPosition.TOP,
+                                      );
+                                    }
+                                  }
+                                  // DioError[unknown]: null이 메시지로 나타났을 떄
+                                  // 즉 서버가 열리지 않았다는 뜻이다
+                                  catch (e) {
+                                    print("서버가 열리지 않음");
+
+                                    // 서버가 열리지 않았음을 snackBar를 띄운다
                                     Get.snackbar(
-                                      "일지 작성 실패",
-                                      "일지 작성 반영이 실패되었습니다",
+                                      "서버가 열리지 않음",
+                                      "서버가 열리지 않았습니다",
                                       duration: const Duration(seconds: 5),
                                       snackPosition: SnackPosition.TOP,
                                     );
                                   }
                                 }
-                                // DioError[unknown]: null이 메시지로 나타났을 떄
-                                // 즉 서버가 열리지 않았다는 뜻이다
-                                catch (e) {
-                                  print("서버가 열리지 않음");
-
-                                  // 서버가 열리지 않았음을 nackBar를 띄운다
+                                //
+                                else {
+                                  // 클라언트에서 이상 입력값을 줬다는 snackBar를 띄운다
                                   Get.snackbar(
-                                    "서버가 열리지 않음",
-                                    "서버가 열리지 않았습니다",
+                                    "이상 메시지",
+                                    "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
                                     duration: const Duration(seconds: 5),
                                     snackPosition: SnackPosition.TOP,
                                   );

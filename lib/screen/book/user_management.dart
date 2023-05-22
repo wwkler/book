@@ -501,8 +501,9 @@ class UserManagementState extends State<UserManagement> {
                                                                                   width: 50,
                                                                                   height: 50,
                                                                                   child: TextField(
-                                                                                    keyboardType: TextInputType.number,
                                                                                     controller: setBanTimeController,
+                                                                                    textAlign: TextAlign.center,
+                                                                                    keyboardType: TextInputType.number,
                                                                                   ),
                                                                                 ),
                                                                               ),
@@ -542,6 +543,9 @@ class UserManagementState extends State<UserManagement> {
                                                                                     print("서버와 통신 성공");
                                                                                     print("서버에서 받은 데이터 : ${response.data}");
 
+                                                                                    // 사용자 정지 일수를 설정하는 다이어로그를 삭제한다
+                                                                                    Get.back();
+
                                                                                     Get.snackbar(
                                                                                       "사용자 정지시키기 성공",
                                                                                       "해당 사용자가 정지되었습니다",
@@ -550,9 +554,6 @@ class UserManagementState extends State<UserManagement> {
                                                                                       ),
                                                                                       snackPosition: SnackPosition.TOP,
                                                                                     );
-
-                                                                                    // 사용자 정지 일수를 설정하는 다이어로그를 삭제한다
-                                                                                    Get.back();
 
                                                                                     // 라우팅
                                                                                     Get.off(

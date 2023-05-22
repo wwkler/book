@@ -210,7 +210,6 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                   // 도서 이미지
                                   Expanded(
                                     flex: 1,
-                                    // child: Image.asset("assets/imgs/icon.png"),
                                     child: Image.network(
                                       diary!["book"]["coverSmallUrl"],
                                       width: 200,
@@ -224,16 +223,22 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                               const SizedBox(height: 30),
 
                               // 일지 이미지
-                              Container(
-                                padding: const EdgeInsets.all(.0),
-                                width: MediaQuery.of(context).size.width,
-                                height: 200,
-                                child: Image.file(
-                                  File(diary!["image"]),
-                                  width: 200,
-                                  height: 200,
-                                ),
-                              ),
+                              diary!["image"] != ""
+                                  ? Container(
+                                      padding: const EdgeInsets.all(.0),
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 200,
+                                      child: Image.file(
+                                        File(diary!["image"]),
+                                        width: 200,
+                                        height: 200,
+                                      ),
+                                    )
+                                  : const Visibility(
+                                      visible: false,
+                                      child: Text(
+                                          "카메라 이미지를 추가하지 않았습니다. 따라서 이미지를 보여주지 않습니다."),
+                                    ),
 
                               // 중간 공백
                               const SizedBox(height: 30),
@@ -301,6 +306,9 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                           print(
                                               "서버에서 제공해주는 데이터 : ${response.data}");
 
+                                          // 일지 삭제를 보여주는 다이어로그를 삭제한다.
+                                          Get.back();
+
                                           // 일지 삭제 snackBar를 띄운다
                                           Get.snackbar(
                                             "일지 삭제 성공",
@@ -310,9 +318,6 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                             snackPosition: SnackPosition.TOP,
                                           );
 
-                                          // 아이디를 보여주는 다이어로그를 삭제한다.
-                                          Get.back();
-
                                           // 페이지 라우팅
                                           Get.off(() => BookFluidNavBar());
                                         }
@@ -321,6 +326,9 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                           print("서버와 통신 실패");
                                           print(
                                               "서버 통신 에러 코드 : ${response.statusCode}");
+ 
+                                          // 일지 삭제를 보여주는 다이어로그를 삭제한다.
+                                          Get.back();
 
                                           // 일지 삭제 실패 snackBar를 띄운다
                                           Get.snackbar(

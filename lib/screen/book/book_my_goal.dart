@@ -27,6 +27,36 @@ class _BookMyGoalState extends State<BookMyGoal> {
   // 읽고 있는 도서의 진행도를 설정하기 위한 변수
   final editPageController = TextEditingController();
 
+  // category
+  Map<int, String> category = {
+    101: "국내도서>소설",
+    102: "국내도서>시/에세이",
+    103: "국내도서>예술/대중문화",
+    104: "국내도서>사회과학",
+    105: "국내도서>역사와 문화",
+    107: "국내도서>잡지",
+    108: "국내도서>만화",
+    109: "국내도서>유아",
+    110: "국내도서>아동",
+    111: "국내도서>가정과 생활",
+    112: "국내도서>청소년",
+    113: "국내도서>초등학습서",
+    114: "국내도서>고등학습서",
+    115: "국내도서>국어/외국어/사전",
+    116: "국내도서>자연과 과학",
+    117: "국내도서>경제경영",
+    118: "국내도서>자기계발",
+    119: "국내도서>인문",
+    120: "국내도서>종교/역학",
+    122: "국내도서>컴퓨터/인터넷",
+    123: "국내도서>자격서/수험서",
+    124: "국내도서>취미/레저",
+    125: "국내도서>전공도서/대학교재",
+    126: "국내도서>건강/뷰티",
+    128: "국내도서/여행",
+    129: "국내도서>중등학습서",
+  };
+
   // 목표 1, 2, 3 데이터를 담는 배열
   List<Map<String, dynamic>> objectives = [];
 
@@ -34,13 +64,24 @@ class _BookMyGoalState extends State<BookMyGoal> {
   List<String> objectAnaysisTitles = [
     "완료 달성 수",
     "개인이 목표 성공한 수",
-    "내가 선호하는 카테고리 번호에서 다른 사용자가 목표를 얼마나 달성했는지 수",
-    "내가 선호하는 카테고리 번호에서 다른 사용자가 목표 도전 중인 사람 수",
+    "내가 선호하는 카테고리에서 다른 사용자가 목표를 얼마나 달성했는지 수",
+    "내가 선호하는 카테고리에서 다른 사용자가 목표 도전 중인 사람 수",
     "카테고리 고려하지 않고 비슷한 나이대 중에서 완료한 사람들 수",
     "카테고리 고려하지 않고 비슷한 나이대 중에 도전 중인 사람들 수",
     "같은 나이대 목표 평균 성공률 수"
   ];
   List<int> objectAnalysisContents = [-1, -1, -1, -1, -1, -1, -1];
+
+  // 목표와 관련된 분석 이미지
+  List<String> objectImagePath = [
+    "assets/imgs/done.png",
+    "assets/imgs/objectComplete.png",
+    "assets/imgs/anotherObjectComplete.png",
+    "assets/imgs/anotherChallengeGoal.png",
+    "assets/imgs/similiarAgeComplete.png",
+    "assets/imgs/similarAgeChallenge.png",
+    "assets/imgs/similarAgeAchiveGoal.png",
+  ];
 
   // 읽고 싶은 도서 (배열)
   List<BookModel> wantToReadBooks = [];
@@ -684,7 +725,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                               // 목표 1과 관련된 dialog를 요약적으로 보여준다.
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 1"),
+                                  title: const Text("목표 1 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -713,7 +754,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 ),
                               );
                             }
-                            // 현재 시간이 endTime보다 클 경우
+                            // endTime이 현재 시간보다 작은 경우
                             // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
                             else if (objectives[0]["endTime"]
                                     .toString()
@@ -721,7 +762,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 0) {
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 1"),
+                                  title: const Text("목표 1 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -750,48 +791,71 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 ),
                               );
                             }
-                            // 현재 시간이 endTime보다 작을 경우
+                            // endTime이 현재 시간과 같거나 큰 경우
                             // 목표 1 데이터에 대해서 정보를 요약적으로 보여준다.
                             else {
+                              // 달성 권수 확인하기
+                              // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
+                              int accomplishCount = 0;
+
+                              for (int i = 0;
+                                  i < readBooks_completed_dateTime.length;
+                                  i++) {
+                                if (readBooks_completed_dateTime[i].compareTo(
+                                            objectives[0]["startDate"]) >=
+                                        0 &&
+                                    readBooks_completed_dateTime[i].compareTo(
+                                            objectives[0]["endDate"]) <=
+                                        0 &&
+                                    readBooks[i].categoryId ==
+                                        objectives[0]["categoryId"]) {
+                                  accomplishCount += 1;
+                                }
+                              }
+
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 1"),
+                                  title: const Text("목표 1 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
                                     child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           // 진행 기간
                                           Text(
-                                            "진행 기간 : 2023-04-21 ~ 2023-05-21",
+                                            "진행 기간 : ${objectives[0]["startDate"]} ~ ${objectives[0]["endDate"]}",
                                           ),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
                                           // 진행 도서 분야
-                                          Text("도서 분야 : 국내도서/여행"),
+                                          Text(
+                                              "도서 분야 : ${category[objectives[0]["categoryId"]]}"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
                                           // 목표 권수
-                                          Text("목표 권수 : 10권"),
+                                          Text(
+                                              "목표 권수 : ${objectives[0]["targetQuantity"]}권"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 진행 권수
-                                          Text("진행 권수 : 5권"),
+                                          // 달성 권수
+                                          Text("달성 권수 : $accomplishCount권"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 진행률
-                                          Text("진행률 : 50%"),
+                                          // 달성률
+                                          Text(
+                                              "달성률 : ${((accomplishCount / objectives[0]["targetQuantity"]) * 100).round()}%"),
 
                                           // 다이어로그에서 나가는 버튼
                                           Center(
@@ -851,7 +915,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                               // 목표 2과 관련된 dialog를 요약적으로 보여준다.
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 2"),
+                                  title: const Text("목표 2 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -888,7 +952,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 0) {
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 2"),
+                                  title: const Text("목표 2 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -920,9 +984,28 @@ class _BookMyGoalState extends State<BookMyGoal> {
                             // 현재 시간이 endTime보다 작을 경우
                             // 목표 2 데이터에 대해서 정보를 요약적으로 보여준다.
                             else {
+                              // 달성 권수 확인하기
+                              // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
+                              int accomplishCount = 0;
+
+                              for (int i = 0;
+                                  i < readBooks_completed_dateTime.length;
+                                  i++) {
+                                if (readBooks_completed_dateTime[i].compareTo(
+                                            objectives[1]["startDate"]) >=
+                                        0 &&
+                                    readBooks_completed_dateTime[i].compareTo(
+                                            objectives[1]["endDate"]) <=
+                                        0 &&
+                                    readBooks[i].categoryId ==
+                                        objectives[1]["categoryId"]) {
+                                  accomplishCount += 1;
+                                }
+                              }
+
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 2"),
+                                  title: const Text("목표 2 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -933,32 +1016,34 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         children: [
                                           // 진행 기간
                                           Text(
-                                            "진행 기간 : 2023-04-21 ~ 2023-05-21",
+                                            "진행 기간 : ${objectives[1]["startDate"]} ~ ${objectives[1]["endDate"]}",
                                           ),
-
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
                                           // 진행 도서 분야
-                                          Text("도서 분야 : 국내도서/여행"),
+                                          Text(
+                                              "도서 분야 : ${category[objectives[1]["categoryId"]]}"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
                                           // 목표 권수
-                                          Text("목표 권수 : 10권"),
+                                          Text(
+                                              "목표 권수 : ${objectives[1]["targetQuantity"]}권"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 진행 권수
-                                          Text("진행 권수 : 5권"),
+                                          // 달성 권수
+                                          Text("달성 권수 : $accomplishCount권"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 진행률
-                                          Text("진행률 : 50%"),
+                                          // 달성률
+                                          Text(
+                                              "달성률 : ${((accomplishCount / objectives[1]["targetQuantity"]) * 100).round()}%"),
 
                                           // 다이어로그에서 나가는 버튼
                                           Center(
@@ -1018,7 +1103,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                               // 목표 2과 관련된 dialog를 요약적으로 보여준다.
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 3"),
+                                  title: const Text("목표 3 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -1055,7 +1140,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 0) {
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 3"),
+                                  title: const Text("목표 3 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -1087,9 +1172,28 @@ class _BookMyGoalState extends State<BookMyGoal> {
                             // 현재 시간이 endTime보다 작을 경우
                             // 목표 3 데이터에 대해서 정보를 요약적으로 보여준다.
                             else {
+                              // 달성 권수 확인하기
+                              // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
+                              int accomplishCount = 0;
+
+                              for (int i = 0;
+                                  i < readBooks_completed_dateTime.length;
+                                  i++) {
+                                if (readBooks_completed_dateTime[i].compareTo(
+                                            objectives[2]["startDate"]) >=
+                                        0 &&
+                                    readBooks_completed_dateTime[i].compareTo(
+                                            objectives[2]["endDate"]) <=
+                                        0 &&
+                                    readBooks[i].categoryId ==
+                                        objectives[2]["categoryId"]) {
+                                  accomplishCount += 1;
+                                }
+                              }
+
                               Get.dialog(
                                 AlertDialog(
-                                  title: const Text("목표 3"),
+                                  title: const Text("목표 3 진행 현황"),
                                   content: SizedBox(
                                     width: 100,
                                     height: 150,
@@ -1100,32 +1204,35 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         children: [
                                           // 진행 기간
                                           Text(
-                                            "진행 기간 : 2023-04-21 ~ 2023-05-21",
+                                            "진행 기간 : ${objectives[2]["startDate"]} ~ ${objectives[2]["endDate"]}",
                                           ),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
                                           // 진행 도서 분야
-                                          Text("도서 분야 : 국내도서/여행"),
+                                          Text(
+                                              "도서 분야 : ${category[objectives[2]["categoryId"]]}"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
                                           // 목표 권수
-                                          Text("목표 권수 : 10권"),
+                                          Text(
+                                              "목표 권수 : ${objectives[2]["targetQuantity"]}권"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 진행 권수
-                                          Text("진행 권수 : 5권"),
+                                          // 달성 권수
+                                          Text("달성 권수 : $accomplishCount권"),
 
                                           // 중간 공백
                                           const SizedBox(height: 20),
 
-                                          // 진행률
-                                          Text("진행률 : 50%"),
+                                          // 달성률
+                                          Text(
+                                              "달성률 : ${((accomplishCount / objectives[2]["targetQuantity"]) * 100).round()}%"),
 
                                           // 다이어로그에서 나가는 버튼
                                           Center(
@@ -1221,17 +1328,16 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                   child: Container(
-                                    width: 150,
-                                    height: 200,
+                                    width: 125,
+                                    height: 150,
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        image: const DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: AssetImage(
-                                            "assets/imgs/icon.png",
-                                          ),
-                                        )),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      image: DecorationImage(
+                                        fit: BoxFit.fill,
+                                        image:
+                                            AssetImage(objectImagePath[index]),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1245,7 +1351,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   child: Column(
                                     children: [
                                       Text(
-                                        "${objectAnaysisTitles[index]} ${objectAnalysisContents[index].toString()}",
+                                        "${objectAnaysisTitles[index]} :  ${objectAnalysisContents[index].toString()}",
                                         //"목표를 설정해주세요",
                                         style: const TextStyle(
                                           fontSize: 15,
@@ -1282,7 +1388,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                     onTap: () {
                                       // 도서 상세 페이지로 라우팅
                                       // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 싶은 도서임을 알려야 한다.
-                                      Get.off(() => BookShowPreview());
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments: wantToReadBooks[index],
+                                      );
                                     },
                                     child: SizedBox(
                                       width: 250,
@@ -1487,12 +1596,12 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                     // 다이어로그를 삭제한다
                                                                     Get.back();
 
-                                                                    // 읽고 싶은 도서의 총 페이지수를 사용자가 설정하는 다이어로그
+                                                                    // 도서의 총 페이지수를 사용자가 설정하는 다이어로그
                                                                     Get.dialog(
                                                                       AlertDialog(
                                                                         title:
                                                                             const Text(
-                                                                          "읽고 싶은 도서 총 페이지 수 설정",
+                                                                          "도서 총 페이지 수 설정",
                                                                         ),
                                                                         content:
                                                                             SizedBox(
@@ -1504,7 +1613,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               Column(
                                                                             children: [
                                                                               // 아이디를 보여주는 문구
-                                                                              const Text("읽고 싶은 도서 총 페이지 수를 설정해주세요"),
+                                                                              const Text("도서 총 페이지 수를 설정해주세요"),
 
                                                                               // 중간 공백
                                                                               const SizedBox(height: 10),
@@ -1517,6 +1626,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                     width: 50,
                                                                                     height: 50,
                                                                                     child: TextField(
+                                                                                      textAlign: TextAlign.center,
                                                                                       keyboardType: TextInputType.number,
                                                                                       controller: setPageController,
                                                                                     ),
@@ -1550,9 +1660,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                       //  다이어로그를 삭제한다.
                                                                                       Get.back();
 
+                                                                                      // 읽고 있는 도서 추가 성공했다는 snackBar를 띄운다.
                                                                                       Get.snackbar(
-                                                                                        "읽고 싶은 도서로 추가 성공",
-                                                                                        "읽고 싶은 도서로 추가 성공하였습니다",
+                                                                                        "읽고 있는 도서로 추가 성공",
+                                                                                        "읽고 있는 도서로 추가 성공하였습니다",
                                                                                         duration: const Duration(seconds: 5),
                                                                                         snackPosition: SnackPosition.TOP,
                                                                                       );
@@ -1565,9 +1676,13 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                       print("서버와 통신 실패");
                                                                                       print("서버 통신 에러 코드 : ${response.statusCode}");
 
+                                                                                      // 다이어로그를 삭제한다.
+                                                                                      Get.back();
+
+                                                                                      // 읽고 있는 도서 추가 실패 했다는 다이어로그를 띄운다.
                                                                                       Get.snackbar(
-                                                                                        "읽고 싶은 도서로 추가 실패",
-                                                                                        "읽고 싶은 도서로 추가 실패하였습니다\n다시 시도해주세요",
+                                                                                        "읽고 있는 도서로 추가 실패",
+                                                                                        "읽고 있눈 도서로 추가 실패하였습니다\n이미 읽고 있는 도서에 등록 됐을 가능성이 존재합니다.",
                                                                                         duration: const Duration(seconds: 5),
                                                                                         snackPosition: SnackPosition.TOP,
                                                                                       );
@@ -1611,6 +1726,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                         ),
                                                       ),
                                                     ),
+                                                    barrierDismissible: true,
                                                   );
                                                 },
                                                 style: ElevatedButton.styleFrom(
@@ -1689,7 +1805,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                     onTap: () {
                                       // 도서 상세 페이지로 라우팅
                                       // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 있는 도서을 알려야 한다.
-                                      Get.off(() => BookShowPreview());
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments: nowReadBooks[index],
+                                      );
                                     },
                                     child: SizedBox(
                                       width: 250,
@@ -1775,6 +1894,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           }
                                                                           //
                                                                           else {
+                                                                            // 다이어로그를 삭제한다.
+                                                                            Get.back();
+
                                                                             Get.snackbar(
                                                                               "읽고 있는 도서에서 삭제 실패",
                                                                               "읽고 싶은 도서에서 삭제 실패하였습니다\n다시 시도해주세요",
@@ -1894,11 +2016,14 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                     height: 50,
                                                                     child:
                                                                         TextField(
+                                                                      controller:
+                                                                          editPageController,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
                                                                       keyboardType:
                                                                           TextInputType
                                                                               .number,
-                                                                      controller:
-                                                                          editPageController,
                                                                     ),
                                                                   )
                                                                 ],
@@ -1938,6 +2063,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                       // 다이어로그를 삭제한다.
                                                                       Get.back();
 
+                                                                      // 진행도를 수정했다는 snackBar를 삭제한다.
                                                                       Get.snackbar(
                                                                         "진행도 수정 성공",
                                                                         "해당 도서 진행도 수정을 하였습니다",
@@ -1957,6 +2083,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                     }
                                                                     //
                                                                     else {
+                                                                      // 다이어로그를 삭제한다.
+                                                                      Get.back();
+
+                                                                      // 진행도를 수정 실패했다는 snackBar를 삭제한다.
                                                                       Get.snackbar(
                                                                         "진행도 수정 실패",
                                                                         "진행도 수정 실패하였습니다\n다시 시도해주세요",
@@ -2081,6 +2211,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               }
                                                                               //
                                                                               else {
+                                                                                // 다이어로그를 삭제한다.
+                                                                                Get.back();
+
                                                                                 Get.snackbar(
                                                                                   "도서 읽기 완료 반영 실패",
                                                                                   "해당 도서 읽기 완료 반영이 되지 않았습니다\n다시 시도해주세요",
@@ -2210,7 +2343,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                     onTap: () {
                                       // 도서 상세 페이지로 라우팅
                                       // 해당 도서 데이터를 arguments로 전달하며 이것이 읽은 도서을 알려야 한다.
-                                      Get.off(() => BookShowPreview());
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments: readBooks[index],
+                                      );
                                     },
                                     child: SizedBox(
                                       width: 250,
@@ -2353,6 +2489,26 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 icon: const Icon(Icons.clear),
                                               ),
                                             ),
+
+                                            // 도서 분야
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8.0),
+                                                child: Text(
+                                                  category[readBooks[index]
+                                                          .categoryId]
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                              ),
+                                            ),
+
+                                            // 중간 공백
+                                            const SizedBox(height: 5),
 
                                             // 도서 이미지
                                             Image.network(

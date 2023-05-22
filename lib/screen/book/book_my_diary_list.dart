@@ -267,7 +267,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                                 ),
                                                 // 제목
                                                 SizedBox(
-                                                  width: 200,
+                                                  width: 150,
                                                   height: 50,
                                                   child: Center(
                                                     child: Text(
@@ -277,7 +277,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                                 ),
                                                 // 날짜
                                                 SizedBox(
-                                                  width: 100,
+                                                  width: 150,
                                                   height: 50,
                                                   child: Center(
                                                     child: Text(
