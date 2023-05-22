@@ -620,9 +620,11 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                         // 사용자가 입력값을 적합하지 않게 했을 떄
                         else {
                           Get.snackbar(
-                              "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                              duration: const Duration(seconds: 5),
-                              snackPosition: SnackPosition.TOP);
+                            "이상 메시지",
+                            "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
+                            duration: const Duration(seconds: 5),
+                            snackPosition: SnackPosition.TOP,
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(

@@ -283,14 +283,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             print("서버와 통신 성공");
                             print("서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
 
-                            // 로고인에 성공하였다는 snackBar를 띄운다
-                            Get.snackbar(
-                              "로고인 성공",
-                              "로고인에 성공하였습니다",
-                              duration: const Duration(seconds: 5),
-                              snackPosition: SnackPosition.TOP,
-                            );
-
                             // 서버에서 회원 정보를 가져와서 model에 user_info.dart에 저장한다.
                             if (response.data["roles"][0]["name"] ==
                                 "ROLE_ADMIN") {
@@ -307,6 +299,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             UserInfo.selectedCode = response.data["prefer"];
                             UserInfo.token = response.data["token"];
                             UserInfo.email = response.data["email"];
+
+                            UserInfo.identity == UserManagerCheck.user
+                                ?
+                                // 로고인에 성공하였다는 snackBar를 띄운다
+                                Get.snackbar(
+                                    "사용자 로고인 성공",
+                                    "사용자 로고인에 성공하였습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  )
+                                : Get.snackbar(
+                                    "관리자 로고인 성공",
+                                    "관리자 로고인에 성공하였습니다",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP,
+                                  );
 
                             // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
                             Get.off(() => BookFluidNavBar());

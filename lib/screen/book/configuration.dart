@@ -59,8 +59,6 @@ class _ConfigurationState extends State<Configuration> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("관리자 계정으로 로고인 하셨습니다."),
-
             // 중간 공백
             const SizedBox(height: 50),
 
@@ -329,6 +327,9 @@ class _ConfigurationState extends State<Configuration> {
                                             // // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
                                             BanCheck.monitorBanFlag = false;
 
+                                            // 탈퇴 다이어로그를 삭제한다.
+                                            Get.back();
+
                                             // 회원 탈퇴 했음을 snackBar로 띄운다
                                             Get.snackbar(
                                               "회원탈퇴 성공",
@@ -337,9 +338,6 @@ class _ConfigurationState extends State<Configuration> {
                                                   const Duration(seconds: 5),
                                               snackPosition: SnackPosition.TOP,
                                             );
-
-                                            // 아이디를 보여주는 다이어로그를 삭제한다.
-                                            Get.back();
 
                                             // 로고인 페이지로 라우팅
                                             Get.off(() => const LoginScreen());

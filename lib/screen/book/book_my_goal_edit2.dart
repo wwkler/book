@@ -704,6 +704,9 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                                   const Duration(seconds: 5),
                                               snackPosition: SnackPosition.TOP,
                                             );
+
+                                            // 라우팅
+                                            Get.off(() => BookFluidNavBar());
                                           }
                                           // 서버와 통신 실패
                                           else {

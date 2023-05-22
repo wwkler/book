@@ -1,3 +1,4 @@
+import 'package:book_project/const/ban_check.dart';
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
@@ -618,7 +619,18 @@ class _MyPageState extends State<MyPage> {
                                             Center(
                                               child: TextButton(
                                                 child: const Text("로그인 페이지 이동"),
-                                                onPressed: () {
+                                                onPressed: () async {
+                                                  if (UserInfo.identity ==
+                                                      UserManagerCheck.user) {
+                                                    // ban을 실시간으로 하는 모니터링 하는 것을 중단한다
+                                                    await BanCheck.monitorBan!
+                                                        .cancel();
+
+                                                    // // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
+                                                    BanCheck.monitorBanFlag =
+                                                        false;
+                                                  }
+
                                                   // 다이어로그를 삭제한다.
                                                   Get.back();
 
