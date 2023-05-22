@@ -1,5 +1,6 @@
 // 목표 설정/수정하는 페이지
 import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_my_goal_edit2.dart';
@@ -105,11 +106,13 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
               body: Container(
                 width: MediaQuery.of(context).size.width,
                 // 배경 이미지
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/imgs/background_book1.jpg"),
+                    image: UserInfo.identity == UserManagerCheck.user
+                        ? const AssetImage("assets/imgs/background_book1.jpg")
+                        : const AssetImage("assets/imgs/background_book2.jpg"),
                     fit: BoxFit.fill,
-                    opacity: 0.3,
+                    opacity: 0.5,
                   ),
                 ),
                 child: Column(
@@ -142,11 +145,14 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   // 배경 이미지
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/imgs/background_book1.jpg"),
+                      image: UserInfo.identity == UserManagerCheck.user
+                          ? const AssetImage("assets/imgs/background_book1.jpg")
+                          : const AssetImage(
+                              "assets/imgs/background_book2.jpg"),
                       fit: BoxFit.fill,
-                      opacity: 0.3,
+                      opacity: 0.5,
                     ),
                   ),
                   child: Padding(
@@ -383,10 +389,9 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                               width: 50,
                               height: 50,
                               child: TextField(
-                                 controller: readBooksCountController,
-                                 textAlign: TextAlign.center,
+                                controller: readBooksCountController,
+                                textAlign: TextAlign.center,
                                 keyboardType: TextInputType.number,
-                               
                               ),
                             ),
                           ),
@@ -515,7 +520,9 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       //검증하기
-                                      if (readBooksCountController.text.length >= 1 &&
+                                      if (readBooksCountController
+                                                  .text.length >=
+                                              1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {
@@ -640,7 +647,9 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                     onPressed: () async {
                                       // DateTime dt = DateTime.now();
                                       //검증하기
-                                      if (readBooksCountController.text.length >= 1 &&
+                                      if (readBooksCountController
+                                                  .text.length >=
+                                              1 &&
                                           readBooksCountController.text.length <
                                               3 &&
                                           objDate != "목표 기간을 설정해주세요") {

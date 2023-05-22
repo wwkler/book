@@ -98,11 +98,13 @@ class _BookShowPreviewState extends State<BookShowPreview> {
         body: Container(
           width: MediaQuery.of(context).size.width,
           // 배경 이미지
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/imgs/background_book1.jpg"),
+              image: UserInfo.identity == UserManagerCheck.user
+                  ? const AssetImage("assets/imgs/background_book1.jpg")
+                  : const AssetImage("assets/imgs/background_book2.jpg"),
               fit: BoxFit.fill,
-              opacity: 0.3,
+              opacity: 0.5,
             ),
           ),
 

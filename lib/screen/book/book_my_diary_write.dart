@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
@@ -153,11 +154,13 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 // 배경 이미지
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/imgs/background_book1.jpg"),
+                    image: UserInfo.identity == UserManagerCheck.user
+                        ? const AssetImage("assets/imgs/background_book1.jpg")
+                        : const AssetImage("assets/imgs/background_book2.jpg"),
                     fit: BoxFit.fill,
-                    opacity: 0.3,
+                    opacity: 0.5,
                   ),
                 ),
                 child: Column(
@@ -195,11 +198,13 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 // 배경 이미지
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/imgs/background_book1.jpg"),
+                    image: UserInfo.identity == UserManagerCheck.user
+                        ? const AssetImage("assets/imgs/background_book1.jpg")
+                        : const AssetImage("assets/imgs/background_book2.jpg"),
                     fit: BoxFit.fill,
-                    opacity: 0.3,
+                    opacity: 0.5,
                   ),
                 ),
 
@@ -569,9 +574,8 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                         "itemId": selectedBook!.itemId,
                                         "title": diaryTitleController.text,
                                         "content": diaryContentController.text,
-                                        "image": _photo == null
-                                            ? ""
-                                            : _photo!.path,
+                                        "image":
+                                            _photo == null ? "" : _photo!.path,
                                       },
                                       options: Options(
                                         validateStatus: (_) => true,

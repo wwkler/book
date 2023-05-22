@@ -1,6 +1,8 @@
 // 신고 내역 페이지
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:book_project/const/ipAddress.dart';
+import 'package:book_project/const/user_manager_check.dart';
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/report_history_show_preview.dart';
 import 'package:dio/dio.dart';
@@ -88,11 +90,13 @@ class _ReportHistoryState extends State<ReportHistory> {
             body: Container(
               width: MediaQuery.of(context).size.width,
               // 배경 이미지
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/imgs/background_book1.jpg"),
+                  image: UserInfo.identity == UserManagerCheck.user
+                      ? const AssetImage("assets/imgs/background_book1.jpg")
+                      : const AssetImage("assets/imgs/background_book2.jpg"),
                   fit: BoxFit.fill,
-                  opacity: 0.3,
+                  opacity: 0.5,
                 ),
               ),
               child: Column(
@@ -125,11 +129,14 @@ class _ReportHistoryState extends State<ReportHistory> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   // 배경 이미지
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/imgs/background_book1.jpg"),
+                      image: UserInfo.identity == UserManagerCheck.user
+                          ? const AssetImage("assets/imgs/background_book1.jpg")
+                          : const AssetImage(
+                              "assets/imgs/background_book2.jpg"),
                       fit: BoxFit.fill,
-                      opacity: 0.3,
+                      opacity: 0.5,
                     ),
                   ),
                   child: Padding(

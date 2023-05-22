@@ -1,4 +1,6 @@
 // 관리자에 한해서 도서 상세 정보를 수정할 수 있는 페이지
+import 'package:book_project/const/user_manager_check.dart';
+import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -94,11 +96,13 @@ class _BookShowPreviewEditState extends State<BookShowPreviewEdit> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           // 배경 이미지
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/imgs/background_book1.jpg"),
+              image: UserInfo.identity == UserManagerCheck.user
+                  ? const AssetImage("assets/imgs/background_book1.jpg")
+                  : const AssetImage("assets/imgs/background_book2.jpg"),
               fit: BoxFit.fill,
-              opacity: 0.3,
+              opacity: 0.5,
             ),
           ),
           child: Padding(

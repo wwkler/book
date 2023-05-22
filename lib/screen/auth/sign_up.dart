@@ -125,7 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             image: DecorationImage(
               image: AssetImage("assets/imgs/background_book1.jpg"),
               fit: BoxFit.fill,
-              opacity: 0.3,
+              opacity: 0.5,
             ),
           ),
 

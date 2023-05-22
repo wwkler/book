@@ -46,17 +46,21 @@ class _ConfigurationState extends State<Configuration> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       // 배경 이미지
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/imgs/background_book1.jpg"),
+          image: UserInfo.identity == UserManagerCheck.user
+              ? const AssetImage("assets/imgs/background_book1.jpg")
+              : const AssetImage("assets/imgs/background_book2.jpg"),
           fit: BoxFit.fill,
-          opacity: 0.3,
+          opacity: 0.5,
         ),
       ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text("관리자 계정으로 로고인 하셨습니다."),
+
             // 중간 공백
             const SizedBox(height: 50),
 
@@ -425,7 +429,7 @@ class _ConfigurationState extends State<Configuration> {
             UserInfo.identity == UserManagerCheck.user
                 ? GestureDetector(
                     onTap: () {
-                      // 내 정보 변경하기 페이지로 라우팅
+                      // 문의하기
                     },
                     child: Card(
                       elevation: 10.0,
