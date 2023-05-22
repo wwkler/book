@@ -18,7 +18,7 @@ class _MyPageState extends State<MyPage> {
 
   // 이메일
   String email = UserInfo.email.toString();
-  bool isEmailState = false;
+  bool isEmailState = true;
 
   // password
   String password = "";
@@ -184,7 +184,9 @@ class _MyPageState extends State<MyPage> {
                               .hasMatch(value!)) {
                             isEmailState = false;
                             return "올바른 이메일 형식이 아닙니다.";
-                          } else {
+                          }
+                          //
+                          else {
                             isEmailState = true;
                             return null;
                           }

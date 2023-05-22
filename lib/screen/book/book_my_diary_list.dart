@@ -42,6 +42,9 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
 
   // 검색어에 해당하는 도서 일지 데이터 가져오기
   Future<void> getKeywordDiarys() async {
+    print(
+        "url : ${"http://${IpAddress.hyunukIP}/journals/search?memberId=${UserInfo.userValue}&param=$keyword"}");
+
     // 사용자가 작성한 일지 데이터를 가져온다
     try {
       final response = await dio.get(
@@ -146,13 +149,13 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                   // 중간 공백
                   const SizedBox(height: 10),
 
-                  // 제목으로 도서 검색
+                  // 일지 제목 검색
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: AnimSearchBar(
                       width: 300,
                       textController: searchTextController,
-                      helpText: "도서 제목 검색",
+                      helpText: "일지 제목 검색",
                       suffixIcon: const Icon(Icons.arrow_back),
                       onSuffixTap: () {
                         // 도서 제목 비어있는 상태로 검색

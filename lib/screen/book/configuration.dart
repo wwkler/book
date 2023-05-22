@@ -285,77 +285,97 @@ class _ConfigurationState extends State<Configuration> {
                                 TextButton(
                                   child: const Text("클릭"),
                                   onPressed: () async {
-                                    try {
-                                      // 다이어로그에 있는 버튼을 누르면 서버와 통신을 한다.
-                                      final response = await dio.post(
-                                        'http://${IpAddress.hyunukIP}/withdrawMember',
-                                        data: {
-                                          // 계정
-                                          'account': UserInfo.id,
-                                          // 비밀번호
-                                          'password':
-                                              inputPasswordController.text,
-                                        },
-                                        options: Options(
-                                          headers: {
-                                            "Authorization":
-                                                "Bearer ${UserInfo.token}",
+                                    if (inputPasswordController.text != "") {
+                                      try {
+                                        // 다이어로그에 있는 버튼을 누르면 서버와 통신을 한다.
+                                        final response = await dio.post(
+                                          'http://${IpAddress.hyunukIP}/withdrawMember',
+                                          data: {
+                                            // 계정
+                                            'account': UserInfo.id,
+                                            // 비밀번호
+                                            'password':
+                                                inputPasswordController.text,
                                           },
-                                          validateStatus: (_) => true,
-                                          contentType: Headers.jsonContentType,
-                                          responseType: ResponseType.json,
-                                        ),
-                                      );
+                                          options: Options(
+                                            headers: {
+                                              "Authorization":
+                                                  "Bearer ${UserInfo.token}",
+                                            },
+                                            validateStatus: (_) => true,
+                                            contentType:
+                                                Headers.jsonContentType,
+                                            responseType: ResponseType.json,
+                                          ),
+                                        );
 
-                                      // 서버와 통신 성공
-                                      if (response.statusCode == 200) {
-                                        print("서버와 통신 성공");
-                                        print(
-                                            "서버에서 제공해주는 데이터 : ${response.data}");
+                                        // 서버와 통신 성공
+                                        if (response.statusCode == 200) {
+                                          print("서버와 통신 성공");
+                                          print(
+                                              "서버에서 제공해주는 데이터 : ${response.data}");
 
-                                        // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로고인 페이지로 이동시킨다.
-                                        if (response.data == true) {
-                                          print("회원 탈퇴 되었습니다.");
+                                          // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로고인 페이지로 이동시킨다.
+                                          if (response.data == true) {
+                                            print("회원 탈퇴 되었습니다.");
 
-                                          // ban을 실시간으로 하는 모니터링 하는 것을 중단한다
-                                          await BanCheck.monitorBan!.cancel();
+                                            // ban을 실시간으로 하는 모니터링 하는 것을 중단한다
+                                            await BanCheck.monitorBan!.cancel();
 
-                                          // // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
-                                          BanCheck.monitorBanFlag = false;
+                                            // // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
+                                            BanCheck.monitorBanFlag = false;
 
-                                          // 회원 탈퇴 했음을 snackBar로 띄운다
+                                            // 회원 탈퇴 했음을 snackBar로 띄운다
+                                            Get.snackbar(
+                                              "회원탈퇴 성공",
+                                              "사용자 정보가 삭제되었습니다",
+                                              duration:
+                                                  const Duration(seconds: 5),
+                                              snackPosition: SnackPosition.TOP,
+                                            );
+
+                                            // 아이디를 보여주는 다이어로그를 삭제한다.
+                                            Get.back();
+
+                                            // 로고인 페이지로 라우팅
+                                            Get.off(() => const LoginScreen());
+                                          }
+                                        }
+                                        //
+                                        else {
+                                          // 탈퇴 다이어로그를 제거한다.
+                                          Get.back();
+
                                           Get.snackbar(
-                                            "회원탈퇴 성공",
-                                            "사용자 정보가 삭제되었습니다",
+                                            "회원탈퇴 반영 실패",
+                                            "사용자 정보가 삭제되지 않았습니다",
                                             duration:
                                                 const Duration(seconds: 5),
                                             snackPosition: SnackPosition.TOP,
                                           );
-
-                                          // 아이디를 보여주는 다이어로그를 삭제한다.
-                                          Get.back();
-
-                                          // 로고인 페이지로 라우팅
-                                          Get.off(() => const LoginScreen());
                                         }
                                       }
-                                      //
-                                      else {
+                                      // DioError[unknown]: null이 메시지로 나타났을 떄
+                                      // 즉 서버가 열리지 않았다는 뜻이다
+                                      catch (e) {
+                                        Get.back();
+
+                                        // 서버가 열리지 않았다는 snackBar를 띄운다
                                         Get.snackbar(
-                                          "회원탈퇴 반영 실패",
-                                          "사용자 정보가 삭제되지 않았습니다",
+                                          "서버 열리지 않음",
+                                          "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                           duration: const Duration(seconds: 5),
                                           snackPosition: SnackPosition.TOP,
                                         );
                                       }
                                     }
-                                    // DioError[unknown]: null이 메시지로 나타났을 떄
-                                    // 즉 서버가 열리지 않았다는 뜻이다
-                                    catch (e) {
-                                      // 서버가 열리지 않았다는 snackBar를 띄운다
+                                    //
+                                    else {
+                                      Get.back();
+
                                       Get.snackbar(
-                                        "서버 열리지 않음",
-                                        "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+                                        "이상 메시지",
+                                        "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
                                         duration: const Duration(seconds: 5),
                                         snackPosition: SnackPosition.TOP,
                                       );

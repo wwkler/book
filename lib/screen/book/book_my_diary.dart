@@ -18,17 +18,19 @@ class BookMyDiary extends StatefulWidget {
 }
 
 class _BookMyDiaryState extends State<BookMyDiary> {
-  // 도서 일지 히스토리를 기록하는 변수
-  Map<DateTime, List<String>> events = {
-    DateTime.utc(2023, 4, 5): ["Exist Book Diary History"],
-    DateTime.utc(2023, 4, 9): ["Exist Book Diary History"],
-  };
-
   // 사용자 도서 일지 데이터
   List<Map<String, dynamic>> diarys = [];
 
   // 현재 한국 시간 변수
   DateTime? currentTime;
+
+  // 도서 일지 히스토리를 기록하는 변수
+  Map<DateTime, List<String>> events = {};
+
+  // 달력에 사용자 도서 일지를 보여주기 위한 함수
+  List<String> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
+  }
 
   // 서버를 사용하기 위한 변수
   var dio = Dio();
@@ -45,13 +47,8 @@ class _BookMyDiaryState extends State<BookMyDiary> {
     super.dispose();
   }
 
-  // 달력에 사용자 도서 일지를 보여주기 위한 함수
-  List<String> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
-  }
-
   // 한국 시간을 얻기 위한 함수
-  Future<void> getKoreanTime() async {
+  Future<void> getServerDatas() async {
     // 한국 시간을 얻는다.
     currentTime = await NTP.now();
     currentTime = currentTime!.toUtc().add(const Duration(hours: 9));
@@ -76,11 +73,26 @@ class _BookMyDiaryState extends State<BookMyDiary> {
         print("서버와 통신 성공");
         print("서버에서 제공해주는 데이터 : ${response.data}");
 
+        // 서버에서 diarys 가져오기
         diarys = (response.data as List<dynamic>)
             .map((dynamic e) => e as Map<String, dynamic>)
             .toList();
 
         print("diarys : $diarys");
+
+        // events에 데이터 추가하기
+        for (Map<String, dynamic> diary in diarys) {
+          events.addAll({
+            DateTime.utc(
+                int.parse(diary["date"].toString().substring(0, 4)),
+                int.parse(diary["date"].toString().substring(5, 7)),
+                int.parse(diary["date"].toString().substring(8))): [
+              "Exist Book Diary Data",
+            ]
+          });
+        }
+
+        print("events : $events");
       }
       // 서버와 통신 실패
       else {
@@ -101,7 +113,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
 
     return FutureBuilder(
       // 한국 시간을 받기 위해 기다린다. 참고로 도서 일지 데이터도 서버에서 받아온다.
-      future: getKoreanTime(),
+      future: getServerDatas(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
@@ -219,11 +231,76 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       ),
                       eventLoader: _getEventsForDay,
                       onDaySelected:
-                          (DateTime selectedDay, DateTime focusedDay) {
+                          (DateTime selectedDay, DateTime focusedDay) async {
                         if (events.containsKey(selectedDay)) {
-                          // Dialog를 띄워서 해당 날짜에 적은 일지를 요약해서 보여주기
-                          final value = events[selectedDay];
-                          print(value);
+                          print("selectedDay : $selectedDay");
+
+                          // 일지 요약 다이어로그 보여주기
+                          List<Map<String, dynamic>> subDiarys = diarys
+                              .where((Map<String, dynamic> element) =>
+                                  element["date"] ==
+                                  selectedDay.toString().substring(0, 10))
+                              .toList();
+
+                          print("subDiarys : $subDiarys");
+                          print("subDiarys.length : ${subDiarys.length}");
+
+                          // 일지 요약 다이어로그를 띄운다.
+                          await Get.dialog(
+                            AlertDialog(
+                              title: const Text("일지 요약 다이어로그"),
+                              content: SizedBox(
+                                width: 150,
+                                height: 150,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: subDiarys.length,
+                                  itemBuilder: (context, index) =>
+                                      SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                            "${selectedDay.toString().substring(0, 10)}에 일지 작성했습니다."),
+
+                                        // 중간 공백
+                                        const SizedBox(height: 25),
+
+                                        // 도서 이미지
+                                        Image.network(
+                                          subDiarys[index]["book"]
+                                              ["coverSmallUrl"],
+                                        ),
+
+                                        // 중간 공백
+                                        const SizedBox(height: 25),
+
+                                        // 도서 제목
+                                        Text(
+                                          subDiarys[index]["book"]["title"],
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                        // 나가기 버튼
+                                        TextButton(
+                                          child: const Text("나가기"),
+                                          onPressed: () {
+                                            // 일지 요약 다이어로그를 삭제한다.
+                                            Get.back();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const SizedBox(width: 10),
+                                ),
+                              ),
+                            ),
+                          );
                         }
                       },
                     ),

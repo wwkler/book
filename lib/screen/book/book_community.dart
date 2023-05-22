@@ -913,101 +913,117 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                   ),
                                                                   onPressed:
                                                                       () async {
-                                                                    // true인 것만 찾아서 리스트로 저장한다
-                                                                    List<String>
-                                                                        selectReasons =
-                                                                        reasons
-                                                                            .keys
-                                                                            .where(
-                                                                              (String key) => reasons[key] == true,
-                                                                            )
-                                                                            .toList();
+                                                                    // 검증
+                                                                    if (reasons
+                                                                            .values
+                                                                            .contains(
+                                                                                true) &&
+                                                                        reportContentController.text !=
+                                                                            "") {
+                                                                      // true인 것만 찾아서 리스트로 저장한다
+                                                                      List<String>
+                                                                          selectReasons =
+                                                                          reasons
+                                                                              .keys
+                                                                              .where(
+                                                                                (String key) => reasons[key] == true,
+                                                                              )
+                                                                              .toList();
 
-                                                                    String
-                                                                        result =
-                                                                        selectReasons
-                                                                            .join(" ");
+                                                                      String
+                                                                          result =
+                                                                          selectReasons
+                                                                              .join(" ");
 
-                                                                    try {
-                                                                      final response =
-                                                                          await dio
-                                                                              .post(
-                                                                        'http://${IpAddress.hyunukIP}/reviews/reportReview',
-                                                                        data: {
-                                                                          // 신고하는 사용자의 고유값
-                                                                          "memberId":
-                                                                              UserInfo.userValue,
-                                                                          // 신고 사유
-                                                                          "reason": result.substring(
-                                                                              0,
-                                                                              result.length),
-                                                                          // 신고 내용
-                                                                          "content":
-                                                                              reportContentController.text,
+                                                                      try {
+                                                                        final response =
+                                                                            await dio.post(
+                                                                          'http://${IpAddress.hyunukIP}/reviews/reportReview',
+                                                                          data: {
+                                                                            // 신고하는 사용자의 고유값
+                                                                            "memberId":
+                                                                                UserInfo.userValue,
+                                                                            // 신고 사유
+                                                                            "reason":
+                                                                                result.substring(0, result.length),
+                                                                            // 신고 내용
+                                                                            "content":
+                                                                                reportContentController.text,
 
-                                                                          // 리뷰 아이디
-                                                                          "reviewId":
-                                                                              reviewWriterInfos[index]["id"],
-                                                                        },
-                                                                        options: Options(
-                                                                            validateStatus: (_) =>
-                                                                                true,
-                                                                            contentType:
-                                                                                Headers.jsonContentType,
-                                                                            responseType: ResponseType.json),
-                                                                      );
+                                                                            // 리뷰 아이디
+                                                                            "reviewId":
+                                                                                reviewWriterInfos[index]["id"],
+                                                                          },
+                                                                          options: Options(
+                                                                              validateStatus: (_) => true,
+                                                                              contentType: Headers.jsonContentType,
+                                                                              responseType: ResponseType.json),
+                                                                        );
 
-                                                                      if (response
-                                                                              .statusCode ==
-                                                                          200) {
-                                                                        print(
-                                                                            "서버와 통신 성공");
+                                                                        if (response.statusCode ==
+                                                                            200) {
+                                                                          print(
+                                                                              "서버와 통신 성공");
 
-                                                                        // 신고하기 다이어로그를 지운다
-                                                                        Get.back();
+                                                                          // 신고하기 다이어로그를 지운다
+                                                                          Get.back();
 
-                                                                        // 신고 완료 snackBar를 띄운다
-                                                                        Get.snackbar(
-                                                                            "신고 완료",
-                                                                            "신고 완료되었습니다 소중한 의견 감사합니다",
-                                                                            duration:
-                                                                                const Duration(seconds: 5),
-                                                                            snackPosition: SnackPosition.TOP);
+                                                                          // 신고 완료 snackBar를 띄운다
+                                                                          Get.snackbar(
+                                                                              "신고 완료",
+                                                                              "신고 완료되었습니다 소중한 의견 감사합니다",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP);
 
-                                                                        // 페이지 라우팅 한다
-                                                                        Get.off(() =>
-                                                                            BookFluidNavBar());
+                                                                          // 페이지 라우팅 한다
+                                                                          Get.off(() =>
+                                                                              BookFluidNavBar());
+                                                                        }
+                                                                        //
+                                                                        else {
+                                                                          print(
+                                                                              "서버와 통신 실패");
+                                                                          print(
+                                                                              "서버 에러 코드 : ${response.statusCode}");
+                                                                          print(
+                                                                              "서버 에러 메시지 : ${response.data}");
+
+                                                                          // 신고하기 다이어로그를 지운다
+                                                                          Get.back();
+
+                                                                          // 신고 실패를 띄운다
+                                                                          Get.snackbar(
+                                                                              "신고 실패",
+                                                                              "신고 실패되었습니다 다시 시도해주세요",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP);
+                                                                        }
                                                                       }
-                                                                      //
-                                                                      else {
-                                                                        print(
-                                                                            "서버와 통신 실패");
-                                                                        print(
-                                                                            "서버 에러 코드 : ${response.statusCode}");
-                                                                        print(
-                                                                            "서버 에러 메시지 : ${response.data}");
-
+                                                                      // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                      // 즉 서버가 열리지 않았다는 뜻이다
+                                                                      catch (e) {
                                                                         // 신고하기 다이어로그를 지운다
                                                                         Get.back();
 
-                                                                        // 신고 실패를 띄운다
                                                                         Get.snackbar(
-                                                                            "신고 실패",
-                                                                            "신고 실패되었습니다 다시 시도해주세요",
-                                                                            duration:
-                                                                                const Duration(seconds: 5),
-                                                                            snackPosition: SnackPosition.TOP);
+                                                                          "서버가 열리지 않았습니다",
+                                                                          "서버가 열리지 않았습니다 관리자에게 문의해주세요",
+                                                                          duration:
+                                                                              const Duration(seconds: 5),
+                                                                          snackPosition:
+                                                                              SnackPosition.TOP,
+                                                                        );
                                                                       }
                                                                     }
-                                                                    // DioError[unknown]: null이 메시지로 나타났을 떄
-                                                                    // 즉 서버가 열리지 않았다는 뜻이다
-                                                                    catch (e) {
-                                                                      // 신고하기 다이어로그를 지운다
+                                                                    //
+                                                                    else {
+                                                                      // 신고하기 다이어로그를 없앤다.
                                                                       Get.back();
 
+                                                                      // 이상 메시지 snackBar를 띄운다.
                                                                       Get.snackbar(
-                                                                        "서버가 열리지 않았습니다",
-                                                                        "서버가 열리지 않았습니다 관리자에게 문의해주세요",
+                                                                        "이상 메시지",
+                                                                        "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
                                                                         duration:
                                                                             const Duration(seconds: 5),
                                                                         snackPosition:
