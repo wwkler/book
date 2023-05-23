@@ -87,38 +87,52 @@ class UserManagementState extends State<UserManagement> {
             builder: (context, snapshot) {
               // getMemberList()를 실행하고 return 값이 안왔었다면?
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  // 배경 이미지
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: UserInfo.identity == UserManagerCheck.user
-                          ? const AssetImage("assets/imgs/background_book1.jpg")
-                          : const AssetImage(
-                              "assets/imgs/background_book2.jpg"),
-                      fit: BoxFit.fill,
-                      opacity: 0.5,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      // 프로그래스바
-                      CircularProgressIndicator(),
+                return WillPopScope(
+                  onWillPop: () async {
+                    // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+                    Get.snackbar(
+                      "뒤로 가기 불가능",
+                      "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+                      duration: const Duration(seconds: 5),
+                      snackPosition: SnackPosition.TOP,
+                    );
 
-                      // 중간 공백
-                      SizedBox(height: 40),
-
-                      // 회원 데이터들을 가져오고 있습니다.
-                      Text(
-                        "회원 데이터를 가져오고 있습니다",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    return false;
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    // 배경 이미지
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: UserInfo.identity == UserManagerCheck.user
+                            ? const AssetImage(
+                                "assets/imgs/background_book1.jpg")
+                            : const AssetImage(
+                                "assets/imgs/background_book2.jpg"),
+                        fit: BoxFit.fill,
+                        opacity: 0.5,
                       ),
-                    ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        // 프로그래스바
+                        CircularProgressIndicator(),
+
+                        // 중간 공백
+                        SizedBox(height: 40),
+
+                        // 회원 데이터들을 가져오고 있습니다.
+                        Text(
+                          "회원 데이터를 가져오고 있습니다",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }
@@ -127,251 +141,262 @@ class UserManagementState extends State<UserManagement> {
                 // snapshot.data를 가지고 하나씩 객체로 변환하여 memberList에 추가한다.
                 setMemberList(snapshot.data);
 
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  // 배경 이미지
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: UserInfo.identity == UserManagerCheck.user
-                          ? const AssetImage("assets/imgs/background_book1.jpg")
-                          : const AssetImage(
-                              "assets/imgs/background_book2.jpg"),
-                      fit: BoxFit.fill,
-                      opacity: 0.5,
+                return WillPopScope(
+                  onWillPop: () async {
+                    // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+                    Get.snackbar(
+                      "뒤로 가기 불가능",
+                      "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+                      duration: const Duration(seconds: 5),
+                      snackPosition: SnackPosition.TOP,
+                    );
+
+                    return false;
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    // 배경 이미지
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: UserInfo.identity == UserManagerCheck.user
+                            ? const AssetImage(
+                                "assets/imgs/background_book1.jpg")
+                            : const AssetImage(
+                                "assets/imgs/background_book2.jpg"),
+                        fit: BoxFit.fill,
+                        opacity: 0.5,
+                      ),
                     ),
-                  ),
 
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 이전 페이지 아이콘
-                        IconButton(
-                          onPressed: () {
-                            Get.off(() => BookFluidNavBar());
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            size: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 이전 페이지 아이콘
+                          IconButton(
+                            onPressed: () {
+                              Get.off(() => BookFluidNavBar());
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              size: 30,
+                            ),
                           ),
-                        ),
 
-                        // 중간 공백
-                        const SizedBox(height: 20),
+                          // 중간 공백
+                          const SizedBox(height: 20),
 
-                        // 사용자 관리 Text
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Card(
-                              elevation: 10.0,
-                              color: const Color.fromARGB(255, 228, 201, 232),
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: const SizedBox(
-                                width: 250,
-                                height: 40,
-                                child: Center(
-                                  child: Text(
-                                    "사용자 관리",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
+                          // 사용자 관리 Text
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Card(
+                                elevation: 10.0,
+                                color: const Color.fromARGB(255, 228, 201, 232),
+                                shadowColor: Colors.grey.withOpacity(0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: const SizedBox(
+                                  width: 250,
+                                  height: 40,
+                                  child: Center(
+                                    child: Text(
+                                      "사용자 관리",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                        // 중간 공백
-                        const SizedBox(height: 10),
+                          // 중간 공백
+                          const SizedBox(height: 10),
 
-                        // 사용자 이름 혹은 아이디로 검색
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AnimSearchBar(
-                            width: 300,
-                            textController: searchTextController,
-                            helpText: "사용자 이름 또는 아이디 검색",
-                            suffixIcon: const Icon(Icons.arrow_back),
-                            onSuffixTap: () {
-                              // 값이 비어있는 상태로 검색
-                              setState(() {
-                                searchTextController.clear();
-                              });
-                            },
-                            onSubmitted: (String value) {
-                              // 사용자 이름 또는 아이디로 검색헸으면?
-                              setState(() {});
-                            },
+                          // 사용자 이름 혹은 아이디로 검색
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AnimSearchBar(
+                              width: 300,
+                              textController: searchTextController,
+                              helpText: "사용자 이름 또는 아이디 검색",
+                              suffixIcon: const Icon(Icons.arrow_back),
+                              onSuffixTap: () {
+                                // 값이 비어있는 상태로 검색
+                                setState(() {
+                                  searchTextController.clear();
+                                });
+                              },
+                              onSubmitted: (String value) {
+                                // 사용자 이름 또는 아이디로 검색헸으면?
+                                setState(() {});
+                              },
+                            ),
                           ),
-                        ),
 
-                        // 사용자 계정 목록
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Card(
-                              elevation: 10.0,
-                              color: Colors.white,
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: SizedBox(
-                                width: 450,
-                                height: 400,
-                                child: Column(
-                                  children: [
-                                    // 고유값, 이름, 아이디, 이메일, 성별, 나이, 관리
-                                    SizedBox(
-                                      width: 450,
-                                      height: 50,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: const [
-                                              // 사용자 고유값
-                                              SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "고유값",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                          // 사용자 계정 목록
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Card(
+                                elevation: 10.0,
+                                color: Colors.white,
+                                shadowColor: Colors.grey.withOpacity(0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: SizedBox(
+                                  width: 450,
+                                  height: 400,
+                                  child: Column(
+                                    children: [
+                                      // 고유값, 이름, 아이디, 이메일, 성별, 나이, 관리
+                                      SizedBox(
+                                        width: 450,
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: const [
+                                                // 사용자 고유값
+                                                SizedBox(
+                                                  width: 50,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "고유값",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // 사용자명
-                                              SizedBox(
-                                                width: 80,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "이름",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                // 사용자명
+                                                SizedBox(
+                                                  width: 80,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "이름",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // 아이디
-                                              SizedBox(
-                                                width: 100,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "아이디",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                // 아이디
+                                                SizedBox(
+                                                  width: 100,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "아이디",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // 중간 공백
+                                                // 중간 공백
 
-                                              // 이메일
-                                              SizedBox(
-                                                width: 100,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "이메일",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                // 이메일
+                                                SizedBox(
+                                                  width: 100,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "이메일",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // 성별
-                                              SizedBox(
-                                                width: 100,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "성별",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                // 성별
+                                                SizedBox(
+                                                  width: 100,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "성별",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // 나이
-                                              SizedBox(
-                                                width: 100,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "나이",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                // 나이
+                                                SizedBox(
+                                                  width: 100,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "나이",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // 관리
-                                              SizedBox(
-                                                width: 100,
-                                                height: 50,
-                                                child: Center(
-                                                  child: Text(
-                                                    "관리",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                // 관리
+                                                SizedBox(
+                                                  width: 100,
+                                                  height: 50,
+                                                  child: Center(
+                                                    child: Text(
+                                                      "관리",
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
 
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
+                                      // 중간 공백
+                                      const SizedBox(height: 10),
 
-                                    // 일지 리스트
-                                    memberList.isNotEmpty
-                                        ? Expanded(
-                                            flex: 1,
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: memberList.length,
-                                              itemBuilder: (context, index) =>
-                                                  GestureDetector(
-                                                onTap: () {},
-                                                child: Container(
+                                      // 일지 리스트
+                                      memberList.isNotEmpty
+                                          ? Expanded(
+                                              flex: 1,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: memberList.length,
+                                                itemBuilder: (context, index) =>
+                                                    Container(
                                                   color: Colors.yellow[50],
                                                   width: 200,
                                                   height: 100,
@@ -642,39 +667,6 @@ class UserManagementState extends State<UserManagement> {
                                                               const SizedBox(
                                                                 width: 10,
                                                               ),
-
-                                                              // 탈퇴 버튼
-                                                              // ElevatedButton(
-                                                              //   onPressed: () {
-                                                              //     // 서버와 통신
-                                                              //     // 사용자 계정을 탈퇴한다.
-                                                              //   },
-                                                              //   style: ElevatedButton
-                                                              //       .styleFrom(
-                                                              //     shape:
-                                                              //         RoundedRectangleBorder(
-                                                              //       borderRadius:
-                                                              //           BorderRadius
-                                                              //               .circular(
-                                                              //         10.0,
-                                                              //       ),
-                                                              //     ),
-                                                              //     backgroundColor:
-                                                              //         Colors.purple,
-                                                              //     padding:
-                                                              //         const EdgeInsets
-                                                              //             .symmetric(
-                                                              //       horizontal: 10,
-                                                              //       vertical: 15,
-                                                              //     ),
-                                                              //   ),
-                                                              //   child: const Text(
-                                                              //     "탈퇴",
-                                                              //     style: TextStyle(
-                                                              //       fontSize: 12,
-                                                              //     ),
-                                                              //   ),
-                                                              // ),
                                                             ],
                                                           ),
                                                         ),
@@ -683,31 +675,31 @@ class UserManagementState extends State<UserManagement> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                        : Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              color: Colors.yellow[50],
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 100,
-                                              child: const Center(
-                                                child: Text("사용자 데이터가 없습니다"),
+                                            )
+                                          : Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                color: Colors.yellow[50],
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 100,
+                                                child: const Center(
+                                                  child: Text("사용자 데이터가 없습니다"),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                        // 중간 공백
-                        const SizedBox(height: 50),
-                      ],
+                          // 중간 공백
+                          const SizedBox(height: 50),
+                        ],
+                      ),
                     ),
                   ),
                 );

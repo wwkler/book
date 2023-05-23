@@ -34,75 +34,88 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
-          // 배경 이미지
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/imgs/background_book1.jpg"),
-              fit: BoxFit.fill,
-              opacity: 0.5,
+    return WillPopScope(
+      onWillPop: () async {
+        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+        Get.snackbar(
+          "뒤로 가기 불가능",
+          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+          duration: const Duration(seconds: 5),
+          snackPosition: SnackPosition.TOP,
+        );
+
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Container(
+            // 배경 이미지
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/imgs/background_book1.jpg"),
+                fit: BoxFit.fill,
+                opacity: 0.5,
+              ),
             ),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // 중간 여백
-                const SizedBox(
-                  height: 50,
-                ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // 중간 여백
+                  const SizedBox(
+                    height: 50,
+                  ),
 
-                // 앱의 splash 로고 이미지
-                Image.asset(
-                  'assets/imgs/splash1.png',
-                  height: 120,
-                ),
+                  // 앱의 splash 로고 이미지
+                  Image.asset(
+                    'assets/imgs/splash1.png',
+                    height: 120,
+                  ),
 
-                // 중간 여백
-                const SizedBox(
-                  height: 50,
-                ),
+                  // 중간 여백
+                  const SizedBox(
+                    height: 50,
+                  ),
 
-                // 앱의 제목
-                Text(
-                  "BookMakase",
-                  style: GoogleFonts.indieFlower(
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 35,
+                  // 앱의 제목
+                  Text(
+                    "BookMakase",
+                    style: GoogleFonts.indieFlower(
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                      ),
                     ),
                   ),
-                ),
 
-                // 중간 여백
-                const SizedBox(
-                  height: 100,
-                ),
+                  // 중간 여백
+                  const SizedBox(
+                    height: 100,
+                  ),
 
-                // ProgressIndicator
-                const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                ),
+                  // ProgressIndicator
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
 
-                // 중간 여백
-                const SizedBox(
-                  height: 25,
-                ),
+                  // 중간 여백
+                  const SizedBox(
+                    height: 25,
+                  ),
 
-                // 로딩 중입니다 메시지
-                Text(
-                  'Loding... Please Wait a second',
-                  style: GoogleFonts.indieFlower(
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  // 로딩 중입니다 메시지
+                  Text(
+                    'Loding... Please Wait a second',
+                    style: GoogleFonts.indieFlower(
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

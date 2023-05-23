@@ -93,76 +93,84 @@ class _BookShowPreviewState extends State<BookShowPreview> {
   @override
   Widget build(BuildContext context) {
     print("도서 분야 : ${bookModel!.categoryId}");
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          // 배경 이미지
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: UserInfo.identity == UserManagerCheck.user
-                  ? const AssetImage("assets/imgs/background_book1.jpg")
-                  : const AssetImage("assets/imgs/background_book2.jpg"),
-              fit: BoxFit.fill,
-              opacity: 0.5,
+    return WillPopScope(
+      onWillPop: () async {
+        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+        Get.snackbar(
+          "뒤로 가기 불가능",
+          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+          duration: const Duration(seconds: 5),
+          snackPosition: SnackPosition.TOP,
+        );
+
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            // 배경 이미지
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: UserInfo.identity == UserManagerCheck.user
+                    ? const AssetImage("assets/imgs/background_book1.jpg")
+                    : const AssetImage("assets/imgs/background_book2.jpg"),
+                fit: BoxFit.fill,
+                opacity: 0.5,
+              ),
             ),
-          ),
 
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // 이전 페이지 아이콘
-                IconButton(
-                  onPressed: () {
-                    Get.off(() => BookFluidNavBar());
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 30,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 이전 페이지 아이콘
+                  IconButton(
+                    onPressed: () {
+                      Get.off(() => BookFluidNavBar());
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 30,
+                    ),
                   ),
-                ),
 
-                // 중간 공백
-                const SizedBox(height: 20),
+                  // 중간 공백
+                  const SizedBox(height: 20),
 
-                // 도서 상세 정보 Text
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Card(
-                      elevation: 10.0,
-                      color: const Color.fromARGB(255, 228, 201, 232),
-                      shadowColor: Colors.grey.withOpacity(0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: const SizedBox(
-                        width: 250,
-                        height: 40,
-                        child: Center(
-                          child: Text(
-                            "도서 상세 정보",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
+                  // 도서 상세 정보 Text
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Card(
+                        elevation: 10.0,
+                        color: const Color.fromARGB(255, 228, 201, 232),
+                        shadowColor: Colors.grey.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: const SizedBox(
+                          width: 250,
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              "도서 상세 정보",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
 
-                // 도서 상세 정보 UI
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    onTap: () {
-                      print("도서 구입 링크로 이동");
-                    },
+                  // 도서 상세 정보 UI
+                  Expanded(
+                    flex: 1,
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -190,20 +198,6 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                 ],
                               ),
                             ),
-
-                            // Positioned(
-                            //   right: 0,
-                            //   bottom: 0,
-                            //   top: 0,
-                            //   child: CustomPaint(
-                            //     size: const Size(100, 150),
-                            //     painter: CustomCardShapePainter(
-                            //       _borderRadius,
-                            //       items[1].startColor,
-                            //       items[1].endColor,
-                            //     ),
-                            //   ),
-                            // ),
                             Positioned.fill(
                               child: Row(
                                 children: [
@@ -382,250 +376,298 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                       ),
                     ),
                   ),
-                ),
 
-                // 중간 공백
-                const SizedBox(height: 10),
+                  // 중간 공백
+                  const SizedBox(height: 10),
 
-                // 찜하기, 도서 읽기 버튼
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // 찜하기 버튼
-                    ElevatedButton(
-                      onPressed: () {
-                        // 다이어로그
-                        Get.dialog(
-                          AlertDialog(
-                            title: const Text("읽고 싶은 도서 추가"),
-                            content: SizedBox(
-                              width: 100,
-                              height: 150,
-                              child: Column(
-                                children: [
-                                  const Text("읽고 싶은 도서로 추가하시겠습니까?"),
+                  // 찜하기, 도서 읽기 버튼
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // 찜하기 버튼
+                      ElevatedButton(
+                        onPressed: () {
+                          // 다이어로그
+                          Get.dialog(
+                            AlertDialog(
+                              title: const Text("읽고 싶은 도서 추가"),
+                              content: SizedBox(
+                                width: 100,
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    const Text("읽고 싶은 도서로 추가하시겠습니까?"),
 
-                                  // 중간 공백
-                                  const SizedBox(height: 50),
+                                    // 중간 공백
+                                    const SizedBox(height: 50),
 
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      // 예
-                                      TextButton(
-                                        child: const Text("추가"),
-                                        onPressed: () async {
-                                          try {
-                                            // 서버와 통신
-                                            // 읽고 싶은 책 추가
-                                            final response = await dio.put(
-                                              "http://${IpAddress.hyunukIP}/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
-                                              options: Options(
-                                                validateStatus: (_) => true,
-                                                contentType:
-                                                    Headers.jsonContentType,
-                                                responseType: ResponseType.json,
-                                              ),
-                                            );
-
-                                            if (response.statusCode == 200) {
-                                              print("서버와 통신 성공");
-                                              print(
-                                                "찜하기를 통해 받은 데이터 : ${response.data}",
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 예
+                                        TextButton(
+                                          child: const Text("추가"),
+                                          onPressed: () async {
+                                            try {
+                                              // 서버와 통신
+                                              // 읽고 싶은 책 추가
+                                              final response = await dio.put(
+                                                "http://${IpAddress.hyunukIP}/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
+                                                options: Options(
+                                                  validateStatus: (_) => true,
+                                                  contentType:
+                                                      Headers.jsonContentType,
+                                                  responseType:
+                                                      ResponseType.json,
+                                                ),
                                               );
 
-                                              // 다이어로그를 삭제한다.
-                                              Get.back();
+                                              if (response.statusCode == 200) {
+                                                print("서버와 통신 성공");
+                                                print(
+                                                  "찜하기를 통해 받은 데이터 : ${response.data}",
+                                                );
 
+                                                // 다이어로그를 삭제한다.
+                                                Get.back();
+
+                                                Get.snackbar(
+                                                  "찜하기 성공",
+                                                  "읽고 싶은 도서로 추가하였습니다",
+                                                  duration: const Duration(
+                                                      seconds: 5),
+                                                  snackPosition:
+                                                      SnackPosition.TOP,
+                                                );
+
+                                                // 도서 검색, 추천 페이지로 이동
+                                                Get.off(
+                                                    () => BookFluidNavBar());
+                                              }
+                                              //
+                                              else {
+                                                print("서버와 통신 실패");
+                                                print(
+                                                    "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                //  다이어로그를 삭제한다.
+                                                Get.back();
+
+                                                Get.snackbar(
+                                                  "찜하기 실패",
+                                                  "읽고 싶은 도서로 추가하지 못했습니다\n이미 도서를 찜했을 가능성이 존재합니다.",
+                                                  duration: const Duration(
+                                                      seconds: 5),
+                                                  snackPosition:
+                                                      SnackPosition.TOP,
+                                                );
+                                              }
+                                            }
+                                            // DioError[unknown]: null이 메시지로 나타났을 떄
+                                            // 즉 서버가 열리지 않았다는 뜻이다
+                                            catch (e) {
                                               Get.snackbar(
-                                                "찜하기 성공",
-                                                "읽고 싶은 도서로 추가하였습니다",
+                                                "서버 열리지 않음",
+                                                "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                 duration:
                                                     const Duration(seconds: 5),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
-
-                                              // 도서 검색, 추천 페이지로 이동
-                                              Get.off(() => BookFluidNavBar());
                                             }
-                                            //
-                                            else {
-                                              print("서버와 통신 실패");
-                                              print(
-                                                  "서버 통신 에러 코드 : ${response.statusCode}");
+                                          },
+                                        ),
 
-                                              //  다이어로그를 삭제한다.
-                                              Get.back();
-
-                                              Get.snackbar(
-                                                "찜하기 실패",
-                                                "읽고 싶은 도서로 추가하지 못했습니다\n이미 도서를 찜했을 가능성이 존재합니다.",
-                                                duration:
-                                                    const Duration(seconds: 5),
-                                                snackPosition:
-                                                    SnackPosition.TOP,
-                                              );
-                                            }
-                                          }
-                                          // DioError[unknown]: null이 메시지로 나타났을 떄
-                                          // 즉 서버가 열리지 않았다는 뜻이다
-                                          catch (e) {
-                                            Get.snackbar(
-                                              "서버 열리지 않음",
-                                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                              duration:
-                                                  const Duration(seconds: 5),
-                                              snackPosition: SnackPosition.TOP,
-                                            );
-                                          }
-                                        },
-                                      ),
-
-                                      // 아니오
-                                      TextButton(
-                                        child: const Text("추가하지 않음"),
-                                        onPressed: () {
-                                          // 다이어로그를 삭제한다.
-                                          Get.back();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        // 아니오
+                                        TextButton(
+                                          child: const Text("추가하지 않음"),
+                                          onPressed: () {
+                                            // 다이어로그를 삭제한다.
+                                            Get.back();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          backgroundColor: Colors.purple,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 20,
+                          ),
                         ),
-                        backgroundColor: Colors.purple,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
-                          vertical: 20,
+                        child: const Text(
+                          "찜하기",
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
-                      child: const Text(
-                        "찜하기",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
 
-                    // 중간 공백
-                    const SizedBox(width: 20),
+                      // 중간 공백
+                      const SizedBox(width: 20),
 
-                    // 도서 읽기 버튼
-                    ElevatedButton(
-                      onPressed: () {
-                        // 다이어로그
-                        Get.dialog(
-                          AlertDialog(
-                            title: const Text("읽고 있는 도서 추가"),
-                            content: SizedBox(
-                              width: 100,
-                              height: 150,
-                              child: Column(
-                                children: [
-                                  const Text("읽고 있는 도서로 추가하시겠습니까?"),
+                      // 도서 읽기 버튼
+                      ElevatedButton(
+                        onPressed: () {
+                          // 다이어로그
+                          Get.dialog(
+                            AlertDialog(
+                              title: const Text("읽고 있는 도서 추가"),
+                              content: SizedBox(
+                                width: 100,
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    const Text("읽고 있는 도서로 추가하시겠습니까?"),
 
-                                  // 중간 공백
-                                  const SizedBox(height: 50),
+                                    // 중간 공백
+                                    const SizedBox(height: 50),
 
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      // 예
-                                      TextButton(
-                                        child: const Text("추가"),
-                                        onPressed: () async {
-                                          // 다이어로그를 삭제한다
-                                          Get.back();
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // 예
+                                        TextButton(
+                                          child: const Text("추가"),
+                                          onPressed: () async {
+                                            // 다이어로그를 삭제한다
+                                            Get.back();
 
-                                          // 도서의 총 페이지수를 사용자가 설정하는 다이어로그
-                                          Get.dialog(
-                                            AlertDialog(
-                                              title: const Text(
-                                                "도서 총 페이지 수 설정",
-                                              ),
-                                              content: SizedBox(
-                                                width: 100,
-                                                height: 200,
-                                                child: Column(
-                                                  children: [
-                                                    // 아이디를 보여주는 문구
-                                                    const Text(
-                                                      "도서 총 페이지 수를 설정해주세요",
-                                                    ),
+                                            // 도서의 총 페이지수를 사용자가 설정하는 다이어로그
+                                            Get.dialog(
+                                              AlertDialog(
+                                                title: const Text(
+                                                  "도서 총 페이지 수 설정",
+                                                ),
+                                                content: SizedBox(
+                                                  width: 100,
+                                                  height: 200,
+                                                  child: Column(
+                                                    children: [
+                                                      // 아이디를 보여주는 문구
+                                                      const Text(
+                                                        "도서 총 페이지 수를 설정해주세요",
+                                                      ),
 
-                                                    // 중간 공백
-                                                    const SizedBox(height: 10),
+                                                      // 중간 공백
+                                                      const SizedBox(
+                                                          height: 10),
 
-                                                    // 총 페이지 수 설정
-                                                    Center(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16.0),
-                                                        child: SizedBox(
-                                                          width: 50,
-                                                          height: 50,
-                                                          child: TextField(
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            controller:
-                                                                setPageController,
+                                                      // 총 페이지 수 설정
+                                                      Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(16.0),
+                                                          child: SizedBox(
+                                                            width: 50,
+                                                            height: 50,
+                                                            child: TextField(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              controller:
+                                                                  setPageController,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
 
-                                                    // 총 페이지수 설정하는  버튼
-                                                    TextButton(
-                                                      child: const Text("설정"),
-                                                      onPressed: () async {
-                                                        // 서버와 통신
-                                                        try {
-                                                          final response =
-                                                              await dio.put(
-                                                            // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
-                                                            "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=${int.parse(setPageController.text)}",
-                                                            options: Options(
-                                                              validateStatus:
-                                                                  (_) => true,
-                                                              contentType: Headers
-                                                                  .jsonContentType,
-                                                              responseType:
-                                                                  ResponseType
-                                                                      .json,
-                                                            ),
-                                                          );
+                                                      // 총 페이지수 설정하는  버튼
+                                                      TextButton(
+                                                        child: const Text("설정"),
+                                                        onPressed: () async {
+                                                          // 서버와 통신
+                                                          try {
+                                                            final response =
+                                                                await dio.put(
+                                                              // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
+                                                              "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=${int.parse(setPageController.text)}",
+                                                              options: Options(
+                                                                validateStatus:
+                                                                    (_) => true,
+                                                                contentType: Headers
+                                                                    .jsonContentType,
+                                                                responseType:
+                                                                    ResponseType
+                                                                        .json,
+                                                              ),
+                                                            );
 
-                                                          // setPageController.text를 빈칸으로 다시 설정한다
-                                                          setPageController
-                                                              .text = "";
+                                                            // setPageController.text를 빈칸으로 다시 설정한다
+                                                            setPageController
+                                                                .text = "";
 
-                                                          if (response
-                                                                  .statusCode ==
-                                                              200) {
-                                                            print("서버와 통신 성공");
-                                                            print(
-                                                                "읽고 있는 도서 추가를 통해 받은 데이터 : ${response.data}");
+                                                            if (response
+                                                                    .statusCode ==
+                                                                200) {
+                                                              print(
+                                                                  "서버와 통신 성공");
+                                                              print(
+                                                                  "읽고 있는 도서 추가를 통해 받은 데이터 : ${response.data}");
 
-                                                            //  다이어로그를 삭제한다.
-                                                            Get.back();
+                                                              //  다이어로그를 삭제한다.
+                                                              Get.back();
 
-                                                            // 읽고 있는 도서 추가 성공했다는 snackBar를 띄운다.
+                                                              // 읽고 있는 도서 추가 성공했다는 snackBar를 띄운다.
+                                                              Get.snackbar(
+                                                                "읽고 있는 도서로 추가 성공",
+                                                                "읽고 있는 도서로 추가 성공하였습니다",
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            5),
+                                                                snackPosition:
+                                                                    SnackPosition
+                                                                        .TOP,
+                                                              );
+
+                                                              // 라우팅
+                                                              Get.off(() =>
+                                                                  BookFluidNavBar());
+                                                            }
+                                                            //
+                                                            else {
+                                                              print(
+                                                                  "서버와 통신 실패");
+                                                              print(
+                                                                  "서버 통신 에러 코드 : ${response.statusCode}");
+
+                                                              // 다이어로그를 삭제한다.
+                                                              Get.back();
+
+                                                              // 읽고 있는 도서 추가 실패 했다는 다이어로그를 띄운다.
+                                                              Get.snackbar(
+                                                                "읽고 있는 도서로 추가 실패",
+                                                                "읽고 있는 도서로 추가 실패하였습니다\n이미 읽고 있는 도서에 등록 됐을 가능성이 존재합니다.",
+                                                                duration:
+                                                                    const Duration(
+                                                                        seconds:
+                                                                            5),
+                                                                snackPosition:
+                                                                    SnackPosition
+                                                                        .TOP,
+                                                              );
+                                                            }
+                                                          }
+                                                          // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                          // 즉 서버가 열리지 않았다는 뜻이다
+                                                          catch (e) {
                                                             Get.snackbar(
-                                                              "읽고 있는 도서로 추가 성공",
-                                                              "읽고 있는 도서로 추가 성공하였습니다",
+                                                              "서버 열리지 않음",
+                                                              "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                               duration:
                                                                   const Duration(
                                                                       seconds:
@@ -634,196 +676,88 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                                   SnackPosition
                                                                       .TOP,
                                                             );
-
-                                                            // 라우팅
-                                                            Get.off(() =>
-                                                                BookFluidNavBar());
                                                           }
-                                                          //
-                                                          else {
-                                                            print("서버와 통신 실패");
-                                                            print(
-                                                                "서버 통신 에러 코드 : ${response.statusCode}");
-
-                                                            // 다이어로그를 삭제한다.
-                                                            Get.back();
-
-                                                            // 읽고 있는 도서 추가 실패 했다는 다이어로그를 띄운다.
-                                                            Get.snackbar(
-                                                              "읽고 있는 도서로 추가 실패",
-                                                              "읽고 있는 도서로 추가 실패하였습니다\n이미 읽고 있는 도서에 등록 됐을 가능성이 존재합니다.",
-                                                              duration:
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          5),
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .TOP,
-                                                            );
-                                                          }
-                                                        }
-                                                        // DioError[unknown]: null이 메시지로 나타났을 떄
-                                                        // 즉 서버가 열리지 않았다는 뜻이다
-                                                        catch (e) {
-                                                          Get.snackbar(
-                                                            "서버 열리지 않음",
-                                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 5),
-                                                            snackPosition:
-                                                                SnackPosition
-                                                                    .TOP,
-                                                          );
-                                                        }
-                                                      },
-                                                    ),
-                                                  ],
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            barrierDismissible: true,
-                                          );
-                                        },
-                                      ),
+                                              barrierDismissible: true,
+                                            );
+                                          },
+                                        ),
 
-                                      //   try {
-                                      //     // 서버와 통신
-                                      //     // 사용자의 읽고 있는 책에 도서 추가
-                                      //     final response = await dio.put(
-                                      //       // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
-                                      //       "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=100",
-                                      //       options: Options(
-                                      //         validateStatus: (_) => true,
-                                      //         contentType:
-                                      //             Headers.jsonContentType,
-                                      //         responseType: ResponseType.json,
-                                      //       ),
-                                      //     );
-
-                                      //     if (response.statusCode == 200) {
-                                      //       print("서버와 통신 성공");
-                                      //       print(
-                                      //           "읽고 있는 도서를 통해 받은 데이터 : ${response.data}");
-
-                                      //       // 다이어로그를 삭제한다.
-                                      //       Get.back();
-
-                                      //       // 읽고 있는 도서로 추가 성공했다는 다이어로그를 띄운다.
-                                      //       Get.snackbar(
-                                      //         "읽고 싶은 도서로 추가 성공",
-                                      //         "읽고 싶은 도서로 추가 성공하였습니다",
-                                      //         duration:
-                                      //             const Duration(seconds: 5),
-                                      //         snackPosition:
-                                      //             SnackPosition.TOP,
-                                      //       );
-
-                                      //       // 도서 검색, 추천 페이지로 이동 (라우팅)
-                                      //       Get.off(() => BookFluidNavBar());
-                                      //     }
-                                      //     //
-                                      //     else {
-                                      //       print("서버와 통신 실패");
-                                      //       print(
-                                      //           "서버 통신 에러 코드 : ${response.statusCode}");
-
-                                      //       // 다이어로그를 띄운다.
-                                      //       Get.back();
-
-                                      //       // 읽고 있는 도서 추가 실패 했다는 snackBar를 띄운다.
-                                      //       Get.snackbar(
-                                      //         "읽고 있는 도서 추가 실패",
-                                      //         "읽고 있는 도서로 추가하지 못했습니다\n이미 읽고 있는 도서 가능성이 존재합니다.",
-                                      //         duration:
-                                      //             const Duration(seconds: 5),
-                                      //         snackPosition:
-                                      //             SnackPosition.TOP,
-                                      //       );
-                                      //     }
-                                      //   }
-                                      //   // DioError[unknown]: null이 메시지로 나타났을 떄
-                                      //   // 즉 서버가 열리지 않았다는 뜻이다
-                                      //   catch (e) {
-                                      //     Get.snackbar(
-                                      //       "서버 열리지 않음",
-                                      //       "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                      //       duration:
-                                      //           const Duration(seconds: 5),
-                                      //       snackPosition: SnackPosition.TOP,
-                                      //     );
-                                      //   }
-                                      // },
-
-                                      // 아니오
-                                      TextButton(
-                                        child: const Text("추가하지 않음"),
-                                        onPressed: () {
-                                          // 다이어로그를 삭제한다.
-                                          Get.back();
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        // 아니오
+                                        TextButton(
+                                          child: const Text("추가하지 않음"),
+                                          onPressed: () {
+                                            // 다이어로그를 삭제한다.
+                                            Get.back();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        backgroundColor: Colors.purple,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 20,
-                        ),
-                      ),
-                      child: const Text(
-                        "도서 읽기",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
-                ),
-
-                // 중간 공백
-                const SizedBox(height: 20),
-
-                // 도서 상세 정보 수정(관리자 권한)
-                UserInfo.identity == UserManagerCheck.manager
-                    ? Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // 도서 정보를 수정할 수 있도록 제공한다.
-                            Get.off(() => BookShowPreviewEdit());
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            backgroundColor: Colors.purple,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 100,
-                              vertical: 20,
-                            ),
-                          ),
-                          child: const Text(
-                            "정보 수정하기 (관리자 권한)",
-                            style: TextStyle(fontSize: 12),
+                          backgroundColor: Colors.purple,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 20,
                           ),
                         ),
-                      )
-                    : const Visibility(
-                        visible: false,
-                        child: Text("버튼이 보이지 않습니다."),
+                        child: const Text(
+                          "도서 읽기",
+                          style: TextStyle(fontSize: 12),
+                        ),
                       ),
+                    ],
+                  ),
 
-                // 중간 공백
-                const SizedBox(height: 40),
-              ],
+                  // 중간 공백
+                  const SizedBox(height: 20),
+
+                  // 도서 상세 정보 수정(관리자 권한)
+                  // UserInfo.identity == UserManagerCheck.manager
+                  //     ? Center(
+                  //         child: ElevatedButton(
+                  //           onPressed: () {
+                  //             // 도서 정보를 수정할 수 있도록 제공한다.
+                  //             Get.off(() => BookShowPreviewEdit());
+                  //           },
+                  //           style: ElevatedButton.styleFrom(
+                  //             shape: RoundedRectangleBorder(
+                  //               borderRadius: BorderRadius.circular(10.0),
+                  //             ),
+                  //             backgroundColor: Colors.purple,
+                  //             padding: const EdgeInsets.symmetric(
+                  //               horizontal: 100,
+                  //               vertical: 20,
+                  //             ),
+                  //           ),
+                  //           child: const Text(
+                  //             "정보 수정하기 (관리자 권한)",
+                  //             style: TextStyle(fontSize: 12),
+                  //           ),
+                  //         ),
+                  //       )
+                  //     : const Visibility(
+                  //         visible: false,
+                  //         child: Text("버튼이 보이지 않습니다."),
+                  //       ),
+
+                  // 중간 공백
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         ),

@@ -221,275 +221,498 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
       builder: (context, snapshot) {
         // getBookDatas()를 실행하는 동안만 실행
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            // 배경 이미지
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: UserInfo.identity == UserManagerCheck.user
-                    ? const AssetImage("assets/imgs/background_book1.jpg")
-                    : const AssetImage("assets/imgs/background_book2.jpg"),
-                fit: BoxFit.fill,
-                opacity: 0.5,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                // 프로그래스바
-                CircularProgressIndicator(),
+          return WillPopScope(
+            onWillPop: () async {
+              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+              Get.snackbar(
+                "뒤로 가기 불가능",
+                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+                duration: const Duration(seconds: 5),
+                snackPosition: SnackPosition.TOP,
+              );
 
-                // 중간 공백
-                SizedBox(height: 40),
-
-                // 도서 데이터들을 가져오고 있습니다.
-                Text(
-                  "도서 데이터를 가져오고 있습니다",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
+              return false;
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              // 배경 이미지
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: UserInfo.identity == UserManagerCheck.user
+                      ? const AssetImage("assets/imgs/background_book1.jpg")
+                      : const AssetImage("assets/imgs/background_book2.jpg"),
+                  fit: BoxFit.fill,
+                  opacity: 0.5,
                 ),
-              ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // 프로그래스바
+                  CircularProgressIndicator(),
+
+                  // 중간 공백
+                  SizedBox(height: 40),
+
+                  // 도서 데이터들을 가져오고 있습니다.
+                  Text(
+                    "도서 데이터를 가져오고 있습니다",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }
         // getBookDatas()를 다 실행했으면....
         else {
-          return Container(
-            // 배경 이미지
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: UserInfo.identity == UserManagerCheck.user
-                    ? const AssetImage("assets/imgs/background_book1.jpg")
-                    : const AssetImage("assets/imgs/background_book2.jpg"),
-                fit: BoxFit.fill,
-                opacity: 0.5,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    // 중간 공백
-                    const SizedBox(height: 30),
+          return WillPopScope(
+            onWillPop: () async {
+              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+              Get.snackbar(
+                "뒤로 가기 불가능",
+                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+                duration: const Duration(seconds: 5),
+                snackPosition: SnackPosition.TOP,
+              );
 
-                    // 도서 검색, 추천 Text
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          elevation: 10.0,
-                          color: const Color.fromARGB(255, 228, 201, 232),
-                          shadowColor: Colors.grey.withOpacity(0.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          child: const SizedBox(
-                            width: 250,
-                            height: 40,
-                            child: Center(
-                              child: Text(
-                                "도서 검색, 추천",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
+              return false;
+            },
+            child: Container(
+              // 배경 이미지
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: UserInfo.identity == UserManagerCheck.user
+                      ? const AssetImage("assets/imgs/background_book1.jpg")
+                      : const AssetImage("assets/imgs/background_book2.jpg"),
+                  fit: BoxFit.fill,
+                  opacity: 0.5,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // 중간 공백
+                      const SizedBox(height: 30),
+
+                      // 도서 검색, 추천 Text
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Card(
+                            elevation: 10.0,
+                            color: const Color.fromARGB(255, 228, 201, 232),
+                            shadowColor: Colors.grey.withOpacity(0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: const SizedBox(
+                              width: 250,
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  "도서 검색, 추천",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    // 중간 공백
-                    const SizedBox(height: 10),
+                      // 중간 공백
+                      const SizedBox(height: 10),
 
-                    // 검색어
-                    AnimSearchBar(
-                      width: 300,
-                      textController: searchTextController,
-                      helpText: "책 또는 저자를 입력",
-                      suffixIcon: const Icon(Icons.arrow_back),
-                      onSuffixTap: () {
-                        searchTextController.clear();
-                      },
-                      onSubmitted: (String value) {
-                        // BookSearchResult로 라우팅하면서 검색어 데이터도 함께 보낸다
-                        if (searchTextController.text.isNotEmpty) {
-                          Get.off(
-                            () => const BookSearchResult(),
-                            arguments: searchTextController.text,
-                          );
-                        } else {
-                          Get.snackbar(
-                            "이상 메시지",
-                            "책 또는 저자를 입력해주세요",
-                            duration: const Duration(seconds: 5),
-                            snackPosition: SnackPosition.TOP,
-                          );
-                        }
-                      },
-                    ),
+                      // 검색어
+                      AnimSearchBar(
+                        width: 300,
+                        textController: searchTextController,
+                        helpText: "책 또는 저자를 입력",
+                        suffixIcon: const Icon(Icons.arrow_back),
+                        onSuffixTap: () {
+                          searchTextController.clear();
+                        },
+                        onSubmitted: (String value) {
+                          // BookSearchResult로 라우팅하면서 검색어 데이터도 함께 보낸다
+                          if (searchTextController.text.isNotEmpty) {
+                            Get.off(
+                              () => const BookSearchResult(),
+                              arguments: searchTextController.text,
+                            );
+                          } else {
+                            Get.snackbar(
+                              "이상 메시지",
+                              "책 또는 저자를 입력해주세요",
+                              duration: const Duration(seconds: 5),
+                              snackPosition: SnackPosition.TOP,
+                            );
+                          }
+                        },
+                      ),
 
-                    // 추천과 관련된 분석한 내용이 들어가는 Card
-                    // SizedBox(
-                    //   width: 400,
-                    //   height: 230,
-                    //   child: ListView.builder(
-                    //     scrollDirection: Axis.horizontal,
-                    //     itemCount: 5,
-                    //     itemBuilder: (context, index) => SizedBox(
-                    //       width: 400,
-                    //       height: 230,
-                    //       child: Stack(
-                    //         children: [
-                    //           Positioned(
-                    //             top: 35,
-                    //             left: 20,
-                    //             child: Material(
-                    //               child: Container(
-                    //                 width:
-                    //                     MediaQuery.of(context).size.width * 0.9,
-                    //                 height: 180,
-                    //                 decoration: BoxDecoration(
-                    //                   color: Colors.white,
-                    //                   borderRadius: BorderRadius.circular(10.0),
-                    //                   boxShadow: [
-                    //                     BoxShadow(
-                    //                       color: Colors.grey.withOpacity(0.3),
-                    //                       offset: const Offset(-10.0, 10.0),
-                    //                       blurRadius: 20.0,
-                    //                       spreadRadius: 4.0,
-                    //                     )
-                    //                   ],
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           Positioned(
-                    //             top: 0,
-                    //             left: 30,
-                    //             child: Card(
-                    //               elevation: 10.0,
-                    //               shadowColor: Colors.grey.withOpacity(0.5),
-                    //               shape: RoundedRectangleBorder(
-                    //                 borderRadius: BorderRadius.circular(15.0),
-                    //               ),
-                    //               child: Container(
-                    //                 width: 150,
-                    //                 height: 200,
-                    //                 decoration: BoxDecoration(
-                    //                     borderRadius:
-                    //                         BorderRadius.circular(10.0),
-                    //                     image: const DecorationImage(
-                    //                       fit: BoxFit.fill,
-                    //                       image: AssetImage(
-                    //                         "assets/imgs/icon.png",
-                    //                       ),
-                    //                     )),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           Positioned(
-                    //             top: 45,
-                    //             left: 180,
-                    //             child: SizedBox(
-                    //               width: 180,
-                    //               height: 150,
-                    //               child: Column(
-                    //                 children: [
-                    //                   Text(
-                    //                     "추천과 관련된 분석 내용",
-                    //                     style: TextStyle(
-                    //                       fontSize: 15,
-                    //                       fontWeight: FontWeight.bold,
-                    //                       color: Color(0xFF363f93),
-                    //                     ),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //             ),
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                      // 추천과 관련된 분석한 내용이 들어가는 Card
+                      // SizedBox(
+                      //   width: 400,
+                      //   height: 230,
+                      //   child: ListView.builder(
+                      //     scrollDirection: Axis.horizontal,
+                      //     itemCount: 5,
+                      //     itemBuilder: (context, index) => SizedBox(
+                      //       width: 400,
+                      //       height: 230,
+                      //       child: Stack(
+                      //         children: [
+                      //           Positioned(
+                      //             top: 35,
+                      //             left: 20,
+                      //             child: Material(
+                      //               child: Container(
+                      //                 width:
+                      //                     MediaQuery.of(context).size.width * 0.9,
+                      //                 height: 180,
+                      //                 decoration: BoxDecoration(
+                      //                   color: Colors.white,
+                      //                   borderRadius: BorderRadius.circular(10.0),
+                      //                   boxShadow: [
+                      //                     BoxShadow(
+                      //                       color: Colors.grey.withOpacity(0.3),
+                      //                       offset: const Offset(-10.0, 10.0),
+                      //                       blurRadius: 20.0,
+                      //                       spreadRadius: 4.0,
+                      //                     )
+                      //                   ],
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           Positioned(
+                      //             top: 0,
+                      //             left: 30,
+                      //             child: Card(
+                      //               elevation: 10.0,
+                      //               shadowColor: Colors.grey.withOpacity(0.5),
+                      //               shape: RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(15.0),
+                      //               ),
+                      //               child: Container(
+                      //                 width: 150,
+                      //                 height: 200,
+                      //                 decoration: BoxDecoration(
+                      //                     borderRadius:
+                      //                         BorderRadius.circular(10.0),
+                      //                     image: const DecorationImage(
+                      //                       fit: BoxFit.fill,
+                      //                       image: AssetImage(
+                      //                         "assets/imgs/icon.png",
+                      //                       ),
+                      //                     )),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           Positioned(
+                      //             top: 45,
+                      //             left: 180,
+                      //             child: SizedBox(
+                      //               width: 180,
+                      //               height: 150,
+                      //               child: Column(
+                      //                 children: [
+                      //                   Text(
+                      //                     "추천과 관련된 분석 내용",
+                      //                     style: TextStyle(
+                      //                       fontSize: 15,
+                      //                       fontWeight: FontWeight.bold,
+                      //                       color: Color(0xFF363f93),
+                      //                     ),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           )
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
 
-                    // 중간 공백
-                    // const SizedBox(height: 20),
+                      // 중간 공백
+                      // const SizedBox(height: 20),
 
-                    // 북마카세가 추천하는 도서 text
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: Text(
-                          "북마카세가 추천하는 도서",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                      // 북마카세가 추천하는 도서 text
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: Text(
+                            "북마카세가 추천하는 도서",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                    // 북마카세가 추천하는 도서를 보여주는 공간
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Container(
-                        color: Colors.purple,
-                        width: 400,
-                        height: 350,
-                        padding: const EdgeInsets.all(16.0),
-                        child: bookMakaseRecommendBooks.isNotEmpty
-                            ? ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: recommendationBooks.length,
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    // 도서 상세 페이지로 라우팅
-                                    Get.off(
-                                      () => BookShowPreview(),
-                                      arguments: recommendationBooks[index],
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    width: 200,
-                                    height: 350,
-                                    child: Card(
-                                      elevation: 10.0,
-                                      shadowColor: Colors.grey.withOpacity(0.5),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
+                      // 북마카세가 추천하는 도서를 보여주는 공간
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Container(
+                          color: Colors.purple,
+                          width: 400,
+                          height: 350,
+                          padding: const EdgeInsets.all(16.0),
+                          child: bookMakaseRecommendBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: bookMakaseRecommendBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 상세 페이지로 라우팅
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments:
+                                            bookMakaseRecommendBooks[index],
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: 200,
+                                      height: 350,
+                                      child: Card(
+                                        elevation: 10.0,
+                                        shadowColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              // 도서 이미지
+                                              Image.network(
+                                                bookMakaseRecommendBooks[index]
+                                                    .coverSmallUrl,
+                                                width: 150,
+                                                height: 150,
+                                              ),
+
+                                              // 중간 공백
+                                              // const SizedBox(height: 30),
+
+                                              // 도서 제목
+                                              Text(
+                                                bookMakaseRecommendBooks[index]
+                                                    .title,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                                    ),
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(width: 20),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "북마카세가 추천하는 추천 도서를 제공하지 않습니다.",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+
+                      // 추천 도서 text
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: Text(
+                            "추천 도서",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // 추천 도서를 보여주는 공간
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Container(
+                          color: Colors.purple,
+                          width: 400,
+                          height: 350,
+                          padding: const EdgeInsets.all(16.0),
+                          child: recommendationBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: recommendationBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 상세 페이지로 라우팅
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments: recommendationBooks[index],
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: 200,
+                                      height: 350,
+                                      child: Card(
+                                        elevation: 10.0,
+                                        shadowColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              // 도서 이미지
+                                              Image.network(
+                                                recommendationBooks[index]
+                                                    .coverSmallUrl,
+                                                width: 150,
+                                                height: 150,
+                                              ),
+
+                                              // 중간 공백
+                                              // const SizedBox(height: 30),
+
+                                              // 도서 제목
+                                              Text(
+                                                recommendationBooks[index]
+                                                    .title,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(width: 20),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "추천 도서를 제공하지 않습니다.",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 20),
+
+                      // 베스트셀러 도서 text
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: Text(
+                            "베스트셀러 도서",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // 베스트셀러 도서를 보여주는 공간
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Container(
+                          color: Colors.purple,
+                          width: 400,
+                          height: 350,
+                          padding: const EdgeInsets.all(16.0),
+                          child: bestSellerBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: bestSellerBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 페이지로 라우팅
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments: bestSellerBooks[index],
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: 200,
+                                      height: 350,
+                                      child: Card(
+                                        elevation: 10.0,
+                                        shadowColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             // 도서 이미지
                                             Image.network(
-                                              recommendationBooks[index]
+                                              bestSellerBooks[index]
                                                   .coverSmallUrl,
-                                              width: 150,
-                                              height: 150,
+                                              width: 200,
+                                              height: 200,
                                             ),
 
                                             // 중간 공백
-                                            // const SizedBox(height: 30),
+                                            const SizedBox(height: 10),
 
                                             // 도서 제목
-                                            Text(
-                                              recommendationBooks[index].title,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                bestSellerBooks[index].title,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -497,92 +720,99 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       ),
                                     ),
                                   ),
-                                ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 20),
-                              )
-                            : const Center(
-                                child: Text(
-                                  "북마카세가 추천하는 추천 도서를 제공하지 않습니다.",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 20,
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "서버 오류로 베스트셀러 도서를 가져오지 못했습니다",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
+                        ),
                       ),
-                    ),
 
-                    // 추천 도서 text
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: Text(
-                          "추천 도서",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                      // 중간 공백
+                      const SizedBox(height: 20),
+
+                      // 신간 도서 text
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(32.0),
+                          child: Text(
+                            "신간 도서",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                    // 추천 도서를 보여주는 공간
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Container(
-                        color: Colors.purple,
-                        width: 400,
-                        height: 350,
-                        padding: const EdgeInsets.all(16.0),
-                        child: recommendationBooks.isNotEmpty
-                            ? ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: recommendationBooks.length,
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    // 도서 상세 페이지로 라우팅
-                                    Get.off(
-                                      () => BookShowPreview(),
-                                      arguments: recommendationBooks[index],
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    width: 200,
-                                    height: 350,
-                                    child: Card(
-                                      elevation: 10.0,
-                                      shadowColor: Colors.grey.withOpacity(0.5),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                      // 신간 도서를 보여주는 공간
+                      Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Container(
+                          color: Colors.purple,
+                          width: 400,
+                          height: 350,
+                          padding: const EdgeInsets.all(16.0),
+                          child: newBooks.isNotEmpty
+                              ? ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: newBooks.length,
+                                  itemBuilder: (context, index) =>
+                                      GestureDetector(
+                                    onTap: () {
+                                      // 도서 상세 페이지로 라우팅
+                                      Get.off(
+                                        () => BookShowPreview(),
+                                        arguments: newBooks[index],
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: 200,
+                                      height: 350,
+                                      child: Card(
+                                        elevation: 10.0,
+                                        shadowColor:
+                                            Colors.grey.withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             // 도서 이미지
                                             Image.network(
-                                              recommendationBooks[index]
-                                                  .coverSmallUrl,
-                                              width: 150,
-                                              height: 150,
+                                              newBooks[index].coverSmallUrl,
+                                              width: 200,
+                                              height: 200,
                                             ),
 
                                             // 중간 공백
-                                            // const SizedBox(height: 30),
+                                            const SizedBox(height: 10),
 
                                             // 도서 제목
-                                            Text(
-                                              recommendationBooks[index].title,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                newBooks[index].title,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -590,223 +820,28 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       ),
                                     ),
                                   ),
-                                ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 20),
-                              )
-                            : const Center(
-                                child: Text(
-                                  "추천 도서를 제공하지 않습니다.",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 20,
                                   ),
-                                ),
-                              ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 20),
-
-                    // 베스트셀러 도서 text
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: Text(
-                          "베스트셀러 도서",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // 베스트셀러 도서를 보여주는 공간
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Container(
-                        color: Colors.purple,
-                        width: 400,
-                        height: 350,
-                        padding: const EdgeInsets.all(16.0),
-                        child: bestSellerBooks.isNotEmpty
-                            ? ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: bestSellerBooks.length,
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    // 도서 페이지로 라우팅
-                                    Get.off(
-                                      () => BookShowPreview(),
-                                      arguments: bestSellerBooks[index],
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    width: 200,
-                                    height: 350,
-                                    child: Card(
-                                      elevation: 10.0,
-                                      shadowColor: Colors.grey.withOpacity(0.5),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          // 도서 이미지
-                                          Image.network(
-                                            bestSellerBooks[index]
-                                                .coverSmallUrl,
-                                            width: 200,
-                                            height: 200,
-                                          ),
-
-                                          // 중간 공백
-                                          const SizedBox(height: 10),
-
-                                          // 도서 제목
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              bestSellerBooks[index].title,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    "서버 오류로 인해 신간 도서를 가져오지 못했습니다",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                  width: 20,
-                                ),
-                              )
-                            : const Center(
-                                child: Text(
-                                  "서버 오류로 베스트셀러 도서를 가져오지 못했습니다",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 20),
-
-                    // 신간 도서 text
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: Text(
-                          "신간 도서",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
                         ),
                       ),
-                    ),
 
-                    // 신간 도서를 보여주는 공간
-                    Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Container(
-                        color: Colors.purple,
-                        width: 400,
-                        height: 350,
-                        padding: const EdgeInsets.all(16.0),
-                        child: newBooks.isNotEmpty
-                            ? ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: newBooks.length,
-                                itemBuilder: (context, index) =>
-                                    GestureDetector(
-                                  onTap: () {
-                                    // 도서 상세 페이지로 라우팅
-                                    Get.off(
-                                      () => BookShowPreview(),
-                                      arguments: newBooks[index],
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    width: 200,
-                                    height: 350,
-                                    child: Card(
-                                      elevation: 10.0,
-                                      shadowColor: Colors.grey.withOpacity(0.5),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          // 도서 이미지
-                                          Image.network(
-                                            newBooks[index].coverSmallUrl,
-                                            width: 200,
-                                            height: 200,
-                                          ),
-
-                                          // 중간 공백
-                                          const SizedBox(height: 10),
-
-                                          // 도서 제목
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              newBooks[index].title,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                  width: 20,
-                                ),
-                              )
-                            : const Center(
-                                child: Text(
-                                  "서버 오류로 인해 신간 도서를 가져오지 못했습니다",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 100),
-                  ],
+                      // 중간 공백
+                      const SizedBox(height: 100),
+                    ],
+                  ),
                 ),
               ),
             ),

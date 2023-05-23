@@ -86,316 +86,344 @@ class _ReportHistoryState extends State<ReportHistory> {
       builder: (context, snapshot) {
         // getReports()를 실행하는 동안...
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Container(
-              width: MediaQuery.of(context).size.width,
-              // 배경 이미지
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: UserInfo.identity == UserManagerCheck.user
-                      ? const AssetImage("assets/imgs/background_book1.jpg")
-                      : const AssetImage("assets/imgs/background_book2.jpg"),
-                  fit: BoxFit.fill,
-                  opacity: 0.5,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  // 프로그래스바
-                  CircularProgressIndicator(),
+          return WillPopScope(
+            onWillPop: () async {
+              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+              Get.snackbar(
+                "뒤로 가기 불가능",
+                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+                duration: const Duration(seconds: 5),
+                snackPosition: SnackPosition.TOP,
+              );
 
-                  // 중간 공백
-                  SizedBox(height: 40),
-
-                  // 사용자 신고 데이터들을 가져오고 있습니다.
-                  Text(
-                    "사용자 신고 데이터를 가져오고 있습니다",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
+              return false;
+            },
+            child: Scaffold(
+              body: Container(
+                width: MediaQuery.of(context).size.width,
+                // 배경 이미지
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: UserInfo.identity == UserManagerCheck.user
+                        ? const AssetImage("assets/imgs/background_book1.jpg")
+                        : const AssetImage("assets/imgs/background_book2.jpg"),
+                    fit: BoxFit.fill,
+                    opacity: 0.5,
                   ),
-                ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    // 프로그래스바
+                    CircularProgressIndicator(),
+
+                    // 중간 공백
+                    SizedBox(height: 40),
+
+                    // 사용자 신고 데이터들을 가져오고 있습니다.
+                    Text(
+                      "사용자 신고 데이터를 가져오고 있습니다",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         }
         // getReports()를 실행한 후....
         else {
-          return SafeArea(
-            child: Scaffold(
-              body: SingleChildScrollView(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  // 배경 이미지
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: UserInfo.identity == UserManagerCheck.user
-                          ? const AssetImage("assets/imgs/background_book1.jpg")
-                          : const AssetImage(
-                              "assets/imgs/background_book2.jpg"),
-                      fit: BoxFit.fill,
-                      opacity: 0.5,
+          return WillPopScope(
+            onWillPop: () async {
+              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+              Get.snackbar(
+                "뒤로 가기 불가능",
+                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+                duration: const Duration(seconds: 5),
+                snackPosition: SnackPosition.TOP,
+              );
+
+              return false;
+            },
+            child: SafeArea(
+              child: Scaffold(
+                body: SingleChildScrollView(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    // 배경 이미지
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: UserInfo.identity == UserManagerCheck.user
+                            ? const AssetImage(
+                                "assets/imgs/background_book1.jpg")
+                            : const AssetImage(
+                                "assets/imgs/background_book2.jpg"),
+                        fit: BoxFit.fill,
+                        opacity: 0.5,
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 이전 페이지 아이콘
-                        IconButton(
-                          onPressed: () {
-                            Get.off(() => BookFluidNavBar());
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            size: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 이전 페이지 아이콘
+                          IconButton(
+                            onPressed: () {
+                              Get.off(() => BookFluidNavBar());
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              size: 30,
+                            ),
                           ),
-                        ),
 
-                        // 중간 공백
-                        const SizedBox(height: 20),
+                          // 중간 공백
+                          const SizedBox(height: 20),
 
-                        // 신고 내역 Text
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Card(
-                              elevation: 10.0,
-                              color: const Color.fromARGB(255, 228, 201, 232),
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: const SizedBox(
-                                width: 250,
-                                height: 40,
-                                child: Center(
-                                  child: Text(
-                                    "신고 내역",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
+                          // 신고 내역 Text
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Card(
+                                elevation: 10.0,
+                                color: const Color.fromARGB(255, 228, 201, 232),
+                                shadowColor: Colors.grey.withOpacity(0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: const SizedBox(
+                                  width: 250,
+                                  height: 40,
+                                  child: Center(
+                                    child: Text(
+                                      "신고 내역",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                        // 중간 공백
-                        const SizedBox(height: 10),
+                          // 중간 공백
+                          const SizedBox(height: 10),
 
-                        // 사용자 이름 혹은 아이디로 검색
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AnimSearchBar(
-                            width: 300,
-                            textController: searchTextController,
-                            helpText: "사용자 이름 또는 아이디 검색",
-                            suffixIcon: const Icon(Icons.arrow_back),
-                            onSuffixTap: () {
-                              // 값이 비어있는 상태로 검색
-                              setState(() {
-                                searchTextController.clear();
-                              });
-                            },
-                            onSubmitted: (String value) {
-                              // 사용자 이름 또는 아이디로 검색헸으면?
-                              setState(() {});
-                            },
+                          // 사용자 이름 혹은 아이디로 검색
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AnimSearchBar(
+                              width: 300,
+                              textController: searchTextController,
+                              helpText: "사용자 이름 또는 아이디 검색",
+                              suffixIcon: const Icon(Icons.arrow_back),
+                              onSuffixTap: () {
+                                // 값이 비어있는 상태로 검색
+                                setState(() {
+                                  searchTextController.clear();
+                                });
+                              },
+                              onSubmitted: (String value) {
+                                // 사용자 이름 또는 아이디로 검색헸으면?
+                                setState(() {});
+                              },
+                            ),
                           ),
-                        ),
 
-                        // 사용자 계정 목록
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Card(
-                              elevation: 10.0,
-                              color: Colors.white,
-                              shadowColor: Colors.grey.withOpacity(0.5),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
-                              child: SizedBox(
-                                width: 450,
-                                height: 600,
-                                child: Column(
-                                  children: [
-                                    // 번호, 사용자 이름, 아이디, 날짜
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: const [
-                                          // 번호
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              "번호",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
+                          // 사용자 계정 목록
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Card(
+                                elevation: 10.0,
+                                color: Colors.white,
+                                shadowColor: Colors.grey.withOpacity(0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: SizedBox(
+                                  width: 450,
+                                  height: 600,
+                                  child: Column(
+                                    children: [
+                                      // 번호, 사용자 이름, 아이디, 날짜
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          children: const [
+                                            // 번호
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                "번호",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
-                                          ),
 
-                                          // 중간 공백
-                                          SizedBox(width: 30),
+                                            // 중간 공백
+                                            SizedBox(width: 30),
 
-                                          // 사용자명
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              "사용자명",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
+                                            // 사용자명
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                "사용자명",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
-                                          ),
 
-                                          // 중간 공백
-                                          SizedBox(width: 30),
+                                            // 중간 공백
+                                            SizedBox(width: 30),
 
-                                          // 아이디
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              "아이디",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
+                                            // 아이디
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                "아이디",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
-                                          ),
 
-                                          // 중간 공백
-                                          SizedBox(width: 30),
+                                            // 중간 공백
+                                            SizedBox(width: 30),
 
-                                          // 신고 날짜
-                                          Expanded(
-                                            flex: 2,
-                                            child: Text(
-                                              "신고 날짜",
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
+                                            // 신고 날짜
+                                            Expanded(
+                                              flex: 2,
+                                              child: Text(
+                                                "신고 날짜",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
 
-                                    // 중간 공백
-                                    const SizedBox(height: 10),
+                                      // 중간 공백
+                                      const SizedBox(height: 10),
 
-                                    // 일지 리스트
-                                    reports.isNotEmpty
-                                        ? Expanded(
-                                            flex: 1,
-                                            child: ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: reports.length,
-                                              itemBuilder: (context, index) =>
-                                                  GestureDetector(
-                                                onTap: () {
-                                                  // print(
-                                                  //     "arguments : ${reports[index]}");
-                                                  // 신고 내역 자세히 보여주기 페이지로 라우팅
-                                                  Get.off(
-                                                    () =>
-                                                        ReportHistoryShowPreview(),
-                                                    arguments: reports[index],
-                                                  );
-                                                },
-                                                child: Container(
-                                                  color: Colors.yellow[50],
-                                                  width: 200,
-                                                  height: 100,
-                                                  child: SingleChildScrollView(
-                                                    scrollDirection:
-                                                        Axis.horizontal,
-                                                    child: Row(
-                                                      children: [
-                                                        // 번호
-                                                        SizedBox(
-                                                          width: 50,
-                                                          height: 100,
-                                                          child: Center(
-                                                            child: Text(reports[
-                                                                        index][
-                                                                    "member"]["id"]
-                                                                .toString()),
+                                      // 일지 리스트
+                                      reports.isNotEmpty
+                                          ? Expanded(
+                                              flex: 1,
+                                              child: ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: reports.length,
+                                                itemBuilder: (context, index) =>
+                                                    GestureDetector(
+                                                  onTap: () {
+                                                    Get.off(
+                                                      () =>
+                                                          const ReportHistoryShowPreview(),
+                                                      arguments: reports[index],
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    color: Colors.yellow[50],
+                                                    width: 200,
+                                                    height: 100,
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      child: Row(
+                                                        children: [
+                                                          // 번호
+                                                          SizedBox(
+                                                            width: 50,
+                                                            height: 100,
+                                                            child: Center(
+                                                              child: Text(reports[
+                                                                          index]
+                                                                      [
+                                                                      "member"]["id"]
+                                                                  .toString()),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        // 사용자명
-                                                        SizedBox(
-                                                          width: 100,
-                                                          height: 100,
-                                                          child: Center(
-                                                            child: Text(reports[
-                                                                        index]
-                                                                    ["member"]
-                                                                ["name"]),
+                                                          // 사용자명
+                                                          SizedBox(
+                                                            width: 100,
+                                                            height: 100,
+                                                            child: Center(
+                                                              child: Text(reports[
+                                                                          index]
+                                                                      ["member"]
+                                                                  ["name"]),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        // 아이디
-                                                        SizedBox(
-                                                          width: 100,
-                                                          height: 100,
-                                                          child: Center(
-                                                            child: Text(reports[
-                                                                        index]
-                                                                    ["member"]
-                                                                ["account"]),
+                                                          // 아이디
+                                                          SizedBox(
+                                                            width: 100,
+                                                            height: 100,
+                                                            child: Center(
+                                                              child: Text(reports[
+                                                                          index]
+                                                                      ["member"]
+                                                                  ["account"]),
+                                                            ),
                                                           ),
-                                                        ),
 
-                                                        // 중간 공백
-                                                        const SizedBox(
-                                                            width: 20),
+                                                          // 중간 공백
+                                                          const SizedBox(
+                                                              width: 20),
 
-                                                        // 신고 당한 날짜
-                                                        Text(reports[index]
-                                                                ["createdAt"]
-                                                            .toString()
-                                                            .substring(0, 10)),
-                                                      ],
+                                                          // 신고 당한 날짜
+                                                          Text(reports[index]
+                                                                  ["createdAt"]
+                                                              .toString()
+                                                              .substring(
+                                                                  0, 10)),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                        : Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              color: Colors.yellow[50],
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: 100,
-                                              child: const Center(
-                                                child: Text("신고 내역 데이터가 없습니다"),
+                                            )
+                                          : Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                color: Colors.yellow[50],
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 100,
+                                                child: const Center(
+                                                  child:
+                                                      Text("신고 내역 데이터가 없습니다"),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                        // 중간 공백
-                        const SizedBox(height: 50),
-                      ],
+                          // 중간 공백
+                          const SizedBox(height: 50),
+                        ],
+                      ),
                     ),
                   ),
                 ),

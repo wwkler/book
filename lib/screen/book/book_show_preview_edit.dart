@@ -90,585 +90,598 @@ class _BookShowPreviewEditState extends State<BookShowPreviewEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          // 배경 이미지
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: UserInfo.identity == UserManagerCheck.user
-                  ? const AssetImage("assets/imgs/background_book1.jpg")
-                  : const AssetImage("assets/imgs/background_book2.jpg"),
-              fit: BoxFit.fill,
-              opacity: 0.5,
+    return WillPopScope(
+      onWillPop: () async {
+        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
+        Get.snackbar(
+          "뒤로 가기 불가능",
+          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
+          duration: const Duration(seconds: 5),
+          snackPosition: SnackPosition.TOP,
+        );
+
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            // 배경 이미지
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: UserInfo.identity == UserManagerCheck.user
+                    ? const AssetImage("assets/imgs/background_book1.jpg")
+                    : const AssetImage("assets/imgs/background_book2.jpg"),
+                fit: BoxFit.fill,
+                opacity: 0.5,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 이전 페이지 아이콘
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          Get.off(() => BookFluidNavBar());
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          size: 30,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 이전 페이지 아이콘
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: IconButton(
+                          onPressed: () {
+                            Get.off(() => BookFluidNavBar());
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            size: 30,
+                          ),
                         ),
                       ),
-                    ),
 
-                    // 중간 공백
-                    const SizedBox(height: 20),
+                      // 중간 공백
+                      const SizedBox(height: 20),
 
-                    // 도서 상세 정보 변경 Text
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Card(
-                          elevation: 10.0,
-                          color: const Color.fromARGB(255, 228, 201, 232),
-                          shadowColor: Colors.grey.withOpacity(0.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          child: const SizedBox(
-                            width: 250,
-                            height: 40,
-                            child: Center(
-                              child: Text(
-                                "도서 상세 정보 변경",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
+                      // 도서 상세 정보 변경 Text
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Card(
+                            elevation: 10.0,
+                            color: const Color.fromARGB(255, 228, 201, 232),
+                            shadowColor: Colors.grey.withOpacity(0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: const SizedBox(
+                              width: 250,
+                              height: 40,
+                              child: Center(
+                                child: Text(
+                                  "도서 상세 정보 변경",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    // 중간 공백
-                    const SizedBox(height: 30),
+                      // 중간 공백
+                      const SizedBox(height: 30),
 
-                    // 변경할 도서 제목
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookTtitle,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookTtitle = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookTtitle = val!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            isEditBookTitle = false;
-                            return "글자를 입력해주세요";
-                          } else {
-                            isEditBookTitle = true;
-                            return null;
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 제목",
-                          hintText: 'ex) 홍길동을 찾아서',
-                          labelStyle: TextStyle(color: Colors.purple),
+                      // 변경할 도서 제목
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
                         ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 작가
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookAuthor,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookAuthor = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookAuthor = val!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            isEditBookAuthor = false;
-                            return "글자를 입력해주세요";
-                          } else {
-                            isEditBookAuthor = true;
-                            return null;
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 작가",
-                          hintText: 'ex) 홍길동',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 출판사
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookAuthor,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookPublisher = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookPublisher = val!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            isEditBookAuthor = false;
-                            return "글자를 입력해주세요";
-                          } else {
-                            isEditBookAuthor = true;
-                            return null;
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 출판사",
-                          hintText: 'ex) 이한출판사',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 분야
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: DropdownButtonFormField(
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "선호하는 도서 장르",
-                          hintText: "ex) 인문",
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                        value: selectedCategory,
-                        onChanged: (String? value) {
-                          setState(() {
-                            selectedCategory = value!;
-                          });
-                        },
-                        items: category
-                            .map((e) =>
-                                DropdownMenuItem(value: e, child: Text(e)))
-                            .toList(),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 평점
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookGrade,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookGrade = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookGrade = val!;
-                          });
-                        },
-                        validator: (value) {
-                          // 검증
-                          // 0.0, 6.5, 10.0 이렇게 되어야 한다.
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 평점",
-                          hintText: 'ex) 6.5',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 가격
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookPrice,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookPrice = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookPrice = val!;
-                          });
-                        },
-                        validator: (value) {
-                          // 검증
-                          // 숫자만 있어야 한다.
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 가격",
-                          hintText: 'ex) 20000',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 구입 URL
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookPurchaseURL,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookPurchaseURL = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookPurchaseURL = val!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            isEditBookPurchaseURL = false;
-                            return "구입 URL를 작성하세요";
-                          } else {
-                            isEditBookPurchaseURL = true;
-                            return null;
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 구입 URL",
-                          hintText: 'ex) https://book.com',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 10),
-
-                    // 변경할 도서 목차
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        right: 40,
-                        bottom: 20,
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        initialValue: editBookContent,
-                        autovalidateMode: AutovalidateMode.always,
-                        onChanged: (val) {
-                          setState(() {
-                            editBookContent = val;
-                          });
-                        },
-                        onSaved: (val) {
-                          setState(() {
-                            editBookContent = val!;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            isEditBookContent = false;
-                            return "구입 URL를 작성하세요";
-                          } else {
-                            isEditBookContent = true;
-                            return null;
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: Colors.purple,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "도서 목차",
-                          hintText: 'ex) 1. 첫 시작 2. 두 번째 줄거리 3. 세 번째 줄거리',
-                          labelStyle: TextStyle(color: Colors.purple),
-                        ),
-                      ),
-                    ),
-
-                    // 중간 공백
-                    const SizedBox(height: 50),
-
-                    // 도서 정보 변경하기
-                    Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        width: 250,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // 검증
-                            if (isEditBookTitle == true &&
-                                isEditBookAuthor == true &&
-                                isEditBookPublisher == true &&
-                                isEditBookGrade == true &&
-                                isEditBookPrice == true &&
-                                isEditBookPurchaseURL == true &&
-                                isEditBookContent == true) {
-                              print("서버와 통신");
-                              // 서버와 통신
-
-                              // 사용자의 개인 정보를 변경한다.
+                        child: TextFormField(
+                          initialValue: editBookTtitle,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookTtitle = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookTtitle = val!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              isEditBookTitle = false;
+                              return "글자를 입력해주세요";
                             } else {
-                              Get.snackbar(
-                                  "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                                  duration: const Duration(seconds: 5),
-                                  snackPosition: SnackPosition.TOP);
+                              isEditBookTitle = true;
+                              return null;
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            backgroundColor: Colors.purple,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 20,
-                            ),
-                          ),
-                          child: Row(
-                            children: const [
-                              Icon(
-                                Icons.change_circle_outlined,
-                                size: 20,
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                              SizedBox(width: 30),
-                              Text(
-                                "도서 정보 변경하기",
-                                style: TextStyle(fontSize: 15),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                            ],
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 제목",
+                            hintText: 'ex) 홍길동을 찾아서',
+                            labelStyle: TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
-                    ),
 
-                    // 중간 공백
-                    const SizedBox(height: 50),
-                  ],
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 작가
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          initialValue: editBookAuthor,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookAuthor = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookAuthor = val!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              isEditBookAuthor = false;
+                              return "글자를 입력해주세요";
+                            } else {
+                              isEditBookAuthor = true;
+                              return null;
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 작가",
+                            hintText: 'ex) 홍길동',
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 출판사
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          initialValue: editBookAuthor,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookPublisher = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookPublisher = val!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              isEditBookAuthor = false;
+                              return "글자를 입력해주세요";
+                            } else {
+                              isEditBookAuthor = true;
+                              return null;
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 출판사",
+                            hintText: 'ex) 이한출판사',
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 분야
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "선호하는 도서 장르",
+                            hintText: "ex) 인문",
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                          value: selectedCategory,
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedCategory = value!;
+                            });
+                          },
+                          items: category
+                              .map((e) =>
+                                  DropdownMenuItem(value: e, child: Text(e)))
+                              .toList(),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 평점
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          initialValue: editBookGrade,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookGrade = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookGrade = val!;
+                            });
+                          },
+                          validator: (value) {
+                            // 검증
+                            // 0.0, 6.5, 10.0 이렇게 되어야 한다.
+                          },
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 평점",
+                            hintText: 'ex) 6.5',
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 가격
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          initialValue: editBookPrice,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookPrice = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookPrice = val!;
+                            });
+                          },
+                          validator: (value) {
+                            // 검증
+                            // 숫자만 있어야 한다.
+                          },
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 가격",
+                            hintText: 'ex) 20000',
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 구입 URL
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          initialValue: editBookPurchaseURL,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookPurchaseURL = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookPurchaseURL = val!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              isEditBookPurchaseURL = false;
+                              return "구입 URL를 작성하세요";
+                            } else {
+                              isEditBookPurchaseURL = true;
+                              return null;
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 구입 URL",
+                            hintText: 'ex) https://book.com',
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 10),
+
+                      // 변경할 도서 목차
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                          bottom: 20,
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          initialValue: editBookContent,
+                          autovalidateMode: AutovalidateMode.always,
+                          onChanged: (val) {
+                            setState(() {
+                              editBookContent = val;
+                            });
+                          },
+                          onSaved: (val) {
+                            setState(() {
+                              editBookContent = val!;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              isEditBookContent = false;
+                              return "구입 URL를 작성하세요";
+                            } else {
+                              isEditBookContent = true;
+                              return null;
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide.none,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Colors.purple,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            labelText: "도서 목차",
+                            hintText: 'ex) 1. 첫 시작 2. 두 번째 줄거리 3. 세 번째 줄거리',
+                            labelStyle: TextStyle(color: Colors.purple),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 50),
+
+                      // 도서 정보 변경하기
+                      Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          width: 250,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // 검증
+                              if (isEditBookTitle == true &&
+                                  isEditBookAuthor == true &&
+                                  isEditBookPublisher == true &&
+                                  isEditBookGrade == true &&
+                                  isEditBookPrice == true &&
+                                  isEditBookPurchaseURL == true &&
+                                  isEditBookContent == true) {
+                                print("서버와 통신");
+                                // 서버와 통신
+
+                                // 사용자의 개인 정보를 변경한다.
+                              } else {
+                                Get.snackbar(
+                                    "이상 메시지", "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
+                                    duration: const Duration(seconds: 5),
+                                    snackPosition: SnackPosition.TOP);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: Colors.purple,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 20,
+                              ),
+                            ),
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.change_circle_outlined,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 30),
+                                Text(
+                                  "도서 정보 변경하기",
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // 중간 공백
+                      const SizedBox(height: 50),
+                    ],
+                  ),
                 ),
               ),
             ),

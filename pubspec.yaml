@@ -40,9 +40,6 @@ dependencies:
   # fonts.google.com의 글꼴을 사용하는 Flutter 라이브러리
   google_fonts: ^4.0.3
 
-  # 특정 핸드폰 전화번호로 sms를 보낼 수 있는 라이브러리
-  twilio_flutter: ^0.0.9
-
   # 이메일로 OTP을 전송하는 라이브러리
   email_otp: ^2.0.1
 
