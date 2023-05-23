@@ -11,6 +11,7 @@ import 'package:book_project/screen/book/book_search_result.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 
 class BookSearchRecommend extends StatefulWidget {
@@ -234,7 +235,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
               return false;
             },
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width.w,
               // 배경 이미지
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -247,18 +248,18 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   // 프로그래스바
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
 
                   // 중간 공백
-                  SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
                   // 도서 데이터들을 가져오고 있습니다.
                   Text(
                     "도서 데이터를 가져오고 있습니다",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -298,7 +299,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                   child: Column(
                     children: [
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 도서 검색, 추천 Text
                       Padding(
@@ -309,16 +310,16 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                             color: const Color.fromARGB(255, 228, 201, 232),
                             shadowColor: Colors.grey.withOpacity(0.5),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(5.0.r),
                             ),
-                            child: const SizedBox(
-                              width: 250,
-                              height: 40,
+                            child: SizedBox(
+                              width: 250.w,
+                              height: 40.h,
                               child: Center(
                                 child: Text(
                                   "도서 검색, 추천",
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -329,11 +330,11 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.h),
 
                       // 검색어
                       AnimSearchBar(
-                        width: 300,
+                        width: 300.w,
                         textController: searchTextController,
                         helpText: "책 또는 저자를 입력",
                         suffixIcon: const Icon(Icons.arrow_back),
@@ -447,14 +448,14 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       // const SizedBox(height: 20),
 
                       // 북마카세가 추천하는 도서 text
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: EdgeInsets.all(32.0),
+                          padding: const EdgeInsets.all(32.0),
                           child: Text(
                             "북마카세가 추천하는 도서",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -466,8 +467,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           color: Colors.purple,
-                          width: 400,
-                          height: 350,
+                          width: 400.w,
+                          height: 350.h,
                           padding: const EdgeInsets.all(16.0),
                           child: bookMakaseRecommendBooks.isNotEmpty
                               ? ListView.separated(
@@ -484,15 +485,15 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       );
                                     },
                                     child: SizedBox(
-                                      width: 200,
-                                      height: 350,
+                                      width: 200.w,
+                                      height: 350.h,
                                       child: Card(
                                         elevation: 10.0,
                                         shadowColor:
                                             Colors.grey.withOpacity(0.5),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15.0),
+                                              BorderRadius.circular(15.0.r),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
@@ -504,19 +505,16 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                               Image.network(
                                                 bookMakaseRecommendBooks[index]
                                                     .coverSmallUrl,
-                                                width: 150,
-                                                height: 150,
+                                                width: 150.w,
+                                                height: 150.h,
                                               ),
-
-                                              // 중간 공백
-                                              // const SizedBox(height: 30),
 
                                               // 도서 제목
                                               Text(
                                                 bookMakaseRecommendBooks[index]
                                                     .title,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -527,14 +525,14 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                     ),
                                   ),
                                   separatorBuilder: (context, index) =>
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20.w),
                                 )
-                              : const Center(
+                              : Center(
                                   child: Text(
                                     "북마카세가 추천하는 추천 도서를 제공하지 않습니다.",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 18.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -543,14 +541,14 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       ),
 
                       // 추천 도서 text
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: EdgeInsets.all(32.0),
+                          padding: const EdgeInsets.all(32.0),
                           child: Text(
                             "추천 도서",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -562,8 +560,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           color: Colors.purple,
-                          width: 400,
-                          height: 350,
+                          width: 400.w,
+                          height: 350.h,
                           padding: const EdgeInsets.all(16.0),
                           child: recommendationBooks.isNotEmpty
                               ? ListView.separated(
@@ -579,15 +577,15 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       );
                                     },
                                     child: SizedBox(
-                                      width: 200,
-                                      height: 350,
+                                      width: 200.w,
+                                      height: 350.h,
                                       child: Card(
                                         elevation: 10.0,
                                         shadowColor:
                                             Colors.grey.withOpacity(0.5),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15.0),
+                                              BorderRadius.circular(15.0.r),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
@@ -599,19 +597,16 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                               Image.network(
                                                 recommendationBooks[index]
                                                     .coverSmallUrl,
-                                                width: 150,
-                                                height: 150,
+                                                width: 150.w,
+                                                height: 150.h,
                                               ),
-
-                                              // 중간 공백
-                                              // const SizedBox(height: 30),
 
                                               // 도서 제목
                                               Text(
                                                 recommendationBooks[index]
                                                     .title,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -622,14 +617,14 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                     ),
                                   ),
                                   separatorBuilder: (context, index) =>
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20.w),
                                 )
-                              : const Center(
+                              : Center(
                                   child: Text(
                                     "추천 도서를 제공하지 않습니다.",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 18.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -638,17 +633,17 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       // 베스트셀러 도서 text
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: EdgeInsets.all(32.0),
+                          padding: const EdgeInsets.all(32.0),
                           child: Text(
                             "베스트셀러 도서",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -660,8 +655,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           color: Colors.purple,
-                          width: 400,
-                          height: 350,
+                          width: 400.w,
+                          height: 350.h,
                           padding: const EdgeInsets.all(16.0),
                           child: bestSellerBooks.isNotEmpty
                               ? ListView.separated(
@@ -677,15 +672,15 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       );
                                     },
                                     child: SizedBox(
-                                      width: 200,
-                                      height: 350,
+                                      width: 200.w,
+                                      height: 350.h,
                                       child: Card(
                                         elevation: 10.0,
                                         shadowColor:
                                             Colors.grey.withOpacity(0.5),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15.0),
+                                              BorderRadius.circular(15.0.r),
                                         ),
                                         child: Column(
                                           mainAxisAlignment:
@@ -695,12 +690,12 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                             Image.network(
                                               bestSellerBooks[index]
                                                   .coverSmallUrl,
-                                              width: 200,
-                                              height: 200,
+                                              width: 200.w,
+                                              height: 200.h,
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: 10.h),
 
                                             // 도서 제목
                                             Padding(
@@ -709,8 +704,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                               child: Text(
                                                 bestSellerBooks[index].title,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -721,16 +716,16 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                     ),
                                   ),
                                   separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                    width: 20,
+                                      SizedBox(
+                                    width: 20.w,
                                   ),
                                 )
-                              : const Center(
+                              : Center(
                                   child: Text(
                                     "서버 오류로 베스트셀러 도서를 가져오지 못했습니다",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 18.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -739,17 +734,17 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       // 신간 도서 text
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: EdgeInsets.all(32.0),
+                          padding: const EdgeInsets.all(32.0),
                           child: Text(
                             "신간 도서",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -761,8 +756,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         padding: const EdgeInsets.all(24.0),
                         child: Container(
                           color: Colors.purple,
-                          width: 400,
-                          height: 350,
+                          width: 400.w,
+                          height: 350.h,
                           padding: const EdgeInsets.all(16.0),
                           child: newBooks.isNotEmpty
                               ? ListView.separated(
@@ -778,15 +773,15 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       );
                                     },
                                     child: SizedBox(
-                                      width: 200,
-                                      height: 350,
+                                      width: 200.w,
+                                      height: 350.h,
                                       child: Card(
                                         elevation: 10.0,
                                         shadowColor:
                                             Colors.grey.withOpacity(0.5),
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15.0),
+                                              BorderRadius.circular(15.0.r),
                                         ),
                                         child: Column(
                                           mainAxisAlignment:
@@ -795,12 +790,12 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                             // 도서 이미지
                                             Image.network(
                                               newBooks[index].coverSmallUrl,
-                                              width: 200,
-                                              height: 200,
+                                              width: 200.w,
+                                              height: 200.h,
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 10),
+                                            SizedBox(height: 10.h),
 
                                             // 도서 제목
                                             Padding(
@@ -809,8 +804,8 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                               child: Text(
                                                 newBooks[index].title,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -821,16 +816,16 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                     ),
                                   ),
                                   separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                    width: 20,
+                                      SizedBox(
+                                    width: 20.w,
                                   ),
                                 )
-                              : const Center(
+                              : Center(
                                   child: Text(
                                     "서버 오류로 인해 신간 도서를 가져오지 못했습니다",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 18.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -839,7 +834,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 100),
+                      SizedBox(height: 100.h),
                     ],
                   ),
                 ),

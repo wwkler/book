@@ -9,6 +9,7 @@ import 'package:book_project/screen/book/report_history.dart';
 import 'package:book_project/screen/book/user_management.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 
 class Configuration extends StatefulWidget {
@@ -55,8 +56,8 @@ class _ConfigurationState extends State<Configuration> {
         return false;
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width.w,
+        height: MediaQuery.of(context).size.height.h,
         // 배경 이미지
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -72,7 +73,7 @@ class _ConfigurationState extends State<Configuration> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 중간 공백
-              const SizedBox(height: 50),
+              SizedBox(height: 50.h),
 
               // 환경 설정 Text
               Padding(
@@ -83,16 +84,16 @@ class _ConfigurationState extends State<Configuration> {
                     color: const Color.fromARGB(255, 228, 201, 232),
                     shadowColor: Colors.grey.withOpacity(0.5),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(5.0.r),
                     ),
-                    child: const SizedBox(
-                      width: 250,
-                      height: 40,
+                    child: SizedBox(
+                      width: 250.w,
+                      height: 40.h,
                       child: Center(
                         child: Text(
                           "환경 설정",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -168,7 +169,7 @@ class _ConfigurationState extends State<Configuration> {
               // ),
 
               // 중간 공백
-              const SizedBox(height: 50),
+              SizedBox(height: 50.h),
 
               // 내 정보 변경하기
               GestureDetector(
@@ -181,16 +182,16 @@ class _ConfigurationState extends State<Configuration> {
                   color: const Color.fromARGB(255, 233, 227, 234),
                   shadowColor: Colors.grey.withOpacity(0.5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(20.0.r),
                   ),
-                  child: const SizedBox(
-                    width: 250,
-                    height: 50,
+                  child: SizedBox(
+                    width: 250.w,
+                    height: 50.h,
                     child: Center(
                       child: Text(
                         "내 정보 변경하기",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -200,7 +201,7 @@ class _ConfigurationState extends State<Configuration> {
               ),
 
               // 중간 공백
-              const SizedBox(height: 50),
+              SizedBox(height: 50.h),
 
               // 로그아웃
               GestureDetector(
@@ -240,16 +241,16 @@ class _ConfigurationState extends State<Configuration> {
                   color: const Color.fromARGB(255, 233, 227, 234),
                   shadowColor: Colors.grey.withOpacity(0.5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(20.0.r),
                   ),
-                  child: const SizedBox(
-                    width: 250,
-                    height: 50,
+                  child: SizedBox(
+                    width: 250.w,
+                    height: 50.h,
                     child: Center(
                       child: Text(
                         "로그아웃",
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -259,7 +260,7 @@ class _ConfigurationState extends State<Configuration> {
               ),
 
               // 중간 공백
-              const SizedBox(height: 50),
+              SizedBox(height: 50.h),
 
               // 회원 탈퇴 (사용자만 볼 수 있고, 관리자는 볼 수 없다)
               UserInfo.identity == UserManagerCheck.user
@@ -270,23 +271,23 @@ class _ConfigurationState extends State<Configuration> {
                           AlertDialog(
                             title: const Text("회원 탈퇴"),
                             content: SizedBox(
-                              width: 100,
-                              height: 200,
+                              width: 100.w,
+                              height: 200.h,
                               child: Column(
                                 children: [
                                   // 아이디를 보여주는 문구
                                   const Text("비밀번호를 입력해주세요"),
 
                                   // 중간 공백
-                                  const SizedBox(height: 10),
+                                  SizedBox(height: 10.h),
 
                                   // 비밀번호를 입력을 받는다.
                                   Center(
                                     child: Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: SizedBox(
-                                        width: 50,
-                                        height: 50,
+                                        width: 50.w,
+                                        height: 50.h,
                                         child: TextField(
                                           controller: inputPasswordController,
                                           textAlign: TextAlign.center,
@@ -411,17 +412,17 @@ class _ConfigurationState extends State<Configuration> {
                         color: const Color.fromARGB(255, 233, 227, 234),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(20.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 50,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 50.h,
                           child: Center(
                             child: Text(
                               "회원 탈퇴",
                               style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -436,8 +437,8 @@ class _ConfigurationState extends State<Configuration> {
 
               // 중간 공백
               UserInfo.identity == UserManagerCheck.user
-                  ? const SizedBox(height: 50)
-                  : const SizedBox(height: 0),
+                  ? SizedBox(height: 50.h)
+                  : SizedBox(height: 0.h),
 
               // 문의하기 (사용자만 볼 수 있고, 관리자는 볼 수 없다)
               UserInfo.identity == UserManagerCheck.user
@@ -450,16 +451,16 @@ class _ConfigurationState extends State<Configuration> {
                         color: const Color.fromARGB(255, 233, 227, 234),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(20.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 50,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 50.h,
                           child: Center(
                             child: Text(
                               "문의하기",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -474,8 +475,8 @@ class _ConfigurationState extends State<Configuration> {
 
               // 중간 공백
               UserInfo.identity == UserManagerCheck.user
-                  ? const SizedBox(height: 50)
-                  : const SizedBox(height: 0),
+                  ? SizedBox(height: 50.h)
+                  : SizedBox(height: 0.h),
 
               // 개인정보 보호 정책 (사용자만 볼 수 있고, 관리자는 볼 수 없다.)
               UserInfo.identity == UserManagerCheck.user
@@ -484,13 +485,13 @@ class _ConfigurationState extends State<Configuration> {
                         // 개인정보 보호정책 dialog를 띄운다.
                         Get.dialog(
                           SizedBox(
-                            width: 300,
-                            height: 300,
+                            width: 300.w,
+                            height: 300.h,
                             child: AlertDialog(
                               title: const Text("서비스 이용 약관"),
                               content: SizedBox(
-                                width: 300,
-                                height: 300,
+                                width: 300.w,
+                                height: 300.h,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.vertical,
                                   child: Column(
@@ -568,16 +569,16 @@ class _ConfigurationState extends State<Configuration> {
                         color: const Color.fromARGB(255, 233, 227, 234),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(20.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 50,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 50.h,
                           child: Center(
                             child: Text(
                               "개인정보 보호 정책",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -592,8 +593,8 @@ class _ConfigurationState extends State<Configuration> {
 
               // 중간 공백
               UserInfo.identity == UserManagerCheck.user
-                  ? const SizedBox(height: 50)
-                  : const SizedBox(height: 0),
+                  ? SizedBox(height: 50.h)
+                  : SizedBox(height: 0.h),
 
               // 오픈소스 라이선스 (사용자만 볼 수 있고, 관리자는 볼 수 없다.)
               UserInfo.identity == UserManagerCheck.user
@@ -607,16 +608,16 @@ class _ConfigurationState extends State<Configuration> {
                         color: const Color.fromARGB(255, 233, 227, 234),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(20.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 50,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 50.h,
                           child: Center(
                             child: Text(
                               "오픈소스 라이선스",
                               style: TextStyle(
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -641,17 +642,17 @@ class _ConfigurationState extends State<Configuration> {
                         color: const Color.fromARGB(255, 233, 227, 234),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(20.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 50,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 50.h,
                           child: Center(
                             child: Text(
                               "사용자 관리",
                               style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -666,8 +667,8 @@ class _ConfigurationState extends State<Configuration> {
 
               // 중간 공백
               UserInfo.identity == UserManagerCheck.manager
-                  ? const SizedBox(height: 50)
-                  : const SizedBox(height: 0),
+                  ? SizedBox(height: 50.h)
+                  : SizedBox(height: 0.h),
 
               // 신고 내역 (관리자만 볼 수 있고, 사용자는 볼 수 없다.)
               UserInfo.identity == UserManagerCheck.manager
@@ -681,17 +682,17 @@ class _ConfigurationState extends State<Configuration> {
                         color: const Color.fromARGB(255, 233, 227, 234),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(20.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 50,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 50.h,
                           child: Center(
                             child: Text(
                               "신고 내역",
                               style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 15,
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -705,7 +706,7 @@ class _ConfigurationState extends State<Configuration> {
                     ),
 
               // 중간 공백
-              const SizedBox(height: 100),
+              SizedBox(height: 100.h),
             ],
           ),
         ),

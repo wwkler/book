@@ -5,6 +5,7 @@ import 'package:book_project/screen/auth/login.dart';
 import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -81,32 +82,32 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           onPressed: () {
                             Get.off(() => const LoginScreen());
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
-                            size: 30,
+                            size: 30.sp,
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40.h),
 
                       // 자물쇠 이미지
                       Lottie.network(
                         'https://assets6.lottiefiles.com/private_files/lf30_ulp9xiqw.json',
                         //'https://assets6.lottiefiles.com/packages/lf20_k9wsvzgd.json',
                         animate: true,
-                        height: 120,
-                        width: 600,
+                        height: 120.h,
+                        width: 600.w,
                       ),
 
                       // BookMakase Login Screen Text
                       Text(
                         "BookMakase FindID Screen",
                         style: GoogleFonts.indieFlower(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                            fontSize: 30.sp,
                           ),
                         ),
                       ),
@@ -118,23 +119,23 @@ class _FindIdScreenState extends State<FindIdScreen> {
                           textStyle: TextStyle(
                             color: Colors.black.withOpacity(0.5),
                             fontWeight: FontWeight.w300,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 30,
+                      SizedBox(
+                        height: 30.h,
                       ),
 
                       // 이메일
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -161,72 +162,29 @@ class _FindIdScreenState extends State<FindIdScreen> {
                             }
                           },
                           decoration: InputDecoration(
-                            focusedBorder: const UnderlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
-                            //   suffixIcon: GestureDetector(
-                            //     onTap: () async {
-                            //       if (isEmailState == true) {
-                            //         myauth.setConfig(
-                            //           appEmail: "me@rohitchouhan.com",
-                            //           appName: "Email OTP",
-                            //           userEmail: email,
-                            //           otpLength: 6,
-                            //           otpType: OTPType.digitsOnly,
-                            //         );
-
-                            //         if (await myauth.sendOTP() == true) {
-                            //           Get.snackbar(
-                            //             "확인 메시지",
-                            //             "이메일로 인증 번호를 전송했습니다",
-                            //             duration: const Duration(seconds: 5),
-                            //             snackPosition: SnackPosition.TOP,
-                            //           );
-                            //         } else {
-                            //           Get.snackbar(
-                            //             "이상 메시지",
-                            //             "FAIL",
-                            //             duration: const Duration(seconds: 5),
-                            //             snackPosition: SnackPosition.TOP,
-                            //           );
-                            //         }
-                            //       } else {
-                            //         Get.snackbar(
-                            //           "이상 메시지",
-                            //           "이메일을 올바르게 입력해주세요",
-                            //           duration: const Duration(seconds: 5),
-                            //           snackPosition: SnackPosition.TOP,
-                            //         );
-                            //       }
-                            //     },
-                            //     child: const Icon(Icons.message),
-                            //   ),
-                            //   filled: true,
-                            //   fillColor: Colors.white,
-                            //   labelText: "이메일 주소",
-                            //   hintText: 'ex) abcdef@naver.com',
-                            //   labelStyle: const TextStyle(color: Colors.purple),
-                            // ),
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: 20.h,
                       ),
 
                       // 아이디 찾기 버튼
@@ -257,8 +215,8 @@ class _FindIdScreenState extends State<FindIdScreen> {
                                   AlertDialog(
                                     title: const Text("아이디 찾기"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         children: [
                                           // 아이디를 보여주는 문구
@@ -266,7 +224,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                                               "회원님 아이디는\n${response.data}입니다."),
 
                                           // 중간 공백
-                                          const SizedBox(height: 50),
+                                          SizedBox(height: 50.h),
 
                                           // 로고인 페이지로 이동하는 버튼
                                           TextButton(
@@ -336,23 +294,24 @@ class _FindIdScreenState extends State<FindIdScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0.r),
                           ),
                           backgroundColor: Colors.purple,
                           padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width / 3.3,
-                            vertical: 20,
+                            horizontal:
+                                MediaQuery.of(context).size.width.w / 3.3,
+                            vertical: 20.h,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Find ID",
-                          style: TextStyle(fontSize: 17),
+                          style: TextStyle(fontSize: 17.sp),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 40,
+                      SizedBox(
+                        height: 40.h,
                       ),
                     ],
                   ),

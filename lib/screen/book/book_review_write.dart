@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookReviewWrite extends StatefulWidget {
@@ -133,7 +134,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
             },
             child: Scaffold(
               body: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width.w,
                 // 배경 이미지
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -146,18 +147,18 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     // 프로그래스바
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
 
                     // 중간 공백
-                    SizedBox(height: 40),
+                    SizedBox(height: 40.h),
 
                     // 사용자가 읽은 도서를 가져오고 있습니다 text
                     Text(
                       "사용자가 읽은 도서를 가져오고 있습니다",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -185,8 +186,8 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
             child: SafeArea(
               child: Scaffold(
                 body: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width.w,
+                  height: MediaQuery.of(context).size.height.h,
                   // 배경 이미지
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -207,7 +208,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // 중간 공백
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
 
                           // 이전 페이지 아이콘
                           IconButton(
@@ -229,16 +230,16 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "도서 리뷰 작성",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -249,7 +250,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
 
                           // 읽은 도서가 있는지 없는지에 따라 다른 로직 구현
                           readBooks.isNotEmpty
@@ -258,20 +259,20 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       hint: Row(
-                                        children: const [
-                                          Icon(
+                                        children: [
+                                          const Icon(
                                             Icons.list,
                                             size: 16,
                                             color: Colors.white,
                                           ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 10.w,
                                           ),
                                           Expanded(
                                             child: Text(
                                               '읽은 도서 검색',
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
                                               ),
@@ -294,18 +295,18 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                                     // 읽은 도서 이미지
                                                     Image.network(
                                                       bookModel.coverSmallUrl,
-                                                      width: 50,
-                                                      height: 50,
+                                                      width: 50.w,
+                                                      height: 50.h,
                                                     ),
 
                                                     // 중간 공백
-                                                    const SizedBox(width: 10),
+                                                    SizedBox(width: 10.w),
 
                                                     // 읽은 도서 제목
                                                     Text(
                                                       bookModel.title,
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white,
@@ -315,7 +316,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                                     ),
 
                                                     // 중간 공백
-                                                    const SizedBox(width: 10),
+                                                    SizedBox(width: 10.w),
                                                   ],
                                                 ),
                                               ),
@@ -336,13 +337,15 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                         });
                                       },
                                       buttonStyleData: ButtonStyleData(
-                                        height: 50,
-                                        width: 250,
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 14),
+                                        height: 50.h,
+                                        width: 250.w,
+                                        padding: EdgeInsets.only(
+                                          left: 14.w,
+                                          right: 14.w,
+                                        ),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(14),
+                                              BorderRadius.circular(14.r),
                                           border: Border.all(
                                             color: Colors.black26,
                                           ),
@@ -359,18 +362,18 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                         iconDisabledColor: Colors.grey,
                                       ),
                                       dropdownStyleData: DropdownStyleData(
-                                        maxHeight: 200,
-                                        width: 300,
+                                        maxHeight: 200.h,
+                                        width: 300.w,
                                         padding: null,
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(14),
+                                              BorderRadius.circular(14.r),
                                           color: Colors.purple,
                                         ),
                                         elevation: 8,
                                         offset: const Offset(-20, 0),
                                         scrollbarTheme: ScrollbarThemeData(
-                                          radius: const Radius.circular(40),
+                                          radius: Radius.circular(40.r),
                                           thickness:
                                               MaterialStateProperty.all<double>(
                                                   6),
@@ -379,11 +382,12 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                                   true),
                                         ),
                                       ),
-                                      menuItemStyleData:
-                                          const MenuItemStyleData(
-                                        height: 80,
+                                      menuItemStyleData: MenuItemStyleData(
+                                        height: 80.h,
                                         padding: EdgeInsets.only(
-                                            left: 14, right: 14),
+                                          left: 14.w,
+                                          right: 14.w,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -393,20 +397,20 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       hint: Row(
-                                        children: const [
-                                          Icon(
+                                        children: [
+                                          const Icon(
                                             Icons.list,
                                             size: 16,
                                             color: Colors.white,
                                           ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 10.w,
                                           ),
                                           Expanded(
                                             child: Text(
                                               '읽은 도서가 없습니다',
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
                                               ),
@@ -417,13 +421,15 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                       ),
                                       items: [],
                                       buttonStyleData: ButtonStyleData(
-                                        height: 50,
-                                        width: 250,
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 14),
+                                        height: 50.h,
+                                        width: 250.w,
+                                        padding: EdgeInsets.only(
+                                          left: 14.w,
+                                          right: 14.w,
+                                        ),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(14),
+                                              BorderRadius.circular(14.r),
                                           border: Border.all(
                                             color: Colors.black26,
                                           ),
@@ -436,7 +442,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                 ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
 
                           // 별점 메기기
                           Center(
@@ -447,7 +453,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                               allowHalfRating: true,
                               itemCount: 5,
                               itemPadding:
-                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                                  EdgeInsets.symmetric(horizontal: 4.0.h),
                               itemBuilder: (context, _) => const Icon(
                                 Icons.star,
                                 color: Colors.amber,
@@ -461,7 +467,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
 
                           // 리뷰 제목
                           Padding(
@@ -471,14 +477,14 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                               keyboardType: TextInputType.multiline,
                               minLines: 1,
                               maxLines: 2,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 labelText: '리뷰 제목',
                               ),
@@ -486,7 +492,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 25),
+                          SizedBox(height: 25.h),
 
                           // 리뷰평
                           Padding(
@@ -496,14 +502,14 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                               keyboardType: TextInputType.multiline,
                               minLines: 2,
                               maxLines: 10,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 labelText: '리뷰평',
                               ),
@@ -598,23 +604,23 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderRadius: BorderRadius.circular(10.0.r),
                                 ),
                                 backgroundColor: Colors.purple,
                                 padding: EdgeInsets.symmetric(
                                   horizontal:
-                                      MediaQuery.of(context).size.width / 20.0,
-                                  vertical: 15,
+                                      MediaQuery.of(context).size.width.w / 20.0,
+                                  vertical: 15.h,
                                 ),
                               ),
                               child: Row(
-                                children: const [
-                                  SizedBox(width: 25),
-                                  Icon(Icons.create_outlined),
-                                  SizedBox(width: 50),
+                                children:  [
+                                  SizedBox(width: 25.w),
+                                  const Icon(Icons.create_outlined),
+                                  SizedBox(width: 50.w),
                                   Text(
                                     "작성 완료",
-                                    style: TextStyle(fontSize: 15),
+                                    style: TextStyle(fontSize: 15.sp),
                                   ),
                                 ],
                               ),

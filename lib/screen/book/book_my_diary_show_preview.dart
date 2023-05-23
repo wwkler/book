@@ -6,6 +6,7 @@ import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 // 도서 일지 상세 정보 페이지
@@ -56,7 +57,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
         child: Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width.w,
               // 배경 이미지
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -86,7 +87,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
 
                     // 일지 상세 보기 Text
                     Padding(
@@ -97,16 +98,16 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                           color: const Color.fromARGB(255, 228, 201, 232),
                           shadowColor: Colors.grey.withOpacity(0.5),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
+                            borderRadius: BorderRadius.circular(5.0.r),
                           ),
-                          child: const SizedBox(
-                            width: 250,
-                            height: 40,
+                          child: SizedBox(
+                            width: 250.w,
+                            height: 40.h,
                             child: Center(
                               child: Text(
                                 "일지 상세 보기",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -117,7 +118,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
 
                     // 작성한 일지 목록
                     Padding(
@@ -127,11 +128,11 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                         color: Colors.white,
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(5.0.r),
                         ),
                         child: SizedBox(
-                          width: 350,
-                          height: 600,
+                          width: 350.w,
+                          height: 600.h,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: Column(
@@ -151,16 +152,16 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                             color: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                                  BorderRadius.circular(5.0.r),
                                             ),
                                             child: SizedBox(
-                                              width: 150,
-                                              height: 40,
+                                              width: 150.w,
+                                              height: 40.h,
                                               child: Center(
                                                 child: Text(
                                                   diary!["title"].toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
@@ -177,16 +178,16 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                             color: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(5.0),
+                                                  BorderRadius.circular(5.0.r),
                                             ),
                                             child: SizedBox(
-                                              width: 150,
-                                              height: 40,
+                                              width: 150.w,
+                                              height: 40.h,
                                               child: Center(
                                                 child: Text(
                                                   diary!["date"],
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
+                                                  style: TextStyle(
+                                                    fontSize: 15.sp,
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
@@ -205,14 +206,14 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                               borderRadius:
                                                   BorderRadius.circular(5.0),
                                             ),
-                                            child: const SizedBox(
-                                              width: 150,
-                                              height: 40,
+                                            child: SizedBox(
+                                              width: 150.w,
+                                              height: 40.h,
                                               child: Center(
                                                 child: Text(
                                                   "도서 일지 감상평",
                                                   style: TextStyle(
-                                                    fontSize: 15,
+                                                    fontSize: 15.sp,
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
@@ -228,27 +229,27 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                       flex: 1,
                                       child: Image.network(
                                         diary!["book"]["coverSmallUrl"],
-                                        width: 200,
-                                        height: 200,
+                                        width: 200.w,
+                                        height: 200.h,
                                       ),
                                     ),
                                   ],
                                 ),
 
                                 // 중간 공백
-                                const SizedBox(height: 30),
+                                SizedBox(height: 30.h),
 
                                 // 일지 이미지
                                 diary!["image"] != ""
                                     ? Container(
                                         padding: const EdgeInsets.all(.0),
                                         width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 200,
+                                            MediaQuery.of(context).size.width.w,
+                                        height: 200.h,
                                         child: Image.file(
                                           File(diary!["image"]),
-                                          width: 200,
-                                          height: 200,
+                                          width: 200.w,
+                                          height: 200.h,
                                         ),
                                       )
                                     : const Visibility(
@@ -258,15 +259,15 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                       ),
 
                                 // 중간 공백
-                                const SizedBox(height: 30),
+                                SizedBox(height: 30.h),
 
                                 // 일지 감상평
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     diary!["content"],
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -279,7 +280,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50.h),
 
                     // 삭제하기 버튼
                     Center(
@@ -290,15 +291,15 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                             AlertDialog(
                               title: const Text("일지 삭제"),
                               content: SizedBox(
-                                width: 100,
-                                height: 150,
+                                width: 100.w,
+                                height: 150.h,
                                 child: Column(
                                   children: [
                                     // 해당 일지를 삭제하시겠습니까?
                                     const Text("해당 일지를 삭제하시겠습니까?"),
 
                                     // 중간 공백
-                                    const SizedBox(height: 50),
+                                    SizedBox(height: 50.h),
 
                                     // 일지 삭제
                                     TextButton(
@@ -379,20 +380,20 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(150, 50),
+                          fixedSize: Size(150.w, 50.h),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0.r),
                           ),
                           backgroundColor: Colors.purple,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Icon(Icons.delete),
-                            SizedBox(width: 10),
+                          children: [
+                            const Icon(Icons.delete),
+                            SizedBox(width: 10.w),
                             Text(
                               "삭제하기",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
                           ],
                         ),
@@ -400,7 +401,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50.h),
                   ],
                 ),
               ),

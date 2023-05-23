@@ -7,6 +7,7 @@ import 'package:book_project/model/user_model.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class UserManagement extends StatefulWidget {
@@ -100,8 +101,8 @@ class UserManagementState extends State<UserManagement> {
                     return false;
                   },
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width.w,
+                    height: MediaQuery.of(context).size.height.h,
                     // 배경 이미지
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -116,18 +117,18 @@ class UserManagementState extends State<UserManagement> {
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         // 프로그래스바
-                        CircularProgressIndicator(),
+                        const CircularProgressIndicator(),
 
                         // 중간 공백
-                        SizedBox(height: 40),
+                        SizedBox(height: 40.h),
 
                         // 회원 데이터들을 가져오고 있습니다.
                         Text(
                           "회원 데이터를 가져오고 있습니다",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -154,7 +155,7 @@ class UserManagementState extends State<UserManagement> {
                     return false;
                   },
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width.w,
                     // 배경 이미지
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -186,7 +187,7 @@ class UserManagementState extends State<UserManagement> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
 
                           // 사용자 관리 Text
                           Padding(
@@ -197,16 +198,16 @@ class UserManagementState extends State<UserManagement> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "사용자 관리",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -217,13 +218,13 @@ class UserManagementState extends State<UserManagement> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
 
                           // 사용자 이름 혹은 아이디로 검색
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: AnimSearchBar(
-                              width: 300,
+                              width: 300.w,
                               textController: searchTextController,
                               helpText: "사용자 이름 또는 아이디 검색",
                               suffixIcon: const Icon(Icons.arrow_back),
@@ -249,32 +250,32 @@ class UserManagementState extends State<UserManagement> {
                                 color: Colors.white,
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 450,
-                                  height: 400,
+                                  width: 450.w,
+                                  height: 400.h,
                                   child: Column(
                                     children: [
                                       // 고유값, 이름, 아이디, 이메일, 성별, 나이, 관리
                                       SizedBox(
-                                        width: 450,
-                                        height: 50,
+                                        width: 450.w,
+                                        height: 50.h,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Row(
-                                              children: const [
+                                              children: [
                                                 // 사용자 고유값
                                                 SizedBox(
-                                                  width: 50,
-                                                  height: 50,
+                                                  width: 50.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "고유값",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -284,13 +285,13 @@ class UserManagementState extends State<UserManagement> {
 
                                                 // 사용자명
                                                 SizedBox(
-                                                  width: 80,
-                                                  height: 50,
+                                                  width: 80.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "이름",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -300,13 +301,13 @@ class UserManagementState extends State<UserManagement> {
 
                                                 // 아이디
                                                 SizedBox(
-                                                  width: 100,
-                                                  height: 50,
+                                                  width: 100.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "아이디",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -318,13 +319,13 @@ class UserManagementState extends State<UserManagement> {
 
                                                 // 이메일
                                                 SizedBox(
-                                                  width: 100,
-                                                  height: 50,
+                                                  width: 100.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "이메일",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -334,13 +335,13 @@ class UserManagementState extends State<UserManagement> {
 
                                                 // 성별
                                                 SizedBox(
-                                                  width: 100,
-                                                  height: 50,
+                                                  width: 100.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "성별",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -350,13 +351,13 @@ class UserManagementState extends State<UserManagement> {
 
                                                 // 나이
                                                 SizedBox(
-                                                  width: 100,
-                                                  height: 50,
+                                                  width: 100.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "나이",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -366,13 +367,13 @@ class UserManagementState extends State<UserManagement> {
 
                                                 // 관리
                                                 SizedBox(
-                                                  width: 100,
-                                                  height: 50,
+                                                  width: 100.w,
+                                                  height: 50.h,
                                                   child: Center(
                                                     child: Text(
                                                       "관리",
                                                       style: TextStyle(
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -386,7 +387,7 @@ class UserManagementState extends State<UserManagement> {
                                       ),
 
                                       // 중간 공백
-                                      const SizedBox(height: 10),
+                                      SizedBox(height: 10.h),
 
                                       // 일지 리스트
                                       memberList.isNotEmpty
@@ -398,8 +399,8 @@ class UserManagementState extends State<UserManagement> {
                                                 itemBuilder: (context, index) =>
                                                     Container(
                                                   color: Colors.yellow[50],
-                                                  width: 200,
-                                                  height: 100,
+                                                  width: 200.w,
+                                                  height: 100.h,
                                                   child: SingleChildScrollView(
                                                     scrollDirection:
                                                         Axis.horizontal,
@@ -407,8 +408,8 @@ class UserManagementState extends State<UserManagement> {
                                                       children: [
                                                         // 사용자 고유값
                                                         SizedBox(
-                                                          width: 50,
-                                                          height: 100,
+                                                          width: 50.w,
+                                                          height: 100.h,
                                                           child: Center(
                                                             child: Text(
                                                               memberList[index]
@@ -420,8 +421,8 @@ class UserManagementState extends State<UserManagement> {
 
                                                         // 사용자명
                                                         SizedBox(
-                                                          width: 100,
-                                                          height: 100,
+                                                          width: 100.w,
+                                                          height: 100.h,
                                                           child: Center(
                                                             child: Text(
                                                               memberList[index]
@@ -432,8 +433,8 @@ class UserManagementState extends State<UserManagement> {
 
                                                         // 아이디
                                                         SizedBox(
-                                                          width: 100,
-                                                          height: 100,
+                                                          width: 100.w,
+                                                          height: 100.h,
                                                           child: Center(
                                                             child: Text(
                                                               memberList[index]
@@ -444,8 +445,8 @@ class UserManagementState extends State<UserManagement> {
 
                                                         // 이메일
                                                         SizedBox(
-                                                          width: 100,
-                                                          height: 100,
+                                                          width: 100.w,
+                                                          height: 100.h,
                                                           child: Center(
                                                             child: Text(
                                                               memberList[index]
@@ -456,8 +457,8 @@ class UserManagementState extends State<UserManagement> {
 
                                                         // 성별
                                                         SizedBox(
-                                                          width: 100,
-                                                          height: 100,
+                                                          width: 100.w,
+                                                          height: 100.h,
                                                           child: Center(
                                                             child: Text(
                                                               memberList[index]
@@ -468,8 +469,8 @@ class UserManagementState extends State<UserManagement> {
 
                                                         // 나이
                                                         SizedBox(
-                                                          width: 100,
-                                                          height: 100,
+                                                          width: 100.w,
+                                                          height: 100.h,
                                                           child: Center(
                                                             child: Text(
                                                               memberList[index]
@@ -480,13 +481,14 @@ class UserManagementState extends State<UserManagement> {
                                                         ),
 
                                                         // 중간 공백
-                                                        const SizedBox(
-                                                            width: 20),
+                                                        SizedBox(
+                                                          width: 20.w,
+                                                        ),
 
                                                         // 관리 - 정지
                                                         SizedBox(
-                                                          width: 200,
-                                                          height: 100,
+                                                          width: 200.w,
+                                                          height: 100.h,
                                                           child: Row(
                                                             children: [
                                                               // 정지 버튼
@@ -503,15 +505,15 @@ class UserManagementState extends State<UserManagement> {
                                                                       content:
                                                                           SizedBox(
                                                                         width:
-                                                                            100,
+                                                                            100.w,
                                                                         height:
-                                                                            200,
+                                                                            200.h,
                                                                         child:
                                                                             Column(
                                                                           children: [
                                                                             // 중간 공백
-                                                                            const SizedBox(
-                                                                              height: 20,
+                                                                            SizedBox(
+                                                                              height: 20.h,
                                                                             ),
 
                                                                             // 아이디를 보여주는 문구
@@ -520,8 +522,8 @@ class UserManagementState extends State<UserManagement> {
                                                                             ),
 
                                                                             // 중간 공백
-                                                                            const SizedBox(
-                                                                              height: 20,
+                                                                            SizedBox(
+                                                                              height: 20.h,
                                                                             ),
 
                                                                             // 정지 일수를 입력하는 곳
@@ -530,8 +532,8 @@ class UserManagementState extends State<UserManagement> {
                                                                               child: Padding(
                                                                                 padding: const EdgeInsets.all(16.0),
                                                                                 child: SizedBox(
-                                                                                  width: 50,
-                                                                                  height: 50,
+                                                                                  width: 50.w,
+                                                                                  height: 50.h,
                                                                                   child: TextField(
                                                                                     controller: setBanTimeController,
                                                                                     textAlign: TextAlign.center,
@@ -637,35 +639,34 @@ class UserManagementState extends State<UserManagement> {
                                                                     borderRadius:
                                                                         BorderRadius
                                                                             .circular(
-                                                                      10.0,
+                                                                      10.0.r,
                                                                     ),
                                                                   ),
                                                                   backgroundColor:
                                                                       Colors
                                                                           .purple,
                                                                   padding:
-                                                                      const EdgeInsets
+                                                                      EdgeInsets
                                                                           .symmetric(
                                                                     horizontal:
-                                                                        10,
+                                                                        10.w,
                                                                     vertical:
-                                                                        15,
+                                                                        15.h,
                                                                   ),
                                                                 ),
-                                                                child:
-                                                                    const Text(
+                                                                child: Text(
                                                                   "정지",
                                                                   style:
                                                                       TextStyle(
                                                                     fontSize:
-                                                                        12,
+                                                                        12.sp,
                                                                   ),
                                                                 ),
                                                               ),
 
                                                               // 중간 공백
-                                                              const SizedBox(
-                                                                width: 10,
+                                                              SizedBox(
+                                                                width: 10.w,
                                                               ),
                                                             ],
                                                           ),
@@ -682,8 +683,9 @@ class UserManagementState extends State<UserManagement> {
                                                 color: Colors.yellow[50],
                                                 width: MediaQuery.of(context)
                                                     .size
-                                                    .width,
-                                                height: 100,
+                                                    .width
+                                                    .w,
+                                                height: 100.h,
                                                 child: const Center(
                                                   child: Text("사용자 데이터가 없습니다"),
                                                 ),
@@ -697,7 +699,7 @@ class UserManagementState extends State<UserManagement> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
                         ],
                       ),
                     ),

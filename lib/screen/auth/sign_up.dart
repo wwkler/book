@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:lottie/lottie.dart';
@@ -160,24 +161,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40.h),
 
                       // 자물쇠 이미지
                       Lottie.network(
                         'https://assets6.lottiefiles.com/private_files/lf30_ulp9xiqw.json',
                         //'https://assets6.lottiefiles.com/packages/lf20_k9wsvzgd.json',
                         animate: true,
-                        height: 120,
-                        width: 600,
+                        height: 120.h,
+                        width: 600.w,
                       ),
 
                       // BookMakase Login Screen Text
                       Text(
                         "BookMakase Sign Up Screen",
                         style: GoogleFonts.indieFlower(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                            fontSize: 30.sp,
                           ),
                         ),
                       ),
@@ -189,23 +190,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           textStyle: TextStyle(
                             color: Colors.black.withOpacity(0.5),
                             fontWeight: FontWeight.w300,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 30,
+                      SizedBox(
+                        height: 30.h,
                       ),
 
                       // ID
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -237,20 +238,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               return null;
                             }
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -258,18 +259,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "ID",
                             hintText: 'ex) abcdefg1',
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // Password
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -299,20 +300,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                           obscuringCharacter: '*',
                           obscureText: true,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -320,18 +321,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "Password",
                             hintText: 'ex) ********',
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // Verify Password
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -366,20 +367,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                           obscuringCharacter: '*',
                           obscureText: true,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -387,18 +388,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "Verify Password",
                             hintText: 'ex) ********',
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 이름
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -421,20 +422,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isNameState = true;
                             return null;
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -442,18 +443,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "이름",
                             hintText: "ex) 홍길동",
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 나이
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -489,20 +490,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               return null;
                             }
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -510,18 +511,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "나이",
                             hintText: "ex) 25",
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 성별
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -546,20 +547,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             }
                           },
 
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -567,34 +568,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "성별",
                             hintText: "남 or 여",
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 선호하는 도서 장르
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding:  EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -602,7 +603,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fillColor: Colors.white,
                             labelText: "선호하는 도서 장르",
                             hintText: "인문",
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                           value: selectedCategory,
                           onChanged: (String? key) {
@@ -625,11 +626,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       // 이메일
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -658,16 +659,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             }
                           },
                           decoration: InputDecoration(
-                            focusedBorder: const UnderlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             prefixIcon: const Icon(
@@ -726,11 +727,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       // 인증 확인
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -753,16 +754,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             }
                           },
                           decoration: InputDecoration(
-                            focusedBorder: const UnderlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             prefixIcon: const Icon(
@@ -807,7 +808,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // 서비스 이용 약관 동의
                       Row(
                         children: [
-                          const SizedBox(width: 30),
+                          SizedBox(width: 30.w),
 
                           // 체크 박스
                           Checkbox(
@@ -824,20 +825,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             "서비스 약관 동의",
                           ),
 
-                          const SizedBox(width: 60),
+                          SizedBox(width: 60.w),
 
                           // 자세히 보기 Text
                           GestureDetector(
                             onTap: () {
                               Get.dialog(
                                 SizedBox(
-                                  width: 300,
-                                  height: 300,
+                                  width: 300.w,
+                                  height: 300.h,
                                   child: AlertDialog(
                                     title: const Text("서비스 이용 약관"),
                                     content: SizedBox(
-                                      width: 300,
-                                      height: 300,
+                                      width: 300.w,
+                                      height: 300.h,
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.vertical,
                                         child: Column(
@@ -847,7 +848,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 "이용자님의 권리 및 의무를 이해하기 위하여 애플리케이션 소프트웨어 이용약관(이하 본 약관)을 주의 깊게 읽어주시길 바랍니다."),
 
                                             // 중간 공백
-                                            const SizedBox(height: 50),
+                                            SizedBox(height: 50.h),
 
                                             const Text(
                                                 "제1조 목적\n본 약관은 ㈜북마카세(이하 ‘회사’)가 스마트 기기를 통해 제공하는 모든 애플리케이션, 기타 제반 서비스(이하 ‘서비스’)를 이용하는 사용자(이하 ‘이용자’)와 회사 간에 서비스의 이용에 관한 권리, 의무 및 책임 사항, 기타 필요한 사항을 규정함을 목적으로 합니다.\n\n제2조 용어 정의\n① 본 약관에서 사용하는 용어의 정의는 다음과 같습니다. ‘애플리케이션’이란 회사가 제공하는 서비스를 이용하기 위해 스마트 기기를 통해 다운로드 받거나 설치하여 사용하는 프로그램 일체를 말합니다. ‘이용자’란 본 약관에 동의함을 전제로 회사가 제공하는 모든 애플리케이션 및 제반 서비스를 이용하는 자를 말합니다. ‘스마트 기기’란 콘텐츠를 다운로드 받거나 설치하여 이용하거나 네트워크를 통하여 이용할 수 있는 스마트폰, 태블릿 등의 네트워크를 사용할 수 있는 기기를 말합니다. ‘콘텐츠’란 스마트 기기 등을 통하여 이용할 수 있도록 회사가 제공하는 애플리케이션 서비스와 관련되어 디지털 방식으로 제작된 텍스트, 사진, 그림 등 내용물 일체를 말합니다.\n② 본 약관에서 사용하는 용어의 정의는 제 2조 1항에서 정하는 것을 제외하고는 관계 법령에서 정하는 바를 따릅니다. 관계 법령에서 정하지 않는 것은 일반적인 상 관례에 의합니다.\n\n제3조 약관의 효력 및 변경\n① 본 약관은 애플리케이션 소프트웨어 및 해당 애플리케이션의 모든 패치, 업데이트, 업그레이드 또는 새로운 버전에 적용되며, 가장 최신 버전이 모든 기존 버전에 우선합니다.\n② 본 약관은 서비스 이용계약의 성격상 회사의 웹사이트 또는 서비스 이용을 위한 애플리케이션 내에 본 약관을 명시하고, 이용자가 애플리케이션을 설치 및 실행함과 동시에 효력이 발생합니다.\n③ 회사는 관계 법령 또는 상관습에 위배되지 않는 범위에서 본 약관을 개정할 수 있습니다.\n④ 회사는 관련 법령의 변경이나 이용자의 권리 및 의무사항, 서비스 등을 개선하기 위해 본 약관을 변경할 수 있으며, 변경된 경우에 약관의 내용과 적용 일을 정하여, 적용일 7일 전 서비스 웹사이트나 애플리케이션 등을 통해 이용자에게 고지하고 적용일부터 효력이 발생합니다.\n⑤ 이용자는 변경된 약관에 대해 거부할 권리가 있습니다. 본 약관의 변경에 대해 이의가 있는 이용자는 서비스 이용을 중단하고 이용을 해지(탈퇴 및 삭제)할 수 있습니다.\n⑥ 회사가 본 조 4항에 따라 변경된 약관을 공시 또는 고지하면서 이용자가 기간 내의 의사표시를 하지 않으면 변경된 약관에 동의한 것으로 간주합니다.\n\n제4조 약관의 해석\n본 약관은 회사가 제공하는 개별 서비스의 별도 정책과 함께 적용되며, 이에 명시되지 아니한 사항에 대해서는 별도의 약관 혹은 정책을 둘 수 있으며, 약관 및 정책은 정부가 제정한 관계 법령 또는 상 관례에 따릅니다.\n\n제5조 이용계약의 성립\n① 이용계약은 이용자가 본 이용약관에 대한 동의 또는 회사의 애플리케이션을 다운로드 받거나 실행하여 이용하는 경우 이 약관에 동의한 것으로 간주합니다.\n② 이용자는 동의하지 않는 경우 서비스 탈퇴 및 애플리케이션 계정 삭제와 함께 이를 철회할 수 있습니다.\n\n제6조 개인 정보의 보호 및 사용\n① 회사는 관계 법령이 정하는 바에 따라 이용자의 개인정보를 보호하기 위해 노력하며, 개인 정보의 보호 및 사용에 대해서는 관련 법령 및 회사의 개인정보 취급방침에 따릅니다. 단, 회사에서 제공하지 않는 서비스 및 애플리케이션에 대해서는 회사의 개인정보취급방침이 적용되지 않습니다.\n② 회사는 통신비밀보호법, 정보통신망법 등 관계 법령에 의해 관련 국가기관 등의 요구가 있는 경우를 제외하고는 이용자의 개인정보를 본인의 승낙 없이 타인에게 제공하지 않습니다.\n\n제7조 개인 정보의 관리 및 변경\n이용자는 본 서비스의 이용을 위해 자신의 개인 정보를 성실히 관리해야 하며, 개인정보에 변동사항이 있을 경우 이를 변경해야 합니다. 본 서비스를 이용하면서 이용자의 개인정보변경이 지연되거나 누락, 이용자에 의해 유출되어 발생하는 손해는 이용자의 책임으로 합니다.\n\n제8조 회사의 의무\n① 회사는 관련법과 본 약관의 금지하는 행위를 하지 않으며, 계속적이고 안정적인 서비스를 제공하기 위하여 최선을 다하여 노력합니다.\n② 회사는 이용자의 개인정보보호를 위한 보안 의무에 최선을 다합니다.\n③ 회사는 이용자로부터 제기되는 의견이나 불만이 정당하고 객관적으로 인정될 경우에는 적절한 절차를 거쳐 즉시 처리하여야 합니다. 다만, 즉시 처리가 불가한 경우에는 이용자에게 그 사유와 처리 일정을 통보하여야 합니다.\n\n제9조 이용자의 의무\n① 이용자는 본 약관에서 규정하는 사항과 기타 회사가 정한 제반 규정, 회사가 공지하는 사항을 준수하여야 합니다. 또한, 이용자는 회사의 업무에 방해가 되는 행위, 회사의 명예를 손상시키는 행위를 해서는 안 됩니다.\n② 이용자는 청소년보호법 등 관계 법령에 준수하여야 합니다. 이용자가 청소년 보호법 등 관계 법령을 위반한 경우는 해당 법령에 의거 처벌을 받게 됩니다.\n③ 이용자는 회사의 사전 승낙 없이 영리를 목적으로 서비스를 사용할 수 없으며, 이와 같은 행위로 회사에 손해를 끼친 경우, 이용자는 회사에 대한 손해배상 의무를 지며, 회사는 해당 이용자에 대해 서비스 이용 제한 및 적법한 절차를 거쳐 손해배상 등을 청구할 수 있습니다.\n④ 이용자의 닉네임에 관한 관리책임은 이용자에게 있으며, 이를 제3자가 이용하도록 하여서는 안 됩니다.\n⑤ 이용자는 다음 각호에 해당하는 행위를 하여서는 안 되며, 해당 행위를 하는 경우에 회사는 이용자의 서비스 이용제한, 관련 정보(글, 사진, 영상 등) 삭제 및 적법 조치를 포함한 이용제한 조치를 가할 수 있습니다. 또한, 그로 인해 발생한 문제의 책임은 이용자 본인에게 있습니다.\n(1) 각종 신청, 변경, 등록 시 허위의 내용을 등록하거나, 타인을 기만하는 행위\n(2) 타인의 정보를 도용한 행위\n(3) 회사로부터 특별한 권리를 받지 않고 애플리케이션을 역설계, 디컴파일, 분해, 임대, 재허락, 발행, 수정, 개조, 개작 또는 번역함, 2차적 저작물 작성, 다른 유저들이 네트워크에 접속하여 이용 가능하도록 하는 행위\n(4) 애플리케이션의 이전 버전을 재설치(이하 “다운그레이드”라고 함)하는 행위\n(5) 회사로부터 정식으로 인가된 배포 방식을 통하지 않고 다른 방식으로 애플리케이션을 배포 또는 사용하는 행위\n(6) 회사의 서버를 해킹하거나 웹사이트 또는 게시된 정보의 일부분 또는 전체를 임의로 변경하거나, 회사의 서비스를 비정상적인 방법으로 사용하는 행위\n(7) 회사의 애플리케이션 상의 버그를 악용하는 행위\n(8) 서비스에 위해를 가하거나 서비스를 고의로 방해하는 행위\n(9) 본 서비스를 통해 얻은 정보를 회사의 사전 승낙 없이 서비스 이용 외의 목적으로 복제하거나, 이를 출판 및 방송 등에 사용하거나, 제 3자에게 제공하는 행위\n(10) 타인의 특허, 상표, 영업비밀, 저작권, 기타 지적재산권을 침해하는 내용을 전송, 게시 또는 기타의 방법으로 타인에게 유포하는 행위\n(11) 청소년보호법 또는 법에 위반되는 저속, 음란한 내용의 정보, 문장, 도형, 음향, 동영상을 전송, 게시 또는 기타의 방법으로 타인에게 유포 하는 행위\n(12) 타인에게 불쾌감을 줄 수 있는 모욕적이거나 개인신상에 대한 내용이나 타인의 명예나 프라이버시를 침해할 수 있는 내용을 전송, 게시 또는 기타의 방법으로 타인에게 유포하는 행위"),
@@ -936,7 +937,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // 개인정보 수집, 이용 동의
                       Row(
                         children: [
-                          const SizedBox(width: 30),
+                          SizedBox(width: 30.w),
 
                           // 체크 박스
                           Checkbox(
@@ -954,7 +955,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             "개인정보 수집, 이용 동의",
                           ),
 
-                          const SizedBox(width: 15),
+                          SizedBox(width: 15.w),
 
                           // 자세히 보기 Text
                           GestureDetector(
@@ -962,13 +963,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               // 개인정보 수집, 이용 동의 dialog
                               Get.dialog(
                                 SizedBox(
-                                  width: 300,
-                                  height: 300,
+                                  width: 300.w,
+                                  height: 300.h,
                                   child: AlertDialog(
                                     title: const Text("서비스 이용 약관"),
                                     content: SizedBox(
-                                      width: 300,
-                                      height: 300,
+                                      width: 300.w,
+                                      height: 300.h,
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.vertical,
                                         child: Column(
@@ -1028,8 +1029,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 15,
+                      SizedBox(
+                        height: 15.h,
                       ),
 
                       // Sign Up 버튼
@@ -1135,23 +1136,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0.r),
                           ),
                           backgroundColor: Colors.purple,
                           padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width / 3.3,
-                            vertical: 20,
+                            horizontal: MediaQuery.of(context).size.width.w / 3.3,
+                            vertical: 20.h,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Sign Up",
-                          style: TextStyle(fontSize: 17),
+                          style: TextStyle(fontSize: 17.sp),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 40,
+                      SizedBox(
+                        height: 40.h,
                       ),
                     ],
                   ),

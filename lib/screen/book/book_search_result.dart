@@ -9,6 +9,7 @@ import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookSearchResult extends StatefulWidget {
@@ -148,7 +149,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                   return false;
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width.w,
                   // 배경 이미지
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -162,18 +163,18 @@ class _BookSearchResultState extends State<BookSearchResult> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       // 프로그래스바
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
 
                       // 중간 공백
-                      SizedBox(height: 40),
+                      SizedBox(height: 40.h),
 
                       // 도서 데이터들을 가져오고 있습니다.
                       Text(
                         "도서 데이터를 가져오고 있습니다",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -199,8 +200,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width.w,
+                    height: MediaQuery.of(context).size.height.h,
                     // 배경 이미지
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -234,11 +235,11 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                 ),
                               ),
 
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10.h),
 
                               // search bar
                               AnimSearchBar(
-                                width: 300,
+                                width: 300.w,
                                 textController: searchTextController,
                                 helpText: "책 또는 저자를 입력",
                                 suffixIcon: const Icon(Icons.arrow_back),
@@ -265,7 +266,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 5),
+                          SizedBox(height: 5.h),
 
                           // 도서 Text
                           Padding(
@@ -276,16 +277,16 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "도서",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -296,7 +297,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
 
                           // 검색 도서 결과물이 있으면 도서들을 보여주고, 없으면 없다는 메시지를 화면에 표시한다.
                           searchBookModels.isNotEmpty
@@ -321,7 +322,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                             child: Stack(
                                               children: <Widget>[
                                                 Container(
-                                                  height: 150,
+                                                  height: 150.h,
                                                   decoration: BoxDecoration(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -340,7 +341,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                       BoxShadow(
                                                         color:
                                                             items[1].endColor,
-                                                        blurRadius: 12,
+                                                        blurRadius: 12.r,
                                                         offset:
                                                             const Offset(0, 6),
                                                       ),
@@ -348,11 +349,11 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                   ),
                                                 ),
                                                 Positioned(
-                                                  right: 0,
-                                                  bottom: 0,
-                                                  top: 0,
+                                                  right: 0.w,
+                                                  bottom: 0.h,
+                                                  top: 0.h,
                                                   child: CustomPaint(
-                                                    size: const Size(80, 50),
+                                                    size: Size(80.w, 50.h),
                                                     painter:
                                                         CustomCardShapePainter(
                                                       _borderRadius,
@@ -365,7 +366,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                   child: Row(
                                                     children: [
                                                       // 중간 공백
-                                                      const SizedBox(width: 10),
+                                                      SizedBox(width: 10.w),
 
                                                       // 도서 이미지
                                                       Expanded(
@@ -374,13 +375,13 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                           searchBookModels[
                                                                   index]
                                                               .coverSmallUrl,
-                                                          width: 100,
-                                                          height: 100,
+                                                          width: 100.w,
+                                                          height: 100.h,
                                                         ),
                                                       ),
 
                                                       // 중간 공백
-                                                      const SizedBox(width: 10),
+                                                      SizedBox(width: 10.w),
 
                                                       // 도서 제목
                                                       Expanded(
@@ -389,12 +390,11 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                           searchBookModels[
                                                                   index]
                                                               .title,
-                                                          style:
-                                                              const TextStyle(
+                                                          style: TextStyle(
                                                             color: Colors.white,
                                                             fontFamily:
                                                                 'Avenir',
-                                                            fontSize: 17,
+                                                            fontSize: 17.sp,
                                                             fontWeight:
                                                                 FontWeight.w700,
                                                           ),
@@ -402,7 +402,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                       ),
 
                                                       // 중간 공백
-                                                      const SizedBox(width: 20),
+                                                      SizedBox(width: 20.w),
 
                                                       // 도서 번쨰 체크
                                                       Expanded(
@@ -413,23 +413,17 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                                           children: [
                                                             Text(
                                                               "도서 ${index + 1}",
-                                                              style:
-                                                                  const TextStyle(
+                                                              style: TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontFamily:
                                                                     'Avenir',
-                                                                fontSize: 15,
+                                                                fontSize: 15.sp,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700,
                                                               ),
                                                             ),
-
-                                                            // RatingBar(
-                                                            //   rating: items[index]
-                                                            //       .rating,
-                                                            // ),
                                                           ],
                                                         ),
                                                       ),
@@ -445,29 +439,29 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                   ),
                                 )
                               : SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 400,
+                                  width: MediaQuery.of(context).size.width.w,
+                                  height: 400.h,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       // 중간 공백
-                                      const SizedBox(height: 100),
+                                      SizedBox(height: 100.h),
 
                                       // 데이터가 존재하지 않는 아이콘
                                       Image.asset(
                                         "assets/imgs/sad.png",
-                                        width: 100,
-                                        height: 100,
+                                        width: 100.w,
+                                        height: 100.h,
                                       ),
 
                                       // 중간 공백
-                                      const SizedBox(height: 40),
+                                      SizedBox(height: 40.h),
 
                                       // 데이터가 존재하지 않습니다 Text
-                                      const Text(
+                                      Text(
                                         "데이터가 존재하지 않습니다.",
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
@@ -476,7 +470,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                 ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
                         ],
                       ),
                     ),

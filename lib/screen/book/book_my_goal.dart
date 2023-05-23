@@ -10,6 +10,7 @@ import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
@@ -606,7 +607,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
               return false;
             },
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width.w,
               // 배경 이미지
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -619,18 +620,18 @@ class _BookMyGoalState extends State<BookMyGoal> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   // 프로그래스바
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
 
                   // 중간 공백
-                  SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
                   // 목표 및 사용자 서재 데이터를 가져오고 있습니다
                   Text(
                     "목표 및 사용자 서재\n 데이터를 가져오고 있습니다",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -655,7 +656,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
             },
             child: SingleChildScrollView(
               child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width.w,
                 // 배경 이미지
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -672,7 +673,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 목표 확인, 사용사 서재 Text
                       Padding(
@@ -683,16 +684,16 @@ class _BookMyGoalState extends State<BookMyGoal> {
                             color: const Color.fromARGB(255, 228, 201, 232),
                             shadowColor: Colors.grey.withOpacity(0.5),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(5.0.r),
                             ),
-                            child: const SizedBox(
-                              width: 250,
-                              height: 40,
+                            child: SizedBox(
+                              width: 250.w,
+                              height: 40.h,
                               child: Center(
                                 child: Text(
                                   "목표 확인 및 사용자 서재",
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -703,7 +704,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 목표 설정/수정하기 버튼
                       Align(
@@ -718,24 +719,24 @@ class _BookMyGoalState extends State<BookMyGoal> {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(10.0.r),
                             ),
                             backgroundColor: Colors.purple,
                             padding: EdgeInsets.symmetric(
                               horizontal:
-                                  MediaQuery.of(context).size.width / 20.0,
-                              vertical: 15,
+                                  MediaQuery.of(context).size.width.w / 20.0,
+                              vertical: 15.h,
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             "목표 설정/수정",
-                            style: TextStyle(fontSize: 12),
+                            style: TextStyle(fontSize: 12.sp),
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 25),
+                      SizedBox(height: 25.h),
 
                       // 1번째 목표, 2번쨰 목표, 3번쨰 목표
                       Row(
@@ -757,8 +758,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 1 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -794,8 +795,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 1 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -850,8 +851,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 1 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: SingleChildScrollView(
                                         scrollDirection: Axis.vertical,
                                         child: Column(
@@ -864,27 +865,27 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 진행 도서 분야
                                             Text(
                                                 "도서 분야 : ${category[objectives[0]["categoryId"]]}"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 목표 권수
                                             Text(
                                                 "목표 권수 : ${objectives[0]["targetQuantity"]}권"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 달성 권수
                                             Text("달성 권수 : $accomplishCount권"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 달성률
                                             Text(
@@ -915,12 +916,12 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 40,
-                                  child: Center(
+                                child: SizedBox(
+                                  width: 100.w,
+                                  height: 40.h,
+                                  child: const Center(
                                     child: Text(
                                       "1번째 목표",
                                       // "목표를 설정해주세요!!",
@@ -950,8 +951,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 2 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -987,8 +988,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 2 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -1043,8 +1044,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 2 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: SingleChildScrollView(
                                         child: Column(
                                           crossAxisAlignment:
@@ -1055,27 +1056,27 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               "진행 기간 : ${objectives[1]["startDate"]} ~ ${objectives[1]["endDate"]}",
                                             ),
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 진행 도서 분야
                                             Text(
                                                 "도서 분야 : ${category[objectives[1]["categoryId"]]}"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 목표 권수
                                             Text(
                                                 "목표 권수 : ${objectives[1]["targetQuantity"]}권"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 달성 권수
                                             Text("달성 권수 : $accomplishCount권"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 달성률
                                             Text(
@@ -1106,12 +1107,12 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 40,
-                                  child: Center(
+                                child: SizedBox(
+                                  width: 100.w,
+                                  height: 40.h,
+                                  child: const Center(
                                     child: Text(
                                       "2번째 목표",
                                       // "목표를 설정해주세요!!",
@@ -1141,8 +1142,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 3 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -1178,8 +1179,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 3 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
@@ -1234,8 +1235,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   AlertDialog(
                                     title: const Text("목표 3 진행 현황"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: SingleChildScrollView(
                                         child: Column(
                                           crossAxisAlignment:
@@ -1247,27 +1248,27 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 진행 도서 분야
                                             Text(
                                                 "도서 분야 : ${category[objectives[2]["categoryId"]]}"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 목표 권수
                                             Text(
                                                 "목표 권수 : ${objectives[2]["targetQuantity"]}권"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 달성 권수
                                             Text("달성 권수 : $accomplishCount권"),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 달성률
                                             Text(
@@ -1298,12 +1299,12 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 100,
-                                  height: 40,
-                                  child: Center(
+                                child: SizedBox(
+                                  width: 100.w,
+                                  height: 40.h,
+                                  child: const Center(
                                     child: Text(
                                       "3번째 목표",
                                       // "목표를 설정해주세요!!",
@@ -1320,38 +1321,39 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 25),
+                      SizedBox(height: 25.h),
 
                       // 목표와 관련된 여러 정보들을 취합해서 Card로 나타낸다.
                       SizedBox(
-                        width: 400,
-                        height: 230,
+                        width: 400.w,
+                        height: 230.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: objectAnalysisContents.length,
                           itemBuilder: (context, index) => SizedBox(
-                            width: 400,
-                            height: 230,
+                            width: 400.w,
+                            height: 230.h,
                             child: Stack(
                               children: [
                                 Positioned(
-                                  top: 35,
-                                  left: 20,
+                                  top: 35.h,
+                                  left: 20.w,
                                   child: Material(
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.9,
-                                      height: 180,
+                                      width:
+                                          MediaQuery.of(context).size.width.w *
+                                              0.9,
+                                      height: 180.h,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0.r),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.grey.withOpacity(0.3),
                                             offset: const Offset(-10.0, 10.0),
-                                            blurRadius: 20.0,
-                                            spreadRadius: 4.0,
+                                            blurRadius: 20.0.r,
+                                            spreadRadius: 4.0.r,
                                           )
                                         ],
                                       ),
@@ -1359,20 +1361,21 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: 0,
-                                  left: 30,
+                                  top: 0.h,
+                                  left: 30.w,
                                   child: Card(
                                     elevation: 10.0,
                                     shadowColor: Colors.grey.withOpacity(0.5),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius:
+                                          BorderRadius.circular(15.0.r),
                                     ),
                                     child: Container(
-                                      width: 125,
-                                      height: 150,
+                                      width: 125.w,
+                                      height: 150.h,
                                       decoration: BoxDecoration(
                                         borderRadius:
-                                            BorderRadius.circular(10.0),
+                                            BorderRadius.circular(10.0.r),
                                         image: DecorationImage(
                                           fit: BoxFit.fill,
                                           image: AssetImage(
@@ -1383,21 +1386,21 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 ),
                                 Positioned(
-                                  top: 45,
-                                  left: 180,
+                                  top: 45.h,
+                                  left: 180.w,
                                   child: Container(
                                     padding: const EdgeInsets.all(16.0),
-                                    width: 180,
-                                    height: 150,
+                                    width: 180.w,
+                                    height: 150.h,
                                     child: Column(
                                       children: [
                                         Text(
                                           "${objectAnaysisTitles[index]} :  ${objectAnalysisContents[index].toString()}",
                                           //"목표를 설정해주세요",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF363f93),
+                                            color: const Color(0xFF363f93),
                                           ),
                                         ),
                                       ],
@@ -1411,15 +1414,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 읽고 싶은 도서
                       TapToExpand(
                         color: Colors.purple,
                         content: Center(
                           child: SizedBox(
-                            width: 300,
-                            height: 400,
+                            width: 300.w,
+                            height: 400.h,
                             child: wantToReadBooks.isNotEmpty
                                 ? ListView.separated(
                                     scrollDirection: Axis.horizontal,
@@ -1435,8 +1438,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         );
                                       },
                                       child: SizedBox(
-                                        width: 250,
-                                        height: 400,
+                                        width: 250.w,
+                                        height: 400.h,
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.vertical,
                                           child: Card(
@@ -1445,7 +1448,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 Colors.grey.withOpacity(0.5),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(15.0),
+                                                  BorderRadius.circular(15.0.r),
                                             ),
                                             child: Column(
                                               children: [
@@ -1461,8 +1464,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                             "읽고 싶은 도서에서 삭제하기",
                                                           ),
                                                           content: SizedBox(
-                                                            width: 100,
-                                                            height: 150,
+                                                            width: 100.w,
+                                                            height: 150.h,
                                                             child: Column(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -1573,8 +1576,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 Image.network(
                                                   wantToReadBooks[index]
                                                       .coverSmallUrl,
-                                                  width: 150,
-                                                  height: 150,
+                                                  width: 150.w,
+                                                  height: 150.h,
                                                 ),
 
                                                 // 도서 제목
@@ -1592,10 +1595,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
-
-                                                // 중간 공백
-                                                const SizedBox(width: 10),
+                                                SizedBox(height: 20.h),
 
                                                 // 도서 읽기 버튼
                                                 ElevatedButton(
@@ -1607,8 +1607,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                           "읽고 있는 도서 추가",
                                                         ),
                                                         content: SizedBox(
-                                                          width: 100,
-                                                          height: 150,
+                                                          width: 100.w,
+                                                          height: 150.h,
                                                           child: Column(
                                                             children: [
                                                               // text
@@ -1617,8 +1617,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                               ),
 
                                                               // 중간 공백
-                                                              const SizedBox(
-                                                                height: 50,
+                                                              SizedBox(
+                                                                height: 50.h,
                                                               ),
 
                                                               Row(
@@ -1647,9 +1647,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           content:
                                                                               SizedBox(
                                                                             width:
-                                                                                100,
+                                                                                100.w,
                                                                             height:
-                                                                                200,
+                                                                                200.h,
                                                                             child:
                                                                                 Column(
                                                                               children: [
@@ -1657,15 +1657,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                 const Text("도서 총 페이지 수를 설정해주세요"),
 
                                                                                 // 중간 공백
-                                                                                const SizedBox(height: 10),
+                                                                                SizedBox(height: 10.h),
 
                                                                                 // 총 페이지 수 설정
                                                                                 Center(
                                                                                   child: Padding(
                                                                                     padding: const EdgeInsets.all(16.0),
                                                                                     child: SizedBox(
-                                                                                      width: 50,
-                                                                                      height: 50,
+                                                                                      width: 50.w,
+                                                                                      height: 50.h,
                                                                                       child: TextField(
                                                                                         textAlign: TextAlign.center,
                                                                                         keyboardType: TextInputType.number,
@@ -1776,22 +1776,22 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                         RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                        10.0,
+                                                        10.0.r,
                                                       ),
                                                     ),
                                                     backgroundColor:
                                                         Colors.purple,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 10.w,
+                                                      vertical: 10.h,
                                                     ),
                                                   ),
                                                   child: const Text("도서 읽기"),
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 25),
+                                                SizedBox(height: 25.h),
                                               ],
                                             ),
                                           ),
@@ -1799,46 +1799,46 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                       ),
                                     ),
                                     separatorBuilder: (context, index) =>
-                                        const SizedBox(
-                                      width: 20,
+                                        SizedBox(
+                                      width: 20.w,
                                     ),
                                   )
-                                : const Center(
+                                : Center(
                                     child: Text(
                                       "읽고 싶은 도서가 없습니다.",
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                           ),
                         ),
-                        title: const Text(
+                        title: Text(
                           "읽고 싶은 도서",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                           ),
                         ),
                         onTapPadding: 10,
-                        closedHeight: 70,
+                        closedHeight: 70.h,
                         scrollable: true,
-                        borderRadius: 10,
-                        openedHeight: 400,
+                        borderRadius: 10.r,
+                        openedHeight: 400.h,
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 읽고 있는 도서
                       TapToExpand(
                         color: Colors.purple,
                         content: Center(
                           child: SizedBox(
-                            width: 300,
-                            height: 400,
+                            width: 300.w,
+                            height: 400.h,
                             child: nowReadBooks.isNotEmpty
                                 ? ListView.separated(
                                     scrollDirection: Axis.horizontal,
@@ -1854,8 +1854,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         );
                                       },
                                       child: SizedBox(
-                                        width: 250,
-                                        height: 400,
+                                        width: 250.w,
+                                        height: 400.h,
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.vertical,
                                           child: Card(
@@ -1864,7 +1864,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 Colors.grey.withOpacity(0.5),
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(15.0),
+                                                  BorderRadius.circular(15.0.r),
                                             ),
                                             child: Column(
                                               children: [
@@ -1880,8 +1880,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                             "읽고 있는 도서에서 삭제하기",
                                                           ),
                                                           content: SizedBox(
-                                                            width: 100,
-                                                            height: 150,
+                                                            width: 100.w,
+                                                            height: 150.h,
                                                             child: Column(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -1993,8 +1993,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 Image.network(
                                                   nowReadBooks[index]
                                                       .coverSmallUrl,
-                                                  width: 150,
-                                                  height: 150,
+                                                  width: 150.w,
+                                                  height: 150.h,
                                                 ),
 
                                                 // 도서 제목
@@ -2011,7 +2011,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
 
                                                 // 진행도 표시, 도서 읽기 완료 버튼
                                                 Padding(
@@ -2031,8 +2031,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                 '진행도 수정',
                                                               ),
                                                               content: SizedBox(
-                                                                width: 100,
-                                                                height: 100,
+                                                                width: 100.w,
+                                                                height: 100.h,
                                                                 child: Column(
                                                                   children: [
                                                                     // Text
@@ -2048,9 +2048,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
                                                                     // TextField
                                                                     SizedBox(
-                                                                      width: 50,
+                                                                      width:
+                                                                          50.w,
                                                                       height:
-                                                                          50,
+                                                                          50.h,
                                                                       child:
                                                                           TextField(
                                                                         controller:
@@ -2159,12 +2160,12 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                              5.0,
+                                                              5.0.r,
                                                             ),
                                                           ),
                                                           child: SizedBox(
-                                                            width: 100,
-                                                            height: 30,
+                                                            width: 100.w,
+                                                            height: 30.h,
                                                             child: Center(
                                                               child: Text(
                                                                 "${nowReadBooks_currentPage_totalPage[index]["currentPage"]}/${nowReadBooks_currentPage_totalPage[index]["totalPage"]}",
@@ -2190,8 +2191,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                 "읽기 완료",
                                                               ),
                                                               content: SizedBox(
-                                                                width: 100,
-                                                                height: 150,
+                                                                width: 100.w,
+                                                                height: 150.h,
                                                                 child: Column(
                                                                   mainAxisAlignment:
                                                                       MainAxisAlignment
@@ -2299,16 +2300,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                              10.0,
+                                                              10.0.r,
                                                             ),
                                                           ),
                                                           backgroundColor:
                                                               Colors.purple,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                            horizontal: 10,
-                                                            vertical: 10,
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                            horizontal: 10.w,
+                                                            vertical: 10.h,
                                                           ),
                                                         ),
                                                         child:
@@ -2319,7 +2319,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 20),
+                                                SizedBox(height: 20.h),
                                               ],
                                             ),
                                           ),
@@ -2327,46 +2327,46 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                       ),
                                     ),
                                     separatorBuilder: (context, index) =>
-                                        const SizedBox(
-                                      width: 20,
+                                        SizedBox(
+                                      width: 20.w,
                                     ),
                                   )
-                                : const Center(
+                                : Center(
                                     child: Text(
                                       "읽고 있는 도서가 없습니다",
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                           ),
                         ),
-                        title: const Text(
+                        title: Text(
                           "읽고 있는 도서",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                           ),
                         ),
                         onTapPadding: 10,
-                        closedHeight: 70,
+                        closedHeight: 70.h,
                         scrollable: true,
-                        borderRadius: 10,
-                        openedHeight: 400,
+                        borderRadius: 10.r,
+                        openedHeight: 400.h,
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.sp),
 
                       // 읽은 도서
                       TapToExpand(
                         color: Colors.purple,
                         content: Center(
                           child: SizedBox(
-                            width: 300,
-                            height: 400,
+                            width: 300.w,
+                            height: 400.h,
                             child: readBooks.isNotEmpty
                                 ? ListView.separated(
                                     scrollDirection: Axis.horizontal,
@@ -2382,15 +2382,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         );
                                       },
                                       child: SizedBox(
-                                        width: 250,
-                                        height: 400,
+                                        width: 250.w,
+                                        height: 400.h,
                                         child: Card(
                                           elevation: 10.0,
                                           shadowColor:
                                               Colors.grey.withOpacity(0.5),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(15.0),
+                                                BorderRadius.circular(15.0.r),
                                           ),
                                           child: Column(
                                             children: [
@@ -2407,8 +2407,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                           "읽은 도서에서 삭제하기",
                                                         ),
                                                         content: SizedBox(
-                                                          width: 100,
-                                                          height: 150,
+                                                          width: 100.w,
+                                                          height: 150.h,
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -2519,27 +2519,27 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 8.0),
+                                                  padding: EdgeInsets.symmetric(
+                                                    horizontal: 8.0.w,
+                                                  ),
                                                   child: Text(
                                                     category[readBooks[index]
                                                             .categoryId]
                                                         .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 12),
+                                                    style: TextStyle(
+                                                        fontSize: 12.sp),
                                                   ),
                                                 ),
                                               ),
 
                                               // 중간 공백
-                                              const SizedBox(height: 5),
+                                              SizedBox(height: 5.h),
 
                                               // 도서 이미지
                                               Image.network(
                                                 readBooks[index].coverSmallUrl,
-                                                width: 150,
-                                                height: 150,
+                                                width: 150.w,
+                                                height: 150.h,
                                               ),
 
                                               Padding(
@@ -2554,7 +2554,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               ),
 
                                               // 중간 공백
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: 10.h),
 
                                               // 도서 제목
                                               Text(
@@ -2565,45 +2565,45 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               ),
 
                                               // 중간 공백
-                                              const SizedBox(height: 10),
+                                              SizedBox(height: 10.h),
                                             ],
                                           ),
                                         ),
                                       ),
                                     ),
                                     separatorBuilder: (context, index) =>
-                                        const SizedBox(
-                                      width: 20,
+                                        SizedBox(
+                                      width: 20.w,
                                     ),
                                   )
-                                : const Center(
+                                : Center(
                                     child: Text(
                                       "읽은 도서가 없습니다",
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
+                                        fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
                           ),
                         ),
-                        title: const Text(
+                        title: Text(
                           "읽은 도서",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                           ),
                         ),
                         onTapPadding: 10,
-                        closedHeight: 70,
+                        closedHeight: 70.h,
                         scrollable: true,
-                        borderRadius: 10,
-                        openedHeight: 400,
+                        borderRadius: 10.r,
+                        openedHeight: 400.h,
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 100),
+                      SizedBox(height: 100.h),
                     ],
                   ),
                 ),

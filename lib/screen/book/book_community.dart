@@ -12,6 +12,7 @@ import 'package:book_project/screen/book/book_show_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookCommunity extends StatefulWidget {
@@ -245,18 +246,18 @@ class _BookCommunityState extends State<BookCommunity> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     // 프로그래스바
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
 
                     // 중간 공백
-                    SizedBox(height: 40),
+                    SizedBox(height: 40.h),
 
                     // 리뷰 데이터를 가져오고 있습니다 text
                     Text(
                       "리뷰 데이터를 가져오고 있습니다",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -284,8 +285,8 @@ class _BookCommunityState extends State<BookCommunity> {
               body: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width.w,
+                  height: MediaQuery.of(context).size.height.h,
                   // 배경 이미지
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -304,7 +305,7 @@ class _BookCommunityState extends State<BookCommunity> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // 중간 공백
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10.h),
 
                         // 도서 커뮤니티 Text
                         Padding(
@@ -317,14 +318,14 @@ class _BookCommunityState extends State<BookCommunity> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
-                              child: const SizedBox(
-                                width: 250,
-                                height: 40,
+                              child: SizedBox(
+                                width: 250.w,
+                                height: 40.h,
                                 child: Center(
                                   child: Text(
                                     "도서 커뮤니티",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -342,7 +343,7 @@ class _BookCommunityState extends State<BookCommunity> {
                             children: [
                               // search bar
                               AnimSearchBar(
-                                width: 250,
+                                width: 250.w,
                                 textController: searchTextController,
                                 helpText: "리뷰 제목을 입력하세요",
                                 suffixIcon: const Icon(Icons.arrow_back),
@@ -366,23 +367,23 @@ class _BookCommunityState extends State<BookCommunity> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.0.r),
                                   ),
                                   backgroundColor: Colors.purple,
                                   padding: EdgeInsets.symmetric(
                                     horizontal:
-                                        MediaQuery.of(context).size.width /
+                                        MediaQuery.of(context).size.width.w /
                                             40.0,
-                                    vertical: 15,
+                                    vertical: 15.h,
                                   ),
                                 ),
                                 child: Row(
-                                  children: const [
-                                    Icon(Icons.add),
-                                    SizedBox(width: 10),
+                                  children: [
+                                    const Icon(Icons.add),
+                                    SizedBox(width: 10.w),
                                     Text(
                                       "리뷰 작성",
-                                      style: TextStyle(fontSize: 12),
+                                      style: TextStyle(fontSize: 12.sp),
                                     ),
                                   ],
                                 ),
@@ -393,8 +394,8 @@ class _BookCommunityState extends State<BookCommunity> {
 
                         // 중간 공백
                         reviewBooks.isNotEmpty
-                            ? const SizedBox(height: 10)
-                            : const SizedBox(height: 50),
+                            ? SizedBox(height: 10.h)
+                            : SizedBox(height: 50.h),
 
                         // 리뷰 결과물 -> 없으면 결과가 없다는 text를 화면에 보여주고, 있으면 리뷰들을 보여준다.
                         reviewBooks.isNotEmpty
@@ -407,13 +408,13 @@ class _BookCommunityState extends State<BookCommunity> {
                                   itemBuilder: (context, index) => Padding(
                                     padding: const EdgeInsets.all(16.0),
                                     child: SizedBox(
-                                      height: 300,
+                                      height: 300.h,
                                       child: SingleChildScrollView(
                                         child: Card(
                                           shape: RoundedRectangleBorder(
                                             //모서리를 둥글게 하기 위해 사용
                                             borderRadius:
-                                                BorderRadius.circular(16.0),
+                                                BorderRadius.circular(16.0.r),
                                           ),
                                           elevation: 4.0,
                                           child: Padding(
@@ -423,16 +424,16 @@ class _BookCommunityState extends State<BookCommunity> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
+
                                                 // 이름
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.h),
                                                   child: Text(
                                                     "${reviewWriterInfos[index]["name"]}",
-                                                    style: const TextStyle(
-                                                      fontSize: 15,
+                                                    style: TextStyle(
+                                                      fontSize: 15.sp,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -440,18 +441,17 @@ class _BookCommunityState extends State<BookCommunity> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
 
                                                 // 아이디
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.h),
                                                   child: Text(
                                                     "@${reviewWriterInfos[index]["account"]}",
                                                     style: TextStyle(
                                                       color: Colors.grey[500],
-                                                      fontSize: 15,
+                                                      fontSize: 15.sp,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                     ),
@@ -459,17 +459,16 @@ class _BookCommunityState extends State<BookCommunity> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
 
                                                 // 리뷰 제목
                                                 Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.h),
                                                   child: Text(
                                                     "리뷰 제목 : ${reviewWriterInfos[index]["title"]}",
-                                                    style: const TextStyle(
-                                                      fontSize: 15,
+                                                    style: TextStyle(
+                                                      fontSize: 15.sp,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -491,7 +490,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                         color: Colors.amber,
                                                       ),
                                                       itemCount: 5,
-                                                      itemSize: 30.0,
+                                                      itemSize: 30.0.sp,
                                                       direction:
                                                           Axis.horizontal,
                                                     ),
@@ -689,17 +688,17 @@ class _BookCommunityState extends State<BookCommunity> {
                                                       style: likeReviews.contains(
                                                               reviewWriterInfos[
                                                                   index]["id"])
-                                                          ? const TextStyle(
+                                                          ? TextStyle(
                                                               color: Colors.red,
-                                                              fontSize: 15,
+                                                              fontSize: 15.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             )
-                                                          : const TextStyle(
+                                                          : TextStyle(
                                                               color:
                                                                   Colors.blue,
-                                                              fontSize: 15,
+                                                              fontSize: 15.sp,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -737,8 +736,8 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                 ),
                                                                 content:
                                                                     SizedBox(
-                                                                  width: 100,
-                                                                  height: 200,
+                                                                  width: 100.w,
+                                                                  height: 200.h,
                                                                   child:
                                                                       SingleChildScrollView(
                                                                     child:
@@ -750,9 +749,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                         ),
 
                                                                         // 중간 공백
-                                                                        const SizedBox(
+                                                                        SizedBox(
                                                                           height:
-                                                                              10,
+                                                                              10.h,
                                                                         ),
 
                                                                         // 영리목적/홍보성
@@ -768,10 +767,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               },
                                                                             ),
 
-                                                                            const Text(
+                                                                            Text(
                                                                               "영리목적/홍보성",
                                                                               style: TextStyle(
-                                                                                fontSize: 12.5,
+                                                                                fontSize: 12.5.sp,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -791,10 +790,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               },
                                                                             ),
 
-                                                                            const Text(
+                                                                            Text(
                                                                               "욕설/인신공격",
                                                                               style: TextStyle(
-                                                                                fontSize: 12.5,
+                                                                                fontSize: 12.5.sp,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -814,10 +813,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               },
                                                                             ),
 
-                                                                            const Text(
+                                                                            Text(
                                                                               "불법정보",
                                                                               style: TextStyle(
-                                                                                fontSize: 12.5,
+                                                                                fontSize: 12.5.sp,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -837,10 +836,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               },
                                                                             ),
 
-                                                                            const Text(
+                                                                            Text(
                                                                               "개인정보노출",
                                                                               style: TextStyle(
-                                                                                fontSize: 12.5,
+                                                                                fontSize: 12.5.sp,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -860,10 +859,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               },
                                                                             ),
 
-                                                                            const Text(
+                                                                            Text(
                                                                               "음란성/선전성",
                                                                               style: TextStyle(
-                                                                                fontSize: 12.5,
+                                                                                fontSize: 12.5.sp,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -883,10 +882,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               },
                                                                             ),
 
-                                                                            const Text(
+                                                                            Text(
                                                                               "같은 내용 도배",
                                                                               style: TextStyle(
-                                                                                fontSize: 12.5,
+                                                                                fontSize: 12.5.sp,
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
@@ -912,12 +911,12 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             maxLines:
                                                                                 10,
                                                                             decoration:
-                                                                                const InputDecoration(
+                                                                                InputDecoration(
                                                                               enabledBorder: OutlineInputBorder(
-                                                                                borderSide: BorderSide(width: 3, color: Colors.purple),
+                                                                                borderSide: BorderSide(width: 3.w, color: Colors.purple),
                                                                               ),
                                                                               focusedBorder: OutlineInputBorder(
-                                                                                borderSide: BorderSide(width: 3, color: Colors.purple),
+                                                                                borderSide: BorderSide(width: 3.w, color: Colors.purple),
                                                                               ),
                                                                               labelText: '신고내용',
                                                                             ),
@@ -1054,11 +1053,11 @@ class _BookCommunityState extends State<BookCommunity> {
                                                     ),
 
                                                     // 신고하기 Text
-                                                    const Text(
+                                                    Text(
                                                       "신고하기",
                                                       style: TextStyle(
                                                         color: Colors.red,
-                                                        fontSize: 15,
+                                                        fontSize: 15.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                       ),
@@ -1067,7 +1066,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
 
                                                 // 도서 정보
                                                 GestureDetector(
@@ -1083,8 +1082,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                     width:
                                                         MediaQuery.of(context)
                                                             .size
-                                                            .width,
-                                                    height: 200,
+                                                            .width
+                                                            .w,
+                                                    height: 200.h,
                                                     child: Card(
                                                       shape:
                                                           RoundedRectangleBorder(
@@ -1092,7 +1092,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(
-                                                          16.0,
+                                                          16.0.r,
                                                         ),
                                                       ),
                                                       elevation: 4.0, //그림자 깊이
@@ -1106,8 +1106,8 @@ class _BookCommunityState extends State<BookCommunity> {
                                                             Image.network(
                                                               reviewBooks[index]
                                                                   .coverSmallUrl,
-                                                              width: 150,
-                                                              height: 150,
+                                                              width: 150.w,
+                                                              height: 150.h,
                                                             ),
 
                                                             // 도서 제목
@@ -1123,8 +1123,8 @@ class _BookCommunityState extends State<BookCommunity> {
                                                             ),
 
                                                             // 중간 공백
-                                                            const SizedBox(
-                                                              width: 10,
+                                                            SizedBox(
+                                                              width: 10.w,
                                                             ),
                                                           ],
                                                         ),
@@ -1134,7 +1134,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                 ),
 
                                                 // 중간 공백
-                                                const SizedBox(height: 10),
+                                                SizedBox(height: 10.h),
 
                                                 // 리뷰 내용
                                                 Padding(
@@ -1142,10 +1142,11 @@ class _BookCommunityState extends State<BookCommunity> {
                                                       16.0),
                                                   child: Text(
                                                     "리뷰 내용 : ${reviewWriterInfos[index]["content"]}",
-                                                    style: const TextStyle(
-                                                        fontSize: 19,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                    style: TextStyle(
+                                                      fontSize: 19.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
                                                   ),
                                                 ),
 
@@ -1167,8 +1168,8 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                 ),
                                                                 content:
                                                                     SizedBox(
-                                                                  width: 100,
-                                                                  height: 150,
+                                                                  width: 100.w,
+                                                                  height: 150.h,
                                                                   child: Column(
                                                                     children: [
                                                                       // text
@@ -1270,28 +1271,31 @@ class _BookCommunityState extends State<BookCommunity> {
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          10.0),
+                                                                10.0.r,
+                                                              ),
                                                             ),
                                                             backgroundColor:
                                                                 Colors.purple,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              horizontal: 40,
-                                                              vertical: 15,
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                              horizontal: 40.w,
+                                                              vertical: 15.h,
                                                             ),
                                                           ),
                                                           child: Row(
-                                                            children: const [
-                                                              Icon(
-                                                                  Icons.delete),
+                                                            children: [
+                                                              const Icon(
+                                                                Icons.delete,
+                                                              ),
                                                               SizedBox(
-                                                                  width: 10),
+                                                                  width: 10.w),
                                                               Text(
                                                                 "리뷰 삭제하기",
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        12),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      12.sp,
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
@@ -1315,23 +1319,23 @@ class _BookCommunityState extends State<BookCommunity> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   // 중간 공백
-                                  const SizedBox(height: 100),
+                                  SizedBox(height: 100.h),
 
                                   // 데이터가 존재하지 않는 아이콘
                                   Image.asset(
                                     "assets/imgs/sad.png",
-                                    width: 100,
-                                    height: 100,
+                                    width: 100.w,
+                                    height: 100.h,
                                   ),
 
                                   // 중간 공백
-                                  const SizedBox(height: 40),
+                                  SizedBox(height: 40.h),
 
                                   // 데이터가 존재하지 않습니다 Text
-                                  const Text(
+                                  Text(
                                     "데이터가 존재하지 않습니다.",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -1339,7 +1343,7 @@ class _BookCommunityState extends State<BookCommunity> {
                               ),
 
                         // 중간 공백
-                        const SizedBox(height: 40),
+                        SizedBox(height: 40.h),
                       ],
                     ),
                   ),

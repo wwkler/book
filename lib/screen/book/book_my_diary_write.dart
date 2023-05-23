@@ -9,6 +9,7 @@ import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -149,8 +150,8 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
             child: SafeArea(
               child: Scaffold(
                 body: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width.w,
+                  height: MediaQuery.of(context).size.height.h,
                   // 배경 이미지
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -164,20 +165,20 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       // 프로그래스바
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
 
                       // 중간 공백
-                      SizedBox(height: 40),
+                      SizedBox(height: 40.h),
 
                       // 읽고 있는 도서, 읽은 도서 데이터를 가져오고 있습니다
                       Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Text(
                           "읽고 있는 도서, 읽은 도서\n 데이터를 가져오고 있습니다",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -207,8 +208,8 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
             child: SafeArea(
               child: Scaffold(
                 body: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width.w,
+                  height: MediaQuery.of(context).size.height.h,
                   // 배경 이미지
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -241,7 +242,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
 
                           // 새 일지 작성 Text
                           Padding(
@@ -252,16 +253,16 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "새 일지 작성",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -272,7 +273,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
 
                           // 읽고 있는 도서, 읽은 도서가 있는지 없는지에 따라 다른 로직 구현
                           books.isNotEmpty
@@ -281,20 +282,20 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       hint: Row(
-                                        children: const [
-                                          Icon(
+                                        children: [
+                                          const Icon(
                                             Icons.list,
                                             size: 16,
                                             color: Colors.white,
                                           ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 10.w,
                                           ),
                                           Expanded(
                                             child: Text(
                                               '읽고 있는/ 읽은 도서 검색',
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
                                               ),
@@ -317,18 +318,18 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                                     // 읽고 있는 / 읽은 도서 이미지
                                                     Image.network(
                                                       bookModel.coverSmallUrl,
-                                                      width: 50,
-                                                      height: 50,
+                                                      width: 50.w,
+                                                      height: 50.h,
                                                     ),
 
                                                     // 중간 공백
-                                                    const SizedBox(width: 10),
+                                                    SizedBox(width: 10.w),
 
                                                     // 읽고 있는 / 읽은 도서 제목
                                                     Text(
                                                       bookModel.title,
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
+                                                      style: TextStyle(
+                                                        fontSize: 14.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white,
@@ -338,7 +339,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                                     ),
 
                                                     // 중간 공백
-                                                    const SizedBox(width: 10),
+                                                    SizedBox(width: 10.w),
                                                   ],
                                                 ),
                                               ),
@@ -358,13 +359,15 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                         });
                                       },
                                       buttonStyleData: ButtonStyleData(
-                                        height: 50,
-                                        width: 250,
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 14),
+                                        height: 50.h,
+                                        width: 250.w,
+                                        padding: EdgeInsets.only(
+                                          left: 14.w,
+                                          right: 14.w,
+                                        ),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(14),
+                                              BorderRadius.circular(14.r),
                                           border: Border.all(
                                             color: Colors.black26,
                                           ),
@@ -381,8 +384,8 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                         iconDisabledColor: Colors.grey,
                                       ),
                                       dropdownStyleData: DropdownStyleData(
-                                        maxHeight: 200,
-                                        width: 300,
+                                        maxHeight: 200.h,
+                                        width: 300.w,
                                         padding: null,
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -392,7 +395,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                         elevation: 8,
                                         offset: const Offset(-20, 0),
                                         scrollbarTheme: ScrollbarThemeData(
-                                          radius: const Radius.circular(40),
+                                          radius: Radius.circular(40.r),
                                           thickness:
                                               MaterialStateProperty.all<double>(
                                                   6),
@@ -401,11 +404,12 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                                   true),
                                         ),
                                       ),
-                                      menuItemStyleData:
-                                          const MenuItemStyleData(
-                                        height: 80,
+                                      menuItemStyleData: MenuItemStyleData(
+                                        height: 80.h,
                                         padding: EdgeInsets.only(
-                                            left: 14, right: 14),
+                                          left: 14.w,
+                                          right: 14.w,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -415,20 +419,20 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                     child: DropdownButton2(
                                       isExpanded: true,
                                       hint: Row(
-                                        children: const [
-                                          Icon(
+                                        children: [
+                                          const Icon(
                                             Icons.list,
                                             size: 16,
                                             color: Colors.white,
                                           ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 10.w,
                                           ),
                                           Expanded(
                                             child: Text(
                                               '읽고 있는 / 읽은 도서가 없습니다',
                                               style: TextStyle(
-                                                fontSize: 14,
+                                                fontSize: 14.sp,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
                                               ),
@@ -439,13 +443,15 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                       ),
                                       items: [],
                                       buttonStyleData: ButtonStyleData(
-                                        height: 50,
-                                        width: 250,
-                                        padding: const EdgeInsets.only(
-                                            left: 14, right: 14),
+                                        height: 50.h,
+                                        width: 250.w,
+                                        padding: EdgeInsets.only(
+                                          left: 14.w,
+                                          right: 14.w,
+                                        ),
                                         decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(14),
+                                              BorderRadius.circular(14.r),
                                           border: Border.all(
                                             color: Colors.black26,
                                           ),
@@ -458,7 +464,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                 ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
 
                           // 카메라 사진
                           Center(
@@ -485,30 +491,30 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                 elevation: 10.0,
                                 color: Colors.white.withOpacity(0.8),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 200,
-                                  height: 200,
+                                  width: 200.w,
+                                  height: 200.h,
                                   // 이미지가 있냐, 없냐에 따라 다른 로직 구현
                                   child: _photo == null
                                       ? Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: const [
+                                          children: [
                                             // + 아이콘
-                                            Icon(
+                                            const Icon(
                                               Icons.add,
                                               size: 40,
                                             ),
 
-                                            SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 이미지 추가
                                             Text(
                                               "이미지를 추가하세요",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -524,7 +530,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
 
                           // 일지 제목
                           Padding(
@@ -534,14 +540,14 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                               keyboardType: TextInputType.multiline,
                               minLines: 1,
                               maxLines: 2,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 labelText: '리뷰 제목',
                               ),
@@ -556,14 +562,14 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                               keyboardType: TextInputType.multiline,
                               minLines: 2,
                               maxLines: 10,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      width: 3, color: Colors.purple),
+                                      width: 3.w, color: Colors.purple),
                                 ),
                                 labelText: '감상평',
                               ),
@@ -571,13 +577,13 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
 
                           // 작성 완료 버튼
                           Align(
                             alignment: Alignment.center,
                             child: SizedBox(
-                              width: 300,
+                              width: 300.w,
                               child: ElevatedButton(
                                 onPressed: () async {
                                   // 검증
@@ -663,24 +669,24 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.0.r),
                                   ),
                                   backgroundColor: Colors.purple,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 60,
-                                    vertical: 20,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 60.w,
+                                    vertical: 20.h,
                                   ),
                                 ),
                                 child: Row(
-                                  children: const [
-                                    Icon(
+                                  children: [
+                                    const Icon(
                                       Icons.create_outlined,
                                       size: 30,
                                     ),
-                                    SizedBox(width: 40),
+                                    SizedBox(width: 40.w),
                                     Text(
                                       "작성 완료",
-                                      style: TextStyle(fontSize: 15),
+                                      style: TextStyle(fontSize: 15.sp),
                                     ),
                                   ],
                                 ),
@@ -689,7 +695,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
                         ],
                       ),
                     ),

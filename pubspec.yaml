@@ -82,6 +82,9 @@ dependencies:
   # url에 대한 페이지로 이동하는 라이브러리
   url_launcher: ^6.1.11
 
+  # 화면 및 글꼴 크기를 조정하기 위한 플러터 플러그인. 다양한 모델에서 잘 보이도록 보장하는 라이브러리
+  flutter_screenutil: ^5.7.0
+
 
 
 

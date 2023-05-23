@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ReportHistoryShowPreview extends StatefulWidget {
@@ -56,7 +57,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
         child: Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width.w,
               // 배경 이미지
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -85,7 +86,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
 
                     // 신고 내역 상세 보기 Text
                     Padding(
@@ -96,16 +97,16 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                           color: const Color.fromARGB(255, 228, 201, 232),
                           shadowColor: Colors.grey.withOpacity(0.5),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
+                            borderRadius: BorderRadius.circular(5.0.r),
                           ),
-                          child: const SizedBox(
-                            width: 250,
-                            height: 40,
+                          child: SizedBox(
+                            width: 250.w,
+                            height: 40.h,
                             child: Center(
                               child: Text(
                                 "신고 내역 상세 보기",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -116,7 +117,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
 
                     // 신고 내역 상세 보기 목록
                     Padding(
@@ -126,11 +127,11 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                         color: Colors.white,
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(5.0.r),
                         ),
                         child: SizedBox(
-                          width: 350,
-                          height: 600,
+                          width: 350.w,
+                          height: 600.h,
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: Column(
@@ -143,16 +144,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     elevation: 5.0,
                                     color: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
                                     ),
                                     child: SizedBox(
-                                      width: 350,
-                                      height: 40,
+                                      width: 350.w,
+                                      height: 40.h,
                                       child: Center(
                                         child: Text(
                                           "신고 리뷰 제목 : ${report!["review"]["title"]}",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -168,16 +170,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     elevation: 5.0,
                                     color: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
                                     ),
                                     child: SizedBox(
-                                      width: 350,
-                                      height: 40,
+                                      width: 350.w,
+                                      height: 40.h,
                                       child: Center(
                                         child: Text(
                                           "신고 리뷰 작성자 아이디 : ${report!["review"]["member"]["account"]}",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -193,16 +196,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     elevation: 5.0,
                                     color: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
                                     ),
                                     child: SizedBox(
-                                      width: 350,
-                                      height: 40,
+                                      width: 350.w,
+                                      height: 40.h,
                                       child: Center(
                                         child: Text(
                                           "신고 리뷰 작성자 이름 : ${report!["review"]["member"]["name"]}",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -216,15 +220,15 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
                                     report!["review"]["content"],
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
 
                                 // 중간 공백
-                                const SizedBox(height: 50),
+                                SizedBox(height: 50.h),
 
                                 // 신고자명
                                 Padding(
@@ -233,16 +237,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     elevation: 5.0,
                                     color: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
                                     ),
                                     child: SizedBox(
-                                      width: 350,
-                                      height: 40,
+                                      width: 350.w,
+                                      height: 40.h,
                                       child: Center(
                                         child: Text(
                                           "신고자명 : ${report!["member"]["name"]}",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -258,16 +263,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     elevation: 5.0,
                                     color: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
                                     ),
                                     child: SizedBox(
-                                      width: 350,
-                                      height: 40,
+                                      width: 350.w,
+                                      height: 40.h,
                                       child: Center(
                                         child: Text(
                                           "신고 날짜 : ${report!["createdAt"].toString().substring(0, 10)}",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -283,16 +289,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     elevation: 5.0,
                                     color: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0.r),
                                     ),
                                     child: SizedBox(
-                                      width: 350,
-                                      height: 40,
+                                      width: 350.w,
+                                      height: 40.h,
                                       child: Center(
                                         child: Text(
                                           "신고 사유 : ${report!["reason"]}",
-                                          style: const TextStyle(
-                                            fontSize: 15,
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -302,22 +309,22 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 ),
 
                                 // 중간 공백
-                                const SizedBox(height: 30),
+                                SizedBox(height: 30.h),
 
                                 // 신고 내용
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
                                     report!["review"]["content"],
-                                    style: const TextStyle(
-                                      fontSize: 20,
+                                    style: TextStyle(
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
 
                                 // 중간 공백
-                                const SizedBox(height: 200),
+                                SizedBox(height: 200.h),
                               ],
                             ),
                           ),
@@ -326,12 +333,12 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
 
                     // 넘어가기, 경고, 재재 버튼
                     SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
+                      width: MediaQuery.of(context).size.width.w,
+                      height: 100.h,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -390,18 +397,18 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 15,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 30.w,
+                                vertical: 15.h,
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "넘어가기",
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                               ),
                             ),
                           ),
@@ -461,17 +468,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 15,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 30.w,
+                                vertical: 15.h,
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "경고",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
                           ),
 
@@ -530,17 +537,17 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 15,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 30.w,
+                                vertical: 15.h,
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "영구정지",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
                           ),
                         ],

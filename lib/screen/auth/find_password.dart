@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:lottie/lottie.dart';
@@ -95,24 +96,24 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40.h),
 
                       // 자물쇠 이미지
                       Lottie.network(
                         'https://assets6.lottiefiles.com/private_files/lf30_ulp9xiqw.json',
                         //'https://assets6.lottiefiles.com/packages/lf20_k9wsvzgd.json',
                         animate: true,
-                        height: 120,
-                        width: 600,
+                        height: 120.h,
+                        width: 600.w,
                       ),
 
                       // BookMakase Find Password Text
                       Text(
                         "BookMakase\n Find Password Screen",
                         style: GoogleFonts.indieFlower(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                            fontSize: 30.sp,
                           ),
                         ),
                       ),
@@ -124,23 +125,23 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                           textStyle: TextStyle(
                             color: Colors.black.withOpacity(0.5),
                             fontWeight: FontWeight.w300,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 30,
+                      SizedBox(
+                        height: 30.h,
                       ),
 
                       // ID
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -168,20 +169,20 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                               return null;
                             }
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -189,18 +190,18 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                             fillColor: Colors.white,
                             labelText: "ID",
                             hintText: 'ex) abcdefg1',
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 이메일
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           autovalidateMode: AutovalidateMode.always,
@@ -228,67 +229,22 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                             }
                           },
                           decoration: InputDecoration(
-                            focusedBorder: const UnderlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
-                            // suffixIcon: GestureDetector(
-                            //   onTap: () async {
-                            //     if (isEmailState == true) {
-                            //       // 앱에서 인증번호를 만들어서 사용자 핸드폰 번호에 전달함
-                            //       // session = Random().nextInt(99999).toString();
-
-                            //       // await twilioFlutter.sendSMS(
-                            //       //   toNumber: "+82$phoneNumber",
-                            //       //   messageBody: '인증번호는 $session 입니다.',
-                            //       // );
-
-                            //       myauth.setConfig(
-                            //         appEmail: "me@rohitchouhan.com",
-                            //         appName: "Email OTP",
-                            //         userEmail: email,
-                            //         otpLength: 6,
-                            //         otpType: OTPType.digitsOnly,
-                            //       );
-
-                            //       if (await myauth.sendOTP() == true) {
-                            //         Get.snackbar(
-                            //           "확인 메시지",
-                            //           "이메일로 인증 번호를 전송했습니다",
-                            //           duration: const Duration(seconds: 5),
-                            //           snackPosition: SnackPosition.TOP,
-                            //         );
-                            //       } else {
-                            //         Get.snackbar(
-                            //           "이상 메시지",
-                            //           "FAIL",
-                            //           duration: const Duration(seconds: 5),
-                            //           snackPosition: SnackPosition.TOP,
-                            //         );
-                            //       }
-                            //     } else {
-                            //       Get.snackbar(
-                            //         "이상 메시지",
-                            //         "이메일을 올바르게 입력해주세요",
-                            //         duration: const Duration(seconds: 5),
-                            //         snackPosition: SnackPosition.TOP,
-                            //       );
-                            //     }
-                            //   },
-                            //   child: const Icon(Icons.message),
-                            // ),
                             filled: true,
                             fillColor: Colors.white,
                             labelText: "이메일 주소",
@@ -299,8 +255,8 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 15,
+                      SizedBox(
+                        height: 15.h,
                       ),
 
                       // 비밀번호 변경 버튼
@@ -335,8 +291,8 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                   AlertDialog(
                                     title: const Text("임시 비밀번호 발급"),
                                     content: SizedBox(
-                                      width: 100,
-                                      height: 150,
+                                      width: 100.w,
+                                      height: 150.h,
                                       child: Column(
                                         children: [
                                           // 임시 비밀번호를 보여주는 문구
@@ -345,7 +301,7 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                           ),
 
                                           // 중간 공백
-                                          const SizedBox(height: 25),
+                                          SizedBox(height: 25.h),
 
                                           // 로고인 페이지로 이동하는 버튼
                                           TextButton(
@@ -415,23 +371,23 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0.r),
                           ),
                           backgroundColor: Colors.purple,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 40.w,
+                            vertical: 20.h,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "임시 비밀번호 발급",
-                          style: TextStyle(fontSize: 15),
+                          style: TextStyle(fontSize: 15.sp),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(
-                        height: 40,
+                      SizedBox(
+                        height: 40.h,
                       ),
                     ],
                   ),

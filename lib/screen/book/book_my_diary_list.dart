@@ -7,6 +7,7 @@ import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_my_diary_show_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookMyDiaryList extends StatefulWidget {
@@ -101,7 +102,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
         child: Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width.w,
               // 배경 이미지
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -131,7 +132,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20.h),
 
                     // 일지 목록 보기 Text
                     Padding(
@@ -144,14 +145,14 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
-                          child: const SizedBox(
-                            width: 250,
-                            height: 40,
+                          child: SizedBox(
+                            width: 250.w,
+                            height: 40.h,
                             child: Center(
                               child: Text(
                                 "일지 목록 보기",
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -162,13 +163,13 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10.h),
 
                     // 일지 제목 검색
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: AnimSearchBar(
-                        width: 300,
+                        width: 300.w,
                         textController: searchTextController,
                         helpText: "일지 제목 검색",
                         suffixIcon: const Icon(Icons.arrow_back),
@@ -200,47 +201,47 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                 color: Colors.white,
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 350,
-                                  height: 600,
+                                  width: 350.w,
+                                  height: 600.h,
                                   child: Column(
                                     children: [
                                       // 번호, 제목, 날짜
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
-                                          children: const [
+                                          children: [
                                             // 번호
                                             Text(
                                               "번호",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 60),
+                                            SizedBox(width: 60.w),
 
                                             // 제목
                                             Text(
                                               "제목",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 120),
+                                            SizedBox(width: 120.w),
 
                                             // 날짜
                                             Text(
                                               "날짜",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -249,7 +250,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                       ),
 
                                       // 중간 공백
-                                      const SizedBox(height: 10),
+                                      SizedBox(height: 10.h),
 
                                       // 일지 리스트
                                       Expanded(
@@ -268,14 +269,14 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                             },
                                             child: Container(
                                               color: Colors.yellow[50],
-                                              width: 350,
-                                              height: 50,
+                                              width: 350.w,
+                                              height: 50.h,
                                               child: Row(
                                                 children: [
                                                   // 번호
                                                   SizedBox(
-                                                    width: 50,
-                                                    height: 50,
+                                                    width: 50.w,
+                                                    height: 50.h,
                                                     child: Center(
                                                       child: Text(
                                                         diarys[index]["id"]
@@ -285,8 +286,8 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                                   ),
                                                   // 제목
                                                   SizedBox(
-                                                    width: 150,
-                                                    height: 50,
+                                                    width: 150.w,
+                                                    height: 50.h,
                                                     child: Center(
                                                       child: Text(
                                                         diarys[index]
@@ -296,8 +297,8 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                                   ),
                                                   // 날짜
                                                   SizedBox(
-                                                    width: 150,
-                                                    height: 50,
+                                                    width: 150.w,
+                                                    height: 50.h,
                                                     child: Center(
                                                       child: Text(
                                                         diarys[index]["date"],
@@ -324,47 +325,47 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                 color: Colors.white,
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 350,
-                                  height: 600,
+                                  width: 350.w,
+                                  height: 600.h,
                                   child: Column(
                                     children: [
                                       // 번호, 제목, 날짜
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
-                                          children: const [
+                                          children: [
                                             // 번호
                                             Text(
                                               "번호",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 60),
+                                            SizedBox(width: 60.w),
 
                                             // 제목
                                             Text(
                                               "제목",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 120),
+                                            SizedBox(width: 120.w),
 
                                             // 날짜
                                             Text(
                                               "날짜",
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20.sp,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -373,7 +374,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                       ),
 
                                       // 중간 공백
-                                      const SizedBox(height: 10),
+                                      SizedBox(height: 10.h),
 
                                       // 일지 리스트
                                       const Expanded(
@@ -390,7 +391,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                           ),
 
                     // 중간 공백
-                    const SizedBox(height: 50),
+                    SizedBox(height: 50.h),
                   ],
                 ),
               ),

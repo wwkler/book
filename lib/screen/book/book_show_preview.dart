@@ -9,6 +9,7 @@ import 'package:book_project/screen/book/book_search_recommend.dart';
 import 'package:book_project/screen/book/book_show_preview_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -57,7 +58,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
   final setPageController = TextEditingController();
 
   // 도서 상세 정보 페이지 UI으로 보여주기 위한 변수, 배열
-  final double _borderRadius = 24;
+  final double _borderRadius = 24.r;
   var items = [
     PlaceInfo('Dubai Mall Food Court', Color(0xff6DC8F3), Color(0xff73A1F9),
         4.4, 'Dubai · In The Dubai Mall', 'Cosy · Casual · Good for kids'),
@@ -108,7 +109,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
       child: SafeArea(
         child: Scaffold(
           body: Container(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width.w,
             // 배경 이미지
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -138,7 +139,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                   ),
 
                   // 중간 공백
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // 도서 상세 정보 Text
                   Padding(
@@ -149,16 +150,16 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         color: const Color.fromARGB(255, 228, 201, 232),
                         shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(5.0.r),
                         ),
-                        child: const SizedBox(
-                          width: 250,
-                          height: 40,
+                        child: SizedBox(
+                          width: 250.w,
+                          height: 40.h,
                           child: Center(
                             child: Text(
                               "도서 상세 정보",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -177,7 +178,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              height: 280,
+                              height: 280.h,
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.circular(_borderRadius),
@@ -192,7 +193,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                 boxShadow: [
                                   BoxShadow(
                                     color: items[1].endColor,
-                                    blurRadius: 12,
+                                    blurRadius: 12.r,
                                     offset: const Offset(0, 6),
                                   ),
                                 ],
@@ -202,19 +203,19 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                               child: Row(
                                 children: [
                                   // 중간 공백
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: 10.w),
                                   // 도서 이미지
                                   Expanded(
                                     flex: 1,
                                     child: Image.network(
                                       bookModel!.coverSmallUrl,
-                                      width: 500,
-                                      height: 300,
+                                      width: 500.w,
+                                      height: 300.h,
                                     ),
                                   ),
 
                                   // 중간 공백
-                                  const SizedBox(width: 10),
+                                  SizedBox(width: 10.w),
 
                                   Expanded(
                                     flex: 2,
@@ -230,25 +231,25 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                             // 도서 제목
                                             Text(
                                               bookModel!.title,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Avenir',
-                                                fontSize: 17,
+                                                fontSize: 17.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 5),
+                                            SizedBox(height: 5.h),
 
                                             // 도서 작가 이름
                                             bookModel!.author != ""
                                                 ? Text(
                                                     "${bookModel!.author} 작가",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       color: Colors.white,
                                                       fontFamily: 'Avenir',
-                                                      fontSize: 15,
+                                                      fontSize: 15.sp,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                     ),
@@ -261,7 +262,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                   ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 5),
+                                            SizedBox(height: 5.h),
 
                                             // 도서 분야
                                             bookModel!.categoryId != 0
@@ -269,10 +270,10 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                     category[bookModel!
                                                             .categoryId]
                                                         .toString(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       color: Colors.white,
                                                       fontFamily: 'Avenir',
-                                                      fontSize: 15,
+                                                      fontSize: 15.sp,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                     ),
@@ -285,63 +286,63 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                   ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 5),
+                                            SizedBox(height: 5.h),
 
                                             // 도서 출판사
                                             Text(
                                               "${bookModel!.publisher} 출판사",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Avenir',
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 5),
+                                            SizedBox(height: 5.h),
 
                                             // 도서 출판일
                                             Text(
                                               "출판일 ${bookModel!.pubDate}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Avenir',
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 5),
+                                            SizedBox(height: 5.h),
 
                                             // 도서 가격
                                             Text(
                                               "${bookModel!.priceStandard}원",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Avenir',
-                                                fontSize: 15,
+                                                fontSize: 15.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 도서 설명
                                             Text(
                                               bookModel!.description,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Avenir',
-                                                fontSize: 13,
+                                                fontSize: 13.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            const SizedBox(height: 20),
+                                            SizedBox(height: 20.h),
 
                                             // 도서 구입 링크
                                             GestureDetector(
@@ -355,10 +356,10 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                               },
                                               child: Text(
                                                 bookModel!.link,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily: 'Avenir',
-                                                  fontSize: 13,
+                                                  fontSize: 13.sp,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                               ),
@@ -378,7 +379,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                   ),
 
                   // 중간 공백
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10.h),
 
                   // 찜하기, 도서 읽기 버튼
                   Row(
@@ -392,14 +393,14 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                             AlertDialog(
                               title: const Text("읽고 싶은 도서 추가"),
                               content: SizedBox(
-                                width: 100,
-                                height: 150,
+                                width: 100.w,
+                                height: 150.h,
                                 child: Column(
                                   children: [
                                     const Text("읽고 싶은 도서로 추가하시겠습니까?"),
 
                                     // 중간 공백
-                                    const SizedBox(height: 50),
+                                    SizedBox(height: 50.h),
 
                                     Row(
                                       mainAxisAlignment:
@@ -497,22 +498,22 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0.r),
                           ),
                           backgroundColor: Colors.purple,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 20,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 30.w,
+                            vertical: 20.h,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "찜하기",
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12.sp),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(width: 20),
+                      SizedBox(width: 20.w),
 
                       // 도서 읽기 버튼
                       ElevatedButton(
@@ -522,14 +523,14 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                             AlertDialog(
                               title: const Text("읽고 있는 도서 추가"),
                               content: SizedBox(
-                                width: 100,
-                                height: 150,
+                                width: 100.w,
+                                height: 150.h,
                                 child: Column(
                                   children: [
                                     const Text("읽고 있는 도서로 추가하시겠습니까?"),
 
                                     // 중간 공백
-                                    const SizedBox(height: 50),
+                                    SizedBox(height: 50.h),
 
                                     Row(
                                       mainAxisAlignment:
@@ -549,8 +550,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                   "도서 총 페이지 수 설정",
                                                 ),
                                                 content: SizedBox(
-                                                  width: 100,
-                                                  height: 200,
+                                                  width: 100.w,
+                                                  height: 200.h,
                                                   child: Column(
                                                     children: [
                                                       // 아이디를 보여주는 문구
@@ -559,8 +560,9 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                       ),
 
                                                       // 중간 공백
-                                                      const SizedBox(
-                                                          height: 10),
+                                                      SizedBox(
+                                                        height: 10.h,
+                                                      ),
 
                                                       // 총 페이지 수 설정
                                                       Center(
@@ -569,8 +571,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                               const EdgeInsets
                                                                   .all(16.0),
                                                           child: SizedBox(
-                                                            width: 50,
-                                                            height: 50,
+                                                            width: 50.w,
+                                                            height: 50.h,
                                                             child: TextField(
                                                               textAlign:
                                                                   TextAlign
@@ -706,24 +708,24 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.0.r),
                           ),
                           backgroundColor: Colors.purple,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 20,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 40.w,
+                            vertical: 20.h,
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "도서 읽기",
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12.sp),
                         ),
                       ),
                     ],
                   ),
 
                   // 중간 공백
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.h),
 
                   // 도서 상세 정보 수정(관리자 권한)
                   // UserInfo.identity == UserManagerCheck.manager
@@ -755,7 +757,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                   //       ),
 
                   // 중간 공백
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
                 ],
               ),
             ),

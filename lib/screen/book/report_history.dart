@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ReportHistory extends StatefulWidget {
@@ -100,7 +101,7 @@ class _ReportHistoryState extends State<ReportHistory> {
             },
             child: Scaffold(
               body: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width.w,
                 // 배경 이미지
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -113,18 +114,18 @@ class _ReportHistoryState extends State<ReportHistory> {
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     // 프로그래스바
-                    CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
 
                     // 중간 공백
-                    SizedBox(height: 40),
+                    SizedBox(height: 40.h),
 
                     // 사용자 신고 데이터들을 가져오고 있습니다.
                     Text(
                       "사용자 신고 데이터를 가져오고 있습니다",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -152,7 +153,7 @@ class _ReportHistoryState extends State<ReportHistory> {
               child: Scaffold(
                 body: SingleChildScrollView(
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width.w,
                     // 배경 이미지
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -183,7 +184,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 20),
+                          SizedBox(height: 20.h),
 
                           // 신고 내역 Text
                           Padding(
@@ -194,16 +195,16 @@ class _ReportHistoryState extends State<ReportHistory> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "신고 내역",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -214,7 +215,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
 
                           // 사용자 이름 혹은 아이디로 검색
                           Padding(
@@ -246,32 +247,32 @@ class _ReportHistoryState extends State<ReportHistory> {
                                 color: Colors.white,
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 450,
-                                  height: 600,
+                                  width: 450.w,
+                                  height: 600.h,
                                   child: Column(
                                     children: [
                                       // 번호, 사용자 이름, 아이디, 날짜
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Row(
-                                          children: const [
+                                          children: [
                                             // 번호
                                             Expanded(
                                               flex: 1,
                                               child: Text(
                                                 "번호",
                                                 style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 30),
+                                            SizedBox(width: 30.w),
 
                                             // 사용자명
                                             Expanded(
@@ -279,14 +280,14 @@ class _ReportHistoryState extends State<ReportHistory> {
                                               child: Text(
                                                 "사용자명",
                                                 style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 30),
+                                            SizedBox(width: 30.w),
 
                                             // 아이디
                                             Expanded(
@@ -294,14 +295,14 @@ class _ReportHistoryState extends State<ReportHistory> {
                                               child: Text(
                                                 "아이디",
                                                 style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 30),
+                                            SizedBox(width: 30.w),
 
                                             // 신고 날짜
                                             Expanded(
@@ -309,7 +310,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                                               child: Text(
                                                 "신고 날짜",
                                                 style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 15.sp,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -319,7 +320,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                                       ),
 
                                       // 중간 공백
-                                      const SizedBox(height: 10),
+                                      SizedBox(height: 10.h),
 
                                       // 일지 리스트
                                       reports.isNotEmpty
@@ -339,8 +340,8 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                   },
                                                   child: Container(
                                                     color: Colors.yellow[50],
-                                                    width: 200,
-                                                    height: 100,
+                                                    width: 200.w,
+                                                    height: 100.h,
                                                     child:
                                                         SingleChildScrollView(
                                                       scrollDirection:
@@ -349,8 +350,8 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                         children: [
                                                           // 번호
                                                           SizedBox(
-                                                            width: 50,
-                                                            height: 100,
+                                                            width: 50.w,
+                                                            height: 100.h,
                                                             child: Center(
                                                               child: Text(reports[
                                                                           index]
@@ -361,8 +362,8 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                           ),
                                                           // 사용자명
                                                           SizedBox(
-                                                            width: 100,
-                                                            height: 100,
+                                                            width: 100.w,
+                                                            height: 100.h,
                                                             child: Center(
                                                               child: Text(reports[
                                                                           index]
@@ -372,8 +373,8 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                           ),
                                                           // 아이디
                                                           SizedBox(
-                                                            width: 100,
-                                                            height: 100,
+                                                            width: 100.w,
+                                                            height: 100.h,
                                                             child: Center(
                                                               child: Text(reports[
                                                                           index]
@@ -383,8 +384,9 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                           ),
 
                                                           // 중간 공백
-                                                          const SizedBox(
-                                                              width: 20),
+                                                          SizedBox(
+                                                            width: 20.w,
+                                                          ),
 
                                                           // 신고 당한 날짜
                                                           Text(reports[index]
@@ -405,8 +407,9 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                 color: Colors.yellow[50],
                                                 width: MediaQuery.of(context)
                                                     .size
-                                                    .width,
-                                                height: 100,
+                                                    .width
+                                                    .w,
+                                                height: 100.h,
                                                 child: const Center(
                                                   child:
                                                       Text("신고 내역 데이터가 없습니다"),
@@ -421,7 +424,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
                         ],
                       ),
                     ),

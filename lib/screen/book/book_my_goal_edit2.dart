@@ -6,6 +6,7 @@ import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_my_goal_edit3.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
@@ -115,7 +116,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
             child: SafeArea(
               child: Scaffold(
                 body: Container(
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.width.w,
                   // 배경 이미지
                   decoration: BoxDecoration(
                     image: DecorationImage(
@@ -129,17 +130,17 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children:  [
                       // 프로그래스바
-                      CircularProgressIndicator(),
+                      const CircularProgressIndicator(),
 
                       // 중간 공백
-                      SizedBox(height: 40),
+                      SizedBox(height: 40.h),
 
                       Text(
                         "기다려주세요",
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -168,7 +169,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
               child: Scaffold(
                 body: SingleChildScrollView(
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.of(context).size.width.w,
                     // 배경 이미지
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -187,7 +188,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // 중간 공백
-                          const SizedBox(height: 10),
+                          SizedBox(height: 10.h),
 
                           // 이전 페이지 아이콘, 목표 1, 목표 2, 목표 3 버튼
                           Row(
@@ -204,8 +205,8 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                               ),
 
                               // 중간 공백
-                              const SizedBox(
-                                width: 20,
+                              SizedBox(
+                                width: 20.w,
                               ),
 
                               // 목표 1
@@ -223,16 +224,16 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                       const Color.fromARGB(255, 233, 227, 234),
                                   shadowColor: Colors.grey.withOpacity(0.5),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
+                                    borderRadius: BorderRadius.circular(20.0.r),
                                   ),
-                                  child: const SizedBox(
-                                    width: 80,
-                                    height: 50,
+                                  child: SizedBox(
+                                    width: 80.w,
+                                    height: 50.h,
                                     child: Center(
                                       child: Text(
                                         "목표 1",
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
@@ -249,14 +250,14 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
-                                child: const SizedBox(
-                                  width: 80,
-                                  height: 50,
+                                child: SizedBox(
+                                  width: 80.w,
+                                  height: 50.h,
                                   child: Center(
                                     child: Text(
                                       "목표 2",
                                       style: TextStyle(
-                                        fontSize: 15,
+                                        fontSize: 15.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -280,14 +281,14 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  child: const SizedBox(
-                                    width: 80,
-                                    height: 50,
+                                  child: SizedBox(
+                                    width: 80.w,
+                                    height: 50.h,
                                     child: Center(
                                       child: Text(
                                         "목표 3",
                                         style: TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 15.sp,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
@@ -299,7 +300,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
 
                           // 목표 선택할 도서 분야 Text
                           Padding(
@@ -310,16 +311,16 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "목표 선택할 도서 분야",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -330,26 +331,26 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 25),
+                          SizedBox(height: 25.h),
 
                           // 목표 선택할 도서 분야 설정
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: DropdownButtonFormField(
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    Radius.circular(10.r),
                                   ),
                                 ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    Radius.circular(10.r),
                                   ),
                                 ),
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.person,
                                   color: Colors.purple,
                                 ),
@@ -357,7 +358,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 fillColor: Colors.white,
                                 labelText: "선호하는 도서 장르",
                                 hintText: "인문",
-                                labelStyle: TextStyle(color: Colors.purple),
+                                labelStyle: const TextStyle(color: Colors.purple),
                               ),
                               value: selectedCategory,
                               onChanged: (String? key) {
@@ -379,7 +380,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
 
                           // 목표 도서 권수 Text
                           Padding(
@@ -390,16 +391,16 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "목표 도서 권수",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -414,8 +415,8 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: SizedBox(
-                                width: 50,
-                                height: 50,
+                                width: 50.w,
+                                height: 50.h,
                                 child: TextField(
                                   controller: readBooksCountController,
                                   textAlign: TextAlign.center,
@@ -426,7 +427,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 5),
+                          SizedBox(height: 5.h),
 
                           // 목표 도서 권수 설정할 떄 주의사항
                           Padding(
@@ -434,13 +435,13 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                             child: Row(
                               children: [
                                 const Icon(Icons.warning, color: Colors.red),
-                                const SizedBox(width: 10),
+                                SizedBox(width: 10.w),
                                 Text(
                                   "숫자만 입력, 최소 1자 최대 2자 입력 가능",
                                   style: TextStyle(
                                     color: Colors.black.withOpacity(0.5),
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 15,
+                                    fontSize: 15.sp,
                                   ),
                                 ),
                               ],
@@ -448,7 +449,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 40),
+                          SizedBox(height: 40.h),
 
                           // 목표 설정 기간 Text
                           Padding(
@@ -459,16 +460,16 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 color: const Color.fromARGB(255, 228, 201, 232),
                                 shadowColor: Colors.grey.withOpacity(0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5.0.r),
                                 ),
-                                child: const SizedBox(
-                                  width: 250,
-                                  height: 40,
+                                child: SizedBox(
+                                  width: 250.w,
+                                  height: 40.h,
                                   child: Center(
                                     child: Text(
                                       "목표 설정 기간",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -479,7 +480,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 25),
+                          SizedBox(height: 25.h),
 
                           // 목표 설정 기간 버튼
                           Center(
@@ -509,29 +510,29 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(10.0.r),
                                   ),
                                   backgroundColor: Colors.purple,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 30,
-                                    vertical: 10,
+                                  padding:  EdgeInsets.symmetric(
+                                    horizontal: 30.w,
+                                    vertical: 10.h,
                                   ),
                                 ),
                                 child: objDate == "목표 기간을 설정해주세요"
-                                    ? const Text(
+                                    ? Text(
                                         "목표 기간을 설정해주세요",
-                                        style: TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 15.sp),
                                       )
                                     : Text(
                                         "$objDate까지",
-                                        style: const TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 15.sp),
                                       ),
                               ),
                             ),
                           ),
 
                           // 중간 공백
-                          const SizedBox(height: 50),
+                          SizedBox(height: 50.h),
 
                           // 아예 서버에서 받아온 목표 데이터가 없거나 , endDate가 현재 시간보다 작으면 목표 설정하기 버튼을 보여준다.
                           // endDate가 현재 시간보다 같거나 크면 목표 수정하기 버튼을 보여준다.
@@ -658,17 +659,17 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
+                                              BorderRadius.circular(10.0.r),
                                         ),
                                         backgroundColor: Colors.purple,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 20,
+                                        padding:  EdgeInsets.symmetric(
+                                          horizontal: 30.w,
+                                          vertical: 20.h,
                                         ),
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         "목표 설정하기",
-                                        style: TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 15.sp),
                                       ),
                                     ),
                                   ),
@@ -787,17 +788,17 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
+                                              BorderRadius.circular(10.0.r),
                                         ),
                                         backgroundColor: Colors.purple,
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 20,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 30.w,
+                                          vertical: 20.h,
                                         ),
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         "목표 수정하기",
-                                        style: TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 15.sp),
                                       ),
                                     ),
                                   ),

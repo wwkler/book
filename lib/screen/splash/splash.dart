@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -63,35 +64,35 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // 중간 여백
-                  const SizedBox(
-                    height: 50,
+                  SizedBox(
+                    height: 50.h,
                   ),
 
                   // 앱의 splash 로고 이미지
                   Image.asset(
                     'assets/imgs/splash1.png',
-                    height: 120,
+                    height: 120.h,
                   ),
 
                   // 중간 여백
-                  const SizedBox(
-                    height: 50,
+                  SizedBox(
+                    height: 50.h,
                   ),
 
                   // 앱의 제목
                   Text(
                     "BookMakase",
                     style: GoogleFonts.indieFlower(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 35,
+                        fontSize: 35.sp,
                       ),
                     ),
                   ),
 
                   // 중간 여백
-                  const SizedBox(
-                    height: 100,
+                  SizedBox(
+                    height: 100.h,
                   ),
 
                   // ProgressIndicator
@@ -100,17 +101,17 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
 
                   // 중간 여백
-                  const SizedBox(
-                    height: 25,
+                  SizedBox(
+                    height: 25.h,
                   ),
 
                   // 로딩 중입니다 메시지
                   Text(
                     'Loding... Please Wait a second',
                     style: GoogleFonts.indieFlower(
-                      textStyle: const TextStyle(
+                      textStyle: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 20.sp,
                       ),
                     ),
                   ),

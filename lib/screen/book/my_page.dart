@@ -6,6 +6,7 @@ import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class MyPage extends StatefulWidget {
@@ -91,8 +92,8 @@ class _MyPageState extends State<MyPage> {
       child: SafeArea(
         child: Scaffold(
           body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width.w,
+            height: MediaQuery.of(context).size.height.h,
             // 배경 이미지
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -127,7 +128,7 @@ class _MyPageState extends State<MyPage> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       // 마이 페이지 Text
                       Padding(
@@ -138,16 +139,16 @@ class _MyPageState extends State<MyPage> {
                             color: const Color.fromARGB(255, 228, 201, 232),
                             shadowColor: Colors.grey.withOpacity(0.5),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(5.0.r),
                             ),
-                            child: const SizedBox(
-                              width: 250,
-                              height: 40,
+                            child: SizedBox(
+                              width: 250.w,
+                              height: 40.h,
                               child: Center(
                                 child: Text(
                                   "마이페이지",
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -158,15 +159,15 @@ class _MyPageState extends State<MyPage> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 변경할 이메일
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           initialValue: UserInfo.email,
@@ -195,20 +196,20 @@ class _MyPageState extends State<MyPage> {
                               return null;
                             }
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -216,21 +217,21 @@ class _MyPageState extends State<MyPage> {
                             fillColor: Colors.white,
                             labelText: "Email",
                             hintText: 'ex) winner23456@naver.com',
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.h),
 
                       // 변경할 Password
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: TextFormField(
                           initialValue: password,
@@ -260,20 +261,20 @@ class _MyPageState extends State<MyPage> {
                           },
                           obscuringCharacter: '*',
                           obscureText: true,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -281,58 +282,52 @@ class _MyPageState extends State<MyPage> {
                             fillColor: Colors.white,
                             labelText: "Password",
                             hintText: 'ex) ********',
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10.h),
 
-                      const Center(
+                      Center(
                         child: Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "비밀번호를 변경하고 싶으면 변경한 비밀번호를 적고\n 그렇지 않으면 원래 비밀번호를 입력해주세요 ",
                             style: TextStyle(
-                              fontSize: 12.0,
+                              fontSize: 12.0.sp,
                             ),
                           ),
                         ),
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 10),
-
-                      // 중간 공백
-                      const SizedBox(height: 10),
-
-                      // 중간 공백
-                      const SizedBox(height: 10),
+                      SizedBox(height: 30.h),
 
                       // 변경할 선호하는 도서 장르
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 40,
-                          right: 40,
-                          bottom: 20,
-                          top: 20,
+                        padding: EdgeInsets.only(
+                          left: 40.w,
+                          right: 40.w,
+                          bottom: 20.h,
+                          top: 20.h,
                         ),
                         child: DropdownButtonFormField(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide.none,
                               borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                                Radius.circular(10.r),
                               ),
                             ),
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                               color: Colors.purple,
                             ),
@@ -340,7 +335,7 @@ class _MyPageState extends State<MyPage> {
                             fillColor: Colors.white,
                             labelText: "선호하는 도서 장르",
                             hintText: "인문",
-                            labelStyle: TextStyle(color: Colors.purple),
+                            labelStyle: const TextStyle(color: Colors.purple),
                           ),
                           value: category[UserInfo.selectedCode],
                           onChanged: (String? value) {
@@ -363,13 +358,13 @@ class _MyPageState extends State<MyPage> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 50),
+                      SizedBox(height: 50.h),
 
                       // 개인 정보 변경하기
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          width: 250,
+                          width: 250.w,
                           child: ElevatedButton(
                             onPressed: () async {
                               if (isEmailState == true &&
@@ -406,8 +401,8 @@ class _MyPageState extends State<MyPage> {
                                       AlertDialog(
                                         title: const Text("로그인 페이지 이동 안내"),
                                         content: SizedBox(
-                                          width: 100,
-                                          height: 150,
+                                          width: 100.w,
+                                          height: 150.h,
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -417,7 +412,7 @@ class _MyPageState extends State<MyPage> {
                                               ),
 
                                               // 중간 공백
-                                              const SizedBox(height: 20),
+                                              SizedBox(height: 20.h),
 
                                               // 다이어로그에서 나가는 버튼
                                               Center(
@@ -490,24 +485,24 @@ class _MyPageState extends State<MyPage> {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 20,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 30.w,
+                                vertical: 20.h,
                               ),
                             ),
                             child: Row(
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.change_circle_outlined,
                                   size: 20,
                                 ),
-                                SizedBox(width: 30),
+                                SizedBox(width: 30.w),
                                 Text(
                                   "개인 정보 변경하기",
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: 15.sp),
                                 ),
                               ],
                             ),
@@ -516,7 +511,7 @@ class _MyPageState extends State<MyPage> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 50),
+                      SizedBox(height: 50.h),
                     ],
                   ),
                 ),

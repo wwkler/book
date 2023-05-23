@@ -10,6 +10,7 @@ import 'package:book_project/screen/auth/sign_up.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -80,24 +81,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // 중간 공백
-                    const SizedBox(height: 40),
+                    SizedBox(height: 40.h),
 
                     // 자물쇠 이미지
                     Lottie.network(
                       'https://assets6.lottiefiles.com/private_files/lf30_ulp9xiqw.json',
                       //'https://assets6.lottiefiles.com/packages/lf20_k9wsvzgd.json',
                       animate: true,
-                      height: 120,
-                      width: 600,
+                      height: 120.h,
+                      width: 600.w,
                     ),
 
                     // BookMakase Login Screen Text
                     Text(
                       "BookMakase Login Screen",
                       style: GoogleFonts.indieFlower(
-                        textStyle: const TextStyle(
+                        textStyle: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 30,
+                          fontSize: 30.sp,
                         ),
                       ),
                     ),
@@ -109,33 +110,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         textStyle: TextStyle(
                           color: Colors.black.withOpacity(0.5),
                           fontWeight: FontWeight.w300,
-                          fontSize: 15,
+                          fontSize: 15.sp,
                         ),
                       ),
                     ),
 
                     // 중간 공백
-                    const SizedBox(
-                      height: 30,
+                    SizedBox(
+                      height: 30.h,
                     ),
 
                     // ID와 Password
                     Container(
-                      width: MediaQuery.of(context).size.width / 1.1,
+                      width: MediaQuery.of(context).size.width.w / 1.1,
                       height: 250,
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Column(
                         children: [
                           // ID
                           Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20,
-                              right: 20,
-                              bottom: 20,
-                              top: 20,
+                            padding: EdgeInsets.only(
+                              left: 20.w,
+                              right: 20.w,
+                              bottom: 20.h,
+                              top: 20.h,
                             ),
                             child: TextFormField(
                               autovalidateMode: AutovalidateMode.always,
@@ -170,20 +171,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // isIdState = true;
                                 // return null;
                               },
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    Radius.circular(10.r),
                                   ),
                                 ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    Radius.circular(10.r),
                                   ),
                                 ),
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.person,
                                   color: Colors.purple,
                                 ),
@@ -191,14 +192,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fillColor: Colors.white,
                                 labelText: "ID",
                                 hintText: 'ex) abcdefg',
-                                labelStyle: TextStyle(color: Colors.purple),
+                                labelStyle:
+                                    const TextStyle(color: Colors.purple),
                               ),
                             ),
                           ),
 
                           // Password
                           Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            padding: EdgeInsets.only(left: 20.w, right: 20.w),
                             child: TextFormField(
                               autovalidateMode: AutovalidateMode.always,
                               onChanged: (val) {
@@ -211,18 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   password = val!;
                                 });
                               },
-                              // 비밀번호 정규식: ^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$ (숫자, 특수문자 각 1회 이상, 영문 2개 이상 사용하여 8자리 이상 입력)
+                              // 비밀번호 8자리 ~ 14자리만 받도록 합니다.
                               validator: (String? value) {
-                                // if (!RegExp(
-                                //         r"^(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$")
-                                //     .hasMatch(value!)) {
-                                //   isPasswordState = false;
-                                //   return "숫자, 특수문자 각 1회 이상 포함한 8자리 이상 입력해주세요";
-                                // } else {
-                                //   isPasswordState = true;
-                                //   return null;
-                                // }
-
                                 // 비밀번호 8자리 ~ 14자리만 받도록 합니다.
                                 if (!(value!.length > 7 && value.length < 15)) {
                                   isPasswordState = false;
@@ -234,20 +226,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               obscuringCharacter: '*',
                               obscureText: true,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    Radius.circular(10.r),
                                   ),
                                 ),
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide.none,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
+                                    Radius.circular(10.r),
                                   ),
                                 ),
-                                prefixIcon: Icon(
+                                prefixIcon: const Icon(
                                   Icons.person,
                                   color: Colors.purple,
                                 ),
@@ -255,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fillColor: Colors.white,
                                 labelText: "Password",
                                 hintText: 'ex) ********',
-                                labelStyle: TextStyle(color: Colors.purple),
+                                labelStyle: const TextStyle(color: Colors.purple),
                               ),
                             ),
                           ),
@@ -264,8 +256,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     // 중간 공백
-                    const SizedBox(
-                      height: 15,
+                    SizedBox(
+                      height: 15.h,
                     ),
 
                     // 로고인 버튼
@@ -394,15 +386,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               AlertDialog(
                                 title: const Text("서버가 열리지 않음"),
                                 content: SizedBox(
-                                  width: 100,
-                                  height: 150,
+                                  width: 100.w,
+                                  height: 150.h,
                                   child: Column(
                                     children: [
                                       // 아이디를 보여주는 문구
                                       const Text("서버가 열리지 않아서 앱을 종료합니다"),
 
                                       // 중간 공백
-                                      const SizedBox(height: 50),
+                                      SizedBox(height: 50.h),
 
                                       // 앱 종료하기 버튼
                                       TextButton(
@@ -434,23 +426,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(10.0.r),
                         ),
                         backgroundColor: Colors.purple,
                         padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width / 3.3,
-                          vertical: 20,
+                          horizontal: MediaQuery.of(context).size.width.w / 3.3,
+                          vertical: 20.h,
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Login",
-                        style: TextStyle(fontSize: 17),
+                        style: TextStyle(fontSize: 17.sp),
                       ),
                     ),
 
                     // 중간 공백
-                    const SizedBox(
-                      height: 15,
+                    SizedBox(
+                      height: 15.h,
                     ),
 
                     // Sign Up, 아이디/비밀번호 찾기 Row

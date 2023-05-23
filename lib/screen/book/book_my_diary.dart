@@ -6,6 +6,7 @@ import 'package:book_project/screen/book/book_my_diary_list.dart';
 import 'package:book_project/screen/book/book_my_diary_write.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
@@ -130,7 +131,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
               return false;
             },
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.of(context).size.width.w,
               // 배경 이미지
               decoration: BoxDecoration(
                 image: DecorationImage(
@@ -143,18 +144,18 @@ class _BookMyDiaryState extends State<BookMyDiary> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   // 프로그래스바
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
 
                   // 중간 공백
-                  SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
                   // 도서 데이터들을 가져오고 있습니다.
                   Text(
                     "사용자 일지 데이터를 가져오고 있습니다",
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -179,7 +180,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
             },
             child: SingleChildScrollView(
               child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width.w,
                 // 배경 이미지
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -196,7 +197,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // 중간 공백
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       // 도서 일지 달력 요약 Text
                       Padding(
@@ -207,16 +208,16 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                             color: const Color.fromARGB(255, 228, 201, 232),
                             shadowColor: Colors.grey.withOpacity(0.5),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                              borderRadius: BorderRadius.circular(5.0.r),
                             ),
-                            child: const SizedBox(
-                              width: 250,
-                              height: 40,
+                            child: SizedBox(
+                              width: 250.w,
+                              height: 40.h,
                               child: Center(
                                 child: Text(
                                   "도서 일지 달력 요약",
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -233,20 +234,20 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                         lastDay: DateTime.utc(2023, 12, 31),
                         currentDay: currentTime!,
                         focusedDay: currentTime!,
-                        headerStyle: const HeaderStyle(
+                        headerStyle: HeaderStyle(
                           titleCentered: true,
                           formatButtonVisible: false,
                           titleTextStyle: TextStyle(
                             color: Colors.purple,
-                            fontSize: 20.0,
+                            fontSize: 20.0.sp,
                             fontWeight: FontWeight.bold,
                           ),
-                          headerPadding: EdgeInsets.symmetric(vertical: 4.0),
-                          leftChevronIcon: Icon(
+                          headerPadding: EdgeInsets.symmetric(vertical: 4.0.h),
+                          leftChevronIcon: const Icon(
                             Icons.arrow_left,
                             size: 40.0,
                           ),
-                          rightChevronIcon: Icon(
+                          rightChevronIcon: const Icon(
                             Icons.arrow_right,
                             size: 40.0,
                           ),
@@ -282,8 +283,8 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                               AlertDialog(
                                 title: const Text("일지 요약 다이어로그"),
                                 content: SizedBox(
-                                  width: 150,
-                                  height: 150,
+                                  width: 150.w,
+                                  height: 150.h,
                                   child: ListView.separated(
                                     scrollDirection: Axis.horizontal,
                                     itemCount: subDiarys.length,
@@ -296,7 +297,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                                               "${selectedDay.toString().substring(0, 10)}에 일지 작성했습니다."),
 
                                           // 중간 공백
-                                          const SizedBox(height: 25),
+                                          SizedBox(height: 25.h),
 
                                           // 도서 이미지
                                           Image.network(
@@ -305,7 +306,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                                           ),
 
                                           // 중간 공백
-                                          const SizedBox(height: 25),
+                                          SizedBox(height: 25.h),
 
                                           // 도서 제목
                                           Text(
@@ -328,7 +329,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                                     ),
                                     separatorBuilder:
                                         (BuildContext context, int index) =>
-                                            const SizedBox(width: 10),
+                                            SizedBox(width: 10.w),
                                   ),
                                 ),
                               ),
@@ -338,13 +339,13 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 50),
+                      SizedBox(height: 50.h),
 
                       // 새 일지 작성 버튼
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          width: 300,
+                          width: 300.w,
                           child: ElevatedButton(
                             onPressed: () {
                               // 새 일지 작성 페이지로 라우팅
@@ -352,24 +353,24 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 60,
-                                vertical: 20,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 60.w,
+                                vertical: 20.h,
                               ),
                             ),
                             child: Row(
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.create_outlined,
                                   size: 30,
                                 ),
-                                SizedBox(width: 40),
+                                SizedBox(width: 40.w),
                                 Text(
                                   "새 일지 작성",
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: 15.sp),
                                 ),
                               ],
                             ),
@@ -378,7 +379,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.h),
 
                       // 일지 보기 작성 버튼
                       Align(
@@ -395,24 +396,24 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 60,
-                                vertical: 20,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 60.w,
+                                vertical: 20.h,
                               ),
                             ),
                             child: Row(
-                              children: const [
-                                Icon(
+                              children: [
+                                const Icon(
                                   Icons.menu_book_outlined,
                                   size: 30,
                                 ),
-                                SizedBox(width: 40),
+                                SizedBox(width: 40.w),
                                 Text(
                                   "일지 보기",
-                                  style: TextStyle(fontSize: 15),
+                                  style: TextStyle(fontSize: 15.sp),
                                 ),
                               ],
                             ),
@@ -421,7 +422,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       ),
 
                       // 중간 공백
-                      const SizedBox(height: 100),
+                      SizedBox(height: 100.h),
                     ],
                   ),
                 ),
