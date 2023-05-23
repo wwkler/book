@@ -919,7 +919,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 100.w,
+                                  width: 80.w,
                                   height: 40.h,
                                   child: const Center(
                                     child: Text(
@@ -1110,7 +1110,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 100.w,
+                                  width: 80.w,
                                   height: 40.h,
                                   child: const Center(
                                     child: Text(
@@ -1302,7 +1302,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   borderRadius: BorderRadius.circular(5.0.r),
                                 ),
                                 child: SizedBox(
-                                  width: 100.w,
+                                  width: 80.w,
                                   height: 40.h,
                                   child: const Center(
                                     child: Text(
@@ -1578,6 +1578,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                       .coverSmallUrl,
                                                   width: 150.w,
                                                   height: 150.h,
+                                                  filterQuality:
+                                                      FilterQuality.high,
                                                 ),
 
                                                 // 도서 제목
@@ -1995,6 +1997,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                       .coverSmallUrl,
                                                   width: 150.w,
                                                   height: 150.h,
+                                                  filterQuality:
+                                                      FilterQuality.high,
                                                 ),
 
                                                 // 도서 제목
@@ -2540,6 +2544,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                 readBooks[index].coverSmallUrl,
                                                 width: 150.w,
                                                 height: 150.h,
+                                                filterQuality:
+                                                    FilterQuality.high,
                                               ),
 
                                               Padding(

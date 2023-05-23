@@ -235,7 +235,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                             ),
 
                                             // 중간 공백
-                                            SizedBox(width: 120.w),
+                                            SizedBox(width: 80.w),
 
                                             // 날짜
                                             Text(
@@ -297,7 +297,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                                   ),
                                                   // 날짜
                                                   SizedBox(
-                                                    width: 150.w,
+                                                    width: 100.w,
                                                     height: 50.h,
                                                     child: Center(
                                                       child: Text(

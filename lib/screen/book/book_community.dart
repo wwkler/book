@@ -477,6 +477,9 @@ class _BookCommunityState extends State<BookCommunity> {
 
                                                 // 리뷰 별점, 좋아요, 신고하기
                                                 Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
                                                     // 리뷰 별점
                                                     RatingBarIndicator(
@@ -495,38 +498,17 @@ class _BookCommunityState extends State<BookCommunity> {
                                                           Axis.horizontal,
                                                     ),
 
-                                                    // 좋아요 버튼
-                                                    IconButton(
-                                                      onPressed: () async {
-                                                        try {
-                                                          final response =
-                                                              await dio.post(
-                                                            'http://${IpAddress.hyunukIP}/reviews/addLike?reviewId=${reviewWriterInfos[index]["id"]}&memberId=${UserInfo.userValue}',
-                                                            data: {},
-                                                            options: Options(
-                                                              validateStatus:
-                                                                  (_) => true,
-                                                              contentType: Headers
-                                                                  .jsonContentType,
-                                                              responseType:
-                                                                  ResponseType
-                                                                      .json,
-                                                            ),
-                                                          );
-
-                                                          // 서버와 통신에 성공
-                                                          if (response
-                                                                  .statusCode ==
-                                                              200) {
-                                                            print("서버와 통신 성공");
-                                                            print(
-                                                                "서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
-
-                                                            // 좋아요를 등록했는지 해제했는지 서버 호출한다.
+                                                    // 좋아요, 좋아요 수 버튼
+                                                    Row(
+                                                      children: [
+                                                        // 좋아요 버튼
+                                                        IconButton(
+                                                          onPressed: () async {
                                                             try {
                                                               final response =
-                                                                  await dio.get(
-                                                                'http://${IpAddress.hyunukIP}/reviews/isLiked?reviewId=${reviewWriterInfos[index]["id"]}&memberId=${UserInfo.userValue}',
+                                                                  await dio
+                                                                      .post(
+                                                                'http://${IpAddress.hyunukIP}/reviews/addLike?reviewId=${reviewWriterInfos[index]["id"]}&memberId=${UserInfo.userValue}',
                                                                 data: {},
                                                                 options:
                                                                     Options(
@@ -551,14 +533,97 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                 print(
                                                                     "서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
 
-                                                                // response.data가 true일 떄
-                                                                if (response
-                                                                        .data ==
-                                                                    true) {
-                                                                  // 좋아요 등록에 성공하였다는 snackBar를 띄운다
+                                                                // 좋아요를 등록했는지 해제했는지 서버 호출한다.
+                                                                try {
+                                                                  final response =
+                                                                      await dio
+                                                                          .get(
+                                                                    'http://${IpAddress.hyunukIP}/reviews/isLiked?reviewId=${reviewWriterInfos[index]["id"]}&memberId=${UserInfo.userValue}',
+                                                                    data: {},
+                                                                    options:
+                                                                        Options(
+                                                                      validateStatus:
+                                                                          (_) =>
+                                                                              true,
+                                                                      contentType:
+                                                                          Headers
+                                                                              .jsonContentType,
+                                                                      responseType:
+                                                                          ResponseType
+                                                                              .json,
+                                                                    ),
+                                                                  );
+
+                                                                  // 서버와 통신에 성공
+                                                                  if (response
+                                                                          .statusCode ==
+                                                                      200) {
+                                                                    print(
+                                                                        "서버와 통신 성공");
+                                                                    print(
+                                                                        "서버에서 제공해주는 사용자 정보 데이터 : ${response.data}");
+
+                                                                    // response.data가 true일 떄
+                                                                    if (response
+                                                                            .data ==
+                                                                        true) {
+                                                                      // 좋아요 등록에 성공하였다는 snackBar를 띄운다
+                                                                      Get.snackbar(
+                                                                        "좋아요 등록 성공 ",
+                                                                        "해당 리뷰 게시물에 좋아요를 등록했습니다",
+                                                                        duration:
+                                                                            const Duration(seconds: 5),
+                                                                        snackPosition:
+                                                                            SnackPosition.TOP,
+                                                                      );
+                                                                    }
+
+                                                                    // response.data가 false일 떄
+                                                                    else {
+                                                                      // 좋아요 해제에 성공하였다는 snackBar를 띄운다
+                                                                      Get.snackbar(
+                                                                        "좋아요 해제 성공 ",
+                                                                        "해당 리뷰 게시물에 좋아요를 해제했습니다",
+                                                                        duration:
+                                                                            const Duration(seconds: 5),
+                                                                        snackPosition:
+                                                                            SnackPosition.TOP,
+                                                                      );
+                                                                    }
+
+                                                                    // 화면 재랜더링
+                                                                    setState(
+                                                                        () {});
+                                                                  }
+                                                                  // 서버와 통신 실패
+                                                                  else {
+                                                                    print(
+                                                                        "서버와 통신 실패");
+                                                                    print(
+                                                                        "서버 통신 에러 코드 : ${response.statusCode}");
+                                                                    print(
+                                                                        "메시지 : ${response.data}");
+
+                                                                    // 좋아요 등록/해제 반영에 실패하였다는 snackBar를 띄운다
+                                                                    Get.snackbar(
+                                                                      "좋아요 등록/해제 반영 실패",
+                                                                      "좋아요 등록/해제 반영이 실패하였습니다",
+                                                                      duration: const Duration(
+                                                                          seconds:
+                                                                              5),
+                                                                      snackPosition:
+                                                                          SnackPosition
+                                                                              .TOP,
+                                                                    );
+                                                                  }
+                                                                }
+                                                                // DioError[unknown]: null이 메시지로 나타났을 떄
+                                                                // 즉 서버가 열리지 않았다는 뜻이다
+                                                                catch (e) {
+                                                                  // 서버가 열리지 않았다는 snackBar를 띄운다
                                                                   Get.snackbar(
-                                                                    "좋아요 등록 성공 ",
-                                                                    "해당 리뷰 게시물에 좋아요를 등록했습니다",
+                                                                    "서버 열리지 않음",
+                                                                    "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                                     duration: const Duration(
                                                                         seconds:
                                                                             5),
@@ -567,24 +632,6 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             .TOP,
                                                                   );
                                                                 }
-
-                                                                // response.data가 false일 떄
-                                                                else {
-                                                                  // 좋아요 해제에 성공하였다는 snackBar를 띄운다
-                                                                  Get.snackbar(
-                                                                    "좋아요 해제 성공 ",
-                                                                    "해당 리뷰 게시물에 좋아요를 해제했습니다",
-                                                                    duration: const Duration(
-                                                                        seconds:
-                                                                            5),
-                                                                    snackPosition:
-                                                                        SnackPosition
-                                                                            .TOP,
-                                                                  );
-                                                                }
-
-                                                                // 화면 재랜더링
-                                                                setState(() {});
                                                               }
                                                               // 서버와 통신 실패
                                                               else {
@@ -595,10 +642,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                 print(
                                                                     "메시지 : ${response.data}");
 
-                                                                // 좋아요 등록/해제 반영에 실패하였다는 snackBar를 띄운다
+                                                                // 좋아요 반영에 실패하였다는 snackBar를 띄운다
                                                                 Get.snackbar(
-                                                                  "좋아요 등록/해제 반영 실패",
-                                                                  "좋아요 등록/해제 반영이 실패하였습니다",
+                                                                  "좋아요 반영 실패",
+                                                                  "해당 리뷰 게시물에 좋아요가 반영되지 않았습니다",
                                                                   duration:
                                                                       const Duration(
                                                                           seconds:
@@ -625,84 +672,57 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                         .TOP,
                                                               );
                                                             }
-                                                          }
-                                                          // 서버와 통신 실패
-                                                          else {
-                                                            print("서버와 통신 실패");
-                                                            print(
-                                                                "서버 통신 에러 코드 : ${response.statusCode}");
-                                                            print(
-                                                                "메시지 : ${response.data}");
+                                                          },
+                                                          icon: likeReviews.contains(
+                                                                  reviewWriterInfos[
+                                                                          index]
+                                                                      ["id"])
+                                                              ? const Icon(
+                                                                  Icons
+                                                                      .favorite,
+                                                                  color: Colors
+                                                                      .red,
+                                                                  size: 20,
+                                                                )
+                                                              : const Icon(
+                                                                  Icons
+                                                                      .favorite,
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  size: 20,
+                                                                ),
+                                                        ),
 
-                                                            // 좋아요 반영에 실패하였다는 snackBar를 띄운다
-                                                            Get.snackbar(
-                                                              "좋아요 반영 실패",
-                                                              "해당 리뷰 게시물에 좋아요가 반영되지 않았습니다",
-                                                              duration:
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          5),
-                                                              snackPosition:
-                                                                  SnackPosition
-                                                                      .TOP,
-                                                            );
-                                                          }
-                                                        }
-                                                        // DioError[unknown]: null이 메시지로 나타났을 떄
-                                                        // 즉 서버가 열리지 않았다는 뜻이다
-                                                        catch (e) {
-                                                          // 서버가 열리지 않았다는 snackBar를 띄운다
-                                                          Get.snackbar(
-                                                            "서버 열리지 않음",
-                                                            "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 5),
-                                                            snackPosition:
-                                                                SnackPosition
-                                                                    .TOP,
-                                                          );
-                                                        }
-                                                      },
-                                                      icon: likeReviews.contains(
-                                                              reviewWriterInfos[
-                                                                  index]["id"])
-                                                          ? const Icon(
-                                                              Icons.favorite,
-                                                              color: Colors.red,
-                                                              size: 20,
-                                                            )
-                                                          : const Icon(
-                                                              Icons.favorite,
-                                                              color:
-                                                                  Colors.blue,
-                                                              size: 20,
-                                                            ),
-                                                    ),
-
-                                                    // 좋아요 수
-                                                    Text(
-                                                      reviewWriterInfos[index]
-                                                              ["likes"]
-                                                          .toString(),
-                                                      style: likeReviews.contains(
-                                                              reviewWriterInfos[
-                                                                  index]["id"])
-                                                          ? TextStyle(
-                                                              color: Colors.red,
-                                                              fontSize: 15.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            )
-                                                          : TextStyle(
-                                                              color:
-                                                                  Colors.blue,
-                                                              fontSize: 15.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                        // 좋아요 수
+                                                        Text(
+                                                          reviewWriterInfos[
+                                                                      index]
+                                                                  ["likes"]
+                                                              .toString(),
+                                                          style: likeReviews.contains(
+                                                                  reviewWriterInfos[
+                                                                          index]
+                                                                      ["id"])
+                                                              ? TextStyle(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  fontSize:
+                                                                      15.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                )
+                                                              : TextStyle(
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  fontSize:
+                                                                      15.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                        ),
+                                                      ],
                                                     ),
 
                                                     // 신고하기 버튼
@@ -1045,21 +1065,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                         );
                                                       },
                                                       icon: const Icon(
-                                                        Icons
-                                                            .priority_high_outlined,
+                                                        Icons.error_outline,
                                                         color: Colors.red,
-                                                        size: 20,
-                                                      ),
-                                                    ),
-
-                                                    // 신고하기 Text
-                                                    Text(
-                                                      "신고하기",
-                                                      style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontSize: 15.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                        size: 25,
                                                       ),
                                                     ),
                                                   ],
@@ -1139,11 +1147,12 @@ class _BookCommunityState extends State<BookCommunity> {
                                                 // 리뷰 내용
                                                 Padding(
                                                   padding: const EdgeInsets.all(
-                                                      16.0),
+                                                    16.0,
+                                                  ),
                                                   child: Text(
                                                     "리뷰 내용 : ${reviewWriterInfos[index]["content"]}",
                                                     style: TextStyle(
-                                                      fontSize: 19.sp,
+                                                      fontSize: 15.sp,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),

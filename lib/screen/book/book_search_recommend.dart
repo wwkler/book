@@ -502,11 +502,19 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               // 도서 이미지
-                                              Image.network(
-                                                bookMakaseRecommendBooks[index]
-                                                    .coverSmallUrl,
-                                                width: 150.w,
-                                                height: 150.h,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Image.network(
+                                                  bookMakaseRecommendBooks[
+                                                          index]
+                                                      .coverSmallUrl,
+                                                  width: 150.w,
+                                                  height: 150.h,
+                                                  fit: BoxFit.cover,
+                                                  filterQuality:
+                                                      FilterQuality.high,
+                                                ),
                                               ),
 
                                               // 도서 제목
@@ -594,11 +602,18 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               // 도서 이미지
-                                              Image.network(
-                                                recommendationBooks[index]
-                                                    .coverSmallUrl,
-                                                width: 150.w,
-                                                height: 150.h,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Image.network(
+                                                  recommendationBooks[index]
+                                                      .coverSmallUrl,
+                                                  width: 150.w,
+                                                  height: 150.h,
+                                                  fit: BoxFit.cover,
+                                                  filterQuality:
+                                                      FilterQuality.high,
+                                                ),
                                               ),
 
                                               // 도서 제목
@@ -687,11 +702,18 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             // 도서 이미지
-                                            Image.network(
-                                              bestSellerBooks[index]
-                                                  .coverSmallUrl,
-                                              width: 200.w,
-                                              height: 200.h,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Image.network(
+                                                bestSellerBooks[index]
+                                                    .coverSmallUrl,
+                                                width: 150.w,
+                                                height: 150.h,
+                                                fit: BoxFit.cover,
+                                                filterQuality:
+                                                    FilterQuality.high,
+                                              ),
                                             ),
 
                                             // 중간 공백
@@ -788,10 +810,17 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                               MainAxisAlignment.spaceAround,
                                           children: [
                                             // 도서 이미지
-                                            Image.network(
-                                              newBooks[index].coverSmallUrl,
-                                              width: 200.w,
-                                              height: 200.h,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Image.network(
+                                                newBooks[index].coverSmallUrl,
+                                                width: 150.w,
+                                                height: 150.h,
+                                                fit: BoxFit.cover,
+                                                filterQuality:
+                                                    FilterQuality.high,
+                                              ),
                                             ),
 
                                             // 중간 공백

@@ -4,6 +4,7 @@ import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/auth/login.dart';
+import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/my_page.dart';
 import 'package:book_project/screen/book/report_history.dart';
 import 'package:book_project/screen/book/user_management.dart';
@@ -22,6 +23,9 @@ class Configuration extends StatefulWidget {
 class _ConfigurationState extends State<Configuration> {
   // 비밀번호를 입력받는 textEditor
   final inputPasswordController = TextEditingController();
+
+  // 문의하기 내용을 입력받는 textEditor
+  final inquiryInputController = TextEditingController();
 
   // 검색어 저장 켜기, 끄기 변수
   bool isSaveSearch = true;
@@ -444,7 +448,166 @@ class _ConfigurationState extends State<Configuration> {
               UserInfo.identity == UserManagerCheck.user
                   ? GestureDetector(
                       onTap: () {
-                        // 문의하기
+                        // 문의 내용을 빈칸으로 만든다.
+                        inquiryInputController.text = "";
+
+                        // 문의할 내용을 입력하는 다이어로그를 작성한다.
+                        // 신고하기 다이어로그를 띄운다.
+                        Get.dialog(
+                          AlertDialog(
+                            title: const Text(
+                              '문의하기',
+                            ),
+                            content: SizedBox(
+                              width: 100.w,
+                              height: 150.h,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    // Text
+                                    const Text(
+                                      "문의하고자 하는 내용을 입력해주세요",
+                                    ),
+
+                                    // 중간 공백
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+
+                                    // 내용 적기
+                                    Padding(
+                                      padding: const EdgeInsets.all(
+                                        8.0,
+                                      ),
+                                      child: TextField(
+                                        controller: inquiryInputController,
+                                        textAlign: TextAlign.center,
+                                        keyboardType: TextInputType.multiline,
+                                        minLines: 2,
+                                        maxLines: 10,
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 3.w,
+                                                color: Colors.purple),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 3.w,
+                                                color: Colors.purple),
+                                          ),
+                                          labelText: '문의내용',
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text(
+                                  "문의하기 완료",
+                                ),
+                                onPressed: () async {
+                                  // 검증
+                                  if (inquiryInputController.text != "") {
+                                    try {
+                                      final response = await dio.post(
+                                        'http://${IpAddress.hyunukIP}/user/emailAsk',
+                                        data: {
+                                          // id
+                                          "id": UserInfo.userValue,
+
+                                          // account
+                                          "account": UserInfo.id,
+
+                                          // 이메일
+                                          "email": UserInfo.email,
+
+                                          // 문의 내용
+                                          "message":
+                                              inquiryInputController.text,
+                                        },
+                                        options: Options(
+                                            headers: {
+                                              "Authorization":
+                                                  "Bearer ${UserInfo.token}",
+                                            },
+                                            validateStatus: (_) => true,
+                                            contentType:
+                                                Headers.jsonContentType,
+                                            responseType: ResponseType.json),
+                                      );
+
+                                      if (response.statusCode == 200) {
+                                        print("서버와 통신 성공");
+
+                                        // 문의하기 다이어로그를 지운다
+                                        Get.back();
+
+                                        // 문의하기 snackBar를 띄운다
+                                        Get.snackbar(
+                                          "문의하기 완료",
+                                          "문의가 완료되었습니다 소중한 의견 감사합니다.",
+                                          duration: const Duration(seconds: 5),
+                                          snackPosition: SnackPosition.TOP,
+                                        );
+
+                                        // 페이지 라우팅 한다
+                                        Get.off(() => BookFluidNavBar());
+                                      }
+                                      // 문의하기 실패
+                                      else {
+                                        print("서버와 통신 실패");
+                                        print(
+                                            "서버 에러 코드 : ${response.statusCode}");
+                                        print("서버 에러 메시지 : ${response.data}");
+
+                                        // 문의하기 다이어로그를 지운다
+                                        Get.back();
+
+                                        // 문의하기 실패를 띄운다
+                                        Get.snackbar(
+                                          "문의하기 실패",
+                                          "문의하기 실패되었습니다 다시 시도해주세요",
+                                          duration: const Duration(seconds: 5),
+                                          snackPosition: SnackPosition.TOP,
+                                        );
+                                      }
+                                    }
+                                    // DioError[unknown]: null이 메시지로 나타났을 떄
+                                    // 즉 서버가 열리지 않았다는 뜻이다
+                                    catch (e) {
+                                      // 신고하기 다이어로그를 지운다
+                                      Get.back();
+
+                                      Get.snackbar(
+                                        "서버가 열리지 않았습니다",
+                                        "서버가 열리지 않았습니다 관리자에게 문의해주세요",
+                                        duration: const Duration(seconds: 5),
+                                        snackPosition: SnackPosition.TOP,
+                                      );
+                                    }
+                                  }
+                                  //
+                                  else {
+                                    // 문의하기 다이어로그를 없앤다.
+                                    Get.back();
+
+                                    // 문의하기 이상 메시지 snackBar를 띄운다.
+                                    Get.snackbar(
+                                      "이상 메시지",
+                                      "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
+                                      duration: const Duration(seconds: 5),
+                                      snackPosition: SnackPosition.TOP,
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        );
                       },
                       child: Card(
                         elevation: 10.0,

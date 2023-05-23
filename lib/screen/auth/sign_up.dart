@@ -178,7 +178,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: GoogleFonts.indieFlower(
                           textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30.sp,
+                            fontSize: 28.sp,
                           ),
                         ),
                       ),
@@ -575,7 +575,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       // 선호하는 도서 장르
                       Padding(
-                        padding:  EdgeInsets.only(
+                        padding: EdgeInsets.only(
                           left: 40.w,
                           right: 40.w,
                           bottom: 20.h,
@@ -1140,7 +1140,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           backgroundColor: Colors.purple,
                           padding: EdgeInsets.symmetric(
-                            horizontal: MediaQuery.of(context).size.width.w / 3.3,
+                            horizontal:
+                                MediaQuery.of(context).size.width.w / 3.3,
                             vertical: 20.h,
                           ),
                         ),

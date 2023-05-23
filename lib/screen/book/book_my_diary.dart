@@ -385,7 +385,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          width: 300,
+                          width: 300.w,
                           child: ElevatedButton(
                             onPressed: () {
                               // 일지 보기 페이지로 라우팅

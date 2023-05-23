@@ -107,7 +107,7 @@ class _FindIdScreenState extends State<FindIdScreen> {
                         style: GoogleFonts.indieFlower(
                           textStyle: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 30.sp,
+                            fontSize: 28.sp,
                           ),
                         ),
                       ),

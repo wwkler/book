@@ -85,9 +85,6 @@ dependencies:
   # 화면 및 글꼴 크기를 조정하기 위한 플러터 플러그인. 다양한 모델에서 잘 보이도록 보장하는 라이브러리
   flutter_screenutil: ^5.7.0
 
-
-
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
