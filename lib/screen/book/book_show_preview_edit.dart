@@ -131,7 +131,7 @@ class _BookShowPreviewEditState extends State<BookShowPreviewEdit> {
                         alignment: Alignment.topLeft,
                         child: IconButton(
                           onPressed: () {
-                            Get.off(() => BookFluidNavBar());
+                            // Get.off(() => BookFluidNavBar());
                           },
                           icon: const Icon(
                             Icons.arrow_back,

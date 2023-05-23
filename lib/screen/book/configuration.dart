@@ -108,78 +108,13 @@ class _ConfigurationState extends State<Configuration> {
               ),
 
               // 중간 공백
-              // const SizedBox(height: 50),
-
-              // // 검색어 저장 켜기/끄기
-              // GestureDetector(
-              //   onTap: () {
-              //     // 서버와 통신
-              //     // 사용자에 대한 검색어 저장 켜기를 설정한다.
-              //     // 사용자에 대한 검색어 저장 끄기를 설정한다.
-              //   },
-              //   child: Card(
-              //     elevation: 10.0,
-              //     color: const Color.fromARGB(255, 233, 227, 234),
-              //     shadowColor: Colors.grey.withOpacity(0.5),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(20.0),
-              //     ),
-              //     child: SizedBox(
-              //       width: 250,
-              //       height: 50,
-              //       child: Center(
-              //         child: Text(
-              //           isSaveSearch ? "검색어 저장 켜기" : "검색어 저장 끄기",
-              //           style: const TextStyle(
-              //             fontSize: 15,
-              //             fontWeight: FontWeight.w700,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
-              // // 중간 공백
-              // const SizedBox(height: 50),
-
-              // // 검색 기록 삭제
-              // GestureDetector(
-              //   onTap: () {
-              //     // 서버와 통신
-              //     // 서버에서 사용자에 대한 검색 기록을 삭제한다.
-              //   },
-              //   child: Card(
-              //     elevation: 10.0,
-              //     color: const Color.fromARGB(255, 233, 227, 234),
-              //     shadowColor: Colors.grey.withOpacity(0.5),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(20.0),
-              //     ),
-              //     child: const SizedBox(
-              //       width: 250,
-              //       height: 50,
-              //       child: Center(
-              //         child: Text(
-              //           "검색 기록 삭제",
-              //           style: TextStyle(
-              //             fontSize: 15,
-              //             fontWeight: FontWeight.w700,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
-              // 중간 공백
               SizedBox(height: 50.h),
 
               // 내 정보 변경하기
               GestureDetector(
                 onTap: () {
                   // 내 정보 변경하기 페이지로 라우팅
-                  Get.off(() => const MyPage());
+                  Get.to(() => const MyPage());
                 },
                 child: Card(
                   elevation: 10.0,
@@ -238,7 +173,7 @@ class _ConfigurationState extends State<Configuration> {
                   );
 
                   // 로그아웃
-                  Get.off(() => const LoginScreen());
+                  Get.offAll(() => const LoginScreen());
                 },
                 child: Card(
                   elevation: 10.0,
@@ -328,6 +263,8 @@ class _ConfigurationState extends State<Configuration> {
                                             ),
                                           );
 
+                                          inputPasswordController.text = "";
+
                                           // 서버와 통신 성공
                                           if (response.statusCode == 200) {
                                             print("서버와 통신 성공");
@@ -359,7 +296,7 @@ class _ConfigurationState extends State<Configuration> {
                                               );
 
                                               // 로그인 페이지로 라우팅
-                                              Get.off(
+                                              Get.offAll(
                                                   () => const LoginScreen());
                                             }
                                           }
@@ -554,8 +491,7 @@ class _ConfigurationState extends State<Configuration> {
                                           snackPosition: SnackPosition.TOP,
                                         );
 
-                                        // 페이지 라우팅 한다
-                                        Get.off(() => BookFluidNavBar());
+                                       
                                       }
                                       // 문의하기 실패
                                       else {
@@ -798,7 +734,7 @@ class _ConfigurationState extends State<Configuration> {
                   ? GestureDetector(
                       onTap: () {
                         // 사용자 관리 페이지로 라우팅
-                        Get.off(() => UserManagement());
+                        Get.to(() => UserManagement());
                       },
                       child: Card(
                         elevation: 10.0,
@@ -838,7 +774,7 @@ class _ConfigurationState extends State<Configuration> {
                   ? GestureDetector(
                       onTap: () {
                         // 사용자 관리 페이지로 라우팅
-                        Get.off(() => const ReportHistory());
+                        Get.to(() => const ReportHistory());
                       },
                       child: Card(
                         elevation: 10.0,

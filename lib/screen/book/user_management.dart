@@ -178,7 +178,7 @@ class UserManagementState extends State<UserManagement> {
                           // 이전 페이지 아이콘
                           IconButton(
                             onPressed: () {
-                              Get.off(() => BookFluidNavBar());
+                              // Get.off(() => BookFluidNavBar());
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -589,10 +589,7 @@ class UserManagementState extends State<UserManagement> {
                                                                                       snackPosition: SnackPosition.TOP,
                                                                                     );
 
-                                                                                    // 라우팅
-                                                                                    Get.off(
-                                                                                      () => BookFluidNavBar(),
-                                                                                    );
+                                                                                    setState(() {});
                                                                                   }
                                                                                   //
                                                                                   else {

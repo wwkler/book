@@ -4,6 +4,7 @@ import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
+import 'package:book_project/screen/book/book_community.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -213,7 +214,7 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                           // 이전 페이지 아이콘
                           IconButton(
                             onPressed: () {
-                              Get.off(() => BookFluidNavBar());
+                              Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -557,15 +558,18 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                       print("서버와 통신 성공");
                                       print("서버 성공데이터: ${response.data}");
 
+                                      Get.offAll(
+                                        () => BookFluidNavBar(
+                                            route: const BookCommunity(),
+                                            routeIndex: 3),
+                                      );
+
                                       Get.snackbar(
                                         "리뷰 작성 성공",
                                         "리뷰 작성 완료하였습니다",
                                         duration: const Duration(seconds: 5),
                                         snackPosition: SnackPosition.TOP,
                                       );
-
-                                      // 라우팅
-                                      Get.off(() => BookFluidNavBar());
                                     }
                                     //
                                     else {
@@ -609,12 +613,13 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                 backgroundColor: Colors.purple,
                                 padding: EdgeInsets.symmetric(
                                   horizontal:
-                                      MediaQuery.of(context).size.width.w / 20.0,
+                                      MediaQuery.of(context).size.width.w /
+                                          20.0,
                                   vertical: 15.h,
                                 ),
                               ),
                               child: Row(
-                                children:  [
+                                children: [
                                   SizedBox(width: 25.w),
                                   const Icon(Icons.create_outlined),
                                   SizedBox(width: 50.w),

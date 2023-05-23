@@ -118,7 +118,7 @@ class _MyPageState extends State<MyPage> {
                         alignment: Alignment.topLeft,
                         child: IconButton(
                           onPressed: () {
-                            Get.off(() => BookFluidNavBar());
+                            Get.back();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -287,23 +287,20 @@ class _MyPageState extends State<MyPage> {
                         ),
                       ),
 
+                      // Center(
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Text(
+                      //       "비밀번호를 변경하고 싶으면 변경한 비밀번호를 적고\n 그렇지 않으면 원래 비밀번호를 입력해주세요 ",
+                      //       style: TextStyle(
+                      //         fontSize: 12.0.sp,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+
                       // 중간 공백
                       SizedBox(height: 10.h),
-
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "비밀번호를 변경하고 싶으면 변경한 비밀번호를 적고\n 그렇지 않으면 원래 비밀번호를 입력해주세요 ",
-                            style: TextStyle(
-                              fontSize: 12.0.sp,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      // 중간 공백
-                      SizedBox(height: 30.h),
 
                       // 변경할 선호하는 도서 장르
                       Padding(
@@ -364,7 +361,7 @@ class _MyPageState extends State<MyPage> {
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          width: 250.w,
+                          width: 200.w,
                           child: ElevatedButton(
                             onPressed: () async {
                               if (isEmailState == true &&
@@ -435,7 +432,7 @@ class _MyPageState extends State<MyPage> {
                                                     Get.back();
 
                                                     // 라우팅
-                                                    Get.off(() =>
+                                                    Get.offAll(() =>
                                                         const LoginScreen());
                                                   },
                                                 ),
@@ -444,7 +441,7 @@ class _MyPageState extends State<MyPage> {
                                           ),
                                         ),
                                       ),
-                                      barrierDismissible: true,
+                                      barrierDismissible: false,
                                     );
                                   }
                                   // 서버와 통신 실패
@@ -488,18 +485,16 @@ class _MyPageState extends State<MyPage> {
                                 borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 30.w,
-                                vertical: 20.h,
-                              ),
+                              padding: const EdgeInsets.all(16.0),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(
                                   Icons.change_circle_outlined,
                                   size: 20,
                                 ),
-                                SizedBox(width: 30.w),
+                                SizedBox(width: 15.w),
                                 Text(
                                   "개인 정보 변경하기",
                                   style: TextStyle(fontSize: 15.sp),

@@ -8,6 +8,7 @@ import 'package:book_project/screen/auth/find_id.dart';
 import 'package:book_project/screen/auth/find_password.dart';
 import 'package:book_project/screen/auth/sign_up.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/book_search_recommend.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -321,7 +322,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     );
 
                               // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
-                              Get.off(() => BookFluidNavBar());
+                              Get.off(() => BookFluidNavBar(
+                                    route: BookSearchRecommend(),
+                                    routeIndex: 0,
+                                  ));
                             }
                             // 서버와 통신 실패
                             else {

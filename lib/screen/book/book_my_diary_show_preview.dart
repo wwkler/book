@@ -4,6 +4,7 @@ import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/auth/login.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/book_my_diary.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,7 +79,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                     // 이전 페이지 아이콘
                     IconButton(
                       onPressed: () {
-                        Get.off(() => BookFluidNavBar());
+                        Get.back();
                       },
                       icon: const Icon(
                         Icons.arrow_back,
@@ -122,7 +123,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
 
                     // 작성한 일지 목록
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Card(
                         elevation: 10.0,
                         color: Colors.white,
@@ -227,10 +228,15 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                     // 도서 이미지
                                     Expanded(
                                       flex: 1,
-                                      child: Image.network(
-                                        diary!["book"]["coverSmallUrl"],
-                                        width: 200.w,
-                                        height: 200.h,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Image.network(
+                                          diary!["book"]["coverSmallUrl"],
+                                          width: 150.w,
+                                          height: 150.h,
+                                          fit: BoxFit.cover,
+                                          filterQuality: FilterQuality.high,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -242,20 +248,24 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                 // 일지 이미지
                                 diary!["image"] != ""
                                     ? Container(
-                                        padding: const EdgeInsets.all(.0),
-                                        width:
-                                            MediaQuery.of(context).size.width.w,
-                                        height: 200.h,
+                                        padding: const EdgeInsets.all(16.0),
+                                        width: MediaQuery.of(context)
+                                                .size
+                                                .width
+                                                .w /
+                                            1.8,
+                                        height: 250.h,
                                         child: Image.file(
                                           File(diary!["image"]),
-                                          width: 200.w,
-                                          height: 200.h,
+                                          fit: BoxFit.cover,
+                                          filterQuality: FilterQuality.high,
                                         ),
                                       )
                                     : const Visibility(
                                         visible: false,
                                         child: Text(
-                                            "카메라 이미지를 추가하지 않았습니다. 따라서 이미지를 보여주지 않습니다."),
+                                          "카메라 이미지를 추가하지 않았습니다. 따라서 이미지를 보여주지 않습니다.",
+                                        ),
                                       ),
 
                                 // 중간 공백
@@ -263,7 +273,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
 
                                 // 일지 감상평
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(16.0),
                                   child: Text(
                                     diary!["content"],
                                     style: TextStyle(
@@ -272,6 +282,9 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                     ),
                                   ),
                                 ),
+
+                                // 중간 공백
+                                SizedBox(height: 100.h),
                               ],
                             ),
                           ),
@@ -336,8 +349,11 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                               snackPosition: SnackPosition.TOP,
                                             );
 
-                                            // 페이지 라우팅
-                                            Get.off(() => BookFluidNavBar());
+                                            Get.offAll(
+                                              () => BookFluidNavBar(
+                                                  route: BookMyDiary(),
+                                                  routeIndex: 2),
+                                            );
                                           }
                                           // 서버와 통신 실패
                                           else {

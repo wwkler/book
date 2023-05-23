@@ -343,7 +343,7 @@ class _BookCommunityState extends State<BookCommunity> {
                             children: [
                               // search bar
                               AnimSearchBar(
-                                width: 250.w,
+                                width: 200.w,
                                 textController: searchTextController,
                                 helpText: "리뷰 제목을 입력하세요",
                                 suffixIcon: const Icon(Icons.arrow_back),
@@ -363,7 +363,7 @@ class _BookCommunityState extends State<BookCommunity> {
                               ElevatedButton(
                                 onPressed: () {
                                   // 도서 리뷰 작성 페이지로 라우팅
-                                  Get.off(() => const BookReviewWrite());
+                                  Get.to(() => const BookReviewWrite());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -1000,10 +1000,12 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             Get.back();
 
                                                                             // 신고 완료 snackBar를 띄운다
-                                                                            Get.snackbar("신고 완료",
-                                                                                "신고 완료되었습니다 소중한 의견 감사합니다",
-                                                                                duration: const Duration(seconds: 5),
-                                                                                snackPosition: SnackPosition.TOP);
+                                                                            Get.snackbar(
+                                                                              "신고 완료",
+                                                                              "신고 완료되었습니다 소중한 의견 감사합니다",
+                                                                              duration: const Duration(seconds: 5),
+                                                                              snackPosition: SnackPosition.TOP,
+                                                                            );
 
                                                                             // 재런더링 한다.
                                                                             setState(() {});
@@ -1079,61 +1081,78 @@ class _BookCommunityState extends State<BookCommunity> {
                                                 GestureDetector(
                                                   onTap: () {
                                                     // 도서 상세 정보 페이지로 이동
-                                                    Get.off(
+                                                    Get.to(
                                                       () => BookShowPreview(),
                                                       arguments:
                                                           reviewBooks[index],
                                                     );
                                                   },
-                                                  child: SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width
-                                                            .w,
-                                                    height: 200.h,
-                                                    child: Card(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        //모서리를 둥글게 하기 위해 사용
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          16.0.r,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                      16.0,
+                                                    ),
+                                                    child: SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width
+                                                              .w,
+                                                      height: 200.h,
+                                                      child: Card(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          //모서리를 둥글게 하기 위해 사용
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            16.0.r,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      elevation: 4.0, //그림자 깊이
-                                                      child:
-                                                          SingleChildScrollView(
-                                                        scrollDirection:
-                                                            Axis.horizontal,
-                                                        child: Row(
-                                                          children: [
-                                                            // 도서 이미지
-                                                            Image.network(
-                                                              reviewBooks[index]
-                                                                  .coverSmallUrl,
-                                                              width: 150.w,
-                                                              height: 150.h,
-                                                            ),
-
-                                                            // 도서 제목
-                                                            Text(
-                                                              reviewBooks[index]
-                                                                  .title,
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                        elevation: 4.0, //그림자 깊이
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Row(
+                                                            children: [
+                                                              // 도서 이미지
+                                                              Image.network(
+                                                                reviewBooks[
+                                                                        index]
+                                                                    .coverSmallUrl,
+                                                                width: 150.w,
+                                                                height: 150.h,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                                filterQuality:
+                                                                    FilterQuality
+                                                                        .high,
                                                               ),
-                                                            ),
 
-                                                            // 중간 공백
-                                                            SizedBox(
-                                                              width: 10.w,
-                                                            ),
-                                                          ],
+                                                              // 중간 공백
+                                                              const SizedBox(
+                                                                  width: 10),
+
+                                                              // 도서 제목
+                                                              Text(
+                                                                reviewBooks[
+                                                                        index]
+                                                                    .title,
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+
+                                                              // 중간 공백
+                                                              SizedBox(
+                                                                width: 10.w,
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),

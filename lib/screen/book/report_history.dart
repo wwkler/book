@@ -175,7 +175,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                           // 이전 페이지 아이콘
                           IconButton(
                             onPressed: () {
-                              Get.off(() => BookFluidNavBar());
+                              Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -221,7 +221,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: AnimSearchBar(
-                              width: 300,
+                              width: 300.w,
                               textController: searchTextController,
                               helpText: "사용자 이름 또는 아이디 검색",
                               suffixIcon: const Icon(Icons.arrow_back),
@@ -332,7 +332,7 @@ class _ReportHistoryState extends State<ReportHistory> {
                                                 itemBuilder: (context, index) =>
                                                     GestureDetector(
                                                   onTap: () {
-                                                    Get.off(
+                                                    Get.to(
                                                       () =>
                                                           const ReportHistoryShowPreview(),
                                                       arguments: reports[index],

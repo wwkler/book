@@ -3,6 +3,7 @@ import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/report_history.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -77,7 +78,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                     // 이전 페이지 아이콘
                     IconButton(
                       onPressed: () {
-                        Get.off(() => BookFluidNavBar());
+                        // Get.off(() => BookFluidNavBar());
                       },
                       icon: const Icon(
                         Icons.arrow_back,
@@ -121,7 +122,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
 
                     // 신고 내역 상세 보기 목록
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Card(
                         elevation: 10.0,
                         color: Colors.white,
@@ -367,8 +368,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     snackPosition: SnackPosition.TOP,
                                   );
 
-                                  // 라우팅
-                                  Get.off(() => BookFluidNavBar());
+                                  Get.offAll(() => const ReportHistory());
                                 }
                                 //
                                 else {
@@ -438,8 +438,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     snackPosition: SnackPosition.TOP,
                                   );
 
-                                  // 라우팅
-                                  Get.off(() => BookFluidNavBar());
+                                  Get.offAll(() => const ReportHistory());
                                 }
                                 //
                                 else {
@@ -507,8 +506,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     snackPosition: SnackPosition.TOP,
                                   );
 
-                                  // 라우팅
-                                  Get.off(() => BookFluidNavBar());
+                                  Get.offAll(() => const ReportHistory());
                                 }
                                 //
                                 else {

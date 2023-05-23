@@ -345,23 +345,23 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          width: 300.w,
+                          width: 200.w,
                           child: ElevatedButton(
                             onPressed: () {
                               // 새 일지 작성 페이지로 라우팅
-                              Get.off(() => const BookMyDiaryWrite());
+                              Get.to(() => const BookMyDiaryWrite());
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 60.w,
-                                vertical: 20.h,
+                              padding: const EdgeInsets.all(
+                                16.0,
                               ),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(
                                   Icons.create_outlined,
@@ -385,11 +385,11 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          width: 300.w,
+                          width: 200.w,
                           child: ElevatedButton(
                             onPressed: () {
                               // 일지 보기 페이지로 라우팅
-                              Get.off(
+                              Get.to(
                                 () => const BookMyDiaryList(),
                                 arguments: diarys,
                               );
@@ -399,12 +399,12 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                                 borderRadius: BorderRadius.circular(10.0.r),
                               ),
                               backgroundColor: Colors.purple,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 60.w,
-                                vertical: 20.h,
+                              padding: const EdgeInsets.all(
+                                16.0,
                               ),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Icon(
                                   Icons.menu_book_outlined,

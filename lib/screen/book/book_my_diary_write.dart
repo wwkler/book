@@ -1,11 +1,11 @@
 // 도서 일지 작성 페이지
 import 'dart:io';
-
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/bookModel.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/book_my_diary.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -233,7 +233,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           // 이전 페이지 아이콘
                           IconButton(
                             onPressed: () {
-                              Get.off(() => BookFluidNavBar());
+                              Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -571,7 +571,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                   borderSide: BorderSide(
                                       width: 3.w, color: Colors.purple),
                                 ),
-                                labelText: '감상평',
+                                labelText: '일지 감상평',
                               ),
                             ),
                           ),
@@ -583,7 +583,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                           Align(
                             alignment: Alignment.center,
                             child: SizedBox(
-                              width: 300.w,
+                              width: 200.w,
                               child: ElevatedButton(
                                 onPressed: () async {
                                   // 검증
@@ -616,6 +616,13 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                         print(
                                             "서버에서 받아온 데이터 : ${response.data}");
 
+                                        Get.offAll(
+                                          () => BookFluidNavBar(
+                                            route: BookMyDiary(),
+                                            routeIndex: 2,
+                                          ),
+                                        );
+
                                         // 일지 작성 완료 snackBar를 띄운다
                                         Get.snackbar(
                                           "일지 작성 완료",
@@ -623,9 +630,6 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                           duration: const Duration(seconds: 5),
                                           snackPosition: SnackPosition.TOP,
                                         );
-
-                                        // 라우팅
-                                        Get.off(() => BookFluidNavBar());
                                       }
                                       //
                                       else {
@@ -672,12 +676,10 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                     borderRadius: BorderRadius.circular(10.0.r),
                                   ),
                                   backgroundColor: Colors.purple,
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 60.w,
-                                    vertical: 20.h,
-                                  ),
+                                  padding: const EdgeInsets.all(16.0),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     const Icon(
                                       Icons.create_outlined,

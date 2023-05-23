@@ -123,7 +123,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                     // 이전 페이지 아이콘
                     IconButton(
                       onPressed: () {
-                        Get.off(() => BookFluidNavBar());
+                        Get.back();
                       },
                       icon: const Icon(
                         Icons.arrow_back,
@@ -261,7 +261,7 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
                                               GestureDetector(
                                             onTap: () {
                                               // 도서 일지 상세 정보 페이지로 라우팅
-                                              Get.off(
+                                              Get.to(
                                                 () =>
                                                     const BookMyDiaryShowPreview(),
                                                 arguments: diarys[index],

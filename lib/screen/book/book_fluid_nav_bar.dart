@@ -9,18 +9,25 @@ import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 class BookFluidNavBar extends StatefulWidget {
-  BookFluidNavBar({Key? key}) : super(key: key);
+  Widget route;
+  int routeIndex;
+
+  BookFluidNavBar({
+    Key? key,
+    required this.route,
+    required this.routeIndex,
+  }) : super(key: key);
 
   @override
   State<BookFluidNavBar> createState() => _BookFluidNavBarState();
 }
 
 class _BookFluidNavBarState extends State<BookFluidNavBar> {
-  Widget? _child = null;
+  // Widget? _child = null;
 
   @override
   void initState() {
-    _child = BookSearchRecommend();
+    // _child = BookSearchRecommend();
     print("book fluid nav bar initState 시작");
     super.initState();
   }
@@ -36,7 +43,7 @@ class _BookFluidNavBarState extends State<BookFluidNavBar> {
     return SafeArea(
       child: Scaffold(
         extendBody: true,
-        body: _child,
+        body: widget.route,
         bottomNavigationBar: FluidNavBar(
           icons: [
             FluidNavBarIcon(
@@ -71,7 +78,7 @@ class _BookFluidNavBarState extends State<BookFluidNavBar> {
             iconUnselectedForegroundColor: Colors.white60,
           ),
           scaleFactor: 1.5,
-          defaultIndex: 0,
+          defaultIndex: widget.routeIndex,
           itemBuilder: (icon, item) => Semantics(
             label: icon.extras!["label"],
             child: item,
@@ -85,26 +92,31 @@ class _BookFluidNavBarState extends State<BookFluidNavBar> {
     setState(() {
       switch (index) {
         case 0:
-          _child = BookSearchRecommend();
+          widget.route = BookSearchRecommend();
+          widget.routeIndex = 0;
           break;
         case 1:
-          _child = BookMyGoal();
+          widget.route = BookMyGoal();
+          widget.routeIndex = 1;
           break;
         case 2:
-          _child = BookMyDiary();
+          widget.route = BookMyDiary();
+          widget.routeIndex = 2;
           break;
         case 3:
-          _child = BookCommunity();
+          widget.route = const BookCommunity();
+          widget.routeIndex = 3;
           break;
         case 4:
-          _child = Configuration();
+          widget.route = Configuration();
+          widget.routeIndex = 4;
           break;
       }
-      _child = AnimatedSwitcher(
+      widget.route = AnimatedSwitcher(
         switchInCurve: Curves.easeOut,
         switchOutCurve: Curves.easeIn,
         duration: const Duration(milliseconds: 500),
-        child: _child,
+        child: widget.route,
       );
     });
   }

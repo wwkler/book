@@ -608,6 +608,13 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                               print(
                                                   "서버에서 제공해주는 데이터 : ${response.data}");
 
+                                              Get.offAll(
+                                                () => BookFluidNavBar(
+                                                  route: BookMyGoal(),
+                                                  routeIndex: 1,
+                                                ),
+                                              );
+
                                               Get.snackbar(
                                                 "목표1 설정하기 반영 성공",
                                                 "목표1 설정하기 반영 성공하였습니다",
@@ -616,19 +623,6 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
-
-                                              // 화면 재랜더링, 값 초기화
-                                              setState(() {
-                                                selectedCategory = "국내도서>소설";
-                                                selectedCode = 101;
-
-                                                // 목표 도서 권수에 대한 변수
-                                                readBooksCountController.text =
-                                                    "";
-
-                                                // 목표 설정 변수
-                                                objDate = "목표 기간을 설정해주세요";
-                                              });
                                             }
                                             // 서버와 통신 실패
                                             else {
@@ -746,6 +740,13 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                               print(
                                                   "서버에서 제공해주는 데이터 : ${response.data}");
 
+                                              Get.offAll(
+                                                () => BookFluidNavBar(
+                                                  route: BookMyGoal(),
+                                                  routeIndex: 1,
+                                                ),
+                                              );
+
                                               Get.snackbar(
                                                 "목표1 수정 반영 성공",
                                                 "목표1 수정 반영 성공하였습니다",
@@ -754,19 +755,6 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
-
-                                              // 화면 재랜더링, 값 초기화
-                                              setState(() {
-                                                selectedCategory = "국내도서>소설";
-                                                selectedCode = 101;
-
-                                                // 목표 도서 권수에 대한 변수
-                                                readBooksCountController.text =
-                                                    "";
-
-                                                // 목표 설정 변수
-                                                objDate = "목표 기간을 설정해주세요";
-                                              });
                                             }
                                             // 서버와 통신 실패
                                             else {

@@ -31,6 +31,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
 
   // category
   Map<int, String> category = {
+    0: "분야가 정해지지 않음",
     101: "국내도서>소설",
     102: "국내도서>시/에세이",
     103: "국내도서>예술/대중문화",
@@ -844,9 +845,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   }
                                 }
 
-                                await Future.delayed(
-                                    const Duration(seconds: 2));
-
                                 Get.dialog(
                                   AlertDialog(
                                     title: const Text("목표 1 진행 현황"),
@@ -1037,9 +1035,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   }
                                 }
 
-                                await Future.delayed(
-                                    const Duration(seconds: 2));
-
                                 Get.dialog(
                                   AlertDialog(
                                     title: const Text("목표 2 진행 현황"),
@@ -1227,9 +1222,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                     accomplishCount += 1;
                                   }
                                 }
-
-                                await Future.delayed(
-                                    const Duration(seconds: 2));
 
                                 Get.dialog(
                                   AlertDialog(
@@ -1432,7 +1424,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                       onTap: () {
                                         // 도서 상세 페이지로 라우팅
                                         // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 싶은 도서임을 알려야 한다.
-                                        Get.off(
+                                        Get.to(
                                           () => BookShowPreview(),
                                           arguments: wantToReadBooks[index],
                                         );
@@ -1578,9 +1570,13 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                       .coverSmallUrl,
                                                   width: 150.w,
                                                   height: 150.h,
+                                                  fit: BoxFit.cover,
                                                   filterQuality:
                                                       FilterQuality.high,
                                                 ),
+
+                                                // 중간 공백
+                                                const SizedBox(height: 20),
 
                                                 // 도서 제목
                                                 Padding(
@@ -1850,7 +1846,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                       onTap: () {
                                         // 도서 상세 페이지로 라우팅
                                         // 해당 도서 데이터를 arguments로 전달하며 이것이 읽고 있는 도서을 알려야 한다.
-                                        Get.off(
+                                        Get.to(
                                           () => BookShowPreview(),
                                           arguments: nowReadBooks[index],
                                         );
@@ -1997,6 +1993,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                       .coverSmallUrl,
                                                   width: 150.w,
                                                   height: 150.h,
+                                                  fit: BoxFit.cover,
                                                   filterQuality:
                                                       FilterQuality.high,
                                                 ),
@@ -2096,6 +2093,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         ),
                                                                       );
 
+                                                                      // editPageController.text를 다시 빈칸으로 만듦
+                                                                      editPageController
+                                                                          .text = "";
+
                                                                       if (response
                                                                               .statusCode ==
                                                                           200) {
@@ -2111,9 +2112,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           snackPosition:
                                                                               SnackPosition.TOP,
                                                                         );
-                                                                        // editPageController.text를 다시 빈칸으로 만듦
-                                                                        editPageController.text =
-                                                                            "";
 
                                                                         // 화면 잰더링
                                                                         setState(
@@ -2370,7 +2368,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                         content: Center(
                           child: SizedBox(
                             width: 300.w,
-                            height: 400.h,
+                            height: 350.h,
                             child: readBooks.isNotEmpty
                                 ? ListView.separated(
                                     scrollDirection: Axis.horizontal,
@@ -2380,14 +2378,14 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                       onTap: () {
                                         // 도서 상세 페이지로 라우팅
                                         // 해당 도서 데이터를 arguments로 전달하며 이것이 읽은 도서을 알려야 한다.
-                                        Get.off(
+                                        Get.to(
                                           () => BookShowPreview(),
                                           arguments: readBooks[index],
                                         );
                                       },
                                       child: SizedBox(
                                         width: 250.w,
-                                        height: 400.h,
+                                        height: 350.h,
                                         child: Card(
                                           elevation: 10.0,
                                           shadowColor:
@@ -2398,7 +2396,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                           ),
                                           child: Column(
                                             children: [
-                                              // 삭제하기
                                               // 삭제하기 버튼
                                               Align(
                                                 alignment: Alignment.topRight,
@@ -2537,13 +2534,14 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                               ),
 
                                               // 중간 공백
-                                              SizedBox(height: 5.h),
+                                              SizedBox(height: 20.h),
 
                                               // 도서 이미지
                                               Image.network(
                                                 readBooks[index].coverSmallUrl,
                                                 width: 150.w,
                                                 height: 150.h,
+                                                fit: BoxFit.cover,
                                                 filterQuality:
                                                     FilterQuality.high,
                                               ),
@@ -2605,7 +2603,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                         closedHeight: 70.h,
                         scrollable: true,
                         borderRadius: 10.r,
-                        openedHeight: 400.h,
+                        openedHeight: 350.h,
                       ),
 
                       // 중간 공백
