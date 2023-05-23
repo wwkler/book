@@ -73,40 +73,40 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
     await Future.delayed(const Duration(seconds: 2));
 
     // 서버와 통신 - 서버에 접속해서 북마카세가 추천하는 데이터를 받는다
-    // try {
-    //   final response0 = await dio.get(
-    //     "http://${IpAddress.hyunukIP}/book/recommend?memberId=${UserInfo.userValue}",
-    //     options: Options(
-    //       validateStatus: (_) => true,
-    //       contentType: Headers.jsonContentType,
-    //       responseType: ResponseType.json,
-    //     ),
-    //   );
+    try {
+      final response0 = await dio.get(
+        "http://${IpAddress.hyunukIP}/book/recommend?memberId=${UserInfo.userValue}",
+        options: Options(
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
 
-    //   if (response0.statusCode == 200) {
-    //     print("서버와 통신 성공");
-    //     print("서버에서 북마카세가 제시하는 추천 도서 받은 데이터 : ${response0.data}");
+      if (response0.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 북마카세가 제시하는 추천 도서 받은 데이터 : ${response0.data}");
 
-    //     bookMakaseRecommendBooks = (response0.data as List<dynamic>).map(
-    //       (dynamic e) {
-    //         return BookModel.fromJson(e as Map<String, dynamic>);
-    //       },
-    //     ).toList();
+        bookMakaseRecommendBooks = (response0.data as List<dynamic>).map(
+          (dynamic e) {
+            return BookModel.fromJson(e as Map<String, dynamic>);
+          },
+        ).toList();
 
-    //     print("bookMakaseRecommendBooks: $bookMakaseRecommendBooks");
-    //   }
-    //   //
-    //   else {
-    //     print("서버와 통신 실패");
-    //     print("서버 북마카세 실패");
-    //     print("서버 통신 에러 코드 : ${response0.statusCode}");
-    //   }
-    // }
-    // // DioError[unknown]: null이 메시지로 나타났을 떄
-    // // 즉 서버가 열리지 않았다는 뜻이다
-    // catch (e) {
-    //   print("서버가 열리지 않음");
-    // }
+        print("bookMakaseRecommendBooks: $bookMakaseRecommendBooks");
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 북마카세 실패");
+        print("서버 통신 에러 코드 : ${response0.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버가 열리지 않음");
+    }
 
     try {
       // 서버와 통신 - 서버에 접속해서 인터파크 추천 도서 API 데이터를 받는다.
@@ -336,7 +336,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                       AnimSearchBar(
                         width: 300.w,
                         textController: searchTextController,
-                        helpText: "책 또는 저자를 입력",
+                        helpText: "도서 또는 저자를 입력",
                         suffixIcon: const Icon(Icons.arrow_back),
                         onSuffixTap: () {
                           searchTextController.clear();
@@ -344,7 +344,7 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                         onSubmitted: (String value) {
                           // BookSearchResult로 라우팅하면서 검색어 데이터도 함께 보낸다
                           if (searchTextController.text.isNotEmpty) {
-                            Get.off(
+                            Get.to(
                               () => const BookSearchResult(),
                               arguments: searchTextController.text,
                             );
@@ -478,7 +478,13 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       GestureDetector(
                                     onTap: () {
                                       // 도서 상세 페이지로 라우팅
-                                      Get.off(
+                                      // Get.off(
+                                      //   () => BookShowPreview(),
+                                      //   arguments:
+                                      //       bookMakaseRecommendBooks[index],
+                                      // );
+
+                                      Get.to(
                                         () => BookShowPreview(),
                                         arguments:
                                             bookMakaseRecommendBooks[index],
@@ -579,7 +585,12 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       GestureDetector(
                                     onTap: () {
                                       // 도서 상세 페이지로 라우팅
-                                      Get.off(
+                                      // Get.off(
+                                      //   () => BookShowPreview(),
+                                      //   arguments: recommendationBooks[index],
+                                      // );
+
+                                      Get.to(
                                         () => BookShowPreview(),
                                         arguments: recommendationBooks[index],
                                       );
@@ -681,7 +692,13 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       GestureDetector(
                                     onTap: () {
                                       // 도서 페이지로 라우팅
-                                      Get.off(
+                                      // Get.off(
+                                      //   () => BookShowPreview(),
+                                      //   arguments: bestSellerBooks[index],
+                                      // );
+
+                                      // 도서 페이지로 라우팅
+                                      Get.to(
                                         () => BookShowPreview(),
                                         arguments: bestSellerBooks[index],
                                       );
@@ -789,7 +806,12 @@ class _BookSearchRecommendState extends State<BookSearchRecommend> {
                                       GestureDetector(
                                     onTap: () {
                                       // 도서 상세 페이지로 라우팅
-                                      Get.off(
+                                      // Get.off(
+                                      //   () => BookShowPreview(),
+                                      //   arguments: newBooks[index],
+                                      // );
+
+                                      Get.to(
                                         () => BookShowPreview(),
                                         arguments: newBooks[index],
                                       );

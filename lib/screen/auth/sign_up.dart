@@ -1093,7 +1093,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   snackPosition: SnackPosition.TOP,
                                 );
 
-                                // 회원 가입 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                                // 회원 가입 페이지에서 벗어나 로그인 페이지로 라우팅한다.
                                 Get.off(() => const LoginScreen());
                               }
                               // 서버와 통신 실패

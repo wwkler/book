@@ -60,7 +60,7 @@ class BanCheck {
               print("nowTime : $nowTime");
               print("banUntilTime : $banUntilTime");
 
-              // banUntilTime >= nowTime일 떄 사용자가 ban됐다는 것을 알리고 로고인 페이지로 라우팅 하게 안내한다
+              // banUntilTime >= nowTime일 떄 사용자가 ban됐다는 것을 알리고 로그인 페이지로 라우팅 하게 안내한다
               if (banUntilTime.compareTo(nowTime) >= 0) {
                 print("사용자는 ban을 먹어야 합니다");
                 // 스트림을 제거한다.
@@ -69,10 +69,10 @@ class BanCheck {
                 // ban을 실시간으로 하는 모니터링 하고 있지 않음을 표현한다
                 monitorBanFlag = false;
 
-                // 사용자가 ban됐다는 것을 알리고, 로고인 페이지로 라우팅 하게끔 안내한다
+                // 사용자가 ban됐다는 것을 알리고, 로그인 페이지로 라우팅 하게끔 안내한다
                 Get.dialog(
                   AlertDialog(
-                    title: const Text("로고인 이동"),
+                    title: const Text("로그인 이동"),
                     content: SizedBox(
                       width: 100,
                       height: 150,
@@ -84,14 +84,14 @@ class BanCheck {
                           // 중간 공백
                           const SizedBox(height: 50),
 
-                          // 로고인 페이지로 이동하는 버튼
+                          // 로그인 페이지로 이동하는 버튼
                           TextButton(
-                            child: const Text("로고인 페이지로 이동"),
+                            child: const Text("로그인 페이지로 이동"),
                             onPressed: () {
                               // 아이디를 보여주는 다이어로그를 삭제한다.
                               Get.back();
 
-                              // 로고인 페이지로 라우팅
+                              // 로그인 페이지로 라우팅
                               Get.off(() => const LoginScreen());
                             },
                           ),

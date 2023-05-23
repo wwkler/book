@@ -4,6 +4,8 @@
    <!-- twilio_flutter를 사용하기 위한 준비 작업-->
    <uses-permission android:name="android.permission.SEND_SMS"/>
 
+   <!-- 인터넷 권한 작업 -->
+   <uses-permission android:name="android.permission.INTERNET" /> 
 
    <!-- ImagePicker 카메라에 접근하기 위한 작업-->
    <uses-permission android:name="android.permission.CAMERA" />

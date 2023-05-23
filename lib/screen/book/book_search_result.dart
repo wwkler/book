@@ -227,7 +227,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
                               // 이전 페이지 아이콘
                               IconButton(
                                 onPressed: () {
-                                  Get.off(() => BookFluidNavBar());
+                                  // Get.off(() => BookFluidNavBar());
+                                  Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -239,9 +240,9 @@ class _BookSearchResultState extends State<BookSearchResult> {
 
                               // search bar
                               AnimSearchBar(
-                                width: 300.w,
+                                width: 250.w,
                                 textController: searchTextController,
-                                helpText: "책 또는 저자를 입력",
+                                helpText: "도서 또는 저자를 입력",
                                 suffixIcon: const Icon(Icons.arrow_back),
                                 onSuffixTap: () {
                                   searchTextController.clear();
@@ -313,7 +314,13 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                           child: GestureDetector(
                                             onTap: () {
                                               // 도서 상세 페이지로 라우팅
-                                              Get.off(
+                                              // Get.off(
+                                              //   () => BookShowPreview(),
+                                              //   arguments:
+                                              //       searchBookModels[index],
+                                              // );
+
+                                               Get.to(
                                                 () => BookShowPreview(),
                                                 arguments:
                                                     searchBookModels[index],
@@ -470,7 +477,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                 ),
 
                           // 중간 공백
-                          SizedBox(height: 40.h),
+                          SizedBox(height: 150.h),
                         ],
                       ),
                     ),

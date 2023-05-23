@@ -2,6 +2,7 @@
 import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
+import 'package:book_project/screen/book/book_my_goal.dart';
 import 'package:book_project/screen/book/book_my_goal_edit1.dart';
 import 'package:book_project/screen/book/book_my_goal_edit3.dart';
 import 'package:dio/dio.dart';
@@ -130,7 +131,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:  [
+                    children: [
                       // 프로그래스바
                       const CircularProgressIndicator(),
 
@@ -196,7 +197,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                               // 이전 페이지 아이콘
                               IconButton(
                                 onPressed: () {
-                                  Get.off(() => BookFluidNavBar());
+                                  Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -358,7 +359,8 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                 fillColor: Colors.white,
                                 labelText: "선호하는 도서 장르",
                                 hintText: "인문",
-                                labelStyle: const TextStyle(color: Colors.purple),
+                                labelStyle:
+                                    const TextStyle(color: Colors.purple),
                               ),
                               value: selectedCategory,
                               onChanged: (String? key) {
@@ -513,7 +515,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                     borderRadius: BorderRadius.circular(10.0.r),
                                   ),
                                   backgroundColor: Colors.purple,
-                                  padding:  EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 30.w,
                                     vertical: 10.h,
                                   ),
@@ -614,8 +616,18 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                                     SnackPosition.TOP,
                                               );
 
-                                              // 라우팅
-                                              Get.off(() => BookFluidNavBar());
+                                              // 화면 재랜더링, 값 초기화
+                                              setState(() {
+                                                selectedCategory = "국내도서>소설";
+                                                selectedCode = 101;
+
+                                                // 목표 도서 권수에 대한 변수
+                                                readBooksCountController.text =
+                                                    "";
+
+                                                // 목표 설정 변수
+                                                objDate = "목표 기간을 설정해주세요";
+                                              });
                                             }
                                             // 서버와 통신 실패
                                             else {
@@ -662,7 +674,7 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                               BorderRadius.circular(10.0.r),
                                         ),
                                         backgroundColor: Colors.purple,
-                                        padding:  EdgeInsets.symmetric(
+                                        padding: EdgeInsets.symmetric(
                                           horizontal: 30.w,
                                           vertical: 20.h,
                                         ),
@@ -743,8 +755,18 @@ class _BookMyGoalEdit2State extends State<BookMyGoalEdit2> {
                                                     SnackPosition.TOP,
                                               );
 
-                                              // 라우팅
-                                              Get.off(() => BookFluidNavBar());
+                                              // 화면 재랜더링, 값 초기화
+                                              setState(() {
+                                                selectedCategory = "국내도서>소설";
+                                                selectedCode = 101;
+
+                                                // 목표 도서 권수에 대한 변수
+                                                readBooksCountController.text =
+                                                    "";
+
+                                                // 목표 설정 변수
+                                                objDate = "목표 기간을 설정해주세요";
+                                              });
                                             }
                                             // 서버와 통신 실패
                                             else {

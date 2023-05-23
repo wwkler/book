@@ -549,7 +549,7 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                   borderSide: BorderSide(
                                       width: 3.w, color: Colors.purple),
                                 ),
-                                labelText: '리뷰 제목',
+                                labelText: '일지 제목',
                               ),
                             ),
                           ),

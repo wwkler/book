@@ -1,4 +1,4 @@
-// 앱의 로고인 페이지 화면
+// 앱의 로그인 페이지 화면
 import 'dart:io';
 
 import 'package:book_project/const/ipAddress.dart';
@@ -247,7 +247,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fillColor: Colors.white,
                                 labelText: "Password",
                                 hintText: 'ex) ********',
-                                labelStyle: const TextStyle(color: Colors.purple),
+                                labelStyle:
+                                    const TextStyle(color: Colors.purple),
                               ),
                             ),
                           ),
@@ -260,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 15.h,
                     ),
 
-                    // 로고인 버튼
+                    // 로그인 버튼
                     ElevatedButton(
                       onPressed: () async {
                         // 검증 작업
@@ -305,16 +306,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               UserInfo.identity == UserManagerCheck.user
                                   ?
-                                  // 로고인에 성공하였다는 snackBar를 띄운다
+                                  // 로그인에 성공하였다는 snackBar를 띄운다
                                   Get.snackbar(
-                                      "사용자 로고인 성공",
-                                      "사용자 로고인에 성공하였습니다",
+                                      "사용자 로그인 성공",
+                                      "사용자 로그인에 성공하였습니다",
                                       duration: const Duration(seconds: 5),
                                       snackPosition: SnackPosition.TOP,
                                     )
                                   : Get.snackbar(
-                                      "관리자 로고인 성공",
-                                      "관리자 로고인에 성공하였습니다",
+                                      "관리자 로그인 성공",
+                                      "관리자 로그인에 성공하였습니다",
                                       duration: const Duration(seconds: 5),
                                       snackPosition: SnackPosition.TOP,
                                     );
@@ -348,10 +349,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 );
                               }
 
-                              // 로고인 중에 오류가 발생했습니다
+                              // 로그인 중에 오류가 발생했습니다
                               else if (response.data == "로그인 중에 오류가 발생했습니다.") {
                                 Get.snackbar(
-                                  "로고인 중에 오류 발생",
+                                  "로그인 중에 오류 발생",
                                   "서버측 에러로 관리자에게 문의해주세요",
                                   duration: const Duration(seconds: 5),
                                   snackPosition: SnackPosition.TOP,

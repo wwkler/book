@@ -1005,9 +1005,8 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                                 duration: const Duration(seconds: 5),
                                                                                 snackPosition: SnackPosition.TOP);
 
-                                                                            // 페이지 라우팅 한다
-                                                                            Get.off(() =>
-                                                                                BookFluidNavBar());
+                                                                            // 재런더링 한다.
+                                                                            setState(() {});
                                                                           }
                                                                           //
                                                                           else {

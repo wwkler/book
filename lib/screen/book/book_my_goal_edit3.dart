@@ -197,7 +197,8 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                               // 이전 페이지 아이콘
                               IconButton(
                                 onPressed: () {
-                                  Get.off(() => BookFluidNavBar());
+                                  // Get.off(() => BookFluidNavBar());
+                                  Get.back();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_back,
@@ -616,8 +617,18 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                     SnackPosition.TOP,
                                               );
 
-                                              // 라우팅
-                                              Get.off(() => BookFluidNavBar());
+                                              // 화면 재랜더링, 값 초기화
+                                              setState(() {
+                                                selectedCategory = "국내도서>소설";
+                                                selectedCode = 101;
+
+                                                // 목표 도서 권수에 대한 변수
+                                                readBooksCountController.text =
+                                                    "";
+
+                                                // 목표 설정 변수
+                                                objDate = "목표 기간을 설정해주세요";
+                                              });
                                             }
                                             // 서버와 통신 실패
                                             else {
@@ -745,8 +756,18 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                     SnackPosition.TOP,
                                               );
 
-                                              // 라우팅
-                                              Get.off(() => BookFluidNavBar());
+                                              // 화면 재랜더링, 값 초기화
+                                              setState(() {
+                                                selectedCategory = "국내도서>소설";
+                                                selectedCode = 101;
+
+                                                // 목표 도서 권수에 대한 변수
+                                                readBooksCountController.text =
+                                                    "";
+
+                                                // 목표 설정 변수
+                                                objDate = "목표 기간을 설정해주세요";
+                                              });
                                             }
                                             // 서버와 통신 실패
                                             else {

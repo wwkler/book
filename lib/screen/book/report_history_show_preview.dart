@@ -137,7 +137,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // 신고 리뷰 제목
+                                // 신고 대상 리뷰 제목
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
@@ -163,7 +163,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   ),
                                 ),
 
-                                // 신고 리뷰 작성자 아이디
+                                // 신고 대상 리뷰 작성자 아이디
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
@@ -189,7 +189,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   ),
                                 ),
 
-                                // 신고 리뷰 작성자 이름
+                                // 신고 대상 리뷰 작성자 이름
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
@@ -215,7 +215,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   ),
                                 ),
 
-                                // 신고 리뷰 내용
+                                // 신고 대상 리뷰 내용
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
@@ -230,7 +230,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 // 중간 공백
                                 SizedBox(height: 50.h),
 
-                                // 신고자명
+                                // 신고하는 사람 이름
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
@@ -256,7 +256,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   ),
                                 ),
 
-                                // 신고 날짜
+                                // 신고하는 날짜
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
@@ -282,7 +282,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   ),
                                 ),
 
-                                // 신고 사유
+                                // 신고하는 사유
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
@@ -311,11 +311,11 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 // 중간 공백
                                 SizedBox(height: 30.h),
 
-                                // 신고 내용
+                                // 신고하는 내용
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
-                                    report!["review"]["content"],
+                                    report!["content"],
                                     style: TextStyle(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,

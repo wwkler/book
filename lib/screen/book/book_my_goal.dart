@@ -712,7 +712,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                         child: ElevatedButton(
                           onPressed: () {
                             // 화면을 라우팅하면서 목표 1, 2, 3를 관리하는 배열 objectives를 같이 넘긴다.
-                            Get.off(
+                            Get.to(
                               () => const BookMyGoalEdit1(),
                               arguments: objectives,
                             );

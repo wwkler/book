@@ -6,6 +6,7 @@ import 'package:book_project/model/user_info.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_search_recommend.dart';
+import 'package:book_project/screen/book/book_search_result.dart';
 import 'package:book_project/screen/book/book_show_preview_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +131,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                   // 이전 페이지 아이콘
                   IconButton(
                     onPressed: () {
-                      Get.off(() => BookFluidNavBar());
+                      // Get.off(() => const BookSearchResult());
+                      Get.back();
                     },
                     icon: const Icon(
                       Icons.arrow_back,
@@ -441,10 +443,6 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                   snackPosition:
                                                       SnackPosition.TOP,
                                                 );
-
-                                                // 도서 검색, 추천 페이지로 이동
-                                                Get.off(
-                                                    () => BookFluidNavBar());
                                               }
                                               //
                                               else {
@@ -635,10 +633,6 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                                     SnackPosition
                                                                         .TOP,
                                                               );
-
-                                                              // 라우팅
-                                                              Get.off(() =>
-                                                                  BookFluidNavBar());
                                                             }
                                                             //
                                                             else {
@@ -725,39 +719,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                   ),
 
                   // 중간 공백
-                  SizedBox(height: 20.h),
-
-                  // 도서 상세 정보 수정(관리자 권한)
-                  // UserInfo.identity == UserManagerCheck.manager
-                  //     ? Center(
-                  //         child: ElevatedButton(
-                  //           onPressed: () {
-                  //             // 도서 정보를 수정할 수 있도록 제공한다.
-                  //             Get.off(() => BookShowPreviewEdit());
-                  //           },
-                  //           style: ElevatedButton.styleFrom(
-                  //             shape: RoundedRectangleBorder(
-                  //               borderRadius: BorderRadius.circular(10.0),
-                  //             ),
-                  //             backgroundColor: Colors.purple,
-                  //             padding: const EdgeInsets.symmetric(
-                  //               horizontal: 100,
-                  //               vertical: 20,
-                  //             ),
-                  //           ),
-                  //           child: const Text(
-                  //             "정보 수정하기 (관리자 권한)",
-                  //             style: TextStyle(fontSize: 12),
-                  //           ),
-                  //         ),
-                  //       )
-                  //     : const Visibility(
-                  //         visible: false,
-                  //         child: Text("버튼이 보이지 않습니다."),
-                  //       ),
-
-                  // 중간 공백
-                  SizedBox(height: 40.h),
+                  SizedBox(height: 60.h),
                 ],
               ),
             ),

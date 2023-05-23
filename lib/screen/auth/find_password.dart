@@ -303,14 +303,14 @@ class _FindPasswordScreenState extends State<FindPasswordScreen> {
                                           // 중간 공백
                                           SizedBox(height: 25.h),
 
-                                          // 로고인 페이지로 이동하는 버튼
+                                          // 로그인 페이지로 이동하는 버튼
                                           TextButton(
-                                            child: const Text("로고인 페이지로 이동"),
+                                            child: const Text("로그인 페이지로 이동"),
                                             onPressed: () {
                                               // 아이디를 보여주는 다이어로그를 삭제한다.
                                               Get.back();
 
-                                              // 비밀번호 변경 페이지에서 벗어나 로고인 페이지로 라우팅한다.
+                                              // 비밀번호 변경 페이지에서 벗어나 로그인 페이지로 라우팅한다.
                                               Get.off(
                                                   () => const LoginScreen());
                                             },

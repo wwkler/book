@@ -300,7 +300,7 @@ class _ConfigurationState extends State<Configuration> {
                                     ),
                                   ),
 
-                                  // 로고인 페이지로 이동하는 버튼
+                                  // 로그인 페이지로 이동하는 버튼
                                   TextButton(
                                     child: const Text("클릭"),
                                     onPressed: () async {
@@ -334,7 +334,7 @@ class _ConfigurationState extends State<Configuration> {
                                             print(
                                                 "서버에서 제공해주는 데이터 : ${response.data}");
 
-                                            // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로고인 페이지로 이동시킨다.
+                                            // 서버에서 받은 데이터가 true면 회원 탈퇴 임을 알리고 로그인 페이지로 이동시킨다.
                                             if (response.data == true) {
                                               print("회원 탈퇴 되었습니다.");
 
@@ -358,7 +358,7 @@ class _ConfigurationState extends State<Configuration> {
                                                     SnackPosition.TOP,
                                               );
 
-                                              // 로고인 페이지로 라우팅
+                                              // 로그인 페이지로 라우팅
                                               Get.off(
                                                   () => const LoginScreen());
                                             }
