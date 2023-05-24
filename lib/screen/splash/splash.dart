@@ -39,9 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
       onWillPop: () async {
         // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
         Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
+          "처음 화면 입니다",
+          "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+          duration: const Duration(seconds: 3),
           snackPosition: SnackPosition.TOP,
         );
 

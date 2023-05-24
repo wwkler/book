@@ -115,15 +115,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-        Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
-          snackPosition: SnackPosition.TOP,
-        );
-
-        return false;
+        // 뒤로 가기가 가능하다.
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -151,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         alignment: Alignment.topLeft,
                         child: IconButton(
                           onPressed: () {
-                            Get.off(() => const LoginScreen());
+                            Get.back();
                           },
                           icon: const Icon(
                             Icons.arrow_back,
@@ -690,7 +683,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Get.snackbar(
                                       "확인 메시지",
                                       "이메일로 인증 번호를 전송했습니다",
-                                      duration: const Duration(seconds: 5),
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     );
                                   }
@@ -699,7 +692,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     Get.snackbar(
                                       "이상 메시지",
                                       "FAIL",
-                                      duration: const Duration(seconds: 5),
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     );
                                   }
@@ -709,7 +702,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   Get.snackbar(
                                     "이상 메시지",
                                     "이메일을 올바르게 입력해주세요",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -779,7 +772,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   Get.snackbar(
                                     "확인 메시지",
                                     "인증 완료 되었습니다",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -789,7 +782,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   Get.snackbar(
                                     "이상 메시지",
                                     "FAIL",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -1089,12 +1082,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Get.snackbar(
                                   "회원 가입 성공",
                                   "회원 가입에 성공하였습니다",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
 
-                                // 회원 가입 페이지에서 벗어나 로그인 페이지로 라우팅한다.
-                                Get.off(() => const LoginScreen());
+                                // 로그인 페이지로 라우팅한다.
+                                Get.offAll(() => const LoginScreen());
                               }
                               // 서버와 통신 실패
                               else {
@@ -1105,7 +1098,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Get.snackbar(
                                   "회원 가입 실패",
                                   "서버 통신 에러로 회원 가입이 실패하였습니다",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -1119,7 +1112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               Get.snackbar(
                                 "서버 열리지 않음",
                                 "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                duration: const Duration(seconds: 5),
+                                duration: const Duration(seconds: 3),
                                 snackPosition: SnackPosition.TOP,
                               );
                             }
@@ -1129,7 +1122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             Get.snackbar(
                               "이상 메시지",
                               "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                              duration: const Duration(seconds: 5),
+                              duration: const Duration(seconds: 3),
                               snackPosition: SnackPosition.TOP,
                             );
                           }

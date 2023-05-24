@@ -54,9 +54,9 @@ class _LoginScreenState extends State<LoginScreen> {
       onWillPop: () async {
         // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
         Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
+          "처음 화면 입니다",
+          "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+          duration: const Duration(seconds: 3),
           snackPosition: SnackPosition.TOP,
         );
 
@@ -311,21 +311,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                   Get.snackbar(
                                       "사용자 로그인 성공",
                                       "사용자 로그인에 성공하였습니다",
-                                      duration: const Duration(seconds: 5),
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     )
                                   : Get.snackbar(
                                       "관리자 로그인 성공",
                                       "관리자 로그인에 성공하였습니다",
-                                      duration: const Duration(seconds: 5),
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     );
 
                               // 회원 가입 페이지에서 벗어나 메인 페이지로 라우팅한다.
-                              Get.off(() => BookFluidNavBar(
-                                    route: BookSearchRecommend(),
-                                    routeIndex: 0,
-                                  ));
+                              Get.off(
+                                () => BookFluidNavBar(
+                                  route: BookSearchRecommend(),
+                                  routeIndex: 0,
+                                ),
+                              );
                             }
                             // 서버와 통신 실패
                             else {
@@ -338,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Get.snackbar(
                                   "잘못된 계정 정보",
                                   "아이디, 비밀번호를 다시 입력해주세요",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -348,7 +350,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Get.snackbar(
                                   "잘못된 비밀번호",
                                   "비밀번호를 다시 입력해주세요",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -358,7 +360,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Get.snackbar(
                                   "로그인 중에 오류 발생",
                                   "서버측 에러로 관리자에게 문의해주세요",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -368,7 +370,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Get.snackbar(
                                   "사용자 계정 정지 알림",
                                   "${(response.data as String).substring(0, 10)}까지 계정이 정지되었습니다",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -382,7 +384,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Get.snackbar(
                               "서버 열리지 않음",
                               "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                              duration: const Duration(seconds: 5),
+                              duration: const Duration(seconds: 3),
                               snackPosition: SnackPosition.TOP,
                             );
 
@@ -424,7 +426,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Get.snackbar(
                             "이상 메시지",
                             "아이디/비밀번호 정규표현식이 적합하지 않음",
-                            duration: const Duration(seconds: 5),
+                            duration: const Duration(seconds: 3),
                             snackPosition: SnackPosition.TOP,
                           );
                         }
@@ -468,7 +470,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Sign Up Text
                             TextButton(
                               onPressed: () {
-                                Get.off(() => const SignUpScreen());
+                                Get.to(() => const SignUpScreen());
                               },
                               child: const Text(
                                 'Sign Up',
@@ -495,7 +497,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Sign Up Text
                             TextButton(
                               onPressed: () {
-                                Get.off(() => const FindIdScreen());
+                                Get.to(() => const FindIdScreen());
                               },
                               child: const Text(
                                 'Find ID',
@@ -522,7 +524,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Find Password Text
                             TextButton(
                               onPressed: () {
-                                Get.off(() => FindPasswordScreen());
+                                Get.to(() => FindPasswordScreen());
                               },
                               child: const Text(
                                 'Find Password',

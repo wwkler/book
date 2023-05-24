@@ -51,12 +51,11 @@ class _ConfigurationState extends State<Configuration> {
       onWillPop: () async {
         // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
         Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
+          "처음 화면 입니다",
+          "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+          duration: const Duration(seconds: 3),
           snackPosition: SnackPosition.TOP,
         );
-
         return false;
       },
       child: Container(
@@ -168,7 +167,7 @@ class _ConfigurationState extends State<Configuration> {
                   Get.snackbar(
                     "로그아웃",
                     "로그아웃을 하였습니다",
-                    duration: const Duration(seconds: 5),
+                    duration: const Duration(seconds: 3),
                     snackPosition: SnackPosition.TOP,
                   );
 
@@ -290,7 +289,7 @@ class _ConfigurationState extends State<Configuration> {
                                                 "회원탈퇴 성공",
                                                 "사용자 정보가 삭제되었습니다",
                                                 duration:
-                                                    const Duration(seconds: 5),
+                                                    const Duration(seconds: 3),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
@@ -309,7 +308,7 @@ class _ConfigurationState extends State<Configuration> {
                                               "회원탈퇴 반영 실패",
                                               "사용자 정보가 삭제되지 않았습니다",
                                               duration:
-                                                  const Duration(seconds: 5),
+                                                  const Duration(seconds: 3),
                                               snackPosition: SnackPosition.TOP,
                                             );
                                           }
@@ -324,7 +323,7 @@ class _ConfigurationState extends State<Configuration> {
                                             "서버 열리지 않음",
                                             "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                             duration:
-                                                const Duration(seconds: 5),
+                                                const Duration(seconds: 3),
                                             snackPosition: SnackPosition.TOP,
                                           );
                                         }
@@ -336,7 +335,7 @@ class _ConfigurationState extends State<Configuration> {
                                         Get.snackbar(
                                           "이상 메시지",
                                           "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                                          duration: const Duration(seconds: 5),
+                                          duration: const Duration(seconds: 3),
                                           snackPosition: SnackPosition.TOP,
                                         );
                                       }
@@ -487,11 +486,9 @@ class _ConfigurationState extends State<Configuration> {
                                         Get.snackbar(
                                           "문의하기 완료",
                                           "문의가 완료되었습니다 소중한 의견 감사합니다.",
-                                          duration: const Duration(seconds: 5),
+                                          duration: const Duration(seconds: 3),
                                           snackPosition: SnackPosition.TOP,
                                         );
-
-                                       
                                       }
                                       // 문의하기 실패
                                       else {
@@ -507,7 +504,7 @@ class _ConfigurationState extends State<Configuration> {
                                         Get.snackbar(
                                           "문의하기 실패",
                                           "문의하기 실패되었습니다 다시 시도해주세요",
-                                          duration: const Duration(seconds: 5),
+                                          duration: const Duration(seconds: 3),
                                           snackPosition: SnackPosition.TOP,
                                         );
                                       }
@@ -521,7 +518,7 @@ class _ConfigurationState extends State<Configuration> {
                                       Get.snackbar(
                                         "서버가 열리지 않았습니다",
                                         "서버가 열리지 않았습니다 관리자에게 문의해주세요",
-                                        duration: const Duration(seconds: 5),
+                                        duration: const Duration(seconds: 3),
                                         snackPosition: SnackPosition.TOP,
                                       );
                                     }
@@ -535,7 +532,7 @@ class _ConfigurationState extends State<Configuration> {
                                     Get.snackbar(
                                       "이상 메시지",
                                       "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                                      duration: const Duration(seconds: 5),
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     );
                                   }

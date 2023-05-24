@@ -44,15 +44,8 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-        Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
-          snackPosition: SnackPosition.TOP,
-        );
-
-        return false;
+        // 뒤로 가기가 가능하다.
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -345,7 +338,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                               "일지 삭제 성공",
                                               "일지 삭제 반영이 성공하였습니다",
                                               duration:
-                                                  const Duration(seconds: 5),
+                                                  const Duration(seconds: 3),
                                               snackPosition: SnackPosition.TOP,
                                             );
 
@@ -369,7 +362,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                               "일지 삭제 실패",
                                               "일지 삭제 반영이 실패하였습니다",
                                               duration:
-                                                  const Duration(seconds: 5),
+                                                  const Duration(seconds: 3),
                                               snackPosition: SnackPosition.TOP,
                                             );
                                           }
@@ -382,7 +375,7 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                             "서버가 열리지 않음",
                                             "서버가 열리지 않음\n관리자에게 문의해주세요",
                                             duration:
-                                                const Duration(seconds: 5),
+                                                const Duration(seconds: 3),
                                             snackPosition: SnackPosition.TOP,
                                           );
                                         }

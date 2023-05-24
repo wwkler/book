@@ -223,9 +223,9 @@ class _BookCommunityState extends State<BookCommunity> {
             onWillPop: () async {
               // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
               Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
+                "처음 화면 입니다",
+                "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               );
 
@@ -273,9 +273,9 @@ class _BookCommunityState extends State<BookCommunity> {
             onWillPop: () async {
               // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
               Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
+                "처음 화면 입니다",
+                "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               );
 
@@ -572,7 +572,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                         "좋아요 등록 성공 ",
                                                                         "해당 리뷰 게시물에 좋아요를 등록했습니다",
                                                                         duration:
-                                                                            const Duration(seconds: 5),
+                                                                            const Duration(seconds: 3),
                                                                         snackPosition:
                                                                             SnackPosition.TOP,
                                                                       );
@@ -585,7 +585,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                         "좋아요 해제 성공 ",
                                                                         "해당 리뷰 게시물에 좋아요를 해제했습니다",
                                                                         duration:
-                                                                            const Duration(seconds: 5),
+                                                                            const Duration(seconds: 3),
                                                                         snackPosition:
                                                                             SnackPosition.TOP,
                                                                       );
@@ -1003,7 +1003,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             Get.snackbar(
                                                                               "신고 완료",
                                                                               "신고 완료되었습니다 소중한 의견 감사합니다",
-                                                                              duration: const Duration(seconds: 5),
+                                                                              duration: const Duration(seconds: 3),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
 
@@ -1022,7 +1022,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             // 신고 실패를 띄운다
                                                                             Get.snackbar("신고 실패",
                                                                                 "신고 실패되었습니다 다시 시도해주세요",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP);
                                                                           }
                                                                         }
@@ -1036,7 +1036,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             "서버가 열리지 않았습니다",
                                                                             "서버가 열리지 않았습니다 관리자에게 문의해주세요",
                                                                             duration:
-                                                                                const Duration(seconds: 5),
+                                                                                const Duration(seconds: 3),
                                                                             snackPosition:
                                                                                 SnackPosition.TOP,
                                                                           );
@@ -1052,7 +1052,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                           "이상 메시지",
                                                                           "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
                                                                           duration:
-                                                                              const Duration(seconds: 5),
+                                                                              const Duration(seconds: 3),
                                                                           snackPosition:
                                                                               SnackPosition.TOP,
                                                                         );
@@ -1243,7 +1243,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               Get.snackbar(
                                                                                 "리뷰글 삭제 성공",
                                                                                 "리뷰글을 삭제하였습니다",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP,
                                                                               );
 
@@ -1262,7 +1262,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               Get.snackbar(
                                                                                 "리뷰글 삭제 반영 실패",
                                                                                 "리뷰글이 삭제되지 않았습니다 다시 시도해주세요",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP,
                                                                               );
                                                                             }
@@ -1279,7 +1279,7 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                             Get.snackbar(
                                                                               "서버가 닫혀 있음",
                                                                               "서버가 열리지 않았습니다",
-                                                                              duration: const Duration(seconds: 5),
+                                                                              duration: const Duration(seconds: 3),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
                                                                           }

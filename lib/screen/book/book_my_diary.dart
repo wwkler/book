@@ -122,9 +122,9 @@ class _BookMyDiaryState extends State<BookMyDiary> {
             onWillPop: () async {
               // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
               Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
+                "처음 화면 입니다",
+                "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               );
 
@@ -170,9 +170,9 @@ class _BookMyDiaryState extends State<BookMyDiary> {
             onWillPop: () async {
               // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
               Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
+                "처음 화면 입니다",
+                "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               );
 
@@ -276,8 +276,6 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                             print("subDiarys : $subDiarys");
                             print("subDiarys.length : ${subDiarys.length}");
 
-                            await Future.delayed(const Duration(seconds: 2));
-
                             // 일지 요약 다이어로그를 띄운다.
                             await Get.dialog(
                               AlertDialog(
@@ -303,6 +301,7 @@ class _BookMyDiaryState extends State<BookMyDiary> {
                                           Image.network(
                                             subDiarys[index]["book"]
                                                 ["coverSmallUrl"],
+                                            filterQuality: FilterQuality.high,
                                           ),
 
                                           // 중간 공백

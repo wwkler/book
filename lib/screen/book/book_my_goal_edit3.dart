@@ -105,15 +105,8 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return WillPopScope(
             onWillPop: () async {
-              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-              Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
-                snackPosition: SnackPosition.TOP,
-              );
-
-              return false;
+              // 뒤로 가기가 가능하다.
+              return true;
             },
             child: SafeArea(
               child: Scaffold(
@@ -157,15 +150,8 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
         else {
           return WillPopScope(
             onWillPop: () async {
-              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-              Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
-                snackPosition: SnackPosition.TOP,
-              );
-
-              return false;
+              // 뒤로 가기가 가능하다.
+              return true;
             },
             child: SafeArea(
               child: Scaffold(
@@ -582,7 +568,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                   readBooksCountController.text,
                                                 ),
 
-                                                // 읽은 책 갯수(0으로 초기 설정)
+                                                // 읽은 도서 갯수(0으로 초기 설정)
                                                 "readed": 0,
 
                                                 // 시작일
@@ -620,7 +606,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                 "목표3 설정하기 반영 성공",
                                                 "목표3 설정하기 반영 성공하였습니다",
                                                 duration:
-                                                    const Duration(seconds: 5),
+                                                    const Duration(seconds: 3),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
@@ -635,7 +621,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                 "목표3 설정하기 반영 실패",
                                                 "목표3 설정하기 반영 실패하였습니다\n다시 시도해주세요",
                                                 duration:
-                                                    const Duration(seconds: 5),
+                                                    const Duration(seconds: 3),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
@@ -648,7 +634,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                               "서버 열리지 않음",
                                               "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                               duration:
-                                                  const Duration(seconds: 5),
+                                                  const Duration(seconds: 3),
                                               snackPosition: SnackPosition.TOP,
                                             );
                                           }
@@ -659,7 +645,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                             "이상 메시지",
                                             "클라이언트에서 입력을 적합하지 않게 하였습니다.",
                                             duration:
-                                                const Duration(seconds: 5),
+                                                const Duration(seconds: 3),
                                             snackPosition: SnackPosition.TOP,
                                           );
                                         }
@@ -715,7 +701,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                   readBooksCountController.text,
                                                 ),
 
-                                                // 읽은 책 갯수(0으로 초기 설정)
+                                                // 읽은 도서 갯수(0으로 초기 설정)
                                                 "readed": 0,
 
                                                 // 시작일
@@ -753,7 +739,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                 "목표3 수정 반영 성공",
                                                 "목표3 수정 반영 성공하였습니다",
                                                 duration:
-                                                    const Duration(seconds: 5),
+                                                    const Duration(seconds: 3),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
@@ -768,7 +754,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                 "목표3 수정 반영 실패",
                                                 "목표3 수정 반영 실패하였습니다\n다시 시도해주세요",
                                                 duration:
-                                                    const Duration(seconds: 5),
+                                                    const Duration(seconds: 3),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
@@ -781,7 +767,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                               "서버 열리지 않음",
                                               "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                               duration:
-                                                  const Duration(seconds: 5),
+                                                  const Duration(seconds: 3),
                                               snackPosition: SnackPosition.TOP,
                                             );
                                           }
@@ -792,7 +778,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                             "이상 메시지",
                                             "클라이언트에서 입력을 적합하지 않게 하였습니다.",
                                             duration:
-                                                const Duration(seconds: 5),
+                                                const Duration(seconds: 3),
                                             snackPosition: SnackPosition.TOP,
                                           );
                                         }

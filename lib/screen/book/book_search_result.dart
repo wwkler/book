@@ -62,7 +62,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
     super.dispose();
   }
 
-  // 검색어를 요청해서 서버로부터 인터파크 책검색 API 데이터를 받는다.
+  // 검색어를 요청해서 서버로부터 인터파크 도서검색 API 데이터를 받는다.
   Future<void> getSearchBookDatas() async {
     // bookModels를 clear 한다.
     searchBookModels.clear();
@@ -138,15 +138,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return WillPopScope(
                 onWillPop: () async {
-                  // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-                  Get.snackbar(
-                    "뒤로 가기 불가능",
-                    "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                    duration: const Duration(seconds: 5),
-                    snackPosition: SnackPosition.TOP,
-                  );
-
-                  return false;
+                  // 뒤로 가기가 가능하다.
+                  return true;
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width.w,
@@ -187,15 +180,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
             else {
               return WillPopScope(
                 onWillPop: () async {
-                  // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-                  Get.snackbar(
-                    "뒤로 가기 불가능",
-                    "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                    duration: const Duration(seconds: 5),
-                    snackPosition: SnackPosition.TOP,
-                  );
-
-                  return false;
+                  // 뒤로 가기가 가능하다.
+                  return true;
                 },
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -256,8 +242,8 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                   else {
                                     Get.snackbar(
                                       "이상 메시지",
-                                      "책 또는 저자를 입력해주세요",
-                                      duration: const Duration(seconds: 5),
+                                      "도서 또는 저자를 입력해주세요",
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     );
                                   }
@@ -320,7 +306,7 @@ class _BookSearchResultState extends State<BookSearchResult> {
                                               //       searchBookModels[index],
                                               // );
 
-                                               Get.to(
+                                              Get.to(
                                                 () => BookShowPreview(),
                                                 arguments:
                                                     searchBookModels[index],

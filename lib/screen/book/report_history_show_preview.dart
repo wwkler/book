@@ -44,15 +44,8 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-        Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
-          snackPosition: SnackPosition.TOP,
-        );
-
-        return false;
+        // 뒤로 가기가 가능하다.
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -78,7 +71,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                     // 이전 페이지 아이콘
                     IconButton(
                       onPressed: () {
-                        // Get.off(() => BookFluidNavBar());
+                        Get.back();
                       },
                       icon: const Icon(
                         Icons.arrow_back,
@@ -122,7 +115,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
 
                     // 신고 내역 상세 보기 목록
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(18.0),
                       child: Card(
                         elevation: 10.0,
                         color: Colors.white,
@@ -364,7 +357,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   Get.snackbar(
                                     "넘어가기 반영 완료",
                                     "신고 리뷰에 대해서 넘어가기 하였습니다",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
 
@@ -379,7 +372,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   Get.snackbar(
                                     "넘어가기 반영 실패",
                                     "신고 리뷰에 대해서 넘어가기 반영 실패 하였습니다",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -390,7 +383,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 Get.snackbar(
                                   "서버가 열리지 않음",
                                   "서버가 열리지 않았습니다",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -434,7 +427,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   Get.snackbar(
                                     "경고 반영 완료",
                                     "신고 리뷰에 대해서 경고하였습니다",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
 
@@ -449,7 +442,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   Get.snackbar(
                                     "경고 반영 실패",
                                     "신고 리뷰에 대해서 경고 반영 실패하였습니다",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -460,7 +453,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 Get.snackbar(
                                   "서버가 열리지 않음",
                                   "서버가 열리지 않았습니다",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
@@ -502,7 +495,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   Get.snackbar(
                                     "영구정지 반영 완료",
                                     "신고 리뷰에 대해서 영구정지 하였습니다",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
 
@@ -517,7 +510,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                   Get.snackbar(
                                     "영구정지 반영 실패",
                                     "신고 리뷰에 대해서 영구정지 반영 실패",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -528,7 +521,7 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 Get.snackbar(
                                   "서버가 열리지 않음",
                                   "서버가 열리지 않았습니다",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }

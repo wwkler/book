@@ -7,7 +7,6 @@ import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
 import 'package:book_project/screen/book/book_search_recommend.dart';
 import 'package:book_project/screen/book/book_search_result.dart';
-import 'package:book_project/screen/book/book_show_preview_edit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -97,15 +96,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
     print("도서 분야 : ${bookModel!.categoryId}");
     return WillPopScope(
       onWillPop: () async {
-        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-        Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
-          snackPosition: SnackPosition.TOP,
-        );
-
-        return false;
+        // 뒤로 가기가 가능하다.
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -206,6 +198,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                 children: [
                                   // 중간 공백
                                   SizedBox(width: 10.w),
+
                                   // 도서 이미지
                                   Expanded(
                                     flex: 1,
@@ -414,7 +407,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                           onPressed: () async {
                                             try {
                                               // 서버와 통신
-                                              // 읽고 싶은 책 추가
+                                              // 읽고 싶은 도서 추가
                                               final response = await dio.put(
                                                 "http://${IpAddress.hyunukIP}/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
                                                 options: Options(
@@ -439,7 +432,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                   "찜하기 성공",
                                                   "읽고 싶은 도서로 추가하였습니다",
                                                   duration: const Duration(
-                                                      seconds: 5),
+                                                      seconds: 3),
                                                   snackPosition:
                                                       SnackPosition.TOP,
                                                 );
@@ -457,7 +450,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                   "찜하기 실패",
                                                   "읽고 싶은 도서로 추가하지 못했습니다\n이미 도서를 찜했을 가능성이 존재합니다.",
                                                   duration: const Duration(
-                                                      seconds: 5),
+                                                      seconds: 3),
                                                   snackPosition:
                                                       SnackPosition.TOP,
                                                 );
@@ -470,7 +463,7 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                 "서버 열리지 않음",
                                                 "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                 duration:
-                                                    const Duration(seconds: 5),
+                                                    const Duration(seconds: 3),
                                                 snackPosition:
                                                     SnackPosition.TOP,
                                               );
@@ -627,8 +620,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                                 "읽고 있는 도서로 추가 성공하였습니다",
                                                                 duration:
                                                                     const Duration(
-                                                                        seconds:
-                                                                            5),
+                                                                  seconds: 3,
+                                                                ),
                                                                 snackPosition:
                                                                     SnackPosition
                                                                         .TOP,
@@ -650,8 +643,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                                 "읽고 있는 도서로 추가 실패하였습니다\n이미 읽고 있는 도서에 등록 됐을 가능성이 존재합니다.",
                                                                 duration:
                                                                     const Duration(
-                                                                        seconds:
-                                                                            5),
+                                                                  seconds: 3,
+                                                                ),
                                                                 snackPosition:
                                                                     SnackPosition
                                                                         .TOP,
@@ -666,8 +659,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                               "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                               duration:
                                                                   const Duration(
-                                                                      seconds:
-                                                                          5),
+                                                                seconds: 3,
+                                                              ),
                                                               snackPosition:
                                                                   SnackPosition
                                                                       .TOP,

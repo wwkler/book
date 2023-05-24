@@ -599,9 +599,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
             onWillPop: () async {
               // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
               Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
+                "처음 화면 입니다",
+                "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               );
 
@@ -647,9 +647,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
             onWillPop: () async {
               // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
               Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
+                "처음 화면 입니다",
+                "처음 화면 이므로 뒤로 가기를 할 수 없습니다",
+                duration: const Duration(seconds: 3),
                 snackPosition: SnackPosition.TOP,
               );
 
@@ -1503,7 +1503,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               Get.snackbar(
                                                                                 "읽고 싶은 도서에서 삭제 성공",
                                                                                 "읽고 싶은 도서에서 삭제 성공하였습니다",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP,
                                                                               );
 
@@ -1515,7 +1515,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               Get.snackbar(
                                                                                 "읽고 싶은 도서에서 삭제 실패",
                                                                                 "읽고 싶은 도서에서 삭제 실패하였습니다\n다시 시도해주세요",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP,
                                                                               );
                                                                             }
@@ -1526,7 +1526,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             Get.snackbar(
                                                                               "서버 열리지 않음",
                                                                               "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                                              duration: const Duration(seconds: 5),
+                                                                              duration: const Duration(seconds: 3),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
                                                                           }
@@ -1564,6 +1564,28 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                   ),
                                                 ),
 
+                                                // 도서 분야
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 8.0.w,
+                                                    ),
+                                                    child: Text(
+                                                      category[wantToReadBooks[
+                                                                  index]
+                                                              .categoryId]
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 12.sp,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                // 중간 공백
+                                                SizedBox(height: 20.h),
                                                 // 도서 이미지
                                                 Image.network(
                                                   wantToReadBooks[index]
@@ -1703,7 +1725,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                         Get.snackbar(
                                                                                           "읽고 있는 도서로 추가 성공",
                                                                                           "읽고 있는 도서로 추가 성공하였습니다",
-                                                                                          duration: const Duration(seconds: 5),
+                                                                                          duration: const Duration(seconds: 3),
                                                                                           snackPosition: SnackPosition.TOP,
                                                                                         );
 
@@ -1722,7 +1744,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                         Get.snackbar(
                                                                                           "읽고 있는 도서로 추가 실패",
                                                                                           "읽고 있눈 도서로 추가 실패하였습니다\n이미 읽고 있는 도서에 등록 됐을 가능성이 존재합니다.",
-                                                                                          duration: const Duration(seconds: 5),
+                                                                                          duration: const Duration(seconds: 3),
                                                                                           snackPosition: SnackPosition.TOP,
                                                                                         );
                                                                                       }
@@ -1733,7 +1755,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                       Get.snackbar(
                                                                                         "서버 열리지 않음",
                                                                                         "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                                                        duration: const Duration(seconds: 5),
+                                                                                        duration: const Duration(seconds: 3),
                                                                                         snackPosition: SnackPosition.TOP,
                                                                                       );
                                                                                     }
@@ -1925,7 +1947,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               Get.snackbar(
                                                                                 "읽고 있는 도서에서 삭제 성공",
                                                                                 "읽고 싶은 도서에서 삭제 성공하였습니다",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP,
                                                                               );
 
@@ -1940,7 +1962,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                               Get.snackbar(
                                                                                 "읽고 있는 도서에서 삭제 실패",
                                                                                 "읽고 싶은 도서에서 삭제 실패하였습니다\n다시 시도해주세요",
-                                                                                duration: const Duration(seconds: 5),
+                                                                                duration: const Duration(seconds: 3),
                                                                                 snackPosition: SnackPosition.TOP,
                                                                               );
                                                                             }
@@ -1951,7 +1973,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             Get.snackbar(
                                                                               "서버 열리지 않음",
                                                                               "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                                              duration: const Duration(seconds: 5),
+                                                                              duration: const Duration(seconds: 3),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
                                                                           }
@@ -1987,6 +2009,27 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                   ),
                                                 ),
 
+                                                // 도서 분야
+                                                Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 8.0.w,
+                                                    ),
+                                                    child: Text(
+                                                      category[nowReadBooks[
+                                                                  index]
+                                                              .categoryId]
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp),
+                                                    ),
+                                                  ),
+                                                ),
+
+                                                // 중간 공백
+                                                SizedBox(height: 20.h),
                                                 // 도서 이미지
                                                 Image.network(
                                                   nowReadBooks[index]
@@ -2108,7 +2151,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           "진행도 수정 성공",
                                                                           "해당 도서 진행도 수정을 하였습니다",
                                                                           duration:
-                                                                              const Duration(seconds: 5),
+                                                                              const Duration(seconds: 3),
                                                                           snackPosition:
                                                                               SnackPosition.TOP,
                                                                         );
@@ -2128,7 +2171,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                           "진행도 수정 실패",
                                                                           "진행도 수정 실패하였습니다\n다시 시도해주세요",
                                                                           duration:
-                                                                              const Duration(seconds: 5),
+                                                                              const Duration(seconds: 3),
                                                                           snackPosition:
                                                                               SnackPosition.TOP,
                                                                         );
@@ -2141,7 +2184,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         "서버 열리지 않음",
                                                                         "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                                         duration:
-                                                                            const Duration(seconds: 5),
+                                                                            const Duration(seconds: 3),
                                                                         snackPosition:
                                                                             SnackPosition.TOP,
                                                                       );
@@ -2238,7 +2281,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                   Get.snackbar(
                                                                                     "도서 읽기 완료 성공",
                                                                                     "해당 도서 읽기 완료 성공하였습니다",
-                                                                                    duration: const Duration(seconds: 5),
+                                                                                    duration: const Duration(seconds: 3),
                                                                                     snackPosition: SnackPosition.TOP,
                                                                                   );
 
@@ -2253,7 +2296,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                   Get.snackbar(
                                                                                     "도서 읽기 완료 반영 실패",
                                                                                     "해당 도서 읽기 완료 반영이 되지 않았습니다\n다시 시도해주세요",
-                                                                                    duration: const Duration(seconds: 5),
+                                                                                    duration: const Duration(seconds: 3),
                                                                                     snackPosition: SnackPosition.TOP,
                                                                                   );
                                                                                 }
@@ -2264,7 +2307,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                 Get.snackbar(
                                                                                   "서버 열리지 않음",
                                                                                   "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                                                                  duration: const Duration(seconds: 5),
+                                                                                  duration: const Duration(seconds: 3),
                                                                                   snackPosition: SnackPosition.TOP,
                                                                                 );
                                                                               }
@@ -2456,7 +2499,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             Get.snackbar(
                                                                               "읽은 도서 삭제 성공",
                                                                               "읽은 도서 삭제 성공하였습니다",
-                                                                              duration: const Duration(seconds: 5),
+                                                                              duration: const Duration(seconds: 3),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
 
@@ -2468,7 +2511,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             Get.snackbar(
                                                                               "읽은 도서 삭제 실패",
                                                                               "읽은 도서 삭제 실패하였습니다\n다시 시도해주세요",
-                                                                              duration: const Duration(seconds: 5),
+                                                                              duration: const Duration(seconds: 3),
                                                                               snackPosition: SnackPosition.TOP,
                                                                             );
                                                                           }
@@ -2480,7 +2523,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             "서버 열리지 않음",
                                                                             "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                                             duration:
-                                                                                const Duration(seconds: 5),
+                                                                                const Duration(seconds: 3),
                                                                             snackPosition:
                                                                                 SnackPosition.TOP,
                                                                           );

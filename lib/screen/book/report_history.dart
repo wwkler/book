@@ -89,15 +89,8 @@ class _ReportHistoryState extends State<ReportHistory> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return WillPopScope(
             onWillPop: () async {
-              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-              Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
-                snackPosition: SnackPosition.TOP,
-              );
-
-              return false;
+              // 뒤로 가기가 가능하다.
+              return true;
             },
             child: Scaffold(
               body: Container(
@@ -139,15 +132,8 @@ class _ReportHistoryState extends State<ReportHistory> {
         else {
           return WillPopScope(
             onWillPop: () async {
-              // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-              Get.snackbar(
-                "뒤로 가기 불가능",
-                "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                duration: const Duration(seconds: 5),
-                snackPosition: SnackPosition.TOP,
-              );
-
-              return false;
+              // 뒤로 가기가 가능하다.
+              return true;
             },
             child: SafeArea(
               child: Scaffold(

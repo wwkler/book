@@ -90,15 +90,8 @@ class UserManagementState extends State<UserManagement> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return WillPopScope(
                   onWillPop: () async {
-                    // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-                    Get.snackbar(
-                      "뒤로 가기 불가능",
-                      "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                      duration: const Duration(seconds: 5),
-                      snackPosition: SnackPosition.TOP,
-                    );
-
-                    return false;
+                    // 뒤로 가기가 가능하다.
+                    return true;
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width.w,
@@ -144,15 +137,8 @@ class UserManagementState extends State<UserManagement> {
 
                 return WillPopScope(
                   onWillPop: () async {
-                    // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-                    Get.snackbar(
-                      "뒤로 가기 불가능",
-                      "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-                      duration: const Duration(seconds: 5),
-                      snackPosition: SnackPosition.TOP,
-                    );
-
-                    return false;
+                    // 뒤로 가기가 가능하다.
+                    return true;
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width.w,
@@ -178,7 +164,7 @@ class UserManagementState extends State<UserManagement> {
                           // 이전 페이지 아이콘
                           IconButton(
                             onPressed: () {
-                              // Get.off(() => BookFluidNavBar());
+                              Get.back();
                             },
                             icon: const Icon(
                               Icons.arrow_back,
@@ -584,7 +570,7 @@ class UserManagementState extends State<UserManagement> {
                                                                                       "사용자 정지시키기 성공",
                                                                                       "해당 사용자가 정지되었습니다",
                                                                                       duration: const Duration(
-                                                                                        seconds: 5,
+                                                                                        seconds: 3,
                                                                                       ),
                                                                                       snackPosition: SnackPosition.TOP,
                                                                                     );
@@ -602,7 +588,7 @@ class UserManagementState extends State<UserManagement> {
                                                                                       "사용자 정지시키기 실패",
                                                                                       "해당 사용자 정지가 반영되지 않았습니다",
                                                                                       duration: const Duration(
-                                                                                        seconds: 5,
+                                                                                        seconds: 3,
                                                                                       ),
                                                                                       snackPosition: SnackPosition.TOP,
                                                                                     );
@@ -616,7 +602,7 @@ class UserManagementState extends State<UserManagement> {
                                                                                     "서버 열리지 않음",
                                                                                     "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
                                                                                     duration: const Duration(
-                                                                                      seconds: 5,
+                                                                                      seconds: 3,
                                                                                     ),
                                                                                     snackPosition: SnackPosition.TOP,
                                                                                   );

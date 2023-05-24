@@ -79,15 +79,8 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        // 뒤로 가기가 불가능하다는 다이어로그를 띄운다.
-        Get.snackbar(
-          "뒤로 가기 불가능",
-          "사용자 임의로 뒤로 가기를 할 수 없습니다.",
-          duration: const Duration(seconds: 5),
-          snackPosition: SnackPosition.TOP,
-        );
-
-        return false;
+        // 뒤로 가기가 가능하다.
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -453,7 +446,7 @@ class _MyPageState extends State<MyPage> {
                                     Get.snackbar(
                                       "내 정보 변경 실패",
                                       "내 정보가 변경되지 않았습니다",
-                                      duration: const Duration(seconds: 5),
+                                      duration: const Duration(seconds: 3),
                                       snackPosition: SnackPosition.TOP,
                                     );
                                   }
@@ -465,7 +458,7 @@ class _MyPageState extends State<MyPage> {
                                   Get.snackbar(
                                     "서버 열리지 않음",
                                     "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
-                                    duration: const Duration(seconds: 5),
+                                    duration: const Duration(seconds: 3),
                                     snackPosition: SnackPosition.TOP,
                                   );
                                 }
@@ -475,7 +468,7 @@ class _MyPageState extends State<MyPage> {
                                 Get.snackbar(
                                   "이상 메시지",
                                   "정규표현식에 적합하지 않거나 체크하지 않은 부분이 존재함",
-                                  duration: const Duration(seconds: 5),
+                                  duration: const Duration(seconds: 3),
                                   snackPosition: SnackPosition.TOP,
                                 );
                               }
