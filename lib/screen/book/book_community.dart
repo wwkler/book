@@ -65,6 +65,9 @@ class _BookCommunityState extends State<BookCommunity> {
         final response = await dio.get(
           "http://${IpAddress.hyunukIP}/reviews/findAll",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -123,6 +126,9 @@ class _BookCommunityState extends State<BookCommunity> {
         final response = await dio.get(
           "http://${IpAddress.hyunukIP}/reviews/search?param=$keyword",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -180,6 +186,9 @@ class _BookCommunityState extends State<BookCommunity> {
       final response = await dio.get(
         "http://${IpAddress.hyunukIP}/reviews/getMemberLike?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -512,6 +521,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                 data: {},
                                                                 options:
                                                                     Options(
+                                                                  headers: {
+                                                                    "Authorization":
+                                                                        "Bearer ${UserInfo.token}",
+                                                                  },
                                                                   validateStatus:
                                                                       (_) =>
                                                                           true,
@@ -542,6 +555,10 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                     data: {},
                                                                     options:
                                                                         Options(
+                                                                      headers: {
+                                                                        "Authorization":
+                                                                            "Bearer ${UserInfo.token}",
+                                                                      },
                                                                       validateStatus:
                                                                           (_) =>
                                                                               true,
@@ -986,10 +1003,15 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                               // 리뷰 아이디
                                                                               "reviewId": reviewWriterInfos[index]["id"],
                                                                             },
-                                                                            options: Options(
-                                                                                validateStatus: (_) => true,
-                                                                                contentType: Headers.jsonContentType,
-                                                                                responseType: ResponseType.json),
+                                                                            options:
+                                                                                Options(
+                                                                              headers: {
+                                                                                "Authorization": "Bearer ${UserInfo.token}",
+                                                                              },
+                                                                              validateStatus: (_) => true,
+                                                                              contentType: Headers.jsonContentType,
+                                                                              responseType: ResponseType.json,
+                                                                            ),
                                                                           );
 
                                                                           if (response.statusCode ==
@@ -1225,6 +1247,9 @@ class _BookCommunityState extends State<BookCommunity> {
                                                                                 await dio.delete(
                                                                               "http://${IpAddress.hyunukIP}/reviews/delete?reviewId=${reviewWriterInfos[index]["id"]}",
                                                                               options: Options(
+                                                                                headers: {
+                                                                                  "Authorization": "Bearer ${UserInfo.token}",
+                                                                                },
                                                                                 validateStatus: (_) => true,
                                                                                 contentType: Headers.jsonContentType,
                                                                                 responseType: ResponseType.json,

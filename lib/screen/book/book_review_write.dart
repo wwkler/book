@@ -61,6 +61,9 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
         final response = await dio.get(
           "http://${IpAddress.hyunukIP}/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -534,6 +537,10 @@ class _BookReviewWriteState extends State<BookReviewWrite> {
                                         "itemId": selectedBook!.itemId,
                                       },
                                       options: Options(
+                                        headers: {
+                                          "Authorization":
+                                              "Bearer ${UserInfo.token}",
+                                        },
                                         validateStatus: (_) => true,
                                         contentType: Headers.jsonContentType,
                                         responseType: ResponseType.json,

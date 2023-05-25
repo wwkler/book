@@ -582,6 +582,10 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                 "completed": false,
                                               },
                                               options: Options(
+                                                headers: {
+                                                  "Authorization":
+                                                      "Bearer ${UserInfo.token}",
+                                                },
                                                 validateStatus: (_) => true,
                                                 contentType:
                                                     Headers.jsonContentType,
@@ -715,6 +719,10 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                                                 // "completed": ,
                                               },
                                               options: Options(
+                                                headers: {
+                                                  "Authorization":
+                                                      "Bearer ${UserInfo.token}",
+                                                },
                                                 validateStatus: (_) => true,
                                                 contentType:
                                                     Headers.jsonContentType,

@@ -49,6 +49,9 @@ class _ReportHistoryState extends State<ReportHistory> {
       final response = await dio.get(
         'http://${IpAddress.hyunukIP}/reviews/getAllreports',
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,

@@ -316,6 +316,10 @@ class _BookMyDiaryShowPreviewState extends State<BookMyDiaryShowPreview> {
                                           final response = await dio.delete(
                                             "http://${IpAddress.hyunukIP}/journals/delete?id=${diary!["id"]}",
                                             options: Options(
+                                              headers: {
+                                                "Authorization":
+                                                    "Bearer ${UserInfo.token}",
+                                              },
                                               validateStatus: (_) => true,
                                               contentType:
                                                   Headers.jsonContentType,

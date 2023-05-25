@@ -136,6 +136,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response1 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/isExist?goalname=목표_1_${UserInfo.id}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -147,6 +150,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
         final response1_1 = await dio.get(
           "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_1_${UserInfo.id}",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -179,6 +185,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response2 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/isExist?goalname=목표_2_${UserInfo.id}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -190,6 +199,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
         final response2_2 = await dio.get(
           "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_2_${UserInfo.id}",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -222,6 +234,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response3 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/isExist?goalname=목표_3_${UserInfo.id}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -233,6 +248,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
         final response3_3 = await dio.get(
           "http://${IpAddress.hyunukIP}/goal/getByGoalname?goalname=목표_3_${UserInfo.id}",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -265,6 +283,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response4 = await dio.get(
         "http://${IpAddress.hyunukIP}/bookshelves/getLikedBooks?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -300,6 +321,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response5 = await dio.get(
         "http://${IpAddress.hyunukIP}/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -342,6 +366,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response6 = await dio.get(
         "http://${IpAddress.hyunukIP}/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -383,6 +410,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response7 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/getCompletedCount?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -412,6 +442,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response8 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/getSuccessRate?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -440,6 +473,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response9 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/similarCompleteds?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -469,6 +505,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response10 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/similarChallengers?memberId=${UserInfo.userValue}&categoryId=${UserInfo.selectedCode}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -498,6 +537,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response11 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/similarCompletedsAll?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -527,6 +569,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response12 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/similarChallengersAll?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -556,6 +601,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
       final response13 = await dio.get(
         "http://${IpAddress.hyunukIP}/goal/getAverageRate?memberId=${UserInfo.userValue}",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
@@ -1489,6 +1537,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                 await dio.delete(
                                                                               "http://${IpAddress.hyunukIP}/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&param=0",
                                                                               options: Options(
+                                                                                headers: {
+                                                                                  "Authorization": "Bearer ${UserInfo.token}",
+                                                                                },
                                                                                 validateStatus: (_) => true,
                                                                                 contentType: Headers.jsonContentType,
                                                                                 responseType: ResponseType.json,
@@ -1705,6 +1756,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                         // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
                                                                                         "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${wantToReadBooks[index].itemId}&totalPage=${int.parse(setPageController.text)}",
                                                                                         options: Options(
+                                                                                          headers: {
+                                                                                            "Authorization": "Bearer ${UserInfo.token}",
+                                                                                          },
                                                                                           validateStatus: (_) => true,
                                                                                           contentType: Headers.jsonContentType,
                                                                                           responseType: ResponseType.json,
@@ -1933,6 +1987,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                 await dio.delete(
                                                                               "http://${IpAddress.hyunukIP}/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&param=1",
                                                                               options: Options(
+                                                                                headers: {
+                                                                                  "Authorization": "Bearer ${UserInfo.token}",
+                                                                                },
                                                                                 validateStatus: (_) => true,
                                                                                 contentType: Headers.jsonContentType,
                                                                                 responseType: ResponseType.json,
@@ -2127,6 +2184,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                         "http://${IpAddress.hyunukIP}/bookshelves/updateCurrentReading?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}&page=${int.parse(editPageController.text)}",
                                                                         options:
                                                                             Options(
+                                                                          headers: {
+                                                                            "Authorization":
+                                                                                "Bearer ${UserInfo.token}",
+                                                                          },
                                                                           validateStatus: (_) =>
                                                                               true,
                                                                           contentType:
@@ -2268,6 +2329,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                                 final response = await dio.put(
                                                                                   "http://${IpAddress.hyunukIP}/bookshelves/addFinished?memberId=${UserInfo.userValue}&bookId=${nowReadBooks[index].itemId}",
                                                                                   options: Options(
+                                                                                    headers: {
+                                                                                      "Authorization": "Bearer ${UserInfo.token}",
+                                                                                    },
                                                                                     validateStatus: (_) => true,
                                                                                     contentType: Headers.jsonContentType,
                                                                                     responseType: ResponseType.json,
@@ -2485,6 +2549,9 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                                                             "http://${IpAddress.hyunukIP}/bookshelves/removeBook?memberId=${UserInfo.userValue}&bookId=${readBooks[index].itemId}&param=2",
                                                                             options:
                                                                                 Options(
+                                                                              headers: {
+                                                                                "Authorization": "Bearer ${UserInfo.token}",
+                                                                              },
                                                                               validateStatus: (_) => true,
                                                                               contentType: Headers.jsonContentType,
                                                                               responseType: ResponseType.json,

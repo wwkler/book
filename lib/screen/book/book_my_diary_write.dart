@@ -62,6 +62,9 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
         final response5 = await dio.get(
           "http://${IpAddress.hyunukIP}/bookshelves/getReadingBooks?memberId=${UserInfo.userValue}",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -93,6 +96,9 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
         final response6 = await dio.get(
           "http://${IpAddress.hyunukIP}/bookshelves/getFinishedBooks?memberId=${UserInfo.userValue}",
           options: Options(
+            headers: {
+              "Authorization": "Bearer ${UserInfo.token}",
+            },
             validateStatus: (_) => true,
             contentType: Headers.jsonContentType,
             responseType: ResponseType.json,
@@ -591,6 +597,10 @@ class _BookMyDiaryWriteState extends State<BookMyDiaryWrite> {
                                               : _photo!.path,
                                         },
                                         options: Options(
+                                          headers: {
+                                            "Authorization":
+                                                "Bearer ${UserInfo.token}",
+                                          },
                                           validateStatus: (_) => true,
                                           contentType: Headers.jsonContentType,
                                           responseType: ResponseType.json,

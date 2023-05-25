@@ -411,6 +411,10 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                               final response = await dio.put(
                                                 "http://${IpAddress.hyunukIP}/bookshelves/addLike?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}",
                                                 options: Options(
+                                                  headers: {
+                                                    "Authorization":
+                                                        "Bearer ${UserInfo.token}",
+                                                  },
                                                   validateStatus: (_) => true,
                                                   contentType:
                                                       Headers.jsonContentType,
@@ -589,6 +593,10 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                               // totalPage는 자신이 직접 설정해야 한다. 도서의 페이지 수를 결정한다.
                                                               "http://${IpAddress.hyunukIP}/bookshelves/addReading?memberId=${UserInfo.userValue}&bookId=${bookModel!.itemId}&totalPage=${int.parse(setPageController.text)}",
                                                               options: Options(
+                                                                headers: {
+                                                                  "Authorization":
+                                                                      "Bearer ${UserInfo.token}",
+                                                                },
                                                                 validateStatus:
                                                                     (_) => true,
                                                                 contentType: Headers

@@ -52,6 +52,9 @@ class _BookMyDiaryListState extends State<BookMyDiaryList> {
       final response = await dio.get(
         "http://${IpAddress.hyunukIP}/journals/search?memberId=${UserInfo.userValue}&param=$keyword",
         options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,

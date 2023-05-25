@@ -344,6 +344,10 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 final response = await dio.post(
                                   "http://${IpAddress.hyunukIP}/reviews/reportProcess?reportId=${report!["id"]}&process=0",
                                   options: Options(
+                                    headers: {
+                                      "Authorization":
+                                          "Bearer ${UserInfo.token}",
+                                    },
                                     validateStatus: (_) => true,
                                     contentType: Headers.jsonContentType,
                                     responseType: ResponseType.json,
@@ -416,6 +420,10 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 final response = await dio.post(
                                   "http://${IpAddress.hyunukIP}/reviews/reportProcess?reportId=${report!["id"]}&process=1",
                                   options: Options(
+                                    headers: {
+                                      "Authorization":
+                                          "Bearer ${UserInfo.token}",
+                                    },
                                     validateStatus: (_) => true,
                                     contentType: Headers.jsonContentType,
                                     responseType: ResponseType.json,
@@ -486,6 +494,10 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                 final response = await dio.post(
                                   "http://${IpAddress.hyunukIP}/reviews/reportProcess?reportId=${report!["id"]}&process=2",
                                   options: Options(
+                                    headers: {
+                                      "Authorization":
+                                          "Bearer ${UserInfo.token}",
+                                    },
                                     validateStatus: (_) => true,
                                     contentType: Headers.jsonContentType,
                                     responseType: ResponseType.json,
