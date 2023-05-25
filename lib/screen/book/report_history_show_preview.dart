@@ -3,6 +3,7 @@ import 'package:book_project/const/ipAddress.dart';
 import 'package:book_project/const/user_manager_check.dart';
 import 'package:book_project/model/user_info.dart';
 import 'package:book_project/screen/book/book_fluid_nav_bar.dart';
+import 'package:book_project/screen/book/configuration.dart';
 import 'package:book_project/screen/book/report_history.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -361,7 +362,9 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     snackPosition: SnackPosition.TOP,
                                   );
 
-                                  Get.offAll(() => const ReportHistory());
+                                  // configuration 페이지로 라우팅
+                                  Get.offAll(() => BookFluidNavBar(
+                                      route: Configuration(), routeIndex: 4));
                                 }
                                 //
                                 else {
@@ -431,7 +434,9 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     snackPosition: SnackPosition.TOP,
                                   );
 
-                                  Get.offAll(() => const ReportHistory());
+                                  // configuration 페이지로 라우팅
+                                  Get.offAll(() => BookFluidNavBar(
+                                      route: Configuration(), routeIndex: 4));
                                 }
                                 //
                                 else {
@@ -499,7 +504,9 @@ class _ReportHistoryShowPreviewState extends State<ReportHistoryShowPreview> {
                                     snackPosition: SnackPosition.TOP,
                                   );
 
-                                  Get.offAll(() => const ReportHistory());
+                                  // configuration 페이지로 라우팅
+                                  Get.offAll(() => BookFluidNavBar(
+                                      route: Configuration(), routeIndex: 4));
                                 }
                                 //
                                 else {
