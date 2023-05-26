@@ -66,7 +66,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
   // 목표 관련된 분석 내용
   List<String> objectAnaysisTitles = [
     "완료 달성 수",
-    "개인이 목표 성공한 수",
+    "목표 달성 성공률 ",
     "내가 선호하는 카테고리에서 다른 사용자가 목표를 얼마나 달성했는지 수",
     "내가 선호하는 카테고리에서 다른 사용자가 목표 도전 중인 사람 수",
     "카테고리 고려하지 않고 비슷한 나이대 중에서 완료한 사람들 수",
@@ -262,8 +262,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
           print("서버에서 목표 3 받은 데이터 : ${response3_3.data}");
           objectives.removeAt(2);
           objectives.insert(2, response3_3.data as Map<String, dynamic>);
-
-          print("objectives : $objectives");
         }
         //
         else {
@@ -626,6 +624,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
     catch (e) {
       print("서버 13이 열리지 않음");
     }
+
+    print("objectives : $objectives");
   }
 
   // 날짜를 format 시켜주는 함수
@@ -834,9 +834,44 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 );
                               }
+
+                              // 목표 1과 관련해서 목표를 성공했을 경우
+                              else if (objectives[0]["completed"] == true) {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: const Text("목표 1 진행 현황"),
+                                    content: SizedBox(
+                                      width: 100.w,
+                                      height: 150.h,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          // 텍스트
+                                          const Text(
+                                            "목표 1을 완료했습니다. 목표를 재설정해주세요.",
+                                          ),
+
+                                          // 다이어로그에서 나가는 버튼
+                                          Center(
+                                            child: TextButton(
+                                              child: const Text("나가기"),
+                                              onPressed: () {
+                                                // 다이어로그를 삭제한다.
+                                                Get.back();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+
                               // endTime이 현재 시간보다 작은 경우
-                              // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
-                              else if (objectives[0]["endTime"]
+                              // 즉 목표 1에 대해서 목표를 실패했을 경우
+                              else if (objectives[0]["endDate"]
                                       .toString()
                                       .compareTo(formatDate(currentTime)) <
                                   0) {
@@ -871,27 +906,28 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 );
                               }
+
                               // endTime이 현재 시간과 같거나 큰 경우
                               // 목표 1 데이터에 대해서 정보를 요약적으로 보여준다.
                               else {
                                 // 달성 권수 확인하기
-                                // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
-                                int accomplishCount = 0;
+                                // // (목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 )&& (읽은 도서 분야 == 목표 설정 도서 분야)
+                                // int accomplishCount = 0;
 
-                                for (int i = 0;
-                                    i < readBooks_completed_dateTime.length;
-                                    i++) {
-                                  if (readBooks_completed_dateTime[i].compareTo(
-                                              objectives[0]["startDate"]) >=
-                                          0 &&
-                                      readBooks_completed_dateTime[i].compareTo(
-                                              objectives[0]["endDate"]) <=
-                                          0 &&
-                                      readBooks[i].categoryId ==
-                                          objectives[0]["categoryId"]) {
-                                    accomplishCount += 1;
-                                  }
-                                }
+                                // for (int i = 0;
+                                //     i < readBooks_completed_dateTime.length;
+                                //     i++) {
+                                //   if (readBooks_completed_dateTime[i].compareTo(
+                                //               objectives[0]["startDate"]) >=
+                                //           0 &&
+                                //       readBooks_completed_dateTime[i].compareTo(
+                                //               objectives[0]["endDate"]) <=
+                                //           0 &&
+                                //       readBooks[i].categoryId ==
+                                //           objectives[0]["categoryId"]) {
+                                //     accomplishCount += 1;
+                                //   }
+                                // }
 
                                 Get.dialog(
                                   AlertDialog(
@@ -928,14 +964,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                             SizedBox(height: 20.h),
 
                                             // 달성 권수
-                                            Text("달성 권수 : $accomplishCount권"),
+                                            Text(
+                                                "달성 권수 : ${objectives[0]["readed"]}권"),
 
                                             // 중간 공백
                                             SizedBox(height: 20.h),
 
                                             // 달성률
                                             Text(
-                                                "달성률 : ${((accomplishCount / objectives[0]["targetQuantity"]) * 100).round()}%"),
+                                                "달성률 : ${((objectives[0]["readed"] / objectives[0]["targetQuantity"]) * 100).round()}%"),
 
                                             // 다이어로그에서 나가는 버튼
                                             Center(
@@ -1024,12 +1061,47 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 );
                               }
+                              // 목표 2과 관련해서 목표를 성공했을 경우
+                              else if (objectives[1]["completed"] == true) {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: const Text("목표 2 진행 현황"),
+                                    content: SizedBox(
+                                      width: 100.w,
+                                      height: 150.h,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          // 텍스트
+                                          const Text(
+                                            "목표 2을 완료했습니다. 목표를 재설정해주세요.",
+                                          ),
+
+                                          // 다이어로그에서 나가는 버튼
+                                          Center(
+                                            child: TextButton(
+                                              child: const Text("나가기"),
+                                              onPressed: () {
+                                                // 다이어로그를 삭제한다.
+                                                Get.back();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+
                               // 현재 시간이 endTime보다 클 경우
-                              // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
-                              else if (objectives[1]["endTime"]
+                              // 목표 2와 관련해서 목표 달성을 실패 했을 경우
+                              else if (objectives[1]["endDate"]
                                       .toString()
                                       .compareTo(formatDate(currentTime)) <
                                   0) {
+                                print("목표 다시 설정 ");
                                 Get.dialog(
                                   AlertDialog(
                                     title: const Text("목표 2 진행 현황"),
@@ -1064,24 +1136,25 @@ class _BookMyGoalState extends State<BookMyGoal> {
                               // 현재 시간이 endTime보다 작을 경우
                               // 목표 2 데이터에 대해서 정보를 요약적으로 보여준다.
                               else {
-                                // 달성 권수 확인하기
-                                // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
-                                int accomplishCount = 0;
+                                // print("목표 진행중");
+                                // // 달성 권수 확인하기
+                                // // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
+                                // int accomplishCount = 0;
 
-                                for (int i = 0;
-                                    i < readBooks_completed_dateTime.length;
-                                    i++) {
-                                  if (readBooks_completed_dateTime[i].compareTo(
-                                              objectives[1]["startDate"]) >=
-                                          0 &&
-                                      readBooks_completed_dateTime[i].compareTo(
-                                              objectives[1]["endDate"]) <=
-                                          0 &&
-                                      readBooks[i].categoryId ==
-                                          objectives[1]["categoryId"]) {
-                                    accomplishCount += 1;
-                                  }
-                                }
+                                // for (int i = 0;
+                                //     i < readBooks_completed_dateTime.length;
+                                //     i++) {
+                                //   if (readBooks_completed_dateTime[i].compareTo(
+                                //               objectives[1]["startDate"]) >=
+                                //           0 &&
+                                //       readBooks_completed_dateTime[i].compareTo(
+                                //               objectives[1]["endDate"]) <=
+                                //           0 &&
+                                //       readBooks[i].categoryId ==
+                                //           objectives[1]["categoryId"]) {
+                                //     accomplishCount += 1;
+                                //   }
+                                // }
 
                                 Get.dialog(
                                   AlertDialog(
@@ -1116,14 +1189,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                             SizedBox(height: 20.h),
 
                                             // 달성 권수
-                                            Text("달성 권수 : $accomplishCount권"),
+                                            Text(
+                                                "달성 권수 :${objectives[1]["readed"]}권"),
 
                                             // 중간 공백
                                             SizedBox(height: 20.h),
 
                                             // 달성률
                                             Text(
-                                                "달성률 : ${((accomplishCount / objectives[1]["targetQuantity"]) * 100).round()}%"),
+                                                "달성률 : ${((objectives[1]["readed"] / objectives[1]["targetQuantity"]) * 100).round()}%"),
 
                                             // 다이어로그에서 나가는 버튼
                                             Center(
@@ -1212,9 +1286,44 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                   ),
                                 );
                               }
+
+                              // 목표 3과 관련해서 목표를 성공했을 경우
+                              else if (objectives[2]["completed"] == true) {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: const Text("목표 3 진행 현황"),
+                                    content: SizedBox(
+                                      width: 100.w,
+                                      height: 150.h,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          // 텍스트
+                                          const Text(
+                                            "목표 3을 완료했습니다. 목표를 재설정해주세요.",
+                                          ),
+
+                                          // 다이어로그에서 나가는 버튼
+                                          Center(
+                                            child: TextButton(
+                                              child: const Text("나가기"),
+                                              onPressed: () {
+                                                // 다이어로그를 삭제한다.
+                                                Get.back();
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+
                               // 현재 시간이 endTime보다 클 경우
-                              // 목표를 다시 설정해야 한다고 알림 메시지를 보여준다.
-                              else if (objectives[2]["endTime"]
+                              // 목표 3을 달성하지 못했을 경우
+                              else if (objectives[2]["endDate"]
                                       .toString()
                                       .compareTo(formatDate(currentTime)) <
                                   0) {
@@ -1252,25 +1361,6 @@ class _BookMyGoalState extends State<BookMyGoal> {
                               // 현재 시간이 endTime보다 작을 경우
                               // 목표 3 데이터에 대해서 정보를 요약적으로 보여준다.
                               else {
-                                // 달성 권수 확인하기
-                                // // 목표 시작 날짜 <= 도서 읽기 완료 날짜 <= 목표 완료 날짜 && 읽은 도서 분야 == 목표 설정 도서 분야
-                                int accomplishCount = 0;
-
-                                for (int i = 0;
-                                    i < readBooks_completed_dateTime.length;
-                                    i++) {
-                                  if (readBooks_completed_dateTime[i].compareTo(
-                                              objectives[2]["startDate"]) >=
-                                          0 &&
-                                      readBooks_completed_dateTime[i].compareTo(
-                                              objectives[2]["endDate"]) <=
-                                          0 &&
-                                      readBooks[i].categoryId ==
-                                          objectives[2]["categoryId"]) {
-                                    accomplishCount += 1;
-                                  }
-                                }
-
                                 Get.dialog(
                                   AlertDialog(
                                     title: const Text("목표 3 진행 현황"),
@@ -1305,14 +1395,15 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                             SizedBox(height: 20.h),
 
                                             // 달성 권수
-                                            Text("달성 권수 : $accomplishCount권"),
+                                            Text(
+                                                "달성 권수 : ${objectives[2]["readed"]}권"),
 
                                             // 중간 공백
                                             SizedBox(height: 20.h),
 
                                             // 달성률
                                             Text(
-                                                "달성률 : ${((accomplishCount / objectives[2]["targetQuantity"]) * 100).round()}%"),
+                                                "달성률 : ${((objectives[2]["readed"] / objectives[2]["targetQuantity"]) * 100).round()}%"),
 
                                             // 다이어로그에서 나가는 버튼
                                             Center(

@@ -79,7 +79,7 @@ class BanCheck {
                       child: Column(
                         children: [
                           // 사용자 계정이 ban됐음을 알린다
-                          const Text("사용자 계정이 ban 되었습니다"),
+                          const Text("사용자 계정이 정지 되었습니다"),
 
                           // 중간 공백
                           const SizedBox(height: 50),

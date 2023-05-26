@@ -65,6 +65,9 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
   // 현재 시간
   DateTime? currentTime;
 
+  // 목표 1에 대해서 달성 했는지 여부를 판단하는 변수
+  // bool isAcheiveGoal = false;
+
   // 서버 통신 사용함
   var dio = Dio();
 
@@ -93,6 +96,49 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
     currentTime = await NTP.now();
     currentTime = currentTime!.toUtc().add(const Duration(hours: 9));
     print(currentTime);
+
+    // 서버에서 목표 달성했는지 여부를 확인한다.
+    // try {
+    //   final response = await dio.get(
+    //     'http://${IpAddress.hyunukIP}/goal/isCompleted?goalId=${objectives![0]["id"]}',
+    //     options: Options(
+    //       headers: {
+    //         "Authorization": "Bearer ${UserInfo.token}",
+    //       },
+    //       validateStatus: (_) => true,
+    //       contentType: Headers.jsonContentType,
+    //       responseType: ResponseType.json,
+    //     ),
+    //   );
+
+    //   // 서버와 통신 성공
+    //   if (response.statusCode == 200) {
+    //     print("서버와 통신 성공");
+    //     print("서버에서 제공해주는 데이터 : ${response.data}");
+
+    //     // 반환값에 따라 isAcheiveGoal를 true 또는 false로 설정한다.
+    //     isAcheiveGoal = response.data == true ? true : false;
+    //   }
+    //   // 서버와 통신 실패
+    //   else {
+    //     print("서버와 통신 실패");
+    //     print("서버 통신 에러 코드 : ${response.statusCode}");
+    //   }
+    // }
+    // // DioError[unknown]: null이 메시지로 나타났을 떄
+    // // 즉 서버가 열리지 않았다는 뜻이다
+    // catch (e) {
+    //   print("try catch 의 메시지 : ${e}");
+
+    //   // 서버가 열리지 않았다는 snackBar를 띄운다
+    //   Get.snackbar(
+    //     "서버 열리지 않음",
+    //     "서버가 열리지 않았습니다\n관리자에게 문의해주세요",
+    //     duration: const Duration(seconds: 3),
+    //     snackPosition: SnackPosition.TOP,
+    //   );
+    // }
+    // }
   }
 
   @override
@@ -526,12 +572,13 @@ class _BookMyGoalEdit1State extends State<BookMyGoalEdit1> {
 
                           // 아예 서버에서 받아온 목표 데이터가 없거나 , endDate가 현재 시간보다 작으면 목표 설정하기 버튼을 보여준다.
                           // endDate가 현재 시간보다 같거나 크면 목표 수정하기 버튼을 보여준다.
+                          // 해당 목표가 달성했다는 목표이면 목표 설정하기 보여주는 것에 대한 로직을 추가한다.
                           objectives![0]["data"] == "none" ||
+                                  objectives![0]["completed"] == true ||
                                   objectives![0]["endDate"]
                                           .toString()
                                           .compareTo(formatDate(currentTime!)) <
                                       0
-
                               // 목표 설정하기 버튼 나옴
                               ? Center(
                                   child: Padding(

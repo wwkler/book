@@ -622,6 +622,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                               //  다이어로그를 삭제한다.
                                                               Get.back();
 
+                                                              Get.back();
+
                                                               // 읽고 있는 도서 추가 성공했다는 snackBar를 띄운다.
                                                               Get.snackbar(
                                                                 "읽고 있는 도서로 추가 성공",
@@ -643,6 +645,8 @@ class _BookShowPreviewState extends State<BookShowPreview> {
                                                                   "서버 통신 에러 코드 : ${response.statusCode}");
 
                                                               // 다이어로그를 삭제한다.
+                                                              Get.back();
+
                                                               Get.back();
 
                                                               // 읽고 있는 도서 추가 실패 했다는 다이어로그를 띄운다.

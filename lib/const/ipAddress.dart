@@ -4,7 +4,8 @@ class IpAddress {
 
   // static String hyunukIP = "192.9.202.17:60001";
 
-  static String hyunukIP = "ceprj.gachon.ac.kr:60001";
+  static String hyunukIP = "211.243.7.66:8080";
+ 
 
   // 현욱이 노트북 ip
   // static String hyunukIP = "116.122.96.53:8080";

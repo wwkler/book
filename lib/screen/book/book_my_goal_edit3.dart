@@ -527,6 +527,7 @@ class _BookMyGoalEdit3State extends State<BookMyGoalEdit3> {
                           // 아예 서버에서 받아온 목표 데이터가 없거나 , endDate가 현재 시간보다 작으면 목표 설정하기 버튼을 보여준다.
                           // endDate가 현재 시간보다 같거나 크면 목표 수정하기 버튼을 보여준다.
                           objectives![2]["data"] == "none" ||
+                                  objectives![2]["completed"] == true ||
                                   objectives![2]["endDate"]
                                           .toString()
                                           .compareTo(
