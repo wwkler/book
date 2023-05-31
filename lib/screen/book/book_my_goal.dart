@@ -71,9 +71,10 @@ class _BookMyGoalState extends State<BookMyGoal> {
     "내가 선호하는 카테고리에서 다른 사용자가 목표 도전 중인 사람 수",
     "카테고리 고려하지 않고 비슷한 나이대 중에서 완료한 사람들 수",
     "카테고리 고려하지 않고 비슷한 나이대 중에 도전 중인 사람들 수",
-    "같은 나이대 목표 평균 성공률 수"
+    "같은 나이대 목표 평균 성공률 수",
+    "일일 독서량 수",
   ];
-  List<int> objectAnalysisContents = [-1, -1, -1, -1, -1, -1, -1];
+  List<int> objectAnalysisContents = [-1, -1, -1, -1, -1, -1, -1, -1];
 
   // 목표와 관련된 분석 이미지
   List<String> objectImagePath = [
@@ -84,6 +85,7 @@ class _BookMyGoalState extends State<BookMyGoal> {
     "assets/imgs/similiarAgeComplete.png",
     "assets/imgs/similarAgeChallenge.png",
     "assets/imgs/similarAgeAchiveGoal.png",
+    "assets/imgs/read.png"
   ];
 
   // 읽고 싶은 도서 (배열)
@@ -623,6 +625,38 @@ class _BookMyGoalState extends State<BookMyGoal> {
     // 즉 서버가 열리지 않았다는 뜻이다
     catch (e) {
       print("서버 13이 열리지 않음");
+    }
+
+    try {
+      // 일일 독서량을 서버에서 가져온다.
+      final response14 = await dio.get(
+        "http://${IpAddress.hyunukIP}/goal/getDaily?memberId=${UserInfo.userValue}",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer ${UserInfo.token}",
+          },
+          validateStatus: (_) => true,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      if (response14.statusCode == 200) {
+        print("서버와 통신 성공");
+        print("서버에서 받은 일일 독서랑 데이터: ${response14.data}");
+        objectAnaysisTitles.removeAt(7);
+        objectAnaysisTitles.insert(7, response14.data);
+      }
+      //
+      else {
+        print("서버와 통신 실패");
+        print("서버 통신 에러 코드 : ${response14.statusCode}");
+      }
+    }
+    // DioError[unknown]: null이 메시지로 나타났을 떄
+    // 즉 서버가 열리지 않았다는 뜻이다
+    catch (e) {
+      print("서버 14가 열리지 않음");
     }
 
     print("objectives : $objectives");
@@ -1510,7 +1544,8 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                         image: DecorationImage(
                                           fit: BoxFit.fill,
                                           image: AssetImage(
-                                              objectImagePath[index]),
+                                            objectImagePath[index],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1525,15 +1560,25 @@ class _BookMyGoalState extends State<BookMyGoal> {
                                     height: 150.h,
                                     child: Column(
                                       children: [
-                                        Text(
-                                          "${objectAnaysisTitles[index]} :  ${objectAnalysisContents[index].toString()}",
-                                          //"목표를 설정해주세요",
-                                          style: TextStyle(
-                                            fontSize: 15.sp,
-                                            fontWeight: FontWeight.bold,
-                                            color: const Color(0xFF363f93),
-                                          ),
-                                        ),
+                                        index != 7
+                                            ? Text(
+                                                "${objectAnaysisTitles[index]} :  ${objectAnalysisContents[index].toString()}",
+                                                style: TextStyle(
+                                                  fontSize: 15.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      const Color(0xFF363f93),
+                                                ),
+                                              )
+                                            : Text(
+                                                objectAnaysisTitles[index],
+                                                style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      const Color(0xFF363f93),
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),
