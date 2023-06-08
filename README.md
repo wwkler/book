@@ -5,7 +5,7 @@
 프론트엔드 : 김영우(나) - Dart, Flutter
 
 백엔드 : 차현욱, 권영준 - Java, Spring Boot
-###백엔드 작품 주소 : https://github.com/chw3021/bookmakase
+### 백엔드 작품 주소 : https://github.com/chw3021/bookmakase
 
 ## 프로세스
 2023.03.10 ~ 2023.04.14 기획서, 설계서 작성
