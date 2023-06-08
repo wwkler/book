@@ -1,16 +1,10 @@
-# book_project
+# 인터파크 API를 이용한 도서 추천,검색 시스템 
+2023년 1학기 가천대학교 현장실습연계프로젝트 졸업작품
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 기능
+1. 도서 추천, 검색 기능
+2. 도서 목표 분석, 수립, 수정 기능
+3. 읽고 싶은 도서, 읽고 있는 도서, 읽은 도서 기능
+4. 도서 일지 요약, 작성 기능
+5. 도서 커뮤니티 기능
+6. 환경 설정 기능
