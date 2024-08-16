@@ -1,6 +1,14 @@
 # 인터파크 API를 이용한 도서 추천,검색 시스템 
 2023년 1학기 가천대학교 현장실습연계프로젝트 졸업작품
 
+![servie_introduction](https://github.com/user-attachments/assets/edba52de-1b45-4bd5-813c-d3bb6f3e95d3)
+
+완료 보고서 : [6.최종보고서.docx](https://github.com/user-attachments/files/16632940/6.docx)
+
+발표 자료 : [7.발표자료.pptx](https://github.com/user-attachments/files/16632912/7.pptx)
+
+
+
 ## 역할 분담
 프론트엔드 : 김영우(나) - Dart, Flutter
 
