@@ -3,9 +3,13 @@
 
 ![servie_introduction](https://github.com/user-attachments/assets/edba52de-1b45-4bd5-813c-d3bb6f3e95d3)
 
-완료 보고서 : [6.최종보고서.docx](https://github.com/user-attachments/files/16632940/6.docx)
+<!-- 완료 보고서 : [6.최종보고서.docx](https://github.com/user-attachments/files/16632940/6.docx) --> 
 
-발표 자료 : [7.발표자료.pptx](https://github.com/user-attachments/files/16632912/7.pptx)
+<!-- 발표 자료 : [7.발표자료.pptx](https://github.com/user-attachments/files/16632912/7.pptx) -->
+
+설계서 : [4.설계서.pdf](https://github.com/user-attachments/files/18384669/4.pdf)
+
+최종 보고서 : [6.최종보고서.pdf](https://github.com/user-attachments/files/18384665/6.pdf)
 
 
 
